@@ -18,7 +18,7 @@
   </IconButton>
 
   <Menu bind:this={menu}>
-    <p class='dataview-title'>Data Views</p>
+    <p class='menulist-title'>Data Views</p>
 
     <List twoLine>
       <Separator />
@@ -54,12 +54,6 @@
 </div>
 
 <style>
-  p.dataview-title {
-    margin: 0.5rem 0 -0.5rem 1rem;
-    font-size: 1rem;
-    font-weight: 600;
-  }
-
   i.text-icon {
     position: relative;
     top: 6px;

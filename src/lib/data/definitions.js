@@ -52,8 +52,8 @@ wet [0, 1]   AVG: 0 MEDIAN: 0
 export const labels = {
   datainfo: "Data Info",
 
-  flow: "Flow (ft^3/s)",
-  height: "Height (ft)",
+  flow: "Gage Flow (ft^3/s)",
+  height: "Gage Height (ft)",
   
   chlorides: "Chlorides (mg/L)",
   do: "Dissolved Oxygen (mg/L)",
