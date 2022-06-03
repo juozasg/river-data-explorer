@@ -8,8 +8,8 @@ import * as df from 'data-forge';
 
 import tzAbbr from 'timezone-abbr-offsets';
 
-import {safeID, betweenDays} from '../util/data-helpers.js'
-import {timer} from '../util/debug.js'
+import {safeID, betweenDays} from '../../../legacy/lib/util/data-helpers.js'
+import {timer} from '../../../legacy/lib/util/debug.js'
 
 import Papa from 'papaparse';
 
