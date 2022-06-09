@@ -3,14 +3,29 @@
   import Select, { Option } from '@smui/select';
   import List, { Item, Separator } from '@smui/list';
   import Fab, { Icon } from '@smui/fab';
-  import { showDataSelector, dataVariable } from '../lib/stores';
+  import { showDataSelector, dataVariable, selectedSites } from '../lib/stores';
 
   import { labels } from '../lib/data/definitions';
   import type { MenuComponentDev } from '@smui/menu';
   import Menu from '@smui/menu';
 
   let menu: MenuComponentDev;
-  let selected = 2;
+
+  let selectionText: String;
+
+  $: {
+    if($selectedSites.length === 1) {
+      selectionText = '1 site selected';
+    } else if($selectedSites.length > 1) {
+      selectionText = `${$selectedSites.length} sites selected`;
+    } else {
+      selectionText = '<i>Use map to select sites</i>';
+    }
+  }
+
+  const addToSelection = () => {
+		$selectedSites = [...$selectedSites, Math.random()];
+	};
 </script>
 
 
@@ -25,25 +40,25 @@
       <Select bind:value={$dataVariable} label="Variable" style='width:300px'>
         {#each Object.entries(labels) as [key, label]}
           <Option value={key}>{label}</Option>
-          
+
           {#if key === 'datainfo' || key === 'height'}
             <Separator />
           {/if}
         {/each}
-      </Select>    
+      </Select>
     </div>
 
     <div id='site-actions'>
-      <div id='sites-status'>{selected} sites selected</div>
+      <div id='sites-status'>{@html selectionText}</div>
 
       <div class='site-action-icon'>
         <Fab color="secondary" mini on:click={() => menu.setOpen(true)}>
           <Icon class="material-icons">insights</Icon>
         </Fab>
       </div>
-      
+
       <div class='site-action-icon'>
-        <Fab color="secondary" mini on:click={() => selected = 0}>
+        <Fab color="secondary" mini on:click={() => $selectedSites = []}>
           <Icon class="material-icons">clear</Icon>
         </Fab>
       </div>
@@ -54,12 +69,12 @@
       <p class='menulist-title'>Graph Selected To</p>
       <List dense>
         <Separator />
-        <Item selected={false} on:SMUI:action={() => console.log('graph left')}>
+        <Item selected={false} on:SMUI:action={() => addToSelection()}>
           <i class="text-icon material-icons" aria-hidden="true" style='margin-right: 0.5rem'>arrow_circle_left</i>
           Left Timeseries
         </Item>
         <Separator />
-        <Item>
+        <Item  on:SMUI:action={() => $selectedSites.pop()}>
           <i class="text-icon material-icons" aria-hidden="true" style='margin-right: 0.5rem'>arrow_circle_right</i>
           Right Timeseries
         </Item>
@@ -117,10 +132,11 @@
       font-size: 1.1rem;
       font-weight: 600;
       color: #9c27b0;
+      // text-decoration: underline dotted;
 
       height: 40px;
     }
-  
+
     .site-action-icon {
       padding-left: 0.5rem;
     }
@@ -130,6 +146,13 @@
     width: 170px;
     bottom: 56px !important;
     left: 84px !important;
+  }
+
+  :global(#data-variable-selector .mdc-menu-surface) {
+    width: 340px;
+    position: fixed;
+    bottom: 70px !important;
+    left: 16px !important;
   }
 
 </style>

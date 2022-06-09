@@ -7,7 +7,7 @@
 
   import { showDataSelector } from '../lib/stores';
   import Fab from '@smui/fab';
- 
+
   let menu: MenuComponentDev;
 
   let clicked = '';
@@ -27,7 +27,7 @@
       <Separator />
       <Item selected={$showDataSelector} on:SMUI:action={() => $showDataSelector = !$showDataSelector }>
         <Text>
-          <PrimaryText>         
+          <PrimaryText>
             <i class="text-icon material-icons" aria-hidden="true">filter_alt</i>
             Selector
           </PrimaryText>
