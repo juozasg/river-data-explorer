@@ -1,6 +1,11 @@
 import * as d3 from "d3";
+import type { ColorScale } from "../../types";
 
-import {radiusTicksXs, radiusRange} from '../data/enums.js';
+import { radiusRange } from '../definitions';
+
+// const radiusTicksXs = [10, 65, 128, 200, 280];
+const radiusTicksXs = [2, 74, 150, 224, 298];
+
 
 function average(scale) {
   return scale.copy().domain([0,1])(0.5);
@@ -9,8 +14,9 @@ function average(scale) {
 
 function createSvg() {
   return d3.create("svg")
-    .attr("height", 80)
-    .style("display", "block");
+    .attr("height", 76)
+    .style("display", "block")
+    .style("overflow", "visible");
 }
 
 function createDataGroups(svg) {
@@ -18,7 +24,7 @@ function createDataGroups(svg) {
     .data(radiusTicksXs) // cx
     .enter()
     .append("g")
-    .attr("transform", d => `translate(${d + 36},30)`);
+    .attr("transform", d => `translate(${d},26)`);
 }
 
 
@@ -33,53 +39,42 @@ function appendRadiusCircle(sel) {
 }
 
 
-// scale maps variable value domain to radius. ex: [0, 5000.0] -> [5, 20]
-export function measurementRadiusLegend(colorScale) {
-  const color = average(colorScale);
-  // map domain [0,1] to variable value (observation/measurement)
+
+// colorScale maps domain to color [0, 5000.0] -> ['red', 'green']
+// need a scale that maps series value domain to radius. ex: [0, 5000.0] -> [5, 20]
+export function radiusListSvg(colorScale: ColorScale) {
+  // [0,1] -> [0, 5000]
   const measurementUnitScale = d3.scaleLinear().range(colorScale.domain())
 
+  // [0, 1] -> ['red', 'green']
   const colorUnitScale = colorScale.copy().domain([0,1]);
-  
+
   const svg = createSvg();
+  svg.attr('class', 'radius-list');
   const groups = createDataGroups(svg);
-  appendRadiusCircle(groups, color)
+  appendRadiusCircle(groups)
     .attr('fill', (d,i) => colorUnitScale(i/4.0));
 
-
-  // LABEL
-  groups.append("text")
-    .attr('fill', 'black')
-    .attr("text-anchor", "middle")
-    .attr("y", 40)
-    .text((d, i) => {
-      let value = measurementUnitScale(i/4.0);
-      if(colorScale.range()[1] > 10) {
-        return Math.floor(value);
-      } else {
-        return value;
-      }
-    });
-
+  const range = measurementUnitScale.range();
 
   return svg.node();
 }
 
 // ex: [0,1] => [5, 20]
-export function samplingFrequencyRadiusLegend(colorScale) {
+export function measurementFrequencyRadiusListSvg(colorScale: ColorScale) {
   const color = average(colorScale);
 
   const longNames = ['Yearly', 'Monthly', 'Weekly', 'Daily', 'Real-time'];
   const names = ['Y', 'M', 'W', 'D', 'RT'];
   const freqInDays = [365, 30, 7, 1, 0];
- 
+
   // data density values: [0, 1, 2, 3, 4, 5]
   const svg = createSvg();
 
   const groups = createDataGroups(svg);
   groups.attr('class', 'tippy')
     .attr('data-tippy-content', (d,i) => longNames[i]);
-  
+
   // circle with radius
   appendRadiusCircle(groups)
     .attr('fill', (d,i) => colorScale(freqInDays[i]));

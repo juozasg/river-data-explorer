@@ -2,8 +2,8 @@
   import type { MenuComponentDev } from '@smui/menu';
   import Menu from '@smui/menu';
   import List, { Item, PrimaryText, SecondaryText, Separator, Text } from '@smui/list';
-  import Button, { Icon, Label } from '@smui/button';
-  import IconButton from '@smui/icon-button';
+  import { Icon } from '@smui/button';
+  import Tooltip, { Wrapper } from '@smui/tooltip';
 
   import { showDataSelector } from '../lib/stores';
   import Fab from '@smui/fab';
@@ -16,9 +16,12 @@
 
 
 <div id='window-selector' style="position: fixed; left: 4px; bottom: 0px; z-index:20000">
-  <Fab color="primary" mini on:click={() => menu.setOpen(true)}>
-    <Icon class="material-icons">apps</Icon>
-  </Fab>
+  <Wrapper>
+    <Fab color="primary" mini on:click={() => menu.setOpen(true)}>
+      <Icon class="material-icons">apps</Icon>
+    </Fab>
+    <Tooltip style='z-index: 20001'>Show and hide data views</Tooltip>
+  </Wrapper>
 
   <Menu bind:this={menu}>
     <p class='menulist-title'>Data Views</p>

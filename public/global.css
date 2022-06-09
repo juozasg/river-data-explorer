@@ -62,6 +62,14 @@ button:focus {
 	border-color: #666;
 }
 
+svg, g {
+	pointer-events: bounding-box;
+}
+
+svg:focus, g:focus {
+	outline: none;
+}
+
 
 /* components */
 

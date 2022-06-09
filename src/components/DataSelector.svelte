@@ -3,14 +3,15 @@
   import Select, { Option } from '@smui/select';
   import List, { Item, Separator } from '@smui/list';
   import Fab, { Icon } from '@smui/fab';
-  import { showDataSelector, dataVariable, selectedSites } from '../lib/stores';
-
-  import { labels } from '../lib/data/definitions';
   import type { MenuComponentDev } from '@smui/menu';
   import Menu from '@smui/menu';
+  import Tooltip, { Wrapper } from '@smui/tooltip';
+
+  import Legend from './Legend.svelte';
+  import { showDataSelector, selectedSeries, selectedSites } from '../lib/stores';
+  import { labels } from '../lib/definitions';
 
   let menu: MenuComponentDev;
-
   let selectionText: String;
 
   $: {
@@ -30,39 +31,46 @@
 
 
 {#if $showDataSelector }
- <div class="elevation" id='data-selector'
+  <div class="elevation" id='data-selector'
         transition:fly="{{ x: -200, duration: 400 }}" style="position: fixed; bottom: 0; left: 0;">
 
-    <img src='mockup.png' alt='legand mockup' width='360px'/>
+    <Wrapper>
+      <div id='data-variable-selector'>
+        <Select bind:value={$selectedSeries} label="Variable" style='width:300px'>
+          {#each Object.entries(labels) as [key, label]}
+            <Option value={key}>{label}</Option>
 
+            {#if key === 'datainfo' || key === 'height'}
+              <Separator />
+            {/if}
+          {/each}
+        </Select>
+      </div>
+      <Tooltip>Choose the monitoring variable to map and analyze</Tooltip>
+    </Wrapper>
+    <Legend/>
 
-    <div id='data-variable-selector'>
-      <Select bind:value={$dataVariable} label="Variable" style='width:300px'>
-        {#each Object.entries(labels) as [key, label]}
-          <Option value={key}>{label}</Option>
-
-          {#if key === 'datainfo' || key === 'height'}
-            <Separator />
-          {/if}
-        {/each}
-      </Select>
-    </div>
 
     <div id='site-actions'>
       <div id='sites-status'>{@html selectionText}</div>
 
       <div class='site-action-icon'>
-        <Fab color="secondary" mini on:click={() => menu.setOpen(true)}>
-          <Icon class="material-icons">insights</Icon>
-        </Fab>
+        <Wrapper>
+          <Fab color="secondary" mini on:click={() => menu.setOpen(true)}>
+            <Icon class="material-icons">insights</Icon>
+          </Fab>
+          <Tooltip>Add select sites to the Timeseries View</Tooltip>
+        </Wrapper>
       </div>
 
       <div class='site-action-icon'>
-        <Fab color="secondary" mini on:click={() => $selectedSites = []}>
-          <Icon class="material-icons">clear</Icon>
-        </Fab>
+        <Wrapper>
+          <Fab color="secondary" mini on:click={() => $selectedSites = []}>
+            <Icon class="material-icons">clear</Icon>
+          </Fab>
+          <Tooltip>Unselect all sites</Tooltip>
+        </Wrapper>
       </div>
-
     </div>
 
     <Menu bind:this={menu} anchorCorner='BOTTOM_RIGHT'>
@@ -88,17 +96,20 @@
 <style lang='scss'>
   #data-selector {
     width: 360px;
-    height: 300px;
-    padding: 1rem;
-
+    height: 260px;
+    // padding: 1rem;
     background-color: white;
   }
 
-
   #data-variable-selector {
-    position: absolute;
-    top: 10px;
-    left: 46px;
+    // position: absolute;
+    // top: 10px;
+    // left: 46px;
+    // margin-left: 30px;
+    margin-top: 6px;
+
+    display: flex;
+    justify-content: center;
   }
 
   :global(#data-variable-selector ul) {
@@ -111,15 +122,10 @@
   }
 
 
-  img {
-    position: absolute;
-    top: 60px;
-  }
-
   #site-actions {
     position: absolute;
     bottom: 0px;
-    left: 46px;
+    left: 30px;
     width: 300px;
     height: 56px;
     display: flex;
@@ -154,5 +160,4 @@
     bottom: 70px !important;
     left: 16px !important;
   }
-
 </style>

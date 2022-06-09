@@ -1,8 +1,9 @@
 import * as d3 from "d3";
+import type { ColorScale } from "../../types";
 
-export function measurementScaleLegend(colorScale) {
+export function colorbarSvg(colorScale: ColorScale) : SVGElement {
   const svg = d3.create("svg")
-    .attr("height", 50)
+    .attr("height", 42)
     // .attr("style", "border: 1px solid green;")
     .style("overflow", "visible")
     .style("display", "block");
@@ -10,8 +11,8 @@ export function measurementScaleLegend(colorScale) {
 
     const dataUrl = colorGradientDataUrl(colorScale);
 
-    let x0 = 10;
-    let w = 280;
+    let x0 = 0;
+    let w = 300;
     svg.append("image")
       .attr("x", x0)
       .attr("y", 0)
@@ -41,17 +42,17 @@ export function measurementScaleLegend(colorScale) {
 }
 
 
-function colorGradientDataUrl(colorScale) {
+function colorGradientDataUrl(scale: ColorScale) {
   let n = 256;
 
-  colorScale = colorScale.copy().domain([0,1]);
+  scale = scale.copy().domain([0,1]);
 
   const canvas = document.createElement("canvas");
   canvas.width = n;
   canvas.height = 1;
   const context = canvas.getContext("2d");
   for (let i = 0; i < n; ++i) {
-    context.fillStyle = colorScale(i / (n - 1));
+    context.fillStyle = scale(i / (n - 1));
     context.fillRect(i, 0, 1, 1);
   }
 
