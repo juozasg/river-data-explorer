@@ -6,16 +6,19 @@
   import IconButton from '@smui/icon-button';
 
   import { showDataSelector } from '../lib/stores';
+  import Fab from '@smui/fab';
  
   let menu: MenuComponentDev;
+
+  let clicked = '';
 </script>
 
 
 
-<div style="position: fixed; left: 4px; bottom: 0px; z-index:20000">
-  <IconButton color="primary" class="material-icons" on:click={() => menu.setOpen(true)}>
-    apps
-  </IconButton>
+<div id='window-selector' style="position: fixed; left: 4px; bottom: 0px; z-index:20000">
+  <Fab color="primary" mini on:click={() => menu.setOpen(true)}>
+    <Icon class="material-icons">apps</Icon>
+  </Fab>
 
   <Menu bind:this={menu}>
     <p class='menulist-title'>Data Views</p>
@@ -57,5 +60,11 @@
   i.text-icon {
     position: relative;
     top: 6px;
+  }
+
+  :global(#window-selector .mdc-menu-surface) {
+    /* width: 200px; */
+    bottom: 56px !important;
+    left: 20px !important;
   }
 </style>
