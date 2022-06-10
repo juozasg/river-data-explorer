@@ -14,28 +14,30 @@
 </script>
 
 <div id='legend' class='legend-{$selectedSeries}'>
-  {@html colorbarSvg(scale).outerHTML}
+    <div>
+    {@html colorbarSvg(scale).outerHTML}
 
-  {#if $selectedSeries === 'datainfo' }
-    <Wrapper>
-      {@html measurementFrequencyRadiusListSvg(scale).outerHTML}
-      <Tooltip>Yearly, Monthly, Weekly, Daily, Real-Time</Tooltip>
-    </Wrapper>
-  {:else}
-    {@html radiusListSvg(scale).outerHTML}
-  {/if}
+    {#if $selectedSeries === 'datainfo' }
+      <Wrapper>
+        {@html measurementFrequencyRadiusListSvg(scale).outerHTML}
+        <Tooltip>Yearly, Monthly, Weekly, Daily, Real-Time</Tooltip>
+      </Wrapper>
+    {:else}
+      {@html radiusListSvg(scale).outerHTML}
+    {/if}
+  </div>
 </div>
 
 <style lang="scss">
   #legend {
-    padding-top: 1rem;
-    width: 300;
-    margin-left: 30px;
-    margin-top: 10px;
+    // margin-left: 30px;
+    // margin-top: 2rem;
+    display: flex;
+    justify-content: center;
   }
 
   .legend-datainfo {
-    margin-top: 0 !important;
+    margin-top: 1.5rem !important;
   }
 
 </style>

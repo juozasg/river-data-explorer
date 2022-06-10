@@ -97,8 +97,16 @@
   #data-selector {
     width: 360px;
     height: 260px;
-    // padding: 1rem;
+    padding: 1rem;
     background-color: white;
+
+    // pack them in
+    @media (max-width: 380px) {
+      padding-left: 0;
+    }
+    @media (max-width: 340px) {
+      margin-left: -20px;
+    }
   }
 
   #data-variable-selector {
@@ -106,7 +114,7 @@
     // top: 10px;
     // left: 46px;
     // margin-left: 30px;
-    margin-top: 6px;
+    margin-top: 0px;
 
     display: flex;
     justify-content: center;
@@ -128,6 +136,7 @@
     left: 30px;
     width: 300px;
     height: 56px;
+    margin-left: 1rem;
     display: flex;
     align-items: end;
     justify-content: right;
