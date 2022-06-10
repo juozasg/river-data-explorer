@@ -10,6 +10,7 @@
   import Legend from './Legend.svelte';
   import { showDataSelector, selectedSeries, selectedSites } from '../lib/stores';
   import { labels } from '../lib/definitions';
+  import { onDestroy, onMount } from 'svelte';
 
   let menu: MenuComponentDev;
   let selectionText: String;
@@ -32,7 +33,7 @@
 
 {#if $showDataSelector }
   <div class="elevation" id='data-selector'
-        transition:fly="{{ x: -200, duration: 400 }}" style="position: fixed; bottom: 0; left: 0;">
+        transition:fly="{{ x: -200, duration: 400 }}">
 
     <Wrapper>
       <div id='data-variable-selector'>
@@ -95,6 +96,11 @@
 
 <style lang='scss'>
   #data-selector {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+
     width: 360px;
     height: 260px;
     padding: 1rem;

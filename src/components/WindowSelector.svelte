@@ -4,16 +4,12 @@
   import List, { Item, PrimaryText, SecondaryText, Separator, Text } from '@smui/list';
   import { Icon } from '@smui/button';
   import Tooltip, { Wrapper } from '@smui/tooltip';
-
-  import { showDataSelector } from '../lib/stores';
   import Fab from '@smui/fab';
 
+  import { showDataSelector, showTimeseries, showDataTable } from '../lib/stores';
+
   let menu: MenuComponentDev;
-
-  let clicked = '';
 </script>
-
-
 
 <div id='window-selector' style="position: fixed; left: 4px; bottom: 0px; z-index:20000">
   <Wrapper>
@@ -37,7 +33,7 @@
           <SecondaryText>Select variables and sites. Show data legend</SecondaryText>
         </Text>
       </Item>
-      <Item on:SMUI:action={() => (clicked = 'Copy')}>
+      <Item selected={$showTimeseries} on:SMUI:action={() => $showTimeseries = !$showTimeseries }>
         <Text>
           <PrimaryText>
             <i class="text-icon material-icons" aria-hidden="true">insights</i>
@@ -46,7 +42,7 @@
           <SecondaryText>Graph selected sites and variables</SecondaryText>
         </Text>
       </Item>
-      <Item on:SMUI:action={() => (clicked = 'Paste')}>
+      <Item selected={$showDataTable} on:SMUI:action={() => $showDataTable = !$showDataTable }>
         <Text>
           <PrimaryText>
             <i class="text-icon material-icons" aria-hidden="true">list</i>

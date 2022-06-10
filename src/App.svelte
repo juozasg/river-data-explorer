@@ -3,15 +3,14 @@
   import WindowSelector from './components/WindowSelector.svelte';
   import DataSelector from './components/DataSelector.svelte';
   import DataTable from './components/DataTable.svelte';
-  import TimeSeries from './components/TimeSeries.svelte';
-
-
-  let z = false;
+  import Timeseries from './components/Timeseries.svelte';
 </script>
 
 
 <main>
-  <WindowSelector/>
   <Map/>
   <DataSelector/>
+  <Timeseries/>
+  <DataTable/>
+  <WindowSelector/>
 </main>
