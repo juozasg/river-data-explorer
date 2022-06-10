@@ -31,7 +31,7 @@
 <style lang="scss">
   #legend {
     // margin-left: 30px;
-    // margin-top: 2rem;
+    margin-top: 2rem;
     display: flex;
     justify-content: center;
   }
