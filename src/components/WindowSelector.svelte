@@ -6,9 +6,47 @@
   import Tooltip, { Wrapper } from '@smui/tooltip';
   import Fab from '@smui/fab';
 
-  import { showDataSelector, showTimeseries, showDataTable } from '../lib/stores';
+  import { showDataSelector, showTimeseries, showDataTable, viewportWidth, viewportHeight } from '../lib/stores';
 
   let menu: MenuComponentDev;
+
+  const toggleDataSelector = () => {
+    $showDataSelector = !$showDataSelector
+
+    // at least 780 width to fit DS and TS
+    if($showDataSelector && $viewportWidth < 780) {
+      $showTimeseries = false;
+    }
+
+    if($showDataSelector && $viewportHeight < 640) {
+      $showDataTable = false;
+    }
+  }
+
+  const toggleTimeseries = () => {
+    $showTimeseries = !$showTimeseries
+
+    // at least 780 width to fit DS and TS
+    if($showTimeseries && $viewportWidth < 780) {
+      $showDataSelector = false;
+    }
+
+    if($showTimeseries && $viewportHeight < 640) {
+      $showDataTable = false;
+    }
+  }
+
+  const toggleDataTable = () => {
+    $showDataTable = !$showDataTable
+
+    if($showDataTable && $viewportHeight < 640) {
+      console.log('hide your wives');
+
+      $showDataSelector = false;
+      $showTimeseries = false;
+    }
+  }
+
 </script>
 
 <div id='window-selector' style="position: fixed; left: 4px; bottom: 0px; z-index:20000">
@@ -24,7 +62,7 @@
 
     <List twoLine>
       <Separator />
-      <Item selected={$showDataSelector} on:SMUI:action={() => $showDataSelector = !$showDataSelector }>
+      <Item selected={$showDataSelector} on:SMUI:action={toggleDataSelector}>
         <Text>
           <PrimaryText>
             <i class="text-icon material-icons" aria-hidden="true">filter_alt</i>
@@ -33,7 +71,7 @@
           <SecondaryText>Select variables and sites. Show data legend</SecondaryText>
         </Text>
       </Item>
-      <Item selected={$showTimeseries} on:SMUI:action={() => $showTimeseries = !$showTimeseries }>
+      <Item selected={$showTimeseries} on:SMUI:action={toggleTimeseries}>
         <Text>
           <PrimaryText>
             <i class="text-icon material-icons" aria-hidden="true">insights</i>
@@ -42,7 +80,7 @@
           <SecondaryText>Graph selected sites and variables</SecondaryText>
         </Text>
       </Item>
-      <Item selected={$showDataTable} on:SMUI:action={() => $showDataTable = !$showDataTable }>
+      <Item selected={$showDataTable} on:SMUI:action={toggleDataTable}>
         <Text>
           <PrimaryText>
             <i class="text-icon material-icons" aria-hidden="true">list</i>

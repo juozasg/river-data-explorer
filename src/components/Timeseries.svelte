@@ -1,7 +1,7 @@
 <script lang="ts">
   import { fly } from 'svelte/transition';
 
-  import { viewportWidth, showDataSelector, showTimeseries } from '../lib/stores';
+  import { viewportWidth, showDataSelector, showTimeseries, showDataTable } from '../lib/stores';
 
   let width = 100;
   let height = 292;
