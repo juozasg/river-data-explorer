@@ -17,12 +17,16 @@ window.tzAbbr = tzAbbr;
 
 window.df = df;
 
+// TOD rewrite from this.sites to sitesStore being used
 export class Model {
-  constructor() {
-    // { siteId => {name,lat,lon,feature,df}}
-    this.sites = {}
-  }
+  // constructor() {
+  //   // { siteId => {name,lat,lon,feature,df}}
+  //   this.sites = {}
+  // }
 
+  constructor(sitesStore) {
+    // { siteId => {name,lat,lon,feature,df}}
+  }
 
   getValue(siteId, seriesId) {
     try {
@@ -36,6 +40,7 @@ export class Model {
     }
   }
 
+  // series of mean values of the sites
   sitesMeanSeries(seriesId, siteIds) {
     let allSeries = [];
     siteIds.forEach(siteId => {

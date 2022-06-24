@@ -89,3 +89,16 @@ svg:focus, g:focus {
 /* .leaflet-retina .leaflet-control-layers-toggle) {
 	background-image: url(layers-2x.png) !important;
 } */
+
+
+
+.river-divicon {
+	background: none;
+	border: none;
+	width: 0px;
+	height: 0px;
+}
+
+.river-divicon * {
+	cursor: grab;
+}

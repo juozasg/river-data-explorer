@@ -97,7 +97,7 @@ export function formatValue(series, value) {
 }
 
 
-export const radiusRange = [5, 20];
+export const radiusRange = [9, 20];
 
 
 // export {scales, labels, formatValue};

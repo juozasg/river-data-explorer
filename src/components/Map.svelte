@@ -4,8 +4,10 @@
   import * as L from 'leaflet';
   import "leaflet/dist/leaflet.css";
 
+  import MapMarkers from './MapMarkers.svelte';
 
-  let m: L.Map;
+
+  let map: L.Map;
   const apiKey = "AAPK3dfaa40a13c0404983142c26b566596ammsJLVROPRkVaZnrwj6bYIrYdi4FEikx7NZpYg7f5M9XlV2RFL6PgxMA_56IceHv";
 
   function createMap(container) {
@@ -14,12 +16,12 @@
     'Imagery': vectorBasemapLayer("ArcGIS:Imagery", {apiKey: apiKey})
     }
 
-    m = L.map(container, {preferCanvas: true}).setView([41.55,-85.8], 10);
+    map = L.map(container, {preferCanvas: true}).setView([41.550000,-85.8000000], 17);
     // let bm = new VectorBasemapLayer("ArcGIS:Topographic", {apiKey: apiKey});
 
-    basemaps['Topographic'].addTo(m);
+    basemaps['Imagery'].addTo(map);
 
-    (new L.Control.Layers(basemaps)).addTo(m);
+    (new L.Control.Layers(basemaps)).addTo(map);
   }
 
   function mapAction(container) {
@@ -33,6 +35,10 @@
 </script>
 
 <div id='map' use:mapAction>this is the map</div>
+
+{#if map}
+<MapMarkers map={map}/>
+{/if}
 
 
 <style>
