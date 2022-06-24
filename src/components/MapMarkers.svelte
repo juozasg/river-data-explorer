@@ -7,7 +7,7 @@
 
   const site = $sites['site01'];
   console.log(site);
-  
+
 
   let selected = true;
 
@@ -15,9 +15,9 @@
     const icon = L.divIcon({html: svgElement, iconAnchor: [20,20], className: 'river-divicon'});
     console.log(icon);
     console.log('bruuuh');
-    
+
     console.log(map);
-    
+
     L.marker([site[0], site[1]], {icon: icon}).addTo(map);
   }
 
@@ -29,7 +29,7 @@
 </script>
 
 <div id=markers>
-  
+
   <div use:createMarker style="border: 1px dashed orange">
     <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" style='border: 2px dotted aquamarine'>
       <defs>
