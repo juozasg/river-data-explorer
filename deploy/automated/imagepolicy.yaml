@@ -31,6 +31,20 @@ spec:
 apiVersion: image.toolkit.fluxcd.io/v1beta1
 kind: ImagePolicy
 metadata:
+  name: edge-config
+  namespace: river-data
+spec:
+  imageRepositoryRef:
+    name: river-data-explorer-config
+  filterTags:
+    pattern: '.*-edge.*'
+  policy:
+    semver:
+      range: ^0.x-0
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
   name: prerelease
   namespace: river-data
 spec:
