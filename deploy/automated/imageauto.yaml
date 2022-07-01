@@ -21,5 +21,5 @@ spec:
     kind: GitRepository
     name: river-data-rw
   update:
-    path: ./deploy/automated
+    path: ./deploy
     strategy: Setters

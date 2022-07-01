@@ -1,0 +1,9 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageRepository
+metadata:
+  name: river-data-explorer-config
+  namespace: river-data
+spec:
+  image: ghcr.io/kingdonb/river-data-explorer-config
+  interval: 1m0s
