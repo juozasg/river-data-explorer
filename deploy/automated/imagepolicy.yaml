@@ -23,7 +23,7 @@ spec:
   imageRepositoryRef:
     name: river-data-explorer
   filterTags:
-    pattern: '.*-edge.*'
+    pattern: '^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(-edge\.\d*)?$'
   policy:
     semver:
       range: ^0.x-0
