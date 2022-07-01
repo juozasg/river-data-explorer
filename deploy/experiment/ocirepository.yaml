@@ -6,5 +6,5 @@ metadata:
 spec:
   interval: 1m0s
   ref:
-    tag: 0.5.3-edge.3 # {"$imagepolicy": "river-auto:edge-config:tag"}
+    tag: 0.5.4 # {"$imagepolicy": "river-auto:edge-config:tag"}
   url: ghcr.io/kingdonb/river-data-explorer-config
