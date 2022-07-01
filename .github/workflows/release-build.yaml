@@ -1,0 +1,48 @@
+name: Flux Push OCI Release
+
+on:
+  push:
+    tags:
+      - 'release/*'
+
+jobs:
+  flux:
+    env:
+      IMAGE: ghcr.io/kingdonb/river-data-explorer-config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '^1.17.0'
+      - name: Build Flux (pre-release)
+        id: build-flux-oci
+        run: |
+          git clone https://github.com/fluxcd/flux2 -b oci
+          cd flux2
+          make
+          mkdir -p $GITHUB_WORKSPACE/bin
+          cp bin/flux $GITHUB_WORKSPACE/bin
+          echo "::add-path::$GITHUB_WORKSPACE/bin"
+
+      - name: Prepare
+        id: prep
+        run: |
+          GIT_TAG=${GITHUB_REF/refs\/tags\//}
+          echo ::set-output name=GIT_TAG::${GIT_TAG}
+
+      - name: Login to GHCR
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/checkout@v3
+
+      - name: Flux push OCI Repository
+        id: oci_push
+        run: |
+          flux push artifact ${{ env.IMAGE }}:${{ steps.prep.outputs.GIT_TAG }} \
+            --path="./deploy/stable" \
+            --source="$(git config --get remote.origin.url)" \
+            --revision="$(git branch --show-current)/$(git rev-parse HEAD)"
