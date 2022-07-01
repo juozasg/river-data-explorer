@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: river-auto
 resources:
   - namespace.yaml
+  - configrepo.yaml
   - imagerepo.yaml
   - imagepolicy.yaml
   # read-write for image update automation

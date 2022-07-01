@@ -8,4 +8,4 @@ spec:
     spec:
       containers:
       - name: river-data
-        image: ghcr.io/kingdonb/river-data-explorer:0.5.3-edge.0 # {"$imagepolicy": "river-auto:edge"}
+        image: ghcr.io/kingdonb/river-data-explorer:0.5.4 # {"$imagepolicy": "river-auto:edge"}
