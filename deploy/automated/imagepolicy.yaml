@@ -37,7 +37,7 @@ spec:
   imageRepositoryRef:
     name: river-data-explorer-config
   filterTags:
-    pattern: '.*-edge.*'
+    pattern: '.*(-edge.*)?'
   policy:
     semver:
       range: ^0.x-0
