@@ -1,0 +1,11 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: river-data
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - name: river-data
+        image: ghcr.io/kingdonb/river-data-explorer:deploy-4ae46c49-1656697309 # {"$imagepolicy": "river-dev:latest-any"}

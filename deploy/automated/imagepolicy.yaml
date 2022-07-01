@@ -1,0 +1,53 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: latest-any
+  namespace: river-data
+spec:
+  imageRepositoryRef:
+    name: river-data-explorer
+  filterTags:
+    pattern: '^.*-[a-fA-F0-9]+-(?P<ts>.*)'
+    extract: '$ts'
+  policy:
+    numerical:
+      order: asc
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: edge
+  namespace: river-data
+spec:
+  imageRepositoryRef:
+    name: river-data-explorer
+  filterTags:
+    pattern: '.*-edge.*'
+  policy:
+    semver:
+      range: ^1.x-0
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: prerelease
+  namespace: river-data
+spec:
+  imageRepositoryRef:
+    name: river-data-explorer
+  policy:
+    semver:
+      range: '>=0.0.0 <1.0.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: stable
+  namespace: river-data
+spec:
+  imageRepositoryRef:
+    name: river-data-explorer
+  policy:
+    semver:
+      range: '>=1.0.0'
