@@ -8,4 +8,4 @@ spec:
     spec:
       containers:
       - name: river-data
-        image: ghcr.io/kingdonb/river-data-explorer:main-8c1185e0-1656789128 # {"$imagepolicy": "river-dev:latest-any"}
+        image: ghcr.io/kingdonb/river-data-explorer:main-b4d4006e-1656789314 # {"$imagepolicy": "river-dev:latest-any"}
