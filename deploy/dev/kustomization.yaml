@@ -9,3 +9,4 @@ patchesStrategicMerge:
   - river-data-patch.yaml
   - ingress-patch.yaml
   - gitrepo-patch.yaml
+  - imageauto-patch.yaml

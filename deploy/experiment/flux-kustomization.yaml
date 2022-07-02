@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m0s
-  path: ./stable
+  path: ./deploy/latest
   prune: true
   sourceRef:
     kind: OCIRepository
