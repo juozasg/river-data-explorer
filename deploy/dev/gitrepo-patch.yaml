@@ -11,4 +11,4 @@ spec:
   secretRef:
     name: river-data-rw
   timeout: 20s
-  url: ssh://git@github.com/juozasg/river-data-explorer
+  url: ssh://git@github.com/kingdonb/river-data-explorer
