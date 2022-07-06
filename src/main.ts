@@ -1,5 +1,5 @@
 // import { VectorBasemapLayer } from './lib/esri-leaflet-vector/src/VectorBasemapLayer'
-// test a change that should be mostly cache hit +2
+// test a change that should be mostly cache hit +3
 
 import App from './App.svelte';
 
