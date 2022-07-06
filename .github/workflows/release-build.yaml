@@ -29,6 +29,7 @@ jobs:
           FLUX_OCI_SHA=$(git rev-parse --short HEAD)
           popd
           mkdir -p "${FLUX_PATH}"
+          echo "${FLUX_PATH}" >> $GITHUB_PATH
       
           echo ::set-output name=GIT_TAG::${GIT_TAG}
           echo ::set-output name=FLUX_PATH::${FLUX_PATH}
@@ -70,11 +71,15 @@ jobs:
           make build
           cp bin/flux ${{ steps.prep.outputs.FLUX_PATH }}
           popd
-          echo "${{ steps.prep.outputs.FLUX_PATH }}" >> $GITHUB_PATH
+
+      - name: Debug the thing
+        run: |
+          echo "Event name: ${{ github.event_name }}"
+          echo "Ref type: ${{ github.ref_type }}"
 
       - name: Login to GHCR
         uses: docker/login-action@v1
-        if: github.event_name == 'create' && github.event.ref_type == 'tag'
+        if: github.event_name == 'push' && github.ref_type == 'tag'
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -82,9 +87,9 @@ jobs:
 
       - name: Flux push OCI Repository
         id: oci_push
-        if: github.event_name == 'create' && github.event.ref_type == 'tag'
+        if: github.event_name == 'push' && github.ref_type == 'tag'
         run: |
           flux push artifact ${{ env.IMAGE }}:${{ steps.prep.outputs.GIT_TAG }} \
-            --path="./deploy/stable" \
+            --path="./deploy" \
             --source="$(git config --get remote.origin.url)" \
             --revision="$(git branch --show-current)/$(git rev-parse HEAD)"
