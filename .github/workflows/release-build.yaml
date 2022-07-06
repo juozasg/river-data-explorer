@@ -24,8 +24,14 @@ jobs:
         run: |
           GIT_TAG=${GITHUB_REF/refs\/tags\/release\//}
           FLUX_PATH=${GITHUB_WORKSPACE}/bin
-          git clone --depth 1 https://github.com/fluxcd/flux2 -b oci
-          pushd flux2
+          FLUX_OCI_SHA=0c89b8d4be118a86e2aea157a64fcd2479746e69
+          mkdir flux2 && pushd flux2
+          git init
+          git remote add origin https://github.com/fluxcd/flux2
+          # git clone --depth 1 https://github.com/fluxcd/flux2 -b oci
+          git fetch --depth 1 origin $FLUX_OCI_SHA
+          git checkout FETCH_HEAD
+          # pushd flux2
           FLUX_OCI_SHA=$(git rev-parse --short HEAD)
           popd
           mkdir -p "${FLUX_PATH}"
