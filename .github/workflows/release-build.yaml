@@ -84,7 +84,7 @@ jobs:
         id: oci_push
         if: github.event_name == 'push' && github.ref_type == 'tag'
         run: |
-          flux push artifact ${{ env.IMAGE }}:${{ steps.prep.outputs.GIT_TAG }} \
+          flux push artifact oci://${{ env.IMAGE }}:${{ steps.prep.outputs.GIT_TAG }} \
             --path="./deploy" \
             --source="$(git config --get remote.origin.url)" \
             --revision="$(git branch --show-current)/$(git rev-parse HEAD)"
