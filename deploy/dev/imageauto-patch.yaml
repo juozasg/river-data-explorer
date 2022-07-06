@@ -1,0 +1,25 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageUpdateAutomation
+metadata:
+  name: river-data-auto-update
+  namespace: river-data
+spec:
+  git:
+    checkout:
+      ref:
+        branch: main
+    commit:
+      author:
+        email: yebyen+fluxcd@gmail.com
+        name: fluxcdbot
+      messageTemplate: '[skip ci] {{range .Updated.Images}}{{println .}}{{end}}'
+    push:
+      branch: main
+  interval: 30s
+  sourceRef:
+    kind: GitRepository
+    name: river-data-rw
+  update:
+    path: ./deploy
+    strategy: Setters

@@ -1,0 +1,11 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: river-data
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - name: river-data
+        image: ghcr.io/juozasg/river-data-explorer:main-b4d4006e-1656789314 # {"$imagepolicy": "river-dev:latest-any"}

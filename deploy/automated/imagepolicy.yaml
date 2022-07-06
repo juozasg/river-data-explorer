@@ -1,0 +1,67 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: latest-any
+  namespace: river-data
+spec:
+  imageRepositoryRef:
+    name: river-data-explorer
+  filterTags:
+    pattern: '^.*-[a-fA-F0-9]+-(?P<ts>.*)'
+    extract: '$ts'
+  policy:
+    numerical:
+      order: asc
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: edge
+  namespace: river-data
+spec:
+  imageRepositoryRef:
+    name: river-data-explorer
+  filterTags:
+    pattern: '^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(-edge\.\d*)?$'
+  policy:
+    semver:
+      range: ^0.x-0
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: edge-config
+  namespace: river-data
+spec:
+  imageRepositoryRef:
+    name: river-data-explorer-config
+  filterTags:
+    pattern: '^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(-edge\.\d*)?$'
+  policy:
+    semver:
+      range: ^0.x-0
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: prerelease
+  namespace: river-data
+spec:
+  imageRepositoryRef:
+    name: river-data-explorer
+  policy:
+    semver:
+      range: '>=0.0.0 <1.0.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: stable
+  namespace: river-data
+spec:
+  imageRepositoryRef:
+    name: river-data-explorer
+  policy:
+    semver:
+      range: '>=1.0.0'

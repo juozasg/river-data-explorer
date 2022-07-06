@@ -1,0 +1,10 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: river-data-oci
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  ref:
+    tag: 0.5.10 # {"$imagepolicy": "river-auto:edge-config:tag"}
+  url: ghcr.io/juozasg/river-data-explorer-config # {"$imagepolicy": "river-auto:edge-config:name"}

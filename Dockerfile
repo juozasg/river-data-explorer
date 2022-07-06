@@ -13,7 +13,7 @@ RUN yarn install
 ADD . .
 RUN yarn build
 
-FROM nginx AS deploy
+FROM arm64v8/nginx AS deploy
 
 # You cannot use environment variables here :\
 COPY --from=build /app/public/ /usr/share/nginx/html/
