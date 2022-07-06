@@ -7,4 +7,4 @@ spec:
   interval: 1m0s
   ref:
     tag: 0.5.10 # {"$imagepolicy": "river-auto:edge-config:tag"}
-  url: oci://ghcr.io/juozasg/river-data-explorer-config
+  url: ghcr.io/juozasg/river-data-explorer-config # {"$imagepolicy": "river-auto:edge-config:name"}
