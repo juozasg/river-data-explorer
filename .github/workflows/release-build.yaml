@@ -72,11 +72,6 @@ jobs:
           cp bin/flux ${{ steps.prep.outputs.FLUX_PATH }}
           popd
 
-      - name: Debug the thing
-        run: |
-          echo "Event name: ${{ github.event_name }}"
-          echo "Ref type: ${{ github.ref_type }}"
-
       - name: Login to GHCR
         uses: docker/login-action@v1
         if: github.event_name == 'push' && github.ref_type == 'tag'
