@@ -9,7 +9,7 @@ sites.set({'site01': [41.55,-85.8]})
 
 
 export const selectedSeries = writable('datainfo');
-export const selectedSites = writable([]);
+export const selectedSites = writable(['site01']);
 
 
 export const viewportWidth = writable(window.innerWidth);
