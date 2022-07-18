@@ -117,6 +117,27 @@
   dependencies:
     tslib "^2.1.0"
 
+"@material/dialog@^13.0.0":
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/@material/dialog/-/dialog-13.0.0.tgz#59b8b7295bfdfea9ea72af9afa7c99efb7744d55"
+  integrity sha512-1Ggo9Bid94F1ttZJKSjIcgMvkVQtKsqwbqLs5cWlleaiwtAcwUE12XA2B1MNj8xM9ajU3BJm4GigupBOK1jGHQ==
+  dependencies:
+    "@material/animation" "^13.0.0"
+    "@material/base" "^13.0.0"
+    "@material/button" "^13.0.0"
+    "@material/dom" "^13.0.0"
+    "@material/elevation" "^13.0.0"
+    "@material/feature-targeting" "^13.0.0"
+    "@material/icon-button" "^13.0.0"
+    "@material/ripple" "^13.0.0"
+    "@material/rtl" "^13.0.0"
+    "@material/shape" "^13.0.0"
+    "@material/theme" "^13.0.0"
+    "@material/tokens" "^13.0.0"
+    "@material/touch-target" "^13.0.0"
+    "@material/typography" "^13.0.0"
+    tslib "^2.1.0"
+
 "@material/dom@^13.0.0":
   version "13.0.0"
   resolved "https://registry.yarnpkg.com/@material/dom/-/dom-13.0.0.tgz#3f3cc935f6e59fa99e3dafe118d3e48091118c0e"
@@ -482,6 +503,17 @@
   dependencies:
     "@material/dom" "^13.0.0"
     "@tsconfig/svelte" "^3.0.0"
+    svelte2tsx "^0.5.5"
+
+"@smui/dialog@^6.0.0-beta.16":
+  version "6.0.0-beta.16"
+  resolved "https://registry.yarnpkg.com/@smui/dialog/-/dialog-6.0.0-beta.16.tgz#9a6d3c592f009440af54df12540a8d048a4862d3"
+  integrity sha512-UXFcY11p67vG5+JWbx3DIQZrtBG2kLmAT2PQoacqU3WxM2kyBk0BXePggohlS9tPjGLSq/nCE8sL4bveJxIipA==
+  dependencies:
+    "@material/button" "^13.0.0"
+    "@material/dialog" "^13.0.0"
+    "@material/dom" "^13.0.0"
+    "@smui/common" "^6.0.0-beta.16"
     svelte2tsx "^0.5.5"
 
 "@smui/fab@^6.0.0-beta.16":

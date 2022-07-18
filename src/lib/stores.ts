@@ -6,8 +6,10 @@ export const showDataSelector = writable(true);
 export const showTimeseries = writable(false);
 export const showDataTable = writable(false);
 
+export const dataLoaded = writable(false);
 
-type Site = {
+
+export type Site = {
   id: string,
   name: string,
   lat: number,

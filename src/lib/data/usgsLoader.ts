@@ -11,16 +11,20 @@ const  usgsStationIds = '04096405,04096515,04097500,040975299,04097540,04099000,
 export async function loadUSGS() {
   try {
     let siteData = await loadUSGSSites();
+    console.log(siteData);
+
     model.importUSGSSites(siteData);
 
     let seriesData = await loadUSGSSeriesData();
-    model.processUSGSeries(seriesData);
+    console.log(seriesData);
+
+    model.processUSGSSeriesData(seriesData);
   } catch(e) {
-    console.log(e);
-    
+    console.error(e);
+    throw e;
   }
-      
-    
+
+
   // model.printStatistics()
   // model.sortByDate()
 

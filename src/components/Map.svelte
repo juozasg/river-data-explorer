@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { create } from 'd3';
-  import { vectorBasemapLayer, VectorBasemapLayer } from 'esri-leaflet-vector'
+  import { vectorBasemapLayer } from 'esri-leaflet-vector'
   import * as L from 'leaflet';
   import "leaflet/dist/leaflet.css";
 

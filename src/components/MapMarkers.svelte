@@ -2,13 +2,14 @@
   import * as d3 from "d3";
 
   import  MapMarker  from "./MapMarker.svelte";
-  import { sites, selectedSeries, dataLoaded } from "../lib/stores";
+  import { Site, sites, selectedSeries, dataLoaded } from "../lib/stores";
   import { scales, radiusRange } from "../lib/definitions";
   import { model } from "../lib/data/model";
 
   export let map: L.Map;
 
-  let markers;
+  type Marker = Site & { radius: number, color: string }
+  let markers: Marker[];
 
   $: {
     markers = [];
@@ -31,6 +32,7 @@
     console.log('markers1', markers);
   }
 
+  // return color and radius if a value for this site and series exist
   function getMarkerSymbolization(siteId: string, seriesId: string) {
     const value = model.getValue(siteId, seriesId);
     console.log(value);
@@ -40,8 +42,6 @@
       const radiusScale = colorScale.copy().range(radiusRange);
 
       const color = d3.color(colorScale(value)).formatHex();
-
-
 
       console.log(color, radiusScale(value));
 

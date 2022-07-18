@@ -14,9 +14,9 @@ async function fetchAndParse(url: URL, json: boolean) {
 }
 
 export async function fetchJSON(url: URL) {
-  return this.fetchAndParse(url, true);
+  return fetchAndParse(url, true);
 }
 
 export async function fetchText(url: URL) {
-  return this.fetchAndParse(url, false);
+  return fetchAndParse(url, false);
 }

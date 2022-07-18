@@ -180,6 +180,7 @@ class Model {
 
   importUSGSSites(data) {
     console.log('process usgs sites');
+    return;
 
     data.value.timeSeries.forEach(ts => {
       let columns = {}
@@ -219,20 +220,21 @@ class Model {
 
 
   
-//   async processUSGSSeriesData(data) {
-//     let section = '';
-//     data.split("\n").forEach((l) => {
-//       if(l[0] == '#') {
-//         if(section.length > 0) {
-//           this.processUSGSSeriesDataSection(section);
-//           section = '';
-//         }
-//       } else {
-//         section = section + l + "\n";
-//       }
-//     });
+  async processUSGSSeriesData(data) {
+    return;
+    let section = '';
+    data.split("\n").forEach((l) => {
+      if(l[0] == '#') {
+        if(section.length > 0) {
+          this.processUSGSSeriesDataSection(section);
+          section = '';
+        }
+      } else {
+        section = section + l + "\n";
+      }
+    });
 
-//   }
+  }
 
 //   processUSGSSeriesDataSection(data) {
 //     // log(data);

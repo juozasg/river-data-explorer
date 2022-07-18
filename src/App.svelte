@@ -4,6 +4,7 @@
   import DataSelector from './components/DataSelector.svelte';
   import DataTable from './components/DataTable.svelte';
   import Timeseries from './components/Timeseries.svelte';
+  import Loader from './components/Loader.svelte';
 </script>
 
 
@@ -13,4 +14,5 @@
   <Timeseries/>
   <DataTable/>
   <WindowSelector/>
+  <Loader/>
 </main>

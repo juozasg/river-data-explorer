@@ -1,0 +1,40 @@
+<script lang="ts">
+  import Dialog, { Title, Content, Actions } from '@smui/dialog';
+  import Button, { Label } from '@smui/button';
+
+
+  import { dataLoaded } from "../lib/stores";
+  import { loadUSGS } from "../lib/data/usgsLoader";
+
+  let open = true;
+
+</script>
+
+
+<div class="loader">
+
+  <Dialog
+  bind:open
+  aria-labelledby="loader-title"
+  aria-describedby="loader-content"
+>
+
+    <Title id="loader-title">Loading Data</Title>
+    {#await loadUSGS()}
+      <Content id="loader-content">Loading USGS Data</Content>
+    {:then number}
+      <Content id="loader-content">USGS Loaded!</Content>
+    {:catch error}
+      <Content id="loader-content">Loading USGS Data Error:
+        <p style="color: red">{error.message}</p>
+      </Content>
+    {/await}
+
+    <Actions>
+      <Button action="accept">
+        <Label>Done</Label>
+      </Button>
+    </Actions>
+  </Dialog>
+</div>
+
