@@ -6,8 +6,6 @@
 
   const site = $sites['site01'];
 
-  let selected = true;
-
   const markers = [
     {
       id: 'site01',
@@ -15,7 +13,7 @@
       lon: -85.8,
       // selected: false,
       radius: 12,
-      color: '#CDBF5B'
+      color: '#2299cc'
     }
   ];
 

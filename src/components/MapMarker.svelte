@@ -1,8 +1,9 @@
 <script lang="ts">
   import * as L from 'leaflet';
 
-  import { selectedSites } from "../lib/stores";
+  import hexToHsl from 'hex-to-hsl';
 
+  import { selectedSites } from "../lib/stores";
 
 
   export let map: L.Map;
@@ -11,7 +12,15 @@
   export let radius: number;
   export let color: string;
 
-  // export let selected: boolean;
+
+  const colorHsl = hexToHsl(color);
+  const invertHsl = [
+    (colorHsl[0] + 270) % 360,
+    100 - colorHsl[1],
+    100 - colorHsl[2]
+  ];
+
+  const selectedColor = `hsl(${invertHsl[0]}, ${invertHsl[1]}%, ${invertHsl[2]}%)`;
 
   let selected: boolean;
   $: selected = $selectedSites.indexOf(id) > -1;
@@ -40,19 +49,18 @@
 
   <div use:createMarker >
     <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" style="overflow: visible">
+
       <defs>
-        <pattern id="stripes" patternUnits="userSpaceOnUse" width="5.5" height="5.5" patternTransform="rotate(45)">
-          <line x1="0" y="0" x2="0" y2="5.5" stroke="#9D3876" stroke-width="5" />
+        <pattern id="stripes-{id}" patternUnits="userSpaceOnUse" width="5.5" height="5.5" patternTransform="rotate(45)">
+          <line x1="0" y="0" x2="0" y2="5.5" stroke="{selectedColor}" stroke-width="5" />
         </pattern>
       </defs>
-
       <circle style='cursor: pointer' cy=20 cx=20 r={radius} fill="{color}" stroke="black" stroke-width="2" on:click|stopPropagation={toggleSelection}  />
       {#if selected}
-        <circle cy=20 cx=20 r={radius + 1} stroke="purple" fill-opacity=0 stroke-width="2" stroke-dasharray="2"/>
-        <circle style='cursor: pointer' cy=20 cx=20 r={radius} fill="url(#stripes)" on:click|stopPropagation={toggleSelection} />
+        <circle cy=20 cx=20 r={radius + 1} stroke="yellow" fill="none" stroke-width="4" stroke-dasharray="2"/>
+        <circle style='cursor: pointer' cy=20 cx=20 r={radius} fill="url(#stripes-{id})" opacity="1" on:click|stopPropagation={toggleSelection} />
       {/if}
-
-  </svg>
+    </svg>
 
   </div>
 </div>
