@@ -1,5 +1,7 @@
 <script lang="ts">
   import * as L from 'leaflet';
+  import { onDestroy } from 'svelte';
+
 
   import hexToHsl from 'hex-to-hsl';
 
@@ -22,12 +24,14 @@
 
   const selectedColor = `hsl(${invertHsl[0]}, ${invertHsl[1]}%, ${invertHsl[2]}%)`;
 
+  let leafletMarker;
   let selected: boolean;
   $: selected = $selectedSites.indexOf(id) > -1;
 
   function createMarker(svgElement: HTMLDivElement) {
     const icon = L.divIcon({html: svgElement, iconAnchor: [20,20], className: 'river-divicon'});
-    L.marker([lat, lon], {icon: icon}).addTo(map);
+    leafletMarker = L.marker([lat, lon], {icon: icon});
+    leafletMarker.addTo(map);
   }
 
   function toggleSelection() {
@@ -43,6 +47,9 @@
     }
   }
 
+  onDestroy(() => {
+    map.removeLayer(leafletMarker);
+  });
 </script>
 
 <div id=markers>

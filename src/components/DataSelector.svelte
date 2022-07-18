@@ -47,7 +47,7 @@
           {/each}
         </Select>
       </div>
-      <Tooltip>Choose the monitoring variable to map and analyze</Tooltip>
+      <!-- <Tooltip>Choose the monitoring variable to map and analyze</Tooltip> -->
     </Wrapper>
     <Legend/>
 

@@ -1,11 +1,26 @@
+import type { Numeric } from 'd3';
 import { writable } from 'svelte/store';
+
 
 export const showDataSelector = writable(true);
 export const showTimeseries = writable(false);
 export const showDataTable = writable(false);
 
-export const sites = writable({});
-sites.set({'site01': [41.55,-85.8]})
+
+type Site = {
+  id: string,
+  name: string,
+  lat: number,
+  lon: number
+}
+
+export const sites = writable([] as Site[]);
+sites.set([{
+  id: 'site01',
+  name: "Site 1",
+  lat: 41.55,
+  lon: -85.8
+}]);
 
 
 export const selectedSeries = writable('datainfo');

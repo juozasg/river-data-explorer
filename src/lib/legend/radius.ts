@@ -29,7 +29,7 @@ function createDataGroups(svg) {
 
 
 function appendRadiusCircle(sel) {
-  const radiusUnitScale =  d3.scaleLinear().range(radiusRange);
+  const radiusUnitScale = d3.scaleLinear().range(radiusRange);
   sel.append("circle")
     .attr("r", (d, i) => radiusUnitScale(i/4.0))
     .attr("stroke", "black")
