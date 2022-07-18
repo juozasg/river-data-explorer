@@ -2,30 +2,31 @@
   import * as d3 from "d3";
 
   import  MapMarker  from "./MapMarker.svelte";
-  import { sites, selectedSeries } from "../lib/stores";
+  import { sites, selectedSeries, dataLoaded } from "../lib/stores";
   import { scales, radiusRange } from "../lib/definitions";
   import { model } from "../lib/data/model";
 
   export let map: L.Map;
 
-
   let markers;
 
   $: {
-
     markers = [];
+
     console.log('markers0', markers);
 
-    $sites.forEach(site => {
-      const markerSymbolization = getMarkerSymbolization(site.id, $selectedSeries);
+    if($dataLoaded) {
+      $sites.forEach(site => {
+        const markerSymbolization = getMarkerSymbolization(site.id, $selectedSeries);
 
-      if(markerSymbolization) {
-        markers = [...markers, {
-          ...site,
-          ...markerSymbolization
-        }]
-      }
-    });
+        if(markerSymbolization) {
+          markers = [...markers, {
+            ...site,
+            ...markerSymbolization
+          }]
+        }
+      });
+    }
 
     console.log('markers1', markers);
   }
