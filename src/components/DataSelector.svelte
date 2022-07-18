@@ -26,7 +26,7 @@
   }
 
   const addToSelection = () => {
-		$selectedSites = [...$selectedSites, Math.random()];
+		// $selectedSites = [...$selectedSites, Math.random()];
 	};
 </script>
 
@@ -60,7 +60,7 @@
           <Fab color="secondary" mini on:click={() => menu.setOpen(true)}>
             <Icon class="material-icons">insights</Icon>
           </Fab>
-          <Tooltip>Add select sites to the Timeseries View</Tooltip>
+          <Tooltip id="tooltip-addtimeseries">Add selected sites to the Timeseries View</Tooltip>
         </Wrapper>
       </div>
 
@@ -69,7 +69,7 @@
           <Fab color="secondary" mini on:click={() => $selectedSites = []}>
             <Icon class="material-icons">clear</Icon>
           </Fab>
-          <Tooltip>Unselect all sites</Tooltip>
+          <Tooltip id="tooltip-unselect">Unselect all sites</Tooltip>
         </Wrapper>
       </div>
     </div>
@@ -133,6 +133,19 @@
 
   :global(.mdc-select__selected-text) {
     font-weight: 600;
+  }
+
+  :global(#tooltip-addtimeseries) {
+    top: auto !important;
+    left: 180px !important;
+    bottom: 3.5rem;
+  }
+
+
+  :global(#tooltip-unselect) {
+    top: auto !important;
+    left: 270px !important;
+    bottom: 3.5rem;
   }
 
 

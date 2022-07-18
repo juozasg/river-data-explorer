@@ -54,7 +54,7 @@
     <Fab color="primary" mini on:click={() => menu.setOpen(true)}>
       <Icon class="material-icons">apps</Icon>
     </Fab>
-    <Tooltip style='z-index: 20001'>Show and hide data views</Tooltip>
+    <Tooltip id="tooltip-dataviews" style='z-index: 20001'>Show and hide data views</Tooltip>
   </Wrapper>
 
   <Menu bind:this={menu}>
@@ -103,5 +103,11 @@
     /* width: 200px; */
     bottom: 56px !important;
     left: 20px !important;
+  }
+
+  :global(#tooltip-dataviews) {
+    top: auto !important;
+    left: 20px !important;
+    bottom: 3.5rem;
   }
 </style>

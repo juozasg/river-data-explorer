@@ -20,7 +20,7 @@
     {#if $selectedSeries === 'datainfo' }
       <Wrapper>
         {@html measurementFrequencyRadiusListSvg(scale).outerHTML}
-        <Tooltip>Yearly, Monthly, Weekly, Daily, Real-Time</Tooltip>
+        <Tooltip yPos="above" xPos="start">Yearly, Monthly, Weekly, Daily, Real-Time</Tooltip>
       </Wrapper>
     {:else}
       {@html radiusListSvg(scale).outerHTML}
