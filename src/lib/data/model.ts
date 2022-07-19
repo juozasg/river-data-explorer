@@ -1,12 +1,10 @@
 // // import Plotly from 'plotl'
-import * as df from 'data-forge';
 // //import { readFile, Series, DataFrame } from 'data-forge';
 
 // // date parsing
 // // EST: new Date(Date.parse('2007-11-11 12:00-05:00'))
 // // EDT: new Date(Date.parse('2007-11-11 12:00-04:00'))
 
-import tzAbbr from 'timezone-abbr-offsets';
 
 // import {safeID, betweenDays} from '../../../legacy/lib/util/data-helpers.js'
 // import {timer} from '../../../legacy/lib/util/debug.js'
@@ -15,7 +13,6 @@ import tzAbbr from 'timezone-abbr-offsets';
 
 // window.tzAbbr = tzAbbr;
 
-window.df = df;
 
 // // TOD rewrite from this.sites to sitesStore being used
 // export class Model {
@@ -150,6 +147,14 @@ window.df = df;
 //   }
 // }
 
+
+import * as df from 'data-forge';
+import { sites, getSite } from "../stores";
+import type { Site } from "../stores";
+
+// import tzAbbr from 'timezone-abbr-offsets';
+
+
 class Model {
 //   getValue(siteId, seriesId) {
 //     try {
@@ -168,9 +173,11 @@ class Model {
   }
 
 
-  getValue(siteId, seriesId) {
+  getValue(siteId: string, seriesId: string) {
     if(seriesId === 'temp') {
       return 23.0;
+    } else if(seriesId === 'datainfo') {
+      return getSite(siteId)?.observationDaysSinceLast;
     } else {
       return undefined;
     }
@@ -178,63 +185,50 @@ class Model {
 
 
 
-  importUSGSSites(data) {
+  importUSGSSites(sitesResponseData) {
     console.log('process usgs sites');
-    return;
 
-    data.value.timeSeries.forEach(ts => {
-      let columns = {}
+    const processedSiteIds = [];
 
+    sitesResponseData.value.timeSeries.forEach(ts => {
+      let site = {} as Site;
+      
       const siteCode = ts.sourceInfo.siteCode[0].value;
-      let siteId = `usgs-${siteCode}`;
-      if(!this.sites[siteId]) {
-        const feature = {};
-        feature.id = siteId;
+      site.id = `usgs-${siteCode}`;
+
+      if(!processedSiteIds.includes(site.id)) {
+        processedSiteIds.push(site.id);
 
         const loc = ts.sourceInfo.geoLocation.geogLocation;
-        feature.type = 'Feature';
-        feature.geometry = {
-          type: "Point",
-          coordinates: [
-              loc.longitude,
-              loc.latitude
-          ]
-        };
+        site.lat = loc.latitude;
+        site.lon = loc.longitude;
+        site.name = ts.sourceInfo.siteName;
+        site.observationFrequency = 'RT',
+        site.observationDaysSinceLast = 0;
 
-        this.sites[siteId] = {
-          dataset: 'usgs',
-          siteId: siteId,
-          siteName: ts.sourceInfo.siteName,
-          lat: feature.geometry.coordinates[1],
-          lon: feature.geometry.coordinates[0],
-          feature: feature,
-          df: new df.DataFrame({}),
-          datainfo: {
-            frequency: 'RT',
-            lastObservation: 0
-          }
-        };
+        // console.log(site);
+        sites.update(sitesArr => [...sitesArr, site]);
       }
     });
   }
 
 
   
-  async processUSGSSeriesData(data) {
-    return;
-    let section = '';
-    data.split("\n").forEach((l) => {
-      if(l[0] == '#') {
-        if(section.length > 0) {
-          this.processUSGSSeriesDataSection(section);
-          section = '';
-        }
-      } else {
-        section = section + l + "\n";
-      }
-    });
+  // async processUSGSSeriesData(data) {
+  //   return;
+  //   let section = '';
+  //   data.split("\n").forEach((l) => {
+  //     if(l[0] == '#') {
+  //       if(section.length > 0) {
+  //         this.processUSGSSeriesDataSection(section);
+  //         section = '';
+  //       }
+  //     } else {
+  //       section = section + l + "\n";
+  //     }
+  //   });
 
-  }
+  // }
 
 //   processUSGSSeriesDataSection(data) {
 //     // log(data);
@@ -314,6 +308,6 @@ class Model {
 }
 
 const model = new Model();
-window.model = model;
+// window.model = model;
 
-export {model};
+export { model };

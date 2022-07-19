@@ -1,6 +1,7 @@
 <script lang="ts">
   import Dialog, { Title, Content, Actions } from '@smui/dialog';
   import Button, { Label } from '@smui/button';
+  import LinearProgress from '@smui/linear-progress';
 
 
   import { dataLoaded } from "../lib/stores";
@@ -21,8 +22,12 @@
 
     <Title id="loader-title">Loading Data</Title>
     {#await loadUSGS()}
-      <Content id="loader-content">Loading USGS Data</Content>
-    {:then number}
+      <Content id="loader-content">
+        Loading USGS Data
+        <LinearProgress indeterminate />
+
+      </Content>
+    {:then}
       <Content id="loader-content">USGS Loaded!</Content>
     {:catch error}
       <Content id="loader-content">Loading USGS Data Error:
@@ -32,7 +37,7 @@
 
     <Actions>
       <Button action="accept">
-        <Label>Done</Label>
+        <Label>Close</Label>
       </Button>
     </Actions>
   </Dialog>

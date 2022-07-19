@@ -1,5 +1,5 @@
 import type { Numeric } from 'd3';
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 
 
 export const showDataSelector = writable(true);
@@ -13,16 +13,23 @@ export type Site = {
   id: string,
   name: string,
   lat: number,
-  lon: number
+  lon: number,
+  observationFrequency: string,
+  observationDaysSinceLast: number, 
 }
 
 export const sites = writable([] as Site[]);
-sites.set([{
-  id: 'site01',
-  name: "Site 1",
-  lat: 41.55,
-  lon: -85.8
-}]);
+
+export function getSite(siteId) {
+  return get(sites).find(site => site.id === siteId);
+}
+
+// sites.set([{
+//   id: 'site01',
+//   name: "Site 1",
+//   lat: 41.55,
+//   lon: -85.8
+// }]);
 
 
 export const selectedSeries = writable('datainfo');

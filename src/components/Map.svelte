@@ -15,10 +15,9 @@
     'Imagery': vectorBasemapLayer("ArcGIS:Imagery", {apiKey: apiKey})
     }
 
-    map = L.map(container, {preferCanvas: true}).setView([41.550000,-85.8000000], 17);
-    // let bm = new VectorBasemapLayer("ArcGIS:Topographic", {apiKey: apiKey});
+    map = L.map(container, {preferCanvas: true}).setView([41.550000,-85.8000000], 10);
 
-    basemaps['Imagery'].addTo(map);
+    basemaps['Topographic'].addTo(map);
 
     (new L.Control.Layers(basemaps)).addTo(map);
   }

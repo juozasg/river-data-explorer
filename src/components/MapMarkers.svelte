@@ -14,8 +14,6 @@
   $: {
     markers = [];
 
-    console.log('markers0', markers);
-
     if($dataLoaded) {
       $sites.forEach(site => {
         const markerSymbolization = getMarkerSymbolization(site.id, $selectedSeries);
@@ -28,22 +26,20 @@
         }
       });
     }
-
-    console.log('markers1', markers);
   }
 
   // return color and radius if a value for this site and series exist
   function getMarkerSymbolization(siteId: string, seriesId: string) {
     const value = model.getValue(siteId, seriesId);
     console.log(value);
-    if(value) {
+    if(value !== undefined) {
 
       const colorScale = scales[seriesId];
       const radiusScale = colorScale.copy().range(radiusRange);
 
       const color = d3.color(colorScale(value)).formatHex();
 
-      console.log(color, radiusScale(value));
+      // console.log(color, radiusScale(value));
 
       return {
         color: color,

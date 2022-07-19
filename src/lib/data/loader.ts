@@ -1,4 +1,4 @@
-async function fetchAndParse(url: URL, json: boolean) {
+async function fetchAndParse(url: string, json: boolean) {
   return fetch(url)
     .then(response => {
       if (!response.ok) {
@@ -13,10 +13,10 @@ async function fetchAndParse(url: URL, json: boolean) {
     .catch(e => {throw new Error(`Failed to load: ${url}\nbecause ${e.message}`)});
 }
 
-export async function fetchJSON(url: URL) {
+export async function fetchJSON(url: string) {
   return fetchAndParse(url, true);
 }
 
-export async function fetchText(url: URL) {
+export async function fetchText(url: string) {
   return fetchAndParse(url, false);
 }
