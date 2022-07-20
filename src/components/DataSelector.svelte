@@ -8,7 +8,7 @@
   import Tooltip, { Wrapper } from '@smui/tooltip';
 
   import Legend from './Legend.svelte';
-  import { showDataSelector, selectedSeries, selectedSites } from '../lib/stores';
+  import { showDataSelector, selectedSeries, selectedSites, clearSelectedSites } from '../lib/stores';
   import { labels } from '../lib/definitions';
   import { onDestroy, onMount } from 'svelte';
 
@@ -16,10 +16,10 @@
   let selectionText: String;
 
   $: {
-    if($selectedSites.length === 1) {
+    if($selectedSites.size === 1) {
       selectionText = '1 site selected';
-    } else if($selectedSites.length > 1) {
-      selectionText = `${$selectedSites.length} sites selected`;
+    } else if($selectedSites.size > 1) {
+      selectionText = `${$selectedSites.size} sites selected`;
     } else {
       selectionText = '<i>Use map to select sites</i>';
     }
@@ -66,7 +66,7 @@
 
       <div class='site-action-icon'>
         <Wrapper>
-          <Fab color="secondary" mini on:click={() => $selectedSites = []}>
+          <Fab color="secondary" mini on:click={clearSelectedSites}>
             <Icon class="material-icons">clear</Icon>
           </Fab>
           <Tooltip id="tooltip-unselect">Unselect all sites</Tooltip>
@@ -78,12 +78,12 @@
       <p class='menulist-title'>Graph Selected To</p>
       <List dense>
         <Separator />
-        <Item selected={false} on:SMUI:action={() => addToSelection()}>
+        <Item selected={false} on:SMUI:action={addToSelection}>
           <i class="text-icon material-icons" aria-hidden="true" style='margin-right: 0.5rem'>arrow_circle_left</i>
           Left Timeseries
         </Item>
         <Separator />
-        <Item  on:SMUI:action={() => $selectedSites.pop()}>
+        <Item  on:SMUI:action={addToSelection}>
           <i class="text-icon material-icons" aria-hidden="true" style='margin-right: 0.5rem'>arrow_circle_right</i>
           Right Timeseries
         </Item>

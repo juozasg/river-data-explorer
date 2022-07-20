@@ -184,7 +184,7 @@ class Model {
       try {
         return dframes[siteId].getSeries(seriesId).bake().last();
       } catch(error) {
-        // return undefined;
+        return undefined;
 
         const range = scales[seriesId].domain();
         const random =  range[0] + (Math.random() * range[1] - range[0]);
