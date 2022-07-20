@@ -17,10 +17,10 @@ export async function loadUSGS() {
 
     model.importUSGSSites(siteData);
 
-    // let seriesData = await loadUSGSSeriesData();
+    let seriesData = await loadUSGSSeriesData();
     // console.log(seriesData);
 
-    // model.processUSGSSeriesData(seriesData);
+    model.processUSGSSeriesData(seriesData);
 
     dataLoaded.set(true);
 

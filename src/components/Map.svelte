@@ -50,13 +50,6 @@
     height: 100vh;
   }
 
-  :global(.leaflet-retina .leaflet-control-layers-toggle) {
-    background-image: url(../layers-2x.png) !important;
-  }
-
-  :global(.leaflet-control-layers label) {
-    font-size: 1.1rem !important;
-  }
 
 </style>
 

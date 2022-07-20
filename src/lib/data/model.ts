@@ -9,10 +9,6 @@
 // import {safeID, betweenDays} from '../../../legacy/lib/util/data-helpers.js'
 // import {timer} from '../../../legacy/lib/util/debug.js'
 
-// import Papa from 'papaparse';
-
-// window.tzAbbr = tzAbbr;
-
 
 // // TOD rewrite from this.sites to sitesStore being used
 // export class Model {
@@ -149,10 +145,17 @@
 
 
 import * as df from 'data-forge';
+import Papa from 'papaparse';
+
 import { sites, getSite } from "../stores";
 import type { Site } from "../stores";
 
-// import tzAbbr from 'timezone-abbr-offsets';
+import { tzAbbr } from './tzAbbr';
+
+import { scales } from "../definitions"
+
+
+let dframes = {};
 
 
 class Model {
@@ -174,12 +177,23 @@ class Model {
 
 
   getValue(siteId: string, seriesId: string) {
-    if(seriesId === 'temp') {
-      return 23.0;
-    } else if(seriesId === 'datainfo') {
+    if(seriesId === 'datainfo') {
       return getSite(siteId)?.observationDaysSinceLast;
     } else {
-      return undefined;
+      // return dframes[siteId].getSeries(seriesId).bake().last();
+      try {
+        return dframes[siteId].getSeries(seriesId).bake().last();
+      } catch(error) {
+        // return undefined;
+
+        const range = scales[seriesId].domain();
+        const random =  range[0] + (Math.random() * range[1] - range[0]);
+
+        // console.log('faking it ', random);
+        return random;
+
+
+      }
     }
   }
 
@@ -192,9 +206,10 @@ class Model {
 
     sitesResponseData.value.timeSeries.forEach(ts => {
       let site = {} as Site;
-      
+
       const siteCode = ts.sourceInfo.siteCode[0].value;
       site.id = `usgs-${siteCode}`;
+      site.dataset = 'usgs';
 
       if(!processedSiteIds.includes(site.id)) {
         processedSiteIds.push(site.id);
@@ -208,99 +223,98 @@ class Model {
 
         // console.log(site);
         sites.update(sitesArr => [...sitesArr, site]);
+        dframes[site.id] = new df.DataFrame({columnNames: ['date'], rows: []}).setIndex('date');
       }
     });
   }
 
 
-  
-  // async processUSGSSeriesData(data) {
-  //   return;
-  //   let section = '';
-  //   data.split("\n").forEach((l) => {
-  //     if(l[0] == '#') {
-  //       if(section.length > 0) {
-  //         this.processUSGSSeriesDataSection(section);
-  //         section = '';
-  //       }
-  //     } else {
-  //       section = section + l + "\n";
-  //     }
-  //   });
 
-  // }
+  async processUSGSSeriesData(data) {
+    let section = '';
+    data.split("\n").forEach((l) => {
+      if(l[0] == '#') {
+        if(section.length > 0) {
+          this.processUSGSSeriesDataSection(section);
+          section = '';
+        }
+      } else {
+        section = section + l + "\n";
+      }
+    });
 
-//   processUSGSSeriesDataSection(data) {
-//     // log(data);
-//     let rows = Papa.parse(data, {
-//       delimiter: "\t",
-//       comments: "#"
-//     }).data;
+  }
 
-//     const agencyCol = 0;
-//     const siteCol = 1;
-//     const dateCol = 2;
-//     let tzCol;
-//     let flowCol;
-//     let heightCol;
+  processUSGSSeriesDataSection(data) {
+    // log(data);
+    let rows = Papa.parse(data, {
+      delimiter: "\t",
+      comments: "#"
+    }).data;
 
-//     // Example:
-//     // ['agency_cd', 'site_no', 'datetime', 'tz_cd', '71793_00060', '71793_00060_cd', '71794_00065', '71794_00065_cd']
-//     // ['agency_cd', 'site_no', 'datetime', '294474_00060_00003', '294474_00060_00003_cd']
-//     for(let i in rows[0]) {
-//       let colname = rows[0][i];
-//       if(colname == 'tz_cd' ) {
-//         tzCol = i;
-//       } else if (/\d+_00060$/.test(colname)) {
-//         flowCol = i;
-//       } else if (/\d+_00060_00003$/.test(colname)) {
-//         flowCol = i;
-//       } else if (/\d+_00065$/.test(colname)) {
-//         heightCol = i;
-//       }
-//     }
+    const agencyCol = 0;
+    const siteCol = 1;
+    const dateCol = 2;
+    let tzCol;
+    let flowCol;
+    let heightCol;
 
-//     const dfCols = [];
-//     let siteId;
+    // Example:
+    // ['agency_cd', 'site_no', 'datetime', 'tz_cd', '71793_00060', '71793_00060_cd', '71794_00065', '71794_00065_cd']
+    // ['agency_cd', 'site_no', 'datetime', '294474_00060_00003', '294474_00060_00003_cd']
+    for(let i in rows[0]) {
+      let colname = rows[0][i];
+      if(colname == 'tz_cd' ) {
+        tzCol = i;
+      } else if (/\d+_00060$/.test(colname)) {
+        flowCol = i;
+      } else if (/\d+_00060_00003$/.test(colname)) {
+        flowCol = i;
+      } else if (/\d+_00065$/.test(colname)) {
+        heightCol = i;
+      }
+    }
 
-//     rows.forEach(row => {
-//       // some rows have headers
-//       if(row[agencyCol] != 'USGS') {
-//         return;
-//       }
+    const dfCols = [];
+    let siteId;
 
-//       siteId = 'usgs-' + row[siteCol];
-//       if(this.sites[siteId]) {
-//         let tzOffset = 'EST'
-//         if(tzCol) {
-//           tzOffset = tzAbbr[row[tzCol]];
-//         }
-//         let dateStr = row[dateCol] + tzOffset;
+    rows.forEach(row => {
+      // some rows have headers
+      if(row[agencyCol] != 'USGS') {
+        return;
+      }
 
-//         let columns = {
-//           date: Date.parse(dateStr),
+      siteId = 'usgs-' + row[siteCol];
+      if(getSite(siteId)) {
+        let tzOffset = 'EST'
+        if(tzCol) {
+          tzOffset = tzAbbr[row[tzCol]];
+        }
+        let dateStr = row[dateCol] + tzOffset;
 
-//         };
+        let columns: any = {};
+        columns.date = Date.parse(dateStr);
 
-//         if(flowCol) {
-//           columns.flow = parseFloat(row[flowCol]) || 0.0;
-//         }
 
-//         if(heightCol) {
-//           columns.height = parseFloat(row[heightCol]) || 0.0;
-//         }
+        if(flowCol) {
+          columns.flow = parseFloat(row[flowCol]) || 0.0;
+        }
 
-//         if(flowCol || heightCol) {
-//           dfCols.push(columns);
-//         }
-//       }
-//     });
+        if(heightCol) {
+          columns.height = parseFloat(row[heightCol]) || 0.0;
+        }
 
-//     // log(siteId, dfCols);
+        if(flowCol || heightCol) {
+          dfCols.push(columns);
+        }
+      }
+    });
 
-//     let dframe = new df.DataFrame(dfCols).setIndex('date')
-//     this.sites[siteId].df = this.sites[siteId].df.concat(dframe).bake();
-//   }
+    // log(siteId, dfCols);
+
+    let dframe = new df.DataFrame(dfCols).setIndex('date')
+    dframes[siteId] = dframes[siteId].concat(dframe).bake();
+  }
 
 
 

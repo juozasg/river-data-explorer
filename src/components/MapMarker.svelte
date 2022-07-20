@@ -14,19 +14,24 @@
   export let radius: number;
   export let color: string;
 
+  let selectedColor;
 
-  const colorHsl = hexToHsl(color);
-  const invertHsl = [
-    (colorHsl[0] + 270) % 360,
-    100 - colorHsl[1],
-    100 - colorHsl[2]
-  ];
+  $: {
+    const colorHsl = hexToHsl(color);
+    const invertHsl = [
+      (colorHsl[0] + 270) % 360,
+      100 - colorHsl[1],
+      100 - colorHsl[2]
+    ];
 
-  const selectedColor = `hsl(${invertHsl[0]}, ${invertHsl[1]}%, ${invertHsl[2]}%)`;
+    console.log(color, colorHsl, invertHsl);
 
+
+    selectedColor = `hsl(${invertHsl[0]}, ${invertHsl[1]}%, ${invertHsl[2]}%)`;
+  }
   let leafletMarker;
   let selected: boolean;
-  $: selected = $selectedSites.indexOf(id) > -1;
+  $: selected = $selectedSites.includes(id);
 
   function createMarker(svgElement: HTMLDivElement) {
     const icon = L.divIcon({html: svgElement, iconAnchor: [20,20], className: 'river-divicon'});
@@ -43,13 +48,17 @@
     } else {
       // unselect
       $selectedSites.splice(i, 1);
-      selected = false;
+      $selectedSites = $selectedSites;
+
+      // selected = false;
     }
   }
 
   onDestroy(() => {
     // if(map.hasLayer(leafletMarker)) {
     map.removeLayer(leafletMarker);
+    console.log('destroy MM');
+
     // }
   });
 </script>
