@@ -9,11 +9,11 @@
 </script>
 
 <div id=markers>
-    {#each $sites as site}
-      <MapMarker
-        map={map}
-        id={site.id}
-        lat={site.lat}
-        lon={site.lon}/>
-    {/each}
+  {#each $sites as site}
+    <MapMarker
+      map={map}
+      id={site.id}
+      lat={site.lat}
+      lon={site.lon}/>
+  {/each}
 </div>

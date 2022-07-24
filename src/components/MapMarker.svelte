@@ -9,7 +9,6 @@
   export let id: string;
   export let lat: number, lon: number;
 
-  // let visible: boolean;
   let radius: number;
   let color: string;
   let selectedColor: string;
