@@ -9,7 +9,7 @@
 
   $: {
     if($showDataSelector) {
-      width = $viewportWidth - 392;
+      width = $viewportWidth - 396;
     } else {
       width = $viewportWidth;
     }
@@ -18,10 +18,10 @@
 </script>
 
 {#if $showTimeseries }
-  <div id='timeseries'
+  <div id='timeseries' class='elevation'
         transition:fly="{{ x: $viewportWidth, duration: 400 }}"
         style='width: {width}px; height: {height}px'>
-    <TimeseriesPlot/>
+    <TimeseriesPlot width={width} height= {height}/>
   </div>
 {/if}
 
@@ -31,6 +31,7 @@
     bottom: 0;
     right: 0;
     width: 100px;
+    z-index: 2;
     background-color: purple;
   }
 </style>

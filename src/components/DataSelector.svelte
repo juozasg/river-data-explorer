@@ -32,7 +32,7 @@
 
 
 {#if $showDataSelector }
-  <div class="elevation" id='data-selector'
+  <div id='data-selector' class='elevation'
         transition:fly="{{ x: -200, duration: 400 }}">
 
     <Wrapper>
@@ -99,7 +99,7 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    z-index: 2;
+    z-index: 3;
 
     width: 360px;
     height: 260px;

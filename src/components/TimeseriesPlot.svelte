@@ -7,18 +7,39 @@
   // https://stackoverflow.com/questions/69735038/echarts-datazoom-make-height-bigger
   import Plotly from 'plotly.js-basic-dist'
 
-  function plotlyAction(container) {
-    const data: Plotly.Data[] = [
-    {
-      x: ['giraffes', 'orangutans', 'monkeys'],
-      y: [20, 14, 23],
-      type: 'bar'
-    }
-  ];
+  export let width, height;
 
-  Plotly.newPlot(container, data);
+  let plotlyElement;
+
+
+  console.log('init timeseries plot', width, height);
+
+
+  $: {
+    console.log('update timeseries plot', width, height);
+    plotlyReact(width, height);
+  }
+
+
+  function plotlyAction(container) {
+    plotlyElement = container;
+    plotlyReact(width, height);
+  }
+
+  function plotlyReact(width, height) {
+    if(plotlyElement) {
+      const data: Plotly.Data[] = [
+        {
+          x: ['giraffes', 'orangutans', 'monkeys'],
+          y: [20, 14, 23],
+          type: 'bar'
+        }
+      ];
+      Plotly.react(plotlyElement, data, {width: width, height: height});
+    }
 
   }
+
 </script>
 
 

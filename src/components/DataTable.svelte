@@ -8,7 +8,7 @@
 
   $: {
     if($showDataSelector || $showTimeseries) {
-      height = $viewportHeight - 292;
+      height = $viewportHeight - 296;
     } else {
       height = $viewportHeight;
     }
@@ -16,7 +16,7 @@
 </script>
 
 {#if $showDataTable }
-  <div id='data-table'
+  <div id='data-table' class='elevation'
         transition:fly="{{ x: -200, duration: 400 }}"
         style='width: {width}px; height: {height}px'>
     <h2>DATA-TABLE</h2>
@@ -30,7 +30,7 @@
     left: 0;
     width: 100px;
     height: 100px;
-    background-color: blueviolet;
-    z-index: 1;
+    background-color: white;
+    z-index: 2;
   }
 </style>
