@@ -864,6 +864,11 @@
     "@types/d3-interpolate" "*"
     "@types/d3-selection" "*"
 
+"@types/d3@^3":
+  version "3.5.47"
+  resolved "https://registry.yarnpkg.com/@types/d3/-/d3-3.5.47.tgz#b81042fcb0195c583fc037bc857d161469a7d175"
+  integrity sha512-VkWIQoZXLFdcBGe5pdBKJmTU3fmpXvo/KV6ixvTzOMl1yJ2hbTXpfvsziag0kcaerPDwas2T0vxojwQG3YwivQ==
+
 "@types/d3@^7.4.0":
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/@types/d3/-/d3-7.4.0.tgz#fc5cac5b1756fc592a3cf1f3dc881bf08225f515"
@@ -933,6 +938,20 @@
   version "17.0.29"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.29.tgz#7f2e1159231d4a077bb660edab0fde373e375a3d"
   integrity sha512-tx5jMmMFwx7wBwq/V7OohKDVb/JwJU5qCVkeLMh1//xycAJ/ESuw9aJ9SEtlCZDYi2pBfe4JkisSoAtbOsBNAA==
+
+"@types/plotly.js-basic-dist@^1.54.0":
+  version "1.54.0"
+  resolved "https://registry.yarnpkg.com/@types/plotly.js-basic-dist/-/plotly.js-basic-dist-1.54.0.tgz#02d74eb54a658c903984481da847b3d8b3aa0647"
+  integrity sha512-sccKjidjBltVJlfVE0bthWG1j/dwBYvZDbKIreToDXqaGaPg5nRU+5NRoP2AbnMa96lu0eVFu8zYwRPA4sS7kQ==
+  dependencies:
+    "@types/plotly.js" "*"
+
+"@types/plotly.js@*":
+  version "2.12.2"
+  resolved "https://registry.yarnpkg.com/@types/plotly.js/-/plotly.js-2.12.2.tgz#9e4c61d3aaf33aee98fc5bdbeffd6cd85271f3f8"
+  integrity sha512-cYJMFl01yZVuyrJcDD5LZzRK0wlizWe4lqoT4x87v2TXISZ7HVioWxEVt9n3OiqHDWqqAGMx8Erj7TJ3PeMTjw==
+  dependencies:
+    "@types/d3" "^3"
 
 "@types/pug@^2.0.4":
   version "2.0.6"
@@ -1938,6 +1957,11 @@ picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.2, picomatch@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
   integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
+
+plotly.js-basic-dist@^2.13.3:
+  version "2.13.3"
+  resolved "https://registry.yarnpkg.com/plotly.js-basic-dist/-/plotly.js-basic-dist-2.13.3.tgz#27f648ff45e69aed06b8e2b440c6212491be33c6"
+  integrity sha512-14rECYWgsb6uIxI0HICgKqcs+nsJZDDXAWaz4KgY21nx9ok5CpSpEt/r9ZJ/b+sync/2J//s14lywJMDutCX4w==
 
 potpack@^1.0.1:
   version "1.0.2"

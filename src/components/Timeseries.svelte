@@ -1,8 +1,6 @@
 <script lang="ts">
   import { fly } from 'svelte/transition';
-  // https://stackoverflow.com/questions/39084438/how-to-import-plotly-js-into-typescript
-  import * as Plotly from 'plotly.js';
-
+  import TimeseriesPlotly from './TimeseriesPlotly.svelte';
 
   import { viewportWidth, showDataSelector, showTimeseries } from '../lib/stores';
 
@@ -17,25 +15,13 @@
     }
   }
 
-  function plotlyAction(container) {
-    const data: Plotly.Data[] = [
-    {
-      x: ['giraffes', 'orangutans', 'monkeys'],
-      y: [20, 14, 23],
-      type: 'bar'
-    }
-  ];
-
-  Plotly.newPlot(container, data);
-
-  }
 </script>
 
 {#if $showTimeseries }
   <div id='timeseries'
         transition:fly="{{ x: $viewportWidth, duration: 400 }}"
         style='width: {width}px; height: {height}px'>
-    <div id='plotly' use:plotlyAction></div>
+    <TimeseriesPlotly/>
   </div>
 {/if}
 
