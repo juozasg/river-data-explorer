@@ -1,6 +1,6 @@
 <script lang="ts">
   import { fly } from 'svelte/transition';
-  import TimeseriesPlotly from './TimeseriesPlotly.svelte';
+  import TimeseriesPlot from './TimeseriesPlot.svelte';
 
   import { viewportWidth, showDataSelector, showTimeseries } from '../lib/stores';
 
@@ -21,7 +21,7 @@
   <div id='timeseries'
         transition:fly="{{ x: $viewportWidth, duration: 400 }}"
         style='width: {width}px; height: {height}px'>
-    <TimeseriesPlotly/>
+    <TimeseriesPlot/>
   </div>
 {/if}
 
