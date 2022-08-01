@@ -1,7 +1,7 @@
 import { writable, get } from 'svelte/store';
 
 export const showDataSelector = writable(true);
-export const showTimeseries = writable(false);
+export const showTimeseries = writable(true);
 export const showDataTable = writable(false);
 
 export const dataLoaded = writable(false);
@@ -13,7 +13,6 @@ export const test = writable()
 
 
 function isSiteSelected(siteId: string) {
-  // return get(selectedSites).includes(siteId);
   return get(selectedSites).has(siteId);
 }
 

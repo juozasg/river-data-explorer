@@ -3,8 +3,6 @@
   import Button, { Label } from '@smui/button';
   import LinearProgress from '@smui/linear-progress';
 
-
-  import { dataLoaded } from "../lib/stores";
   import { loadUSGS } from "../lib/data/usgsLoader";
 
   let open = true;
@@ -12,8 +10,8 @@
 </script>
 
 
+{#if false}
 <div class="loader">
-
   <Dialog
   bind:open
   aria-labelledby="loader-title"
@@ -43,3 +41,4 @@
   </Dialog>
 </div>
 
+{/if}

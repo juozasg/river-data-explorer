@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as L from 'leaflet';
 
-  import { toggleSiteSelection, selectedSites, selectedSeries,  } from "../lib/stores";
+  import { toggleSiteSelection, selectedSites, selectedSeries } from "../lib/stores";
   import { getSiteRadius, getSiteColor, getSiteSelectedColor } from '../lib/symbolization';
 
 
@@ -17,6 +17,8 @@
   $: {
     color = getSiteColor(id, $selectedSeries);
     radius = getSiteRadius(id, $selectedSeries);
+    console.log(id, color, radius);
+
     if(color) {
       selectedColor = getSiteSelectedColor(color);
     }

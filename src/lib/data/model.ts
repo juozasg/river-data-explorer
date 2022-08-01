@@ -159,17 +159,7 @@ let dframes = {};
 
 
 class Model {
-//   getValue(siteId, seriesId) {
-//     try {
-//       if(seriesId == 'datainfo') {
-//         return this.sites[siteId].datainfo;
-//       }
-//       let df = this.sites[siteId].df;
-//       return df.getSeries(seriesId).bake().last();
-//     } catch (error) {
-//       return undefined;
-//     }
-//   }
+
 
   finalize() {
     // update the store with all the sites which will force render
@@ -178,6 +168,8 @@ class Model {
 
   getValue(siteId: string, seriesId: string) {
     if(seriesId === 'datainfo') {
+      // console.log(getSite(siteId), getSite(siteId)?.observationDaysSinceLast);
+      
       return getSite(siteId)?.observationDaysSinceLast;
     } else {
       // return dframes[siteId].getSeries(seriesId).bake().last();

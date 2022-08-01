@@ -32,7 +32,7 @@
   }
 </script>
 
-<div id='map' use:mapAction>this is the map</div>
+<div id='map' use:mapAction>Loading map layers...</div>
 
 {#if map}
 <MapMarkers map={map}/>
