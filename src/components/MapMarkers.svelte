@@ -1,11 +1,8 @@
 <script lang="ts">
   import  MapMarker  from "./MapMarker.svelte";
-  import { Site, sites, selectedSeries, dataLoaded } from "../lib/stores";
+  import { sites } from "../lib/stores";
 
   export let map: L.Map;
-
-  type Marker = Site & { radius: number, color: string }
-  let markers: Marker[];
 </script>
 
 <div id=markers>

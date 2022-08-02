@@ -17,7 +17,7 @@
   $: {
     color = getSiteColor(id, $selectedSeries);
     radius = getSiteRadius(id, $selectedSeries);
-    console.log(id, color, radius);
+    // console.log(id, color, radius);
 
     if(color) {
       selectedColor = getSiteSelectedColor(color);

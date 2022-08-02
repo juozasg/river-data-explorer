@@ -5,6 +5,11 @@
   // https://echarts.apache.org/examples/en/editor.html?c=line-tooltip-touch
   // https://echarts.apache.org/handbook/en/basics/release-note/v5-feature/#time-axis
   // https://stackoverflow.com/questions/69735038/echarts-datazoom-make-height-bigger
+  // https://codesandbox.io/s/chartjs-timeseries-odmnmh?file=/components/Chart.svelte
+  // https://github.com/chartjs/chartjs-plugin-zoom/issues/649
+  //
+  // https://apexcharts.com/javascript-chart-demos/mixed-charts/multiple-yaxis/
+  // one bright color easier to follow than two bright colors
   import Plotly from 'plotly.js-basic-dist'
 
   export let width, height;

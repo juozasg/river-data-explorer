@@ -157,39 +157,69 @@ import { scales } from "../definitions"
 
 let dframes = {};
 
+const siteDataset = siteId => siteId.replace(/-\d+$/, '');
+
+
+function siteRowsToDatasets(rows): string[] {
+  return Array.from(new Set(rows.map(r => siteDataset(r['siteId']))));
+}
+
 
 class Model {
-
-
-  finalize() {
-    // update the store with all the sites which will force render
+  registerSite(site: Site) {
+    // console.log(site);
+    sites.update(sitesArr => [...sitesArr, site]);
+    dframes[site.id] = new df.DataFrame({columnNames: ['date'], rows: []}).setIndex('date');
   }
-
 
   getValue(siteId: string, seriesId: string) {
     if(seriesId === 'datainfo') {
       // console.log(getSite(siteId), getSite(siteId)?.observationDaysSinceLast);
-      
+
       return getSite(siteId)?.observationDaysSinceLast;
     } else {
-      // return dframes[siteId].getSeries(seriesId).bake().last();
       try {
         return dframes[siteId].getSeries(seriesId).bake().last();
       } catch(error) {
         return undefined;
-
-        const range = scales[seriesId].domain();
-        const random =  range[0] + (Math.random() * range[1] - range[0]);
-
-        // console.log('faking it ', random);
-        return random;
-
-
       }
     }
   }
 
+  // siteId,name,current,lat,lon
+  // ecoli-1,ANGELA,yes,41.693199,-86.263052
+  importSJRBCSites(sitesCsv: string): string[] {
+    let rows: any[] = Papa.parse(sitesCsv, {
+      delimiter: ",",
+      comments: "#",
+      header: true,
+      skipEmptyLines: 'greedy'
+    }).data;
 
+
+    rows.forEach((row, i) => {
+      let site = {} as Site;
+
+      site.id = row.siteId;
+      site.dataset = siteDataset(site.id);
+
+
+      site.lat = row.lat
+      site.lon = row.lon
+      site.name = row.name
+      // TODO: recalculate this after all data is loaded
+      site.observationFrequency = 'M',
+      site.observationDaysSinceLast = 30;
+
+      if(!site.id || !site.lat || !site.lon) {
+        console.log(`skip bad sites row #${i+1}`, row);
+      } else {
+        this.registerSite(site);
+      }
+    });
+
+    return siteRowsToDatasets(rows);
+  }
 
   importUSGSSites(sitesResponseData) {
     console.log('process usgs sites');
@@ -213,18 +243,16 @@ class Model {
         site.observationFrequency = 'RT',
         site.observationDaysSinceLast = 0;
 
-        // console.log(site);
-        sites.update(sitesArr => [...sitesArr, site]);
-        dframes[site.id] = new df.DataFrame({columnNames: ['date'], rows: []}).setIndex('date');
+        this.registerSite(site);
       }
     });
   }
 
 
 
-  async processUSGSSeriesData(data) {
+  async processUSGSSeriesData(dataCsv) {
     let section = '';
-    data.split("\n").forEach((l) => {
+    dataCsv.split("\n").forEach((l) => {
       if(l[0] == '#') {
         if(section.length > 0) {
           this.processUSGSSeriesDataSection(section);
@@ -237,9 +265,9 @@ class Model {
 
   }
 
-  processUSGSSeriesDataSection(data) {
+  processUSGSSeriesDataSection(dataCsv) {
     // log(data);
-    let rows = Papa.parse(data, {
+    let rows: any[] = Papa.parse(dataCsv, {
       delimiter: "\t",
       comments: "#"
     }).data;

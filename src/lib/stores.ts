@@ -1,10 +1,10 @@
 import { writable, get } from 'svelte/store';
 
 export const showDataSelector = writable(true);
-export const showTimeseries = writable(true);
+export const showTimeseries = writable(false);
 export const showDataTable = writable(false);
 
-export const dataLoaded = writable(false);
+// export const dataLoaded = writable(false);
 
 export const selectedSeries = writable('datainfo');
 export const selectedSites = writable(new Set<string>());

@@ -2,7 +2,7 @@ import { model } from  "./model";
 
 import { fetchJSON, fetchText } from "./loader";
 
-import { dataLoaded } from "../stores";
+// import { dataLoaded } from "../stores";
 
 import strftime from "../strftime";
 import { oneMonthAgo } from "../helpers";
@@ -22,7 +22,7 @@ export async function loadUSGS() {
 
     model.processUSGSSeriesData(seriesData);
 
-    dataLoaded.set(true);
+    // dataLoaded.set(true);
 
   } catch(e) {
     console.error(e);
