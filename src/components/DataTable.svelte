@@ -1,7 +1,8 @@
 <script lang="ts">
   import { fly } from 'svelte/transition';
 
-  import { viewportHeight, showDataSelector, showTimeseries, showDataTable, selectedSites } from '../lib/stores';
+  import { viewportHeight, showDataSelector, showTimeseries, showDataTable, selectedSites, selectedSeries } from '../lib/stores';
+  import DataTableContent from './DataTableContent.svelte';
 
   let width = 392;
   let height = 200;
@@ -19,17 +20,8 @@
   <div id='data-table' class='elevation'
         transition:fly="{{ x: -200, duration: 400 }}"
         style='width: {width}px; height: {height}px'>
-    <div class='content'>
+      <DataTableContent/>
 
-      <h2>Data Table</h2>
-      <h3>{$selectedSites.size} site(s) selected</h3>
-      <ul>
-        {#each Array.from($selectedSites) as site}
-        <li>{site}</li>
-        {/each}
-
-      </ul>
-    </div>
   </div>
 {/if}
 
@@ -43,8 +35,6 @@
     background-color: white;
     z-index: 2;
 
-    .content {
-      padding: 0 0.5rem 0.5rem 1rem;
-    }
+    overflow-y:auto;
   }
 </style>

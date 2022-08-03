@@ -1,13 +1,15 @@
 <script lang="ts">
   import { vectorBasemapLayer } from 'esri-leaflet-vector'
   import * as L from 'leaflet';
-  import "leaflet/dist/leaflet.css";
+  import 'leaflet/dist/leaflet.css';
+
+  import { mapStore } from '../lib/stores';
 
   import MapMarkers from './MapMarkers.svelte';
 
+  const apiKey = "AAPK3dfaa40a13c0404983142c26b566596ammsJLVROPRkVaZnrwj6bYIrYdi4FEikx7NZpYg7f5M9XlV2RFL6PgxMA_56IceHv";
 
   let map: L.Map;
-  const apiKey = "AAPK3dfaa40a13c0404983142c26b566596ammsJLVROPRkVaZnrwj6bYIrYdi4FEikx7NZpYg7f5M9XlV2RFL6PgxMA_56IceHv";
 
   function createMap(container) {
     const basemaps = {
@@ -16,6 +18,7 @@
     }
 
     map = L.map(container, {preferCanvas: true}).setView([41.550000,-85.8000000], 10);
+    mapStore.set(map);
 
     basemaps['Topographic'].addTo(map);
 

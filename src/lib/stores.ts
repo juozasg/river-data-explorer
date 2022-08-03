@@ -1,4 +1,4 @@
-import { writable, get } from 'svelte/store';
+import { writable, get, Writable } from 'svelte/store';
 
 export const showDataSelector = writable(true);
 export const showTimeseries = writable(false);
@@ -9,7 +9,10 @@ export const showDataTable = writable(true);
 export const selectedSeries = writable('datainfo');
 export const selectedSites = writable(new Set<string>());
 
-export const test = writable()
+export const test = writable();
+
+
+export const mapStore: Writable<L.Map> = writable();
 
 
 function isSiteSelected(siteId: string) {

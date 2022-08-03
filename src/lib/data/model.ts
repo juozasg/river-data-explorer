@@ -88,6 +88,18 @@ class Model {
     }
   }
 
+  getValueDate(siteId: string, seriesId: string) {
+    if(seriesId === 'datainfo') {
+      return Date.now();
+    } else {
+      try {
+        return dframes[siteId].getSeries(seriesId).bake().getIndex().last();
+      } catch(error) {
+        return undefined;
+      }
+    }
+  }
+
 
   // siteId,name,current,lat,lon
   // ecoli-1,ANGELA,yes,41.693199,-86.263052
@@ -107,9 +119,9 @@ class Model {
       site.dataset = siteDataset(site.id);
 
 
-      site.lat = row.lat
-      site.lon = row.lon
-      site.name = row.name
+      site.lat = parseFloat(row.lat);
+      site.lon = parseFloat(row.lon);
+      site.name = row.name;
       // TODO: recalculate this after all data is loaded
       site.observationFrequency = 'Y',
       site.observationDaysSinceLast = 365;
@@ -175,8 +187,8 @@ class Model {
         processedSiteIds.push(site.id);
 
         const loc = ts.sourceInfo.geoLocation.geogLocation;
-        site.lat = loc.latitude;
-        site.lon = loc.longitude;
+        site.lat = parseFloat(loc.latitude);
+        site.lon = parseFloat(loc.longitude);
         site.name = ts.sourceInfo.siteName;
         site.observationFrequency = 'RT',
         site.observationDaysSinceLast = 0;
