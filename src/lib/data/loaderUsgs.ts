@@ -12,12 +12,12 @@ const  usgsStationIds = '04096405,04096515,04097500,040975299,04097540,04099000,
 
 export async function loadUSGS() {
   try {
-    let siteData = await loadUSGSSites();
+    let siteData = await loadSites();
     console.log(siteData);
 
     model.importUSGSSites(siteData);
 
-    let seriesData = await loadUSGSSeriesData();
+    let seriesData = await loadSeries();
     // console.log(seriesData);
 
     model.processUSGSSeriesData(seriesData);
@@ -41,12 +41,12 @@ export async function loadUSGS() {
 }
 
 
-async function loadUSGSSites() {
+async function loadSites() {
   const url = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${usgsStationIds}&siteStatus=all`;
   return fetchJSON(url);
 }
 
-async function loadUSGSSeriesData() {
+async function loadSeries() {
   const startDate = '2000-01-01';
   const monthAgoDate = strftime('%F', new Date(oneMonthAgo()));
   const nowDate = strftime('%F', new Date(Date.now()));

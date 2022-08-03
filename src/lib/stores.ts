@@ -2,7 +2,7 @@ import { writable, get } from 'svelte/store';
 
 export const showDataSelector = writable(true);
 export const showTimeseries = writable(false);
-export const showDataTable = writable(false);
+export const showDataTable = writable(true);
 
 // export const dataLoaded = writable(false);
 

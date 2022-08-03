@@ -221,6 +221,12 @@ class Model {
     return siteRowsToDatasets(rows);
   }
 
+  async processSJRBCSeriesData(dataCsv: string) {
+    console.log('process data CSV', dataCsv.slice(0, 420));
+  }
+
+
+
   importUSGSSites(sitesResponseData) {
     console.log('process usgs sites');
 
