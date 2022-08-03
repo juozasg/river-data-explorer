@@ -1,6 +1,6 @@
 import { model } from  "./model";
 
-import { fetchJSON, fetchText } from "./loader";
+import { fetchText } from "./loader";
 
 const remoteDir = 'https://nyc3.digitaloceanspaces.com/sjrbc/data';
 

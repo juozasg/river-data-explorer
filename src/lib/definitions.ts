@@ -39,6 +39,14 @@ const interpolateDatainfo = (x) => {
   return d3.interpolateMagma(datainfoScaleTransform(x));
 }
 
+
+export const seriesIds = [
+  'date', 'bod', 'bodPercent', 'chlorides', 'do', 'doOutfall', 'doOutfall',
+  'ecoli', 'flow', 'ibi', 'invertIndiana', 'invertMacro', 'invertMichigan',
+  'invertNarrative', 'nitrates', 'ph', 'phosphorus', 'rain', 'spc', 'tds',
+  'temp', 'tss', 'turbidity', 'wet', 'wetWeatherOrBaseflow'];
+
+
 export const scales: SeriesScales = {
   datainfo: d3.scaleSequential([365, 0], interpolateDatainfo).clamp(true),
 
