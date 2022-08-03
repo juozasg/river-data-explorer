@@ -10,7 +10,7 @@
   export let lat: number, lon: number;
 
   let radius: number;
-  let color: string;
+  let color: string | undefined;
   let selectedColor: string;
 
 
@@ -38,15 +38,15 @@
 </script>
 
 <div id=markers>
-  <div use:createMarker >
+  <div use:createMarker style="overflow: visible; pointer-events: none">
     {#if color}
-      <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" style="overflow: visible">
+      <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" style="overflow: visible; pointer-events: none">
         <defs>
           <pattern id="stripes-{id}" patternUnits="userSpaceOnUse" width="5.5" height="5.5" patternTransform="rotate(45)">
             <line x1="0" y="0" x2="0" y2="5.5" stroke="{selectedColor}" stroke-width="5" />
           </pattern>
         </defs>
-        <circle style='cursor: pointer' cy=20 cx=20 r={radius} fill="{color}" stroke="black" stroke-width="2" on:click|stopPropagation={() => { toggleSiteSelection(id) }}  />
+        <circle style='cursor: pointer; pointer-events:visible' cy=20 cx=20 r={radius} fill="{color}" stroke="black" stroke-width="2" on:click|stopPropagation={() => { toggleSiteSelection(id) }}  />
         {#if $selectedSites.has(id)}
           <circle cy=20 cx=20 r={radius + 1} stroke="yellow" fill="none" stroke-width="4" stroke-dasharray="2"/>
           <circle style='cursor: pointer' cy=20 cx=20 r={radius} fill="url(#stripes-{id})" opacity="1" on:click|stopPropagation={() => { toggleSiteSelection(id) }} />
@@ -56,3 +56,12 @@
 
   </div>
 </div>
+
+<style>
+  :global(.river-divicon) {
+    width: 0 !important;
+    height: 0 !important;
+    pointer-events: none !important;
+
+  }
+</style>

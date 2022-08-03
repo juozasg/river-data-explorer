@@ -18,4 +18,5 @@
   <Content id="loader-content">Loading SJRBC Data Error:
     <p style="color: red">{error.message}</p>
   </Content>
+  {@debug error}
 {/await}

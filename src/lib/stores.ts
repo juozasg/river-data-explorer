@@ -33,6 +33,7 @@ export function clearSelectedSites() {
   selectedSites.set(new Set());
 }
 
+export type ObservactionFrequency = 'Y' | 'M' | 'W' | 'D' | 'RT'
 
 export type Site = {
   id: string,
@@ -42,17 +43,23 @@ export type Site = {
   lon: number,
   observationFrequency: string,
   observationDaysSinceLast: number,
-
 }
 
-// IDEA: store all the marker values (for every series type) in a store
-// just use model.getValue for now
-// export const sitesMapData = writable({'siteid': {'datainfo': 0, 'temp': 23} })
+type SiteMap = {
+  [key: string]: Site
+}
 
-export const sites = writable([] as Site[]);
+export const sites = writable({} as SiteMap);
 
-export function getSite(siteId) {
-  return get(sites).find(site => site.id === siteId);
+export function getSite(siteId: string) {
+  return get(sites)[siteId];
+}
+
+export function setSite(site: Site) {
+  sites.update(siteMap => {
+    siteMap[site.id] = site;
+    return siteMap;
+  });
 }
 
 

@@ -40,11 +40,11 @@ const interpolateDatainfo = (x) => {
 }
 
 
-export const seriesIds = [
-  'date', 'bod', 'bodPercent', 'chlorides', 'do', 'doOutfall', 'doOutfall',
+export const seriesIds = new Set([
+  'siteId', 'date', 'bod', 'bodPercent', 'chlorides', 'do', 'doOutfall', 'doOutfall',
   'ecoli', 'flow', 'ibi', 'invertIndiana', 'invertMacro', 'invertMichigan',
-  'invertNarrative', 'nitrates', 'ph', 'phosphorus', 'rain', 'spc', 'tds',
-  'temp', 'tss', 'turbidity', 'wet', 'wetWeatherOrBaseflow'];
+  'invertNarrative', 'nitrates', 'ph', 'phosphorus', 'spc', 'tds',
+  'temp', 'tss', 'turbidity', 'wet']);
 
 
 export const scales: SeriesScales = {
@@ -56,7 +56,7 @@ export const scales: SeriesScales = {
 
   flow: d3.scaleSequential([0, 8000], d3.interpolateGnBu).clamp(true),
   height: d3.scaleSequential([0, 30], d3.interpolateBlues).clamp(true),
-  nitrates: d3.scaleSequential([0, 200], d3.interpolatePurples).clamp(true),
+  nitrates: d3.scaleSequential([0, 15], d3.interpolatePurples).clamp(true),
   ph: d3.scaleSequential([5.5, 12.5], d3.interpolateTurbo).clamp(true),
 
   phosphorus: d3.scaleSequential([0, 0.5], d3.interpolateInferno).clamp(true),

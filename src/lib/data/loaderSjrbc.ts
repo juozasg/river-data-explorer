@@ -17,8 +17,7 @@ export async function loadSJRBC() {
       await model.processSJRBCSeriesData(dataCsv);
     });
 
-    return Promise.all(loadDatasetsPromises);
-
+    return Promise.all(loadDatasetsPromises).then(() => model.updateSitesDataInfo());
   } catch(e) {
     console.error(e);
     throw e;

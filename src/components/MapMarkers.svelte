@@ -6,7 +6,7 @@
 </script>
 
 <div id=markers>
-  {#each $sites as site}
+  {#each Object.values($sites) as site}
     <MapMarker
       map={map}
       id={site.id}

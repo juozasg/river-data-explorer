@@ -13,33 +13,15 @@ const  usgsStationIds = '04096405,04096515,04097500,040975299,04097540,04099000,
 export async function loadUSGS() {
   try {
     let siteData = await loadSites();
-    console.log(siteData);
-
     model.importUSGSSites(siteData);
 
     let seriesData = await loadSeries();
-    // console.log(seriesData);
-
     model.processUSGSSeriesData(seriesData);
-
-    // dataLoaded.set(true);
-
   } catch(e) {
     console.error(e);
     throw e;
   }
-
-
-  // model.printStatistics()
-  // model.sortByDate()
-
-
-
-    // this.host.loading.loadedUSGS = true;
-    // this.host.loading.loadedElkhart = true;
-
 }
-
 
 async function loadSites() {
   const url = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${usgsStationIds}&siteStatus=all`;

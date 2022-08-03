@@ -17,4 +17,5 @@
   <Content id="loader-content">Loading USGS Data Error:
     <p style="color: red">{error.message}</p>
   </Content>
+  {@debug error}
 {/await}

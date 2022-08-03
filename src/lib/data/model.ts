@@ -1,161 +1,19 @@
-// // import Plotly from 'plotl'
-// //import { readFile, Series, DataFrame } from 'data-forge';
-
-// // date parsing
-// // EST: new Date(Date.parse('2007-11-11 12:00-05:00'))
-// // EDT: new Date(Date.parse('2007-11-11 12:00-04:00'))
-
-
-// import {safeID, betweenDays} from '../../../legacy/lib/util/data-helpers.js'
-// import {timer} from '../../../legacy/lib/util/debug.js'
-
-
-// // TOD rewrite from this.sites to sitesStore being used
-// export class Model {
-//   // constructor() {
-//   //   // { siteId => {name,lat,lon,feature,df}}
-//   //   this.sites = {}
-//   // }
-
-//   constructor(sitesStore) {
-//     // { siteId => {name,lat,lon,feature,df}}
-//   }
-
-
-//   // series of mean values of the sites
-//   sitesMeanSeries(seriesId, siteIds) {
-//     let allSeries = [];
-//     siteIds.forEach(siteId => {
-//       let series = this.sites[siteId].df.getSeries(seriesId);
-//       if(series) {
-//         allSeries.push(series);
-//       }
-//     });
-
-//     let merged = df.Series.merge(allSeries);
-//     let mean = merged.select(vals => _(vals).compact().mean()).bake();
-
-//     return mean;
-//   }
-
-
-
-
-//   initElkhartSite(siteId, siteName, feature) {
-//     feature.id = siteId;
-//     let dframe = new df.DataFrame({columnNames: ['date'], rows: []}).setIndex('date');
-//     this.sites[siteId] = {
-//       dataset: 'elkhart',
-//       siteId: siteId,
-//       siteName: siteName,
-//       lat: feature.geometry.coordinates[1],
-//       lon: feature.geometry.coordinates[0],
-//       feature: feature,
-//       df: dframe,
-//       datainfo: {
-//         frequency: 'W',
-//         lastObservation: 0
-//       }
-//     };
-//   }
-
-
-//   async processElkhart(data) {
-//     data.features.forEach(feature => {
-//       let props = feature.properties;
-//       delete feature.properties;
-
-//       // "Christiana Creek - CR 4" -> "elkhart-Christiana-Creek-CR-4"
-//       const siteId = 'elkhart-' + safeID(props.Site_Location_Name);
-//       if(!this.sites[siteId]) {
-//         this.initElkhartSite(siteId, props.Site_Location_Name, feature);
-//       }
-
-//       let columns = {
-//         raining: props["RAINING"],
-//         wet: props["WET"] == "1",
-//         temp: props["TEMP"],
-//         do: props["DO"],
-//         spc: props["SPC"],
-//         ph: props["PH"],
-//         nitrates: props["NITRATES"],
-//         phosphorus: props["PHOSPHORUS"],
-//         chlorides: props["CHLORIDES"],
-//         tds: props["TDS"],
-//         tss: props["TSS"],
-//         ecoli: props["E__COLI"],
-//         date: parseInt(props["DATE"]),
-//         current: props["Current_"]
-//       }
-
-//       let dframe = new df.DataFrame([columns]).setIndex('date')
-//       this.sites[siteId].df = this.sites[siteId].df.concat(dframe).bake();
-//     });
-
-//   }
-
-//   sortByDate() {
-//     let now = new Date(_.now());
-
-//     for (const [id, site] of Object.entries(this.sites)) {
-//       site.df = site.df.orderBy(row => row.date).bake();
-
-//       if(site.dataset == 'elkhart') {
-//         site.datainfo.lastObservation = betweenDays(new Date(site.df.getSeries('date').last()), now);
-//       }
-//     }
-//   }
-
-//   // turn all the sites into a geojson feature collection
-//   siteFeatureCollection() {
-//     const featureCollection = {
-//       type: 'FeatureCollection',
-//       features: _.values(_.mapValues(this.sites, 'feature'))
-//     };
-
-
-//     return featureCollection;
-//   }
-
-//   printStatistics() {
-//     // get ranges
-//     let allSeries = {}
-//     for (const [id, site] of Object.entries(this.sites)) {
-
-//       for (const column of site.df.getColumns()) {
-//         console.log(column);
-//         const name = column.name;
-//         const series = column.series;
-//         console.log(name);
-//         if(!allSeries[name]) {
-//           allSeries[name] = new df.Series();
-//         }
-
-//         allSeries[name] = allSeries[name].concat(series)
-//       }
-//     }
-//     console.log(allSeries);
-//     for (const [name, series] of Object.entries(allSeries)) {
-//       console.log(`${name} [${series.min()}, ${series.max()}]  AVG:${series.median()} MEDIAN:${series.median()}`);
-//     }
-
-//     // window.allSeries = allSeries;
-//   }
-// }
-
-
 import * as df from 'data-forge';
 import Papa from 'papaparse';
 
-import { sites, getSite } from "../stores";
-import type { Site } from "../stores";
-
+import { getSite, setSite } from '../stores';
+import type { Site } from '../stores';
 import { tzAbbr } from './tzAbbr';
+import { seriesIds } from '../definitions';
+import { betweenDays, groupBy } from '../helpers';
+import strftime from '../strftime';
 
-import { scales } from "../definitions"
+type DframeMap = {
+  [key: string]: df.IDataFrame;
+}
 
-
-let dframes = {};
+let dframes: DframeMap = {};
+window['dframes'] = dframes;
 
 const siteDataset = siteId => siteId.replace(/-\d+$/, '');
 
@@ -168,8 +26,52 @@ function siteRowsToDatasets(rows): string[] {
 class Model {
   registerSite(site: Site) {
     // console.log(site);
-    sites.update(sitesArr => [...sitesArr, site]);
+    setSite(site);
     dframes[site.id] = new df.DataFrame({columnNames: ['date'], rows: []}).setIndex('date');
+  }
+
+  sortDataFrames() {
+    for (const siteId of Object.keys(dframes)) {
+      dframes[siteId] = dframes[siteId].orderBy(row => row.date).bake();
+    }
+  }
+
+  updateSitesDataInfo() {
+    this.sortDataFrames();
+
+    // calculate datainfo
+    let now = new Date(Date.now());
+    for (const siteId of Object.keys(dframes)) {
+      let site = getSite(siteId);
+      const dateIndex = dframes[siteId].getIndex();
+
+      if(site.dataset !== 'usgs' && dateIndex.count() > 1) {
+        // console.log('debug datainfo', siteId,
+        // new Date(dateIndex.first()).toLocaleDateString(),
+        // new Date(dateIndex.last()).toLocaleDateString(),
+        // 'days to today', betweenDays(new Date(dateIndex.last()), now),
+        // 'inbetween days', betweenDays(new Date(dateIndex.first()), new Date(dateIndex.last())));
+
+        site.observationDaysSinceLast = betweenDays(new Date(dateIndex.last()), now);
+
+        const daysRange = betweenDays(new Date(dateIndex.first()), new Date(dateIndex.last()));
+        const observationInterval = daysRange / dateIndex.count();
+
+        if(observationInterval <= 1 ) {
+          site.observationFrequency = 'RT';
+        } else if(observationInterval < 7) {
+          site.observationFrequency = 'D';
+        } else if(observationInterval < 30) {
+          site.observationFrequency = 'W';
+        } else if(observationInterval < 60) {
+          site.observationFrequency = 'M';
+        } else {
+          site.observationFrequency = 'Y';
+        }
+
+        setSite(site);
+      }
+    }
   }
 
   getValue(siteId: string, seriesId: string) {
@@ -185,6 +87,7 @@ class Model {
       }
     }
   }
+
 
   // siteId,name,current,lat,lon
   // ecoli-1,ANGELA,yes,41.693199,-86.263052
@@ -208,8 +111,8 @@ class Model {
       site.lon = row.lon
       site.name = row.name
       // TODO: recalculate this after all data is loaded
-      site.observationFrequency = 'M',
-      site.observationDaysSinceLast = 30;
+      site.observationFrequency = 'Y',
+      site.observationDaysSinceLast = 365;
 
       if(!site.id || !site.lat || !site.lon) {
         console.log(`skip bad sites row #${i+1}`, row);
@@ -222,9 +125,38 @@ class Model {
   }
 
   async processSJRBCSeriesData(dataCsv: string) {
-    console.log('process data CSV', dataCsv.slice(0, 420));
-  }
+    let rows: any[] = Papa.parse(dataCsv, {
+      delimiter: ",",
+      comments: "#",
+      header: true,
+      skipEmptyLines: 'greedy'
+    }).data;
 
+    // filter to seriesIds
+    rows.forEach(r => {
+      r['date'] = Date.parse(r['date']) || Date.parse(r['year']);
+
+      Object.keys(r).forEach(k => {
+        if(!seriesIds.has(k)) {
+          delete r[k];
+        } else {
+          const val = r[k];
+          if(val === 'NA' || val === '' || val === undefined) {
+            delete r[k];
+          }
+        }
+      });
+    });
+
+    // construct dframes
+    const bySiteId = groupBy(rows, r => r.siteId);
+    for(const [siteId, rows] of Object.entries(bySiteId)) {
+      // console.log(siteId, rows);
+
+      let dframe = new df.DataFrame(rows).setIndex('date')
+      dframes[siteId] = dframes[siteId].concat(dframe).bake();
+    }
+  }
 
 
   importUSGSSites(sitesResponseData) {
@@ -256,7 +188,7 @@ class Model {
 
 
 
-  async processUSGSSeriesData(dataCsv) {
+  async processUSGSSeriesData(dataCsv: string) {
     let section = '';
     dataCsv.split("\n").forEach((l) => {
       if(l[0] == '#') {
@@ -269,6 +201,7 @@ class Model {
       }
     });
 
+    this.sortDataFrames();
   }
 
   processUSGSSeriesDataSection(dataCsv) {
@@ -301,7 +234,7 @@ class Model {
       }
     }
 
-    const dfCols = [];
+    const dfRows = [];
     let siteId;
 
     rows.forEach(row => {
@@ -331,14 +264,14 @@ class Model {
         }
 
         if(flowCol || heightCol) {
-          dfCols.push(columns);
+          dfRows.push(columns);
         }
       }
     });
 
-    // log(siteId, dfCols);
+    // log(siteId, dfRows);
 
-    let dframe = new df.DataFrame(dfCols).setIndex('date')
+    let dframe = new df.DataFrame(dfRows).setIndex('date')
     dframes[siteId] = dframes[siteId].concat(dframe).bake();
   }
 
@@ -351,3 +284,30 @@ const model = new Model();
 // window.model = model;
 
 export { model };
+
+
+//   printStatistics() {
+//     // get ranges
+//     let allSeries = {}
+//     for (const [id, site] of Object.entries(this.sites)) {
+
+//       for (const column of site.df.getColumns()) {
+//         console.log(column);
+//         const name = column.name;
+//         const series = column.series;
+//         console.log(name);
+//         if(!allSeries[name]) {
+//           allSeries[name] = new df.Series();
+//         }
+
+//         allSeries[name] = allSeries[name].concat(series)
+//       }
+//     }
+//     console.log(allSeries);
+//     for (const [name, series] of Object.entries(allSeries)) {
+//       console.log(`${name} [${series.min()}, ${series.max()}]  AVG:${series.median()} MEDIAN:${series.median()}`);
+//     }
+
+//     // window.allSeries = allSeries;
+//   }
+// }
