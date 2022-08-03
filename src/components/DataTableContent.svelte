@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { fly, slide } from 'svelte/transition';
+
   import { getSite, selectedSites, selectedSeries, mapStore } from '../lib/stores';
   import { model } from '../lib/data/model';
   import List, { Item, Separator, Text, PrimaryText, SecondaryText } from '@smui/list';
@@ -39,17 +41,19 @@
 
   <h2>Data Table</h2>
   <h3>{$selectedSeries} for {$selectedSites.size} site(s) selected</h3>
-  <List threeLine nonInteractive>
+  <List threeLine nonInteractive >
     {#each Array.from($selectedSites).reverse() as siteId}
-      <Separator/>
+    <Separator/>
+    <div transition:slide>
       <Item>
         <Text>
-          <!-- svelte-ignore a11y-invalid-attribute -->
-          <PrimaryText><a href="#" on:click={() => centerMapOn(siteId)}>{siteId}</a></PrimaryText>
+          <!-- svelte-ignore a11y-missing-attribute -->
+          <PrimaryText><a on:click={() => centerMapOn(siteId)}>{siteId}</a></PrimaryText>
           <SecondaryText>{getSite(siteId).name}</SecondaryText>
           <SecondaryText>{valueDate(siteId, $selectedSeries)}: {value(siteId, $selectedSeries)}</SecondaryText>
         </Text>
       </Item>
+    </div>
     {/each}
 
   </List>
