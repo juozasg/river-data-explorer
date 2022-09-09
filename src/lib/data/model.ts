@@ -5,7 +5,7 @@ import { getSite, setSite } from '../stores';
 import type { Site } from '../stores';
 import { tzAbbr } from './tzAbbr';
 import { seriesIds } from '../definitions';
-import { betweenDays, groupBy } from '../helpers';
+import { betweenDays, groupBy, getSetFirst, chunkUsgsResponse } from '../helpers';
 import strftime from '../strftime';
 
 type DframeMap = {
@@ -97,6 +97,15 @@ class Model {
       } catch(error) {
         return undefined;
       }
+    }
+  }
+
+  getSitesTimeseries(sites: Set<string>, seriesId) {
+    if(sites.size == 0) {
+      return new df.Series();
+    } else {
+      const siteId = getSetFirst(sites);
+      return dframes[siteId]?.getSeries(seriesId);
     }
   }
 
@@ -199,19 +208,10 @@ class Model {
   }
 
 
-
-  async processUSGSSeriesData(dataCsv: string) {
-    let section = '';
-    dataCsv.split("\n").forEach((l) => {
-      if(l[0] == '#') {
-        if(section.length > 0) {
-          this.processUSGSSeriesDataSection(section);
-          section = '';
-        }
-      } else {
-        section = section + l + "\n";
-      }
-    });
+  // combinedCsv is several CSV text blocks combined
+  // but each separated by a commented out (#) block 
+  async processUSGSSeriesData(combinedCsv) {
+    chunkUsgsResponse(combinedCsv).forEach(csv => { this.processUSGSSeriesDataSection(csv) });
 
     this.sortDataFrames();
   }

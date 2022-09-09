@@ -20,7 +20,7 @@
     {#if $selectedSeries === 'datainfo' }
       <Wrapper>
         {@html measurementFrequencyRadiusListSvg(scale).outerHTML}
-        <Tooltip yPos="above" xPos="start">Yearly, Monthly, Weekly, Daily, Real-Time</Tooltip>
+        <Tooltip hideDelay={0} yPos="above" xPos="start" id="tooltip-legend">Yearly, Monthly, Weekly, Daily, Real-Time</Tooltip>
       </Wrapper>
     {:else}
       {@html radiusListSvg(scale).outerHTML}
@@ -38,6 +38,12 @@
 
   .legend-datainfo {
     margin-top: 1.5rem !important;
+  }
+
+  :global(#tooltip-legend) {
+    top: auto !important;
+    left: 100px !important;
+    bottom: 150px;
   }
 
 </style>

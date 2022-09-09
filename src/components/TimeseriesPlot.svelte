@@ -12,6 +12,9 @@
   // one bright color easier to follow than two bright colors
   import Plotly from 'plotly.js-basic-dist'
 
+  import { leftSites, leftSeries } from '../lib/stores';
+  import { prepareData, axisLabel } from '../lib/timeseries';
+
   export let width, height;
 
   let plotlyElement;
@@ -22,28 +25,56 @@
 
   $: {
     console.log('update timeseries plot', width, height);
-    plotlyReact(width, height);
+    plotlyReact(width, height, $leftSites, $leftSeries);
   }
 
 
   function plotlyAction(container) {
     plotlyElement = container;
-    plotlyReact(width, height);
+    plotlyReact(width, height, $leftSites, $leftSeries);
   }
 
-  function plotlyReact(width, height) {
+  function plotlyReact(width, height, leftSites, leftSeries) {
     if(plotlyElement) {
-      const data: Plotly.Data[] = [
-        {
-          x: ['giraffes', 'orangutans', 'monkeys'],
-          y: [20, 14, 23],
-          type: 'bar'
-        }
-      ];
-      Plotly.react(plotlyElement, data, {width: width, height: height});
-    }
+      const layout = {
+        width: width, 
+        height: height,
+        margin: {
+          autoexpand: false,
+          t: 75
+        },
+        // legend: true,
+        legend: {
+          x: 0,
+          y: 1.53,
+          // xanchor: 'right'
+        },
 
+        xaxis: {
+          // rangeselector: selectorOptions,
+          rangeslider: {},
+          tickformat: "%H:%M\n%Y-%m-%d",
+          tickangle: 0,
+          tickfont: {size: 10}
+        },
+
+        yaxis: {
+          title: axisLabel(leftSites, leftSeries),
+          fixedrange: false,
+          color: '#345',
+          automargin: true,
+          standoff: 40
+        },
+
+        
+      };
+
+      const data = [prepareData(leftSites, leftSeries, '#345')];
+      Plotly.react(plotlyElement, data, layout);
+    }
   }
+
+
 
 </script>
 

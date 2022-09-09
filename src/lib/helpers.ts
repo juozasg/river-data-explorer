@@ -23,3 +23,30 @@ export const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
     (groups[key(item)] ||= []).push(item);
     return groups;
   }, {} as Record<K, T[]>);
+
+
+export function getSetFirst(set) {
+  return set.values().next().value;
+}
+
+export function chunkUsgsResponse(text) {
+  let chunks = []
+  let lines = []
+  text.split("\n").map(l => {
+    if(l.indexOf('#') != 0) {
+      lines.push(l);
+    } else {
+      if(lines.length > 0) {
+        chunks.push(lines.join("\n"));
+      }
+      lines = [];
+    }
+  });
+  
+  if(lines.length > 0) {
+    chunks.push(lines.join("\n"));
+  } 
+
+  return chunks;
+}
+

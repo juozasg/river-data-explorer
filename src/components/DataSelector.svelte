@@ -8,9 +8,11 @@
   import Tooltip, { Wrapper } from '@smui/tooltip';
 
   import Legend from './Legend.svelte';
-  import { showDataSelector, selectedSeries, selectedSites, clearSelectedSites } from '../lib/stores';
+  import { showDataSelector, showTimeseries, 
+    selectedSeries, selectedSites, clearSelectedSites, 
+    leftSeries, leftSites,
+    rightSeries, rightSites } from '../lib/stores';
   import { labels } from '../lib/definitions';
-  import { onDestroy, onMount } from 'svelte';
 
   let menu: MenuComponentDev;
   let selectionText: String;
@@ -25,9 +27,16 @@
     }
   }
 
-  const addToSelection = () => {
-		// $selectedSites = [...$selectedSites, Math.random()];
-	};
+  const graphLeft = () => {
+    $showTimeseries = true;
+    $leftSites = new Set($selectedSites);
+    $leftSeries = $selectedSeries;
+  };
+
+  const graphRight = () => {
+    // $selectedSites = [...$selectedSites, Math.random()];
+    $showTimeseries = true;
+  };
 </script>
 
 
@@ -60,7 +69,7 @@
           <Fab color="secondary" mini on:click={() => menu.setOpen(true)}>
             <Icon class="material-icons">insights</Icon>
           </Fab>
-          <Tooltip id="tooltip-addtimeseries">Add selected sites to the Timeseries View</Tooltip>
+          <Tooltip hideDelay={0} id="tooltip-addtimeseries">Add selected sites to the Timeseries View</Tooltip>
         </Wrapper>
       </div>
 
@@ -69,7 +78,7 @@
           <Fab color="secondary" mini on:click={clearSelectedSites}>
             <Icon class="material-icons">clear</Icon>
           </Fab>
-          <Tooltip id="tooltip-unselect">Unselect all sites</Tooltip>
+          <Tooltip hideDelay={0} id="tooltip-unselect">Unselect all sites</Tooltip>
         </Wrapper>
       </div>
     </div>
@@ -78,12 +87,12 @@
       <p class='menulist-title'>Graph Selected To</p>
       <List dense>
         <Separator />
-        <Item selected={false} on:SMUI:action={addToSelection}>
+        <Item on:SMUI:action={graphLeft}>
           <i class="text-icon material-icons" aria-hidden="true" style='margin-right: 0.5rem'>arrow_circle_left</i>
           Left Timeseries
         </Item>
         <Separator />
-        <Item  on:SMUI:action={addToSelection}>
+        <Item on:SMUI:action={graphRight}>
           <i class="text-icon material-icons" aria-hidden="true" style='margin-right: 0.5rem'>arrow_circle_right</i>
           Right Timeseries
         </Item>

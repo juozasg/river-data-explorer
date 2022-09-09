@@ -7,7 +7,8 @@ import { fetchJSON, fetchText } from "./loader";
 import strftime from "../strftime";
 import { oneMonthAgo } from "../helpers";
 
-const  usgsStationIds = '04096405,04096515,04097500,040975299,04097540,04099000,04100500,04101000,04101500,04101535,04101800,04102500,04099750';
+// const  usgsStationIds = '04096405,04096515,04097500,040975299,04097540,04099000,04100500,04101000,04101500,04101535,04101800,04102500,04099750';
+const  usgsStationIds = '04099750';
 
 
 export async function loadUSGS() {

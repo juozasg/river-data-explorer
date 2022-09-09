@@ -17,7 +17,7 @@
     <Title id="loader-title">Loading Data</Title>
 
     <LoaderUsgs/>
-    <LoaderSjrbc/>
+    <!-- <LoaderSjrbc/> -->
 
     <Actions>
       <Button action="accept">
