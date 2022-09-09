@@ -41,7 +41,8 @@
         height: height,
         margin: {
           autoexpand: false,
-          t: 75
+          t: 30,
+          l: 60
         },
         // legend: true,
         legend: {
@@ -59,11 +60,11 @@
         },
 
         yaxis: {
-          title: axisLabel(leftSites, leftSeries),
+          title: {
+            text: axisLabel(leftSites, leftSeries) + 'aa',
+          },
           fixedrange: false,
           color: '#345',
-          automargin: true,
-          standoff: 40
         },
 
         

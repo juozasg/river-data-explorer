@@ -21,7 +21,7 @@
   <div id='timeseries' class='elevation'
         transition:fly="{{ x: $viewportWidth, duration: 400 }}"
         style='width: {width}px; height: {height}px'>
-    <TimeseriesPlot width={width} height= {height}/>
+    <TimeseriesPlot width={width} height={height}/>
   </div>
 {/if}
 
