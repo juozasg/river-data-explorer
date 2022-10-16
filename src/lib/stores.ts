@@ -10,11 +10,12 @@ export const showDataTable = writable(false);
 
 export const selectedSeries = writable('datainfo');
 
-// export const leftSites = writable(new Set<string>(['usgs-04099750']));
-export const leftSites = writable(new Set<string>());
+export const leftSites = writable(new Set<string>(['usgs-04099750']));
+// export const leftSites = writable(new Set<string>());
 export const leftSeries = writable('datainfo');
 
-export const rightSites = writable(new Set<string>());
+export const rightSites = writable(new Set<string>(['usgs-04099750']));
+// export const rightSites = writable(new Set<string>());
 export const rightSeries = writable('datainfo');
 
 export const mapStore: Writable<L.Map> = writable();

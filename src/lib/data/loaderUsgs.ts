@@ -2,7 +2,7 @@ import { model } from  "./model";
 
 import { fetchJSON, fetchText } from "./loader";
 
-// import { dataLoaded } from "../stores";
+import { leftSeries, rightSeries } from "../stores";
 
 import strftime from "../strftime";
 import { oneMonthAgo } from "../helpers";
@@ -21,6 +21,9 @@ export async function loadUSGS() {
   } catch(e) {
     console.error(e);
     throw e;
+  } finally {
+    leftSeries.set('flow');
+    rightSeries.set('height');
   }
 }
 

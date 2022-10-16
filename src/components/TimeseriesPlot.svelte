@@ -12,7 +12,7 @@
   // one bright color easier to follow than two bright colors
   import Plotly from 'plotly.js-basic-dist'
 
-  import { leftSites, leftSeries } from '../lib/stores';
+  import { leftSites, leftSeries, rightSites, rightSeries } from '../lib/stores';
   import { prepareData, axisLabel } from '../lib/timeseries';
 
   export let width, height;
@@ -24,17 +24,17 @@
 
 
   $: {
-    console.log('update timeseries plot', width, height);
-    plotlyReact(width, height, $leftSites, $leftSeries);
+    console.log('update timeseries plot', $leftSeries);
+    plotlyReact(width, height, $leftSites, $leftSeries, $rightSites, $rightSeries);
   }
 
 
   function plotlyAction(container) {
     plotlyElement = container;
-    plotlyReact(width, height, $leftSites, $leftSeries);
+    plotlyReact(width, height, $leftSites, $leftSeries, $rightSites, $rightSeries);
   }
 
-  function plotlyReact(width, height, leftSites, leftSeries) {
+  function plotlyReact(width, height, leftSites, leftSeries, rightSites, rightSeries) {
     if(plotlyElement) {
       const layout = {
         width: width, 
@@ -42,7 +42,7 @@
         margin: {
           autoexpand: false,
           t: 30,
-          l: 60
+          l: 79
         },
         // legend: true,
         legend: {
@@ -61,16 +61,32 @@
 
         yaxis: {
           title: {
-            text: axisLabel(leftSites, leftSeries) + 'aa',
+            text: axisLabel(leftSites, leftSeries),
           },
           fixedrange: false,
-          color: '#345',
+          color: '#346',
+        },
+
+        yaxis2: {
+          title: {
+            text: axisLabel(leftSites, leftSeries),
+          },
+          titlefont: {color: '#d81b60'},
+          tickfont: {color: '#ccccc'},
+          anchor: 'x',
+          overlaying: 'y',
+          side: 'right',
+          fixedrange: false
         },
 
         
-      };
+      } as Partial<Plotly.Layout>;
+      
+      const leftData = prepareData(leftSites, leftSeries, '#345');
+      const rightData = prepareData(rightSites, rightSeries, '#d81b60');
+      rightData['yaxis'] = 'y2';
 
-      const data = [prepareData(leftSites, leftSeries, '#345')];
+      const data = [leftData, rightData];
       Plotly.react(plotlyElement, data, layout);
     }
   }

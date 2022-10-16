@@ -29,4 +29,8 @@
   /* * :global(.myClass) {
     font-style: italic;
   } */
+
+  :global(body) {
+    background-color: gray;
+  }
 </style>
