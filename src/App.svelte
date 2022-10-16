@@ -1,39 +1,37 @@
 <script lang="ts">
-  import Button, { Label } from '@smui/button';
+  // import svelteLogo from './assets/svelte.svg'
 
-  let clicked = 0;
+  // import Map from './components/Map.svelte';
+  // import WindowSelector from './components/WindowSelector.svelte';
+  // import Dashboard from './components/Dashboard.svelte';
+  // import DataTable from './components/DataTable.svelte';
+  // import Timeseries from './components/Timeseries.svelte';
+  // import Loader from './components/Loader.svelte';
 </script>
 
+
 <main>
-  <div>
-    <Button on:click={() => clicked++}>
-      <Label>Default</Label>
-    </Button>
-    <Button on:click={() => clicked++} disabled>
-      <Label>Disabled</Label>
-    </Button>
-    <Button on:click={() => clicked++} ripple={false}>
-      <Label>No Ripple</Label>
-    </Button>
-    <!--
-      Note: to target this class, you need to use
-      a :global() selector. See the styles below.
-    -->
-    <Button on:click={() => clicked++} class="myClass">
-      <Label>With a Class</Label>
-    </Button>
-  </div>
-  
-  <pre class="status">Clicked: {clicked}</pre>
+  Hey?
+  Ho!
+  <span class="material-icons">
+    expand_more
+  </span>
+  <!-- <Map/>
+  <Dashboard/>
+  <Timeseries/>
+  <DataTable/>
+  <WindowSelector/>
+  <Loader/> -->
+
+  <!-- <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" /> -->
 
 </main>
-
 
 <style>
   /* Accessing the class with "*" in front limits
     the scope to anything under this component's
     elements. */
-  * :global(.myClass) {
+  /* * :global(.myClass) {
     font-style: italic;
-  }
+  } */
 </style>
