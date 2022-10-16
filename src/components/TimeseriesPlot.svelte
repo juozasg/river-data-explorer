@@ -63,15 +63,16 @@
           title: {
             text: axisLabel(leftSites, leftSeries),
           },
+          tickfont: {color: '#ccccc'},
           fixedrange: false,
-          color: '#346',
+          color: '#9c27b0',
         },
 
         yaxis2: {
           title: {
-            text: axisLabel(leftSites, leftSeries),
+            text: axisLabel(rightSites, rightSeries),
           },
-          titlefont: {color: '#d81b60'},
+          titlefont: {color: '#2196f3'},
           tickfont: {color: '#ccccc'},
           anchor: 'x',
           overlaying: 'y',
@@ -81,9 +82,9 @@
 
         
       } as Partial<Plotly.Layout>;
-      
-      const leftData = prepareData(leftSites, leftSeries, '#345');
-      const rightData = prepareData(rightSites, rightSeries, '#d81b60');
+        
+      const leftData = prepareData(leftSites, leftSeries, '#9c27b0');
+      const rightData = prepareData(rightSites, rightSeries, '#2196f3');
       rightData['yaxis'] = 'y2';
 
       const data = [leftData, rightData];

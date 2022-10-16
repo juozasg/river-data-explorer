@@ -22,8 +22,8 @@ export async function loadUSGS() {
     console.error(e);
     throw e;
   } finally {
-    leftSeries.set('flow');
-    rightSeries.set('height');
+    leftSeries.set('height');
+    rightSeries.set('flow');
   }
 }
 
