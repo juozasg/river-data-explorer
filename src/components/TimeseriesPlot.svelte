@@ -1,15 +1,4 @@
 <script lang="ts">
-  // https://www.chartjs.org/docs/latest/samples/line/multi-axis.html
-  // https://www.chartjs.org/chartjs-plugin-zoom/latest/guide/usage.html
-  // https://echarts.apache.org/examples/en/editor.html?c=multiple-y-axis
-  // https://echarts.apache.org/examples/en/editor.html?c=line-tooltip-touch
-  // https://echarts.apache.org/handbook/en/basics/release-note/v5-feature/#time-axis
-  // https://stackoverflow.com/questions/69735038/echarts-datazoom-make-height-bigger
-  // https://codesandbox.io/s/chartjs-timeseries-odmnmh?file=/components/Chart.svelte
-  // https://github.com/chartjs/chartjs-plugin-zoom/issues/649
-  //
-  // https://apexcharts.com/javascript-chart-demos/mixed-charts/multiple-yaxis/
-  // one bright color easier to follow than two bright colors
   import Plotly from 'plotly.js-basic-dist'
 
   import { leftSites, leftSeries, rightSites, rightSeries } from '../lib/stores';
@@ -18,6 +7,10 @@
   export let width, height;
 
   let plotlyElement;
+
+
+  const leftColor = '#42124a';
+  const rightColor = '#5caded';
 
 
   console.log('init timeseries plot', width, height);
@@ -37,7 +30,7 @@
   function plotlyReact(width, height, leftSites, leftSeries, rightSites, rightSeries) {
     if(plotlyElement) {
       const layout = {
-        width: width, 
+        width: width,
         height: height,
         margin: {
           autoexpand: false,
@@ -65,14 +58,14 @@
           },
           tickfont: {color: '#ccccc'},
           fixedrange: false,
-          color: '#9c27b0',
+          color: leftColor,
         },
 
         yaxis2: {
           title: {
             text: axisLabel(rightSites, rightSeries),
           },
-          titlefont: {color: '#2196f3'},
+          titlefont: {color: rightColor},
           tickfont: {color: '#ccccc'},
           anchor: 'x',
           overlaying: 'y',
@@ -80,11 +73,12 @@
           fixedrange: false
         },
 
-        
+
       } as Partial<Plotly.Layout>;
-        
-      const leftData = prepareData(leftSites, leftSeries, '#9c27b0');
-      const rightData = prepareData(rightSites, rightSeries, '#2196f3');
+
+      const leftData = prepareData(leftSites, leftSeries, leftColor);
+      const rightData = prepareData(rightSites, rightSeries, rightColor);
+
       rightData['yaxis'] = 'y2';
 
       const data = [leftData, rightData];

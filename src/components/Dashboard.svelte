@@ -35,6 +35,8 @@
   const graphRight = () => {
     // $selectedSites = [...$selectedSites, Math.random()];
     $showTimeseries = true;
+    $rightSites = new Set($selectedSites);
+    $rightSeries = $selectedSeries;
   };
 </script>
 
@@ -68,7 +70,7 @@
           <Fab color="secondary" mini on:click={() => menu.setOpen(true)}>
             <Icon class="material-icons">insights</Icon>
           </Fab>
-          <Tooltip hideDelay={0} id="tooltip-addtimeseries">Add selected sites to the Timeseries View</Tooltip>
+          <Tooltip showDelay={600} hideDelay={0} id="tooltip-addtimeseries">Add selected sites to the Timeseries View</Tooltip>
         </Wrapper>
       </div>
 
