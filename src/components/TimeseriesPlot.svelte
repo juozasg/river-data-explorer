@@ -12,12 +12,8 @@
   const leftColor = '#42124a';
   const rightColor = '#5caded';
 
-
-  console.log('init timeseries plot', width, height);
-
-
   $: {
-    console.log('update timeseries plot', $leftSeries);
+    // console.log('update timeseries plot', $leftSeries);
     plotlyReact(width, height, $leftSites, $leftSeries, $rightSites, $rightSeries);
   }
 

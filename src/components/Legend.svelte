@@ -30,10 +30,10 @@
 
 <style lang="scss">
   #legend {
-    // margin-left: 30px;
+    margin-left: 30px;
     margin-top: 2rem;
     display: flex;
-    justify-content: center;
+    // justify-content: center;
   }
 
   .legend-datainfo {

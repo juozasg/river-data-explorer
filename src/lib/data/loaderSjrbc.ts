@@ -2,7 +2,7 @@ import { model } from  "./model";
 
 import { fetchText } from "./loader";
 
-const remoteDir = 'https://nyc3.digitaloceanspaces.com/sjrbc/data';
+const remoteDir = 'https://raw.githubusercontent.com/Limnogirl90/SJRBC-web-map-data/main';
 
 
 
@@ -11,6 +11,8 @@ export async function loadSJRBC() {
     let sites = await loadSites();
 
     const datasets = model.importSJRBCSites(sites);
+    console.log(datasets);
+
 
     const loadDatasetsPromises = datasets.map(async name => {
       const dataCsv = await fetchText(remoteDir + '/' + name + '.csv');

@@ -1,19 +1,27 @@
 <script lang="ts">
   import { fly, slide } from 'svelte/transition';
+  import List, { Item, Separator, Text, PrimaryText, SecondaryText } from '@smui/list';
 
   import { getSite, selectedSites, selectedSeries, mapStore } from '../lib/stores';
   import { model } from '../lib/data/model';
-  import List, { Item, Separator, Text, PrimaryText, SecondaryText } from '@smui/list';
+  import { labels, units } from '../lib/definitions';
   import { get } from 'svelte/store';
 
+  function valueUndefined(site, series) {
+    return model.getValue(site, series) === undefined;
+  }
 
-  function value(siteId: string, selectedSeries) {
+  function valueWithUnits(siteId: string, selectedSeries) {
     const val = model.getValue(siteId, selectedSeries);
+    console.log(val);
+    
     if(val === undefined) {
       return 'n/a';
     }
 
-    return val;
+    const u = units[selectedSeries] || '';
+
+    return u.length > 0 ? val + ` ${u}` : val;
   }
 
   function valueDate(siteId: string, selectedSeries) {
@@ -22,7 +30,9 @@
       return 'n/a';
     }
 
-    return new Date(model.getValueDate(siteId, selectedSeries)).toISOString().slice(0,10);
+    const isoDate = new Date(model.getValueDate(siteId, selectedSeries)).toISOString();
+
+    return (isoDate.slice(0, 10) + ' ' + isoDate.slice(11, 16));
   }
 
   function centerMapOn(siteId: string) {
@@ -38,9 +48,9 @@
 
 
 <div id='data-table-content'>
-
   <h2>Data Table</h2>
-  <h3>{$selectedSeries} for {$selectedSites.size} site(s) selected</h3>
+  <h3>{$selectedSites.size} site(s) selected</h3>
+  <h3>{labels[$selectedSeries]}:</h3>
   <List threeLine nonInteractive >
     {#each Array.from($selectedSites).reverse() as siteId}
     <Separator/>
@@ -48,9 +58,14 @@
       <Item>
         <Text>
           <!-- svelte-ignore a11y-missing-attribute -->
-          <PrimaryText><a on:click={() => centerMapOn(siteId)}>{siteId}</a></PrimaryText>
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
+          <PrimaryText><a class="pointer" on:click={() => centerMapOn(siteId)}>{siteId}</a></PrimaryText>
           <SecondaryText>{getSite(siteId).name}</SecondaryText>
-          <SecondaryText>{valueDate(siteId, $selectedSeries)}: {value(siteId, $selectedSeries)}</SecondaryText>
+          {#if $selectedSeries === 'datainfo' || valueUndefined(siteId, selectedSeries)}
+            <SecondaryText><b>{valueWithUnits(siteId, $selectedSeries)}</b></SecondaryText>
+          {:else}
+            <SecondaryText>{valueDate(siteId, $selectedSeries)}: <b>{valueWithUnits(siteId, $selectedSeries)}</b></SecondaryText>
+          {/if}
         </Text>
       </Item>
     </div>
@@ -64,6 +79,10 @@
     padding: 0 0.5rem 0.5rem 1rem;
     h3 {
       margin: 0.5rem 0;
+    }
+
+    a.pointer {
+      cursor: pointer;
     }
   }
 </style>

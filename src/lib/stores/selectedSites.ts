@@ -1,7 +1,8 @@
 import { writable, get } from 'svelte/store';
 
 
-export const selectedSites = writable(new Set<string>(['usgs-04099750']));
+// export const selectedSites = writable(new Set<string>(['usgs-04099750']));
+export const selectedSites = writable(new Set<string>([]));
 
 function isSiteSelected(siteId: string) {
   return get(selectedSites).has(siteId);

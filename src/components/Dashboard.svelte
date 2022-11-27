@@ -11,7 +11,7 @@
     selectedSeries, selectedSites, clearSelectedSites, 
     leftSeries, leftSites,
     rightSeries, rightSites } from '../lib/stores';
-  import { labels } from '../lib/definitions';
+  import { labels, labelWithUnits } from '../lib/definitions';
 
   let menu: Menu;
   let selectionText: String;
@@ -33,7 +33,6 @@
   };
 
   const graphRight = () => {
-    // $selectedSites = [...$selectedSites, Math.random()];
     $showTimeseries = true;
     $rightSites = new Set($selectedSites);
     $rightSeries = $selectedSeries;
@@ -49,15 +48,14 @@
       <div id='data-variable-selector'>
         <Select bind:value={$selectedSeries} label="Variable" style='width:300px'>
           {#each Object.entries(labels) as [key, label]}
-            <Option value={key}>{label}</Option>
+            <Option value={key}>{labelWithUnits(key)}</Option>
 
-            {#if key === 'datainfo' || key === 'height'}
+            {#if key === 'datainfo' || key === 'wet' || key === 'bodPercent' || key === 'invertMichigan' || key === 'ph'}
               <Separator />
             {/if}
           {/each}
         </Select>
       </div>
-      <!-- <Tooltip>Choose the monitoring variable to map and analyze</Tooltip> -->
     </Wrapper>
     <Legend/>
 

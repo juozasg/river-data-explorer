@@ -1,22 +1,3 @@
-/*
-chlorides [0, 501.87]   AVG: 22.8 MEDIAN: 22.8
-do [0.31, 60]   AVG: 6.7 MEDIAN: 6.7
-ecoli [0, 210000]   AVG: 132 MEDIAN: 132
-flow [56.8, 6120]  AVG:412 MEDIAN:412
-height [2.93, 21.25]  AVG:5.11 MEDIAN:5.11
-nitrates [0, 184.49]   AVG: 1.2 MEDIAN: 1.2
-ph [5.58, 12.4]   AVG: 8.04 MEDIAN: 8.04
-phosphorus [0, 26.3]   AVG: 0.222 MEDIAN: 0.222
-spc [2, 2141]   AVG: 509 MEDIAN: 509
-tds [351, 700]   AVG: 583 MEDIAN: 583
-temp [3.5, 34.1]   AVG: 20.1 MEDIAN: 20.1
-tss [0, 408]   AVG: 5.5 MEDIAN: 5.5
-
-raining [NaN, NaN]   AVG: 0 MEDIAN: 0
-wet [0, 1]   AVG: 0 MEDIAN: 0
-*/
-
-
 import * as d3 from "d3";
 import sprintf from "sprintf";
 
@@ -40,49 +21,90 @@ const interpolateDatainfo = (x) => {
 }
 
 
-export const seriesIds = new Set([
-  'siteId', 'date', 'bod', 'bodPercent', 'chlorides', 'do', 'doOutfall', 'doOutfall',
-  'ecoli', 'flow', 'ibi', 'invertIndiana', 'invertMacro', 'invertMichigan',
-  'invertNarrative', 'nitrates', 'ph', 'phosphorus', 'spc', 'tds',
-  'temp', 'tss', 'turbidity', 'wet']);
+// export const seriesIds = new Set([
+//   'siteId', 'date', 'bod', 'bodPercent', 'chlorides', 'do', 'doContactTank', 'doOutfall',
+//   'ecoli', 'flow', 'ibi', 'invertIndiana', 'invertMacro', 'invertMichigan',
+//   'invertNarrative', 'nitrates', 'ph', 'phosphorus', 'spc', 'tds',
+//   'temp', 'tss', 'turbidity', 'wet']);
+
+
+export const labels: SeriesNames = {
+  datainfo: "Last Measured",
+
+  temp: "Temperature",
+  flow: "Gage Flow",
+  height: "Gage Height",
+  wet: "Ground Condition is Wet",
+
+  do: "Dissolved Oxygen",
+  doContactTank: "Dissolved Oxygen - Contact Tank",
+  doOutfall: "Dissolved Oxygen - Outfall",
+  bod: "Biological Oxygen Demand",
+  bodPercent: "Biological Oxygen Demand",
+
+  ecoli: "E. Coli",
+  fishIbi: "Fish IBI",
+  invertMacro: "Invertebrate Macro Score",
+  invertIndiana: "Invertebrate Indiana Score",
+  invertMichigan: "Invertebrate Michigan Score",
+
+  chlorides: "Chlorides",
+  nitrates: "Nitrates",
+  phosphorus: "Phosphorus",
+  ph: "pH",
+
+  spc: "Specific Conductance",
+  tds: "Total Dissolved Solids",
+  tss: "Total Suspended Solids",
+  turbidity: "Turbidity"
+}
 
 
 export const scales: SeriesScales = {
-  datainfo: d3.scaleSequential([365, 0], interpolateDatainfo).clamp(true),
-
+  bod: d3.scaleSequential([0, 10], d3.interpolateBlues).clamp(true),
+  bodPercent: d3.scaleSequential([0, 100], d3.interpolateInferno).clamp(true),
   chlorides: d3.scaleSequential([0, 600], d3.interpolateGreens).clamp(true),
+  datainfo: d3.scaleSequential([365, 0], interpolateDatainfo).clamp(true),
   do: d3.scaleSequential([0, 100], d3.interpolateGreens).clamp(true),
+  doContactTank: d3.scaleSequential([0, 100], d3.interpolateGreens).clamp(true),
+  doOutfall: d3.scaleSequential([0, 100], d3.interpolateGreens).clamp(true),
   ecoli: d3.scaleSequential([0, 1000], d3.interpolateYlOrBr).clamp(true),
-
+  fishIbi: d3.scaleSequential([0, 60], d3.interpolateRdYlBu).clamp(true),
   flow: d3.scaleSequential([0, 8000], d3.interpolateGnBu).clamp(true),
   height: d3.scaleSequential([0, 30], d3.interpolateBlues).clamp(true),
+  invertIndiana: d3.scaleSequential([0, 60], d3.interpolateRdYlBu).clamp(true),
+  invertMacro: d3.scaleSequential([-10, 60], d3.interpolateRdYlBu).clamp(true),
+  invertMichigan: d3.scaleSequential([-10, 10], d3.interpolateRdYlBu).clamp(true),
   nitrates: d3.scaleSequential([0, 15], d3.interpolatePurples).clamp(true),
   ph: d3.scaleSequential([5.5, 12.5], d3.interpolateTurbo).clamp(true),
-
   phosphorus: d3.scaleSequential([0, 0.5], d3.interpolateInferno).clamp(true),
   spc: d3.scaleSequential([0, 2500], d3.interpolateReds).clamp(true),
   tds: d3.scaleSequential([0, 800], d3.interpolatePuRd).clamp(true),
   temp: d3.scaleSequential([0, 35], interpolateBuYlRd).clamp(true),
-  tss: d3.scaleSequential([0, 500], d3.interpolateRdPu).clamp(true)
+  tss: d3.scaleSequential([0, 500], d3.interpolateRdPu).clamp(true),
+  turbidity: d3.scaleSequential([0, 100], d3.interpolateInferno).clamp(true),
+  wet: d3.scaleSequential([0, 1], d3.interpolateInferno).clamp(true),
 }
 
-
-export const labels: SeriesNames = {
-  datainfo: "Last Measured (days ago)",
-
-  flow: "Gage Flow (ft^3/s)",
-  height: "Gage Height (ft)",
-
-  chlorides: "Chlorides (mg/L)",
-  do: "Dissolved Oxygen (mg/L)",
-  ecoli: "E. Coli (CFU)",
-  nitrates: "Nitrates (mg/L)",
-  ph: "pH",
-  phosphorus: "Phosphorus (mg/L)",
-  spc: "Specific Conductance (uS/cm)",
-  tds: "Total Dissolved Solids (mg/L)",
-  temp: "Temperature (C)",
-  tss: "Total Suspended Solids (mg/L)"
+export const units: SeriesNames = {
+  bod: "mg/L",
+  bodPercent: "%",
+  chlorides: "mg/L",
+  datainfo: "days ago",
+  do: "mg/L",
+  doContactTank: "mg/L",
+  doOutfall: "mg/L",
+  ecoli: "CFU",
+  flow: "ft^3/s",
+  height: "ft",
+  nitrates: "mg/L",
+  ph: "",
+  phosphorus: "mg/L",
+  spc: "uS/cm",
+  tds: "mg/L",
+  temp: "C",
+  tss: "mg/L",
+  turbidity: "NTU"
 }
 
 const numericFormats: SeriesNames = {
@@ -92,9 +114,15 @@ const numericFormats: SeriesNames = {
   ph: "%.2f",
   phosphorus: "%.2f",
   spc: "%d",
-  tds: "%d"
+  tds: "%d",
+  turbidity: "%d",
+  fishIbi: "%d",
+  invertMacro: "%d",
+  invertIndiana: "%d",
+  invertMichigan: "%d",
 }
 
+export const radiusRange = [9, 20];
 
 export function formatValue(series, value) {
   let fstr = numericFormats[series];
@@ -105,4 +133,10 @@ export function formatValue(series, value) {
 }
 
 
-export const radiusRange = [9, 20];
+export function labelWithUnits(series: string) {
+  const l = labels[series] || '';
+  const u = units[series] || '';
+
+  return u.length > 0 ? l + ` (${u})` : l;
+}
+

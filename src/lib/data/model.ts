@@ -4,7 +4,7 @@ import Papa from 'papaparse';
 import { getSite, setSite } from '../stores';
 import type { Site } from '../stores';
 import { tzAbbr } from './tzAbbr';
-import { seriesIds } from '../definitions';
+import { labels } from '../definitions';
 import { betweenDays, groupBy, getSetFirst, chunkUsgsResponse } from '../helpers';
 import strftime from '../strftime';
 
@@ -153,12 +153,12 @@ class Model {
       skipEmptyLines: 'greedy'
     }).data;
 
-    // filter to seriesIds
+    // filter by known series
     rows.forEach(r => {
       r['date'] = Date.parse(r['date']) || Date.parse(r['year']);
 
       Object.keys(r).forEach(k => {
-        if(!seriesIds.has(k)) {
+        if(k!== 'siteId' && !labels[k]) {
           delete r[k];
         } else {
           const val = r[k];
@@ -172,8 +172,6 @@ class Model {
     // construct dframes
     const bySiteId = groupBy(rows, r => r.siteId);
     for(const [siteId, rows] of Object.entries(bySiteId)) {
-      // console.log(siteId, rows);
-
       let dframe = new df.DataFrame(rows).setIndex('date')
       dframes[siteId] = dframes[siteId].concat(dframe).bake();
     }
