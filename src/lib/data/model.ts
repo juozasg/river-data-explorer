@@ -158,7 +158,7 @@ class Model {
       r['date'] = Date.parse(r['date']) || Date.parse(r['year']);
 
       Object.keys(r).forEach(k => {
-        if(k!== 'siteId' && !labels[k]) {
+        if(k !== 'siteId' && k !== 'date' && !labels[k]) {
           delete r[k];
         } else {
           const val = r[k];

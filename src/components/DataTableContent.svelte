@@ -1,6 +1,9 @@
 <script lang="ts">
   import { fly, slide } from 'svelte/transition';
   import List, { Item, Separator, Text, PrimaryText, SecondaryText } from '@smui/list';
+  import Tab, { Label } from '@smui/tab';
+  import TabBar from '@smui/tab-bar';
+ 
 
   import { getSite, selectedSites, selectedSeries, mapStore } from '../lib/stores';
   import { model } from '../lib/data/model';
@@ -44,16 +47,23 @@
     }
     get(mapStore).setView([site.lat, site.lon + offset], 12);;
   }
+
+  let active = 'Selected';
 </script>
 
 
 <div id='data-table-content'>
   <h2>Data Table</h2>
+  <Separator/>
+  <TabBar tabs={['Selected', 'All', 'Statistics']} let:tab bind:active>
+    <Tab {tab} minWidth>
+      <Label>{tab}</Label>
+    </Tab>
+  </TabBar>
   <h3>{$selectedSites.size} site(s) selected</h3>
   <h3>{labels[$selectedSeries]}:</h3>
   <List threeLine nonInteractive >
     {#each Array.from($selectedSites).reverse() as siteId}
-    <Separator/>
     <div transition:slide>
       <Item>
         <Text>
