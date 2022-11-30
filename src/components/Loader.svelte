@@ -16,7 +16,7 @@
   aria-describedby="loader-content">
     <Title id="loader-title">Loading Data</Title>
 
-    <!-- <LoaderUsgs/> -->
+    <LoaderUsgs/>
     <LoaderSjrbc/>
 
     <Actions>
