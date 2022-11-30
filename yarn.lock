@@ -113,6 +113,46 @@
     "@material/typography" "^14.0.0"
     tslib "^2.1.0"
 
+"@material/checkbox@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@material/checkbox/-/checkbox-14.0.0.tgz#2a28915d297b07052d9286cb429af28c725441b9"
+  integrity sha512-OoqwysCqvj1d0cRmEwVWPvg5OqYAiCFpE6Wng6me/Cahfe4xgRxSPa37WWqsClw20W7PG/5RrYRCBtc6bUUUZA==
+  dependencies:
+    "@material/animation" "^14.0.0"
+    "@material/base" "^14.0.0"
+    "@material/density" "^14.0.0"
+    "@material/dom" "^14.0.0"
+    "@material/feature-targeting" "^14.0.0"
+    "@material/focus-ring" "^14.0.0"
+    "@material/ripple" "^14.0.0"
+    "@material/theme" "^14.0.0"
+    "@material/touch-target" "^14.0.0"
+    tslib "^2.1.0"
+
+"@material/data-table@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@material/data-table/-/data-table-14.0.0.tgz#761277759209d528529fd8b296894983b03cd0f9"
+  integrity sha512-tnmLawGaMtnp29KH8pX99bqeKmFODE+MtRUTt6TauupkEfQE/wd0Um4JQDFiI0kCch7uF3r/NmQKyKuan10hXw==
+  dependencies:
+    "@material/animation" "^14.0.0"
+    "@material/base" "^14.0.0"
+    "@material/checkbox" "^14.0.0"
+    "@material/density" "^14.0.0"
+    "@material/dom" "^14.0.0"
+    "@material/elevation" "^14.0.0"
+    "@material/feature-targeting" "^14.0.0"
+    "@material/icon-button" "^14.0.0"
+    "@material/linear-progress" "^14.0.0"
+    "@material/list" "^14.0.0"
+    "@material/menu" "^14.0.0"
+    "@material/rtl" "^14.0.0"
+    "@material/select" "^14.0.0"
+    "@material/shape" "^14.0.0"
+    "@material/theme" "^14.0.0"
+    "@material/touch-target" "^14.0.0"
+    "@material/typography" "^14.0.0"
+    tslib "^2.1.0"
+
 "@material/density@^14.0.0":
   version "14.0.0"
   resolved "https://registry.yarnpkg.com/@material/density/-/density-14.0.0.tgz#584c4f3468c86c96e361ebe7ba6723f4aa6cd548"
@@ -536,6 +576,16 @@
     "@smui/ripple" "^7.0.0-beta.0"
     svelte2tsx "^0.5.12"
 
+"@smui/checkbox@^7.0.0-beta.0":
+  version "7.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@smui/checkbox/-/checkbox-7.0.0-beta.0.tgz#f57d7635ee2dcd0d1d45b7281b446c60f9331d04"
+  integrity sha512-D/tUcEPj5iWhEenCz43Fqjq/haJlSAt2Fa9mIrKwm+58TcZ2wds1XVdYszaJskH1OdHmEmCyC5701Zel8yG2BQ==
+  dependencies:
+    "@material/checkbox" "^14.0.0"
+    "@smui/common" "^7.0.0-beta.0"
+    "@smui/ripple" "^7.0.0-beta.0"
+    svelte2tsx "^0.5.12"
+
 "@smui/common@^7.0.0-beta.0":
   version "7.0.0-beta.0"
   resolved "https://registry.yarnpkg.com/@smui/common/-/common-7.0.0-beta.0.tgz#5c4e6d9ed194be45ca9e9e2dc18a9bf73c4ec130"
@@ -543,6 +593,20 @@
   dependencies:
     "@material/dom" "^14.0.0"
     "@tsconfig/svelte" "^3.0.0"
+    svelte2tsx "^0.5.12"
+
+"@smui/data-table@^7.0.0-beta.0":
+  version "7.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@smui/data-table/-/data-table-7.0.0-beta.0.tgz#33a9bf63b08586bcb49db427b98c5fbc0910b34e"
+  integrity sha512-EMVxwru5XvCiSgg6ShqfoyJtxSLLvGTdjqK7P864YiPRk6CD/WKa8MPdRaze5icWs4ES6uP8N5Kc7B7p0Rm0Bg==
+  dependencies:
+    "@material/data-table" "^14.0.0"
+    "@material/dom" "^14.0.0"
+    "@smui/checkbox" "^7.0.0-beta.0"
+    "@smui/common" "^7.0.0-beta.0"
+    "@smui/icon-button" "^7.0.0-beta.0"
+    "@smui/ripple" "^7.0.0-beta.0"
+    "@smui/select" "^7.0.0-beta.0"
     svelte2tsx "^0.5.12"
 
 "@smui/dialog@^7.0.0-beta.0":
