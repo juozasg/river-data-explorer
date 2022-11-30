@@ -28,15 +28,43 @@
     return u.length > 0 ? val + ` ${u}` : val;
   }
 
+  function niceDate(date: Date, short = false) {
+    const isoDate = date.toISOString();
+
+    if(short) {
+      return isoDate.slice(0, 10); 
+      // return `${date.getFullYear()}-${date.getUTCMonth()}-${date.getUTCDay()}`;
+    }
+    return (isoDate.slice(0, 10) + ' ' + isoDate.slice(11, 16));
+  }
+
+
+  function getSeries(siteId, seriesId) {
+    return model.getDframe(siteId).getSeries(seriesId);
+  }
+
   function valueDate(siteId: string, selectedSeries) {
     const val = model.getValue(siteId, selectedSeries);
     if(val === undefined) {
       return 'n/a';
     }
 
-    const isoDate = new Date(model.getValueDate(siteId, selectedSeries)).toISOString();
+    return niceDate(new Date(model.getValueDate(siteId, selectedSeries)));
 
-    return (isoDate.slice(0, 10) + ' ' + isoDate.slice(11, 16));
+  }
+
+  function observationsSummary(siteId: string) {
+    const index = model.getDframe(siteId).getIndex();
+    const arr = index.toArray();
+
+    const first = niceDate(new Date(arr[0]), true);
+    const last = niceDate(new Date(index.last()), true);
+
+
+    const count = arr.length;
+
+    return `${count} observations ${first} to ${last}`;
+  
   }
 
   function centerMapOn(siteId: string) {
@@ -49,7 +77,7 @@
     get(mapStore).setView([site.lat, site.lon + offset], 12);;
   }
 
-  let active = 'All';
+  let active = 'Statistics';
 </script>
 
 
@@ -111,39 +139,41 @@
 
 
   {#if active === 'Statistics'}
+  {#each Array.from($selectedSites).reverse() as siteId}
+    <div transition:slide>
+      <!-- svelte-ignore a11y-missing-attribute -->
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
+      <PrimaryText><a class="pointer" on:click={() => centerMapOn(siteId)}>{siteId}</a></PrimaryText>
+      <SecondaryText>{getSite(siteId).name}</SecondaryText>
+      <SecondaryText>{observationsSummary(siteId)}</SecondaryText>
 
-  <DataTable table$aria-label="People list" style="max-width: 100%;">
-    <Head>
-      <Row>
-        <Cell>Name</Cell>
-        <Cell>Favorite Color</Cell>
-        <Cell numeric>Favorite Number</Cell>
-      </Row>
-    </Head>
-    <Body>
-      <Row>
-        <Cell>Steve</Cell>
-        <Cell>Red</Cell>
-        <Cell numeric>45</Cell>
-      </Row>
-      <Row>
-        <Cell>Sharon</Cell>
-        <Cell>Purple</Cell>
-        <Cell numeric>5</Cell>
-      </Row>
-      <Row>
-        <Cell>Rodney</Cell>
-        <Cell>Orange</Cell>
-        <Cell numeric>32</Cell>
-      </Row>
-      <Row>
-        <Cell>Mack</Cell>
-        <Cell>Blue</Cell>
-        <Cell numeric>12</Cell>
-      </Row>
-    </Body>
-  </DataTable>
-   
+      <DataTable table$aria-label="People list" style="max-width: 100%;">
+        <Head>
+          <Row>
+            <Cell>Series</Cell>
+            <Cell numeric>Min</Cell>
+            <Cell numeric>Max</Cell>
+            <Cell numeric>Mean</Cell>
+          </Row>
+        </Head>
+        <Body>
+          {#each Object.keys(labels) as k}
+            {#if k !== 'datainfo' && !valueUndefined(siteId, k)}
+            <Row>
+              <Cell>{k}</Cell>
+              <Cell numeric>{getSeries(siteId, k).min()}</Cell>
+              <Cell numeric>{getSeries(siteId, k).max()}</Cell>
+              <Cell numeric>{getSeries(siteId, k).average()}</Cell>
+            </Row>
+            {/if}
+          {/each}
+
+        </Body>
+      </DataTable>
+    </div>
+
+  {/each}
+    
 
   {/if}
 

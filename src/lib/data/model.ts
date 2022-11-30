@@ -110,6 +110,11 @@ class Model {
   }
 
 
+  getDframe(siteId: string): df.IDataFrame {
+    return dframes[siteId];
+  }
+
+
   // siteId,name,current,lat,lon
   // ecoli-1,ANGELA,yes,41.693199,-86.263052
   importSJRBCSites(sitesCsv: string): string[] {
