@@ -84,7 +84,7 @@
 <div id='data-table-content'>
   <h2>Data Table</h2>
   <Separator/>
-  <TabBar tabs={['Selected', 'All', 'Statistics']} let:tab bind:active>
+  <TabBar tabs={['Selected', 'Last', 'Statistics']} let:tab bind:active>
     <Tab {tab} minWidth>
       <Label>{tab}</Label>
     </Tab>
@@ -115,7 +115,7 @@
     </List>
   {/if}
 
-  {#if active === 'All'}
+  {#if active === 'Last'}
     {#each Array.from($selectedSites).reverse() as siteId}
       <div transition:slide>
         <!-- svelte-ignore a11y-missing-attribute -->
