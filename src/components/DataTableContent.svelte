@@ -154,6 +154,7 @@
         <Head>
           <Row>
             <Cell>Series</Cell>
+            <Cell numeric># obs</Cell>
             <Cell numeric>Min</Cell>
             <Cell numeric>Max</Cell>
             <Cell numeric>Mean</Cell>
@@ -165,6 +166,7 @@
             {#if k !== 'datainfo' && !valueUndefined(siteId, k)}
             <Row>
               <Cell>{k}</Cell>
+              <Cell numeric>{getSeries(siteId, k).toArray().length}</Cell>
               <Cell numeric>{getSeries(siteId, k).min()}</Cell>
               <Cell numeric>{getSeries(siteId, k).max()}</Cell>
               <Cell numeric>{formatValue(k, getSeries(siteId, k).mean())}</Cell>
@@ -195,5 +197,13 @@
     a.pointer {
       cursor: pointer;
     }
+  }
+
+  :global(th), :global(td) {
+    padding-left: 5px !important;
+  }
+
+  :global(th) {
+    font-weight: bold !important;
   }
 </style>
