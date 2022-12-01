@@ -1,4 +1,6 @@
 <script lang="ts">
+  import * as df from 'data-forge';
+
   import { fly, slide } from 'svelte/transition';
   import DataTable, { Head, Body, Row, Cell } from '@smui/data-table';
   import List, { Item, Separator, Text, PrimaryText, SecondaryText } from '@smui/list';
@@ -8,7 +10,7 @@
 
   import { getSite, selectedSites, selectedSeries, mapStore } from '../lib/stores';
   import { model } from '../lib/data/model';
-  import { labels, units } from '../lib/definitions';
+  import { formatValue, labels, units } from '../lib/definitions';
   import { get } from 'svelte/store';
 
   function valueUndefined(site, series) {
@@ -40,7 +42,12 @@
 
 
   function getSeries(siteId, seriesId) {
-    return model.getDframe(siteId).getSeries(seriesId);
+    const s = model.getDframe(siteId).getSeries(seriesId);
+    if(seriesId === 'temp') {
+      console.log(s);
+    }
+    return new df.Series(s.toArray());
+    // return s.bake();
   }
 
   function valueDate(siteId: string, selectedSeries) {
@@ -154,6 +161,7 @@
             <Cell numeric>Min</Cell>
             <Cell numeric>Max</Cell>
             <Cell numeric>Mean</Cell>
+
           </Row>
         </Head>
         <Body>
@@ -163,7 +171,7 @@
               <Cell>{k}</Cell>
               <Cell numeric>{getSeries(siteId, k).min()}</Cell>
               <Cell numeric>{getSeries(siteId, k).max()}</Cell>
-              <Cell numeric>{getSeries(siteId, k).average()}</Cell>
+              <Cell numeric>{formatValue(k, getSeries(siteId, k).mean())}</Cell>
             </Row>
             {/if}
           {/each}

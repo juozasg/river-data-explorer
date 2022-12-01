@@ -169,6 +169,8 @@ class Model {
           const val = r[k];
           if(val === 'NA' || val === '' || val === undefined) {
             delete r[k];
+          } else if(labels[k]) {
+            r[k] = parseFloat(r[k]);
           }
         }
       });
