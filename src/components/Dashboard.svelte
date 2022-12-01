@@ -28,13 +28,19 @@
 
   const graphLeft = () => {
     $showTimeseries = true;
-    $leftSites = new Set($selectedSites);
+    // $leftSites = new Set($selectedSites);
+    const s = Array.from($selectedSites)
+    $leftSites = new Set([s[s.length - 1]]);
+    
     $leftSeries = $selectedSeries;
   };
 
   const graphRight = () => {
     $showTimeseries = true;
-    $rightSites = new Set($selectedSites);
+    // $rightSites = new Set($selectedSites);
+    const s = Array.from($selectedSites)
+    $rightSites = new Set([s[s.length - 1]]);
+    
     $rightSeries = $selectedSeries;
   };
 </script>
