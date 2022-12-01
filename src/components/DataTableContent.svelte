@@ -43,11 +43,7 @@
 
   function getSeries(siteId, seriesId) {
     const s = model.getDframe(siteId).getSeries(seriesId);
-    if(seriesId === 'temp') {
-      console.log(s);
-    }
     return new df.Series(s.toArray());
-    // return s.bake();
   }
 
   function valueDate(siteId: string, selectedSeries) {
