@@ -84,7 +84,7 @@
     get(mapStore).setView([site.lat, site.lon + offset], 12);;
   }
 
-  let active = 'Statistics';
+  let active = 'Selected';
 </script>
 
 
@@ -109,7 +109,7 @@
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <PrimaryText><a class="pointer" on:click={() => centerMapOn(siteId)}>{siteId}</a></PrimaryText>
             <SecondaryText>{getSite(siteId).name}</SecondaryText>
-            {#if $selectedSeries === 'datainfo' || valueUndefined(siteId, selectedSeries)}
+            {#if $selectedSeries === 'datainfo' || valueUndefined(siteId, $selectedSeries)}
               <SecondaryText><b>{valueWithUnits(siteId, $selectedSeries)}</b></SecondaryText>
             {:else}
               <SecondaryText>{valueDate(siteId, $selectedSeries)}: <b>{valueWithUnits(siteId, $selectedSeries)}</b></SecondaryText>
