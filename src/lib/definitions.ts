@@ -35,6 +35,8 @@ export const labels: SeriesNames = {
   flow: "Gage Flow",
   height: "Gage Height",
   wet: "Ground Condition is Wet",
+  cloudCover: "Cloud Coverage",
+  waterColor: "Water Color",
 
   do: "Dissolved Oxygen",
   doContactTank: "Dissolved Oxygen - Contact Tank",
@@ -47,7 +49,8 @@ export const labels: SeriesNames = {
   invertMacro: "Invertebrate Macro Score",
   invertIndiana: "Invertebrate Indiana Score",
   invertMichigan: "Invertebrate Michigan Score",
-
+  chlorophyll: "Chlorophyll-a",
+    
   chlorides: "Chlorides",
   nitrates: "Nitrates",
   phosphorus: "Phosphorus",
