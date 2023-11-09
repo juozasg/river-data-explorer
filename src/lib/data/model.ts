@@ -1,12 +1,11 @@
 import * as df from 'data-forge';
 import Papa from 'papaparse';
 
-import { getSite, setSite } from '../stores';
-import type { Site } from '../stores';
-import { tzAbbr } from './tzAbbr';
 import { labels } from '../definitions';
-import { betweenDays, groupBy, getSetFirst, chunkUsgsResponse } from '../helpers';
-import strftime from '../strftime';
+import { betweenDays, chunkUsgsResponse, getSetFirst, groupBy } from '../helpers';
+import type { Site } from '../stores';
+import { getSite, setSite } from '../stores';
+import { tzAbbr } from './tzAbbr';
 
 type DframeMap = {
   [key: string]: df.IDataFrame;
@@ -112,6 +111,16 @@ class Model {
 
   getDframe(siteId: string): df.IDataFrame {
     return dframes[siteId];
+  }
+
+  getSeries(siteId: string, seriesId: string, onlyNumbers = true) {
+    let series = this.getDframe(siteId).getSeries(seriesId);
+
+    if(onlyNumbers) {
+      series = series.where(v => typeof v === 'number' && !isNaN(v));
+    }
+    
+    return new df.Series(series.toArray());
   }
 
 
@@ -301,30 +310,3 @@ const model = new Model();
 // window.model = model;
 
 export { model };
-
-
-//   printStatistics() {
-//     // get ranges
-//     let allSeries = {}
-//     for (const [id, site] of Object.entries(this.sites)) {
-
-//       for (const column of site.df.getColumns()) {
-//         console.log(column);
-//         const name = column.name;
-//         const series = column.series;
-//         console.log(name);
-//         if(!allSeries[name]) {
-//           allSeries[name] = new df.Series();
-//         }
-
-//         allSeries[name] = allSeries[name].concat(series)
-//       }
-//     }
-//     console.log(allSeries);
-//     for (const [name, series] of Object.entries(allSeries)) {
-//       console.log(`${name} [${series.min()}, ${series.max()}]  AVG:${series.median()} MEDIAN:${series.median()}`);
-//     }
-
-//     // window.allSeries = allSeries;
-//   }
-// }

@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import sprintf from "sprintf";
+import { model } from "./data/model";
 
 
 type SeriesNames = {
@@ -124,12 +125,18 @@ const numericFormats: SeriesNames = {
 
 export const radiusRange = [9, 20];
 
-export function formatValue(series, value) {
+export function formatValue(series:string , value: number) {
   let fstr = numericFormats[series];
   if(!fstr) {
     fstr = "%.1f";
   }
   return sprintf(fstr, value);
+}
+
+export function formatValueMean(siteId: string, seriesId: string) {
+  const series = model.getSeries(siteId, seriesId);
+  const mean = series.mean();
+  return formatValue(seriesId, mean)
 }
 
 

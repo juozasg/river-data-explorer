@@ -1,4 +1,4 @@
-import { writable, get, type Writable } from 'svelte/store';
+import { writable, type Writable } from 'svelte/store';
 
 export * from './stores/selectedSites';
 export * from './stores/sites';

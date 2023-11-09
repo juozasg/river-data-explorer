@@ -1,17 +1,16 @@
 <script lang="ts">
-  import * as df from 'data-forge';
-
-  import { fly, slide } from 'svelte/transition';
-  import DataTable, { Head, Body, Row, Cell } from '@smui/data-table';
-  import List, { Item, Separator, Text, PrimaryText, SecondaryText } from '@smui/list';
+  
+  import DataTable, { Body, Cell, Head, Row } from '@smui/data-table';
+  import List, { Item, PrimaryText, SecondaryText, Separator, Text } from '@smui/list';
   import Tab, { Label } from '@smui/tab';
   import TabBar from '@smui/tab-bar';
+  import { slide } from 'svelte/transition';
  
 
-  import { getSite, selectedSites, selectedSeries, mapStore } from '../lib/stores';
-  import { model } from '../lib/data/model';
-  import { formatValue, labels, units } from '../lib/definitions';
   import { get } from 'svelte/store';
+  import { model } from '../lib/data/model';
+  import { formatValueMean, labels, units } from '../lib/definitions';
+  import { getSite, mapStore, selectedSeries, selectedSites } from '../lib/stores';
 
   function valueUndefined(site, series) {
     return model.getValue(site, series) === undefined;
@@ -41,10 +40,7 @@
   }
 
 
-  function getSeries(siteId, seriesId) {
-    const s = model.getDframe(siteId).getSeries(seriesId);
-    return new df.Series(s.toArray());
-  }
+
 
   function valueDate(siteId: string, selectedSeries) {
     const val = model.getValue(siteId, selectedSeries);
@@ -166,10 +162,10 @@
             {#if k !== 'datainfo' && !valueUndefined(siteId, k)}
             <Row>
               <Cell>{k}</Cell>
-              <Cell numeric>{getSeries(siteId, k).toArray().length}</Cell>
-              <Cell numeric>{getSeries(siteId, k).min()}</Cell>
-              <Cell numeric>{getSeries(siteId, k).max()}</Cell>
-              <Cell numeric>{formatValue(k, getSeries(siteId, k).mean())}</Cell>
+              <Cell numeric>{model.getSeries(siteId, k).toArray().length}</Cell>
+              <Cell numeric>{model.getSeries(siteId, k).min()}</Cell>
+              <Cell numeric>{model.getSeries(siteId, k).max()}</Cell>
+              <Cell numeric>{formatValueMean(siteId, k)}</Cell>
             </Row>
             {/if}
           {/each}
