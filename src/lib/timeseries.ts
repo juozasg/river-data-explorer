@@ -1,6 +1,6 @@
+import { model } from "./data/model";
 import { labels } from "./definitions";
 import { getSetFirst } from "./helpers";
-import { model } from "./data/model";
 
 export function prepareData(sites: Set<string>, series: string, color: string = '#abc'): Plotly.Data {
   const timeseries = model.getSitesTimeseries(sites, series);
