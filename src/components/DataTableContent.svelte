@@ -1,7 +1,7 @@
 <script lang="ts">
   
   import DataTable, { Body, Cell, Head, Row } from '@smui/data-table';
-  import List, { Item, PrimaryText, SecondaryText, Separator, Text } from '@smui/list';
+  import List, { Item, SecondaryText, Separator, Text } from '@smui/list';
   import Tab, { Label } from '@smui/tab';
   import TabBar from '@smui/tab-bar';
   import { slide } from 'svelte/transition';
@@ -11,6 +11,7 @@
   import { model } from '../lib/data/model';
   import { formatValueMean, labels, units } from '../lib/definitions';
   import { getSite, mapStore, selectedSeries, selectedSites } from '../lib/stores';
+  import DataTableSiteHeader from './DataTableSiteHeader.svelte';
 
   function valueUndefined(site, series) {
     return model.getValue(site, series) === undefined;
@@ -97,10 +98,7 @@
       <div transition:slide>
         <Item>
           <Text>
-            <!-- svelte-ignore a11y-missing-attribute -->
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <PrimaryText><a class="pointer" on:click={() => centerMapOn(siteId)}>{siteId}</a></PrimaryText>
-            <SecondaryText>{getSite(siteId).name}</SecondaryText>
+            <DataTableSiteHeader siteId={siteId}/>
             {#if $selectedSeries === 'datainfo' || valueUndefined(siteId, $selectedSeries)}
               <SecondaryText><b>{valueWithUnits(siteId, $selectedSeries)}</b></SecondaryText>
             {:else}
@@ -117,10 +115,7 @@
   {#if active === 'Last'}
     {#each Array.from($selectedSites).reverse() as siteId}
       <div transition:slide>
-        <!-- svelte-ignore a11y-missing-attribute -->
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <PrimaryText><a class="pointer" on:click={() => centerMapOn(siteId)}>{siteId}</a></PrimaryText>
-        <SecondaryText>{getSite(siteId).name}</SecondaryText>
+        <DataTableSiteHeader siteId={siteId}/>
 
         {#each Object.keys(labels) as k}
           {#if k === 'datainfo'}
@@ -140,10 +135,7 @@
   {#if active === 'Statistics'}
   {#each Array.from($selectedSites).reverse() as siteId}
     <div transition:slide>
-      <!-- svelte-ignore a11y-missing-attribute -->
-      <!-- svelte-ignore a11y-click-events-have-key-events -->
-      <PrimaryText><a class="pointer" on:click={() => centerMapOn(siteId)}>{siteId}</a></PrimaryText>
-      <SecondaryText>{getSite(siteId).name}</SecondaryText>
+      <DataTableSiteHeader siteId={siteId}/>
       <SecondaryText>{observationsSummary(siteId)}</SecondaryText>
 
       <DataTable table$aria-label="People list" style="max-width: 100%;">
@@ -154,7 +146,6 @@
             <Cell numeric>Min</Cell>
             <Cell numeric>Max</Cell>
             <Cell numeric>Mean</Cell>
-
           </Row>
         </Head>
         <Body>
@@ -173,13 +164,13 @@
         </Body>
       </DataTable>
     </div>
-
   {/each}
-    
 
   {/if}
 
-
+  <div class='github-links'>
+    Data [<a href="https://github.com/Limnogirl90/SJRBC-web-map-data/archive/refs/heads/main.zip">ZIP</a>] [<a href="https://github.com/Limnogirl90/SJRBC-web-map-data/">GitHub</a>]
+  </div>
   
 </div>
 
@@ -190,8 +181,8 @@
       margin: 0.5rem 0;
     }
 
-    a.pointer {
-      cursor: pointer;
+    div.github-links {
+      margin-top: 1rem;
     }
   }
 
