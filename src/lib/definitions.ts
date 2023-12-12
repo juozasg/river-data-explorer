@@ -23,7 +23,7 @@ const interpolateDatainfo = (x) => {
 
 
 // export const seriesIds = new Set([
-//   'siteId', 'date', 'bod', 'bodPercent', 'chlorides', 'do', 'doContactTank', 'doOutfall',
+//   'siteId', 'date', 'bod', 'bodPercent', 'chlorides', 'do','doPerc', 'doContactTank', 'doOutfall',
 //   'ecoli', 'flow', 'ibi', 'invertIndiana', 'invertMacro', 'invertMichigan',
 //   'invertNarrative', 'nitrates', 'ph', 'phosphorus', 'spc', 'tds',
 //   'temp', 'tss', 'turbidity', 'wet']);
@@ -42,6 +42,7 @@ export const labels: SeriesNames = {
   doOutfall: "Dissolved Oxygen - Outfall",
   bod: "Biological Oxygen Demand",
   bodPercent: "Biological Oxygen Demand",
+  doPerc: "Dissolved Oxygen - % saturation",
 
   ecoli: "E. Coli",
   fishIbi: "Fish IBI",
@@ -95,6 +96,7 @@ export const units: SeriesNames = {
   do: "mg/L",
   doContactTank: "mg/L",
   doOutfall: "mg/L",
+  doPerc: "% saturation",
   ecoli: "CFU",
   flow: "ft^3/s",
   height: "ft",
