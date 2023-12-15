@@ -42,6 +42,7 @@ export const labels: SeriesNames = {
   doOutfall: "Dissolved Oxygen - Outfall",
   bod: "Biological Oxygen Demand",
   bodPercent: "Biological Oxygen Demand",
+  doPerc: "Dissolved Oxygen % Saturation",
 
   ecoli: "E. Coli",
   fishIbi: "Fish IBI",
@@ -85,6 +86,7 @@ export const scales: SeriesScales = {
   tss: d3.scaleSequential([0, 500], d3.interpolateRdPu).clamp(true),
   turbidity: d3.scaleSequential([0, 100], d3.interpolateInferno).clamp(true),
   wet: d3.scaleSequential([0, 1], d3.interpolateInferno).clamp(true),
+  doPerc: d3.scaleSequential([0, 200], d3.interpolateBlues).clamp(true),
 }
 
 export const units: SeriesNames = {
@@ -105,7 +107,8 @@ export const units: SeriesNames = {
   tds: "mg/L",
   temp: "C",
   tss: "mg/L",
-  turbidity: "NTU"
+  turbidity: "NTU",
+  doPerc: "%",
 }
 
 const numericFormats: SeriesNames = {
@@ -121,6 +124,7 @@ const numericFormats: SeriesNames = {
   invertMacro: "%d",
   invertIndiana: "%d",
   invertMichigan: "%d",
+  doPerc: "%.1f",
 }
 
 export const radiusRange = [9, 20];
@@ -128,7 +132,7 @@ export const radiusRange = [9, 20];
 export function formatValue(series:string , value: number) {
   let fstr = numericFormats[series];
   if(!fstr) {
-    fstr = "%.1f";
+    fstr = "%.2f";
   }
   return sprintf(fstr, value);
 }
