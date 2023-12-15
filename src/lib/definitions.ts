@@ -49,6 +49,7 @@ export const labels: SeriesNames = {
   invertMacro: "Invertebrate Macro Score",
   invertIndiana: "Invertebrate Indiana Score",
   invertMichigan: "Invertebrate Michigan Score",
+  chlorophyll: "Chlorophyll-a",
 
   chlorides: "Chlorides",
   nitrates: "Nitrates",
@@ -87,6 +88,7 @@ export const scales: SeriesScales = {
   turbidity: d3.scaleSequential([0, 100], d3.interpolateInferno).clamp(true),
   wet: d3.scaleSequential([0, 1], d3.interpolateInferno).clamp(true),
   doPerc: d3.scaleSequential([0, 200], d3.interpolateBlues).clamp(true),
+  chlorophyll: d3.scaleSequential([0, 200], d3.interpolateGreens).clamp(true),
 }
 
 export const units: SeriesNames = {
@@ -109,6 +111,7 @@ export const units: SeriesNames = {
   tss: "mg/L",
   turbidity: "NTU",
   doPerc: "%",
+  chlorophyll: "ug L"
 }
 
 const numericFormats: SeriesNames = {
@@ -125,6 +128,7 @@ const numericFormats: SeriesNames = {
   invertIndiana: "%d",
   invertMichigan: "%d",
   doPerc: "%.1f",
+  chlorophyll: "%.1f",
 }
 
 export const radiusRange = [9, 20];
