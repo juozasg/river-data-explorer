@@ -1,7 +1,7 @@
 {
   "name": "river-data-explorer",
   "type": "module",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "private": true,
   "description": "Interactive web application to visualize environmental monitoring data for St. Joseph's river",
   "license": "Apache-2.0",
