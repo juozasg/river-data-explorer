@@ -8,7 +8,7 @@ Live preview: https://stjoe.riverdata.app/
 
 Run `yarn install`
 
-Run `yarn dev` to develop the app.
+Run `yarn run dev` to develop the app.
 
-Run `yarn build` to generate `dist` contents. Upload `dist` files to a server to deploy the app.
+Run `yarn run build` to generate `dist` contents. Upload `dist` files to a server to deploy the app.
 

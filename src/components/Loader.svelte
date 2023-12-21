@@ -14,6 +14,7 @@
   bind:open
   aria-labelledby="loader-title"
   aria-describedby="loader-content">
+    <span class="version">version: 0.6.1</span>
     <Title id="loader-title">Loading Data</Title>
 
     <LoaderUsgs/>
