@@ -46,9 +46,11 @@
             <line x1="0" y="0" x2="0" y2="5.5" stroke="{selectedColor}" stroke-width="5" />
           </pattern>
         </defs>
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <circle style='cursor: pointer; pointer-events:visible' cy=20 cx=20 r={radius} fill="{color}" stroke="black" stroke-width="2" on:click|stopPropagation={() => { toggleSiteSelection(id) }}  />
         {#if $selectedSites.has(id)}
           <circle cy=20 cx=20 r={radius + 1} stroke="yellow" fill="none" stroke-width="4" stroke-dasharray="2"/>
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
           <circle style='cursor: pointer' cy=20 cx=20 r={radius} fill="url(#stripes-{id})" opacity="1" on:click|stopPropagation={() => { toggleSiteSelection(id) }} />
         {/if}
       </svg>

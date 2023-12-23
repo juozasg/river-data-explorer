@@ -23,13 +23,15 @@
     basemaps['Topographic'].addTo(map);
 
     (new L.Control.Layers(basemaps)).addTo(map);
+
+    return map;
   }
 
   function mapAction(container) {
     const map = createMap(container);
     return {
       destroy: () => {
-        map
+        map.remove();
       }
     };
   }
