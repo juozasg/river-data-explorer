@@ -1,6 +1,10 @@
 /** @type { import("eslint").Linter.Config } */
 module.exports = {
 	root: true,
+	globals: {
+		$state: 'readonly',
+		$props: 'readonly'
+	},
 	extends: [
 		'eslint:recommended',
 		'plugin:@typescript-eslint/recommended',
