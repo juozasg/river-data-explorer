@@ -1865,7 +1865,7 @@ svelte-preprocess@^5.1.0:
     sorcery "^0.11.0"
     strip-indent "^3.0.0"
 
-svelte@^5.0.0-next.1:
+svelte@^5.0.0-next.27:
   version "5.0.0-next.27"
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-5.0.0-next.27.tgz#e7e48490032d64234780b453271406af87edef52"
   integrity sha512-5I4JrmEWVPu4ALEskqU/xdz6PsJYnRaWiIN/s7BCvtuwHjy2mbclSfC+VzgCxEN0AEJxdsPXsxYkIfwXch3AyQ==
