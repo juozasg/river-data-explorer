@@ -1,12 +1,53 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		%sveltekit.head%
-	</head>
-	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents">%sveltekit.body%</div>
-	</body>
+
+<head>
+	<meta charset="utf-8" />
+	<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css"
+		integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	%sveltekit.head%
+
+	</style>
+</head>
+
+<body data-sveltekit-preload-data="hover">
+
+	<div class="header">
+		<div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+			<ul class="pure-menu-list">
+				<li class="pure-menu-item pure-menu-selected">
+					<a href="#" class="pure-menu-link">About</a>
+				</li>
+				<li class="pure-menu-item">
+					<a href="#" class="pure-menu-link">Grades</a>
+				</li>
+				<li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+					<a href="#" id="menuLink1" class="pure-menu-link">Regions</a>
+					<ul class="pure-menu-children">
+						<li class="pure-menu-item">
+							<a href="#" class="pure-menu-link">Huc01</a>
+						</li>
+						<li class="pure-menu-item">
+							<a href="#" class="pure-menu-link">Huc02</a>
+						</li>
+						<li class="pure-menu-item">
+							<a href="#" class="pure-menu-link">Huc03</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+
+	<div style="display: contents">%sveltekit.body%</div>
+
+
+</body>
+
 </html>
