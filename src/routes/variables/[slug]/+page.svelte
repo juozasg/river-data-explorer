@@ -1,11 +1,15 @@
-<script>
-	export let data;
+<script lang="ts">
+	const { data } = $props();
+	let content = $derived(data.content);
+	let metadata = $derived(data.metadata);
 </script>
 
 <svelte:head>
-	<title>Variable: {data.metadata.title}</title>
+	<title>Variable: {metadata.title}</title>
 </svelte:head>
 
 <article>
-	<svelte:component this={data.content} />
+	<svelte:component this={content} />
+
+	<pre>{JSON.stringify(data)}</pre>
 </article>

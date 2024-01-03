@@ -12,7 +12,7 @@
 <pre>Trying state {counter.count}</pre>
 
 
-<A/>
+<A foo={"no way"}/>
 <hr/>
 <B/>
 
