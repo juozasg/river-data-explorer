@@ -3,12 +3,10 @@
 
   import A from '$src/components/A.svelte';
   import B from '$src/components/B.svelte';
-
-
 </script>
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation. vvs = {vv}</p>
 
+<h1>Welcome to the new website 'Home Page'</h1>
+<marquee>🚧🏗️ UNDER CONSTRUCTION... 🏗️🚧</marquee>
 
 <pre>Trying state {counter.count}</pre>
 
@@ -16,3 +14,11 @@
 <A/>
 <hr/>
 <B/>
+
+<style lang="scss">
+  marquee {
+    color: orange;
+    font-size: 30px;
+    max-width: 630px;
+  }
+</style>
