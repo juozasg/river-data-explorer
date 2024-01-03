@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-	<title>{data.metadata.title}</title>
+	<title>Variable: {data.metadata.title}</title>
 </svelte:head>
 
 <article>
