@@ -6,6 +6,7 @@
 </script>
 
 <h1>Welcome to the new website 'Home Page'</h1>
+<!-- svelte-ignore a11y-distracting-elements -->
 <marquee>🚧🏗️ UNDER CONSTRUCTION... 🏗️🚧</marquee>
 
 <pre>Trying state {counter.count}</pre>
