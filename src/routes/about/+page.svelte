@@ -1,5 +1,9 @@
-<script>
-	export let data;
+<script lang="ts">
+	import { page } from '$app/stores';
+
+	const { data } = $props();
+	const Content = $derived(data.Content);
+	const metadata = $derived(data.metadata);
 </script>
 
 <svelte:head>
@@ -7,5 +11,5 @@
 </svelte:head>
 
 <article>
-	<svelte:component this={data.content} />
+	<Content/>
 </article>
