@@ -12,9 +12,7 @@
 </svelte:head>
 
 <article>
-	<!-- <svelte:component this={content} /> -->
 	<Content/>
-
 
 	<i>Hydrological Unit Code: {metadata.huc}</i>
 

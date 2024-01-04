@@ -9,7 +9,6 @@
 <svelte:head>
 	<title>Variable: {metadata.title}</title>
 	<meta name="description" content="St Joseph River watershed water quality information variable {metadata.title}">
-
 </svelte:head>
 
 <article>
