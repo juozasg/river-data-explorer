@@ -5,7 +5,6 @@
     // preloadData('/blog', '/about', '/variables/*');
     // TODO: test out performance of preloading everything vs some things
 
-    import '@picocss/pico/css/pico.css'
     import '$lib/styles/global.scss'
 	import SiteNavMenu from '$src/components/SiteNavMenu.svelte';
 </script>
