@@ -32,7 +32,12 @@ const config = {
 			$routes: './src/routes',
 			$assets: './src/assets',
 		}
-	}
+	},
+	onwarn: (warning, handler) => {
+    // suppress warnings on `vite dev` and `vite build`; but even without this, things still work
+    if (warning.code === "a11y-missing-attribute") return;
+    handler(warning);
+  },
 };
 
 export default config;
