@@ -14,6 +14,7 @@
 
 <A foo={"no way"}/>
 <hr/>
+
 <B/>
 
 <style lang="scss">
