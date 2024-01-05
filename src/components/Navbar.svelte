@@ -1,8 +1,15 @@
 <script lang="ts">
-    const getVariableRoutes = async () => {
-        const response = await fetch(`/api/variables`);
-        return await response.json();
-    }
+	import { page } from '$app/stores';
+
+	// console.log(page);
+
+	const getVariableRoutes = async () => {
+		const response = await fetch(`/api/variables`);
+		return await response.json();
+	}
+
+	const isRoute = (routeId: string) => $page.route?.id === routeId
+	const isSlugRoute = (routeId: string, slug: string) => $page.route?.id === routeId && $page.params.slug === slug;
 </script>
 
 
@@ -21,34 +28,34 @@
 
 	<div class="navbar-menu">
 		<div class="navbar-start">
-			<a href="/" class="navbar-item is-active">
+			<a href="/" class="navbar-item is-active" class:navbar-item-selected={isRoute('/')}>
 				Home
 			</a>
 
-			<a href="/about" class="navbar-item">
+			<a href="/about" class="navbar-item" class:navbar-item-selected={isRoute('/about')}>
 				About
 			</a>
 
 			<div class="navbar-item has-dropdown is-hoverable">
-				<a class="navbar-link is-arrowless">
+				<a class="navbar-link is-arrowless" class:navbar-item-selected={isRoute('/regions/[slug]')}>
 					Regions
 				</a>
 				<div class="navbar-dropdown is-boxed">
 					<a href="/regions/huc01" class="navbar-item">
-						Huc01
+						Watershed 01
 					</a>
 					<a href="/regions/huc02" class="navbar-item">
-						Huc02
+						Watershed 02
 					</a>
 				</div>
 			</div>
 
 			<div class="navbar-item has-dropdown is-hoverable">
-				<a class="navbar-link is-arrowless">
+				<a class="navbar-link is-arrowless" class:navbar-item-selected={isRoute('/variables/[slug]')}>
 					Variables
 				</a>
 				<div class="navbar-dropdown is-boxed">
-					<a href="/variables/ph" class="navbar-item">
+					<a href="/variables/ph" class="navbar-item" class:navbar-item-selected={isSlugRoute('/variables/[slug]', 'ph')}>
 						pH
 					</a>
 					<a href="/variables/fishIbi" class="navbar-item">

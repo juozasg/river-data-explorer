@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-
 	const { data } = $props();
 	const Content = $derived(data.Content);
 	const metadata = $derived(data.metadata);
@@ -12,6 +10,7 @@
 </svelte:head>
 
 <article>
+	<h2>Variable: {metadata.title}</h2>
+
 	<Content/>
-	<pre>{JSON.stringify($page, null, 2)}</pre>
 </article>

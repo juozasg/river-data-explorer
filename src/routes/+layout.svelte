@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '$src/styles/app.scss';
 
+	import { page } from '$app/stores';
 	import Navbar from '$src/components/Navbar.svelte';
 </script>
 
@@ -14,6 +15,11 @@
 			<slot />
 		</div>
 	</div>
+
+	<hr/>
+
+	<pre>{JSON.stringify($page, null, 2)}</pre>
+
 </main>
 
 

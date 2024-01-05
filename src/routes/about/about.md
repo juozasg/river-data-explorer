@@ -5,7 +5,7 @@ title: About This Website
 # About
 
 
-*St. Joseph River Basin Comission* has information about __river quality__
+*St. Joseph River Basin Comission* has information about __river water quality.__
 
 Very long line that takes up the entire container width Very long line that takes up the entire container width Very long line that takes up the entire container width Very long line that takes up the entire container width Very long line that takes up the entire container width Very long line that takes up the entire container width Very long line that takes up the entire container width Very long line that takes up the entire container width
 

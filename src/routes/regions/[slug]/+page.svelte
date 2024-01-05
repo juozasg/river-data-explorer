@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-
 	const { data } = $props();
 	const Content = $derived(data.Content);
 	const metadata = $derived(data.metadata);
@@ -12,6 +10,8 @@
 </svelte:head>
 
 <article>
+	<h2>Region: {metadata.title}</h2>
+
 	<Content/>
 
 	<i>Hydrological Unit Code: {metadata.huc}</i>
@@ -19,6 +19,4 @@
 	<small>...maps, interactive graphs and statistical values goe here</small>
 
 	<small>links to webmap with selected area goes here...</small>
-
-	<pre>{JSON.stringify($page, null, 2)}</pre>
 </article>

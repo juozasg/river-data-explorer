@@ -6,4 +6,8 @@
 @import 'bulma/sass/layout/_all';
 
 
-@import './navbar.scss'
+@import './navbar.scss';
+
+body {
+	font-size: 1.1rem;
+}

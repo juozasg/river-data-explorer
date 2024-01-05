@@ -18,7 +18,17 @@ nav {
 		text-underline-offset: 0.2em;
 	}
 
-	.is-active {
-		font-weight: bold;
+	.navbar-item-selected {
+		color: $stjoe-blue !important;
+
+		/* Grade: Increase the typeface's relative weight/density */
+		@supports (font-variation-settings: 'GRAD' 600) {
+			font-variation-settings: 'GRAD' 600;
+		}
+
+		/* Font bold, less changes element width, moves around layout */
+		@supports not (font-variation-settings: 'GRAD' 600) {
+			font-weight: bold;
+		}
 	}
 }
