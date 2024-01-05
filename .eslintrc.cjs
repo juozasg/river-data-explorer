@@ -4,10 +4,6 @@ module.exports = {
 	rules: {
 		'@typescript-eslint/no-explicit-any': 'off',
 	},
-	globals: {
-		$state: 'readonly',
-		$props: 'readonly'
-	},
 	extends: [
 		'eslint:recommended',
 		'plugin:@typescript-eslint/recommended',

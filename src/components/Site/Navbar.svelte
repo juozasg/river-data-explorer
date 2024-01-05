@@ -4,16 +4,22 @@
 
 	// console.log(page);
 
-	const getVariableRoutes = async () => {
+	let variablePages = $state([]);
+
+	const variablesPagePaths = async () => {
 		const response = await fetch(`/api/variables`);
 		return await response.json();
 	}
+	// const a = getVariableRoutes();
+	$effect(async () => {
+		const pagesPaths = await variablesPagePaths();
+		console.log(pagesPaths);
+		variablePages = pagesPaths;
+	});
 
 	const isRoute = (routeId: string) => $page.route?.id === routeId
 </script>
 
-
-<!-- {#snippet slugRouteLink(route)} -->
 
 <nav class="navbar is-fixed-top is-transparent" aria-label="main navigation">
 	<div class="navbar-brand">
@@ -57,14 +63,9 @@
 					Variables
 				</a>
 				<div class="navbar-dropdown is-boxed">
-					<NavbarSlugLink routeId="/variables/[slug]" slug="ph" title="pH"/>
-
-					<a href="/variables/fishIbi" class="navbar-item">
-						Fish IBI
-					</a>
-					<a href="/variables/do" class="navbar-item">
-						Dissolved Oxygen
-					</a>
+					<!-- {#each variablePages as {slug, metadata}}
+						<NavbarSlugLink routeId="/variables/[slug]" slug={slug} title={metadata.title}/>
+					{/each} -->
 				</div>
 			</div>
 		</div>

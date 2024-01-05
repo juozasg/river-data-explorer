@@ -9,7 +9,7 @@ export const getMarkdownPages = async (allMdPages: ImportGlobRecord) => {
 
 			return {
 				metadata,
-				path: path.basename(modulePath, '.md')
+				slug: (path.basename(modulePath, '.md') || '') as string
 			};
 		})
 	);

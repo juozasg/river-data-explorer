@@ -2,7 +2,7 @@
 	import '$src/styles/app.scss';
 
 	import { page } from '$app/stores';
-	import Navbar from '$src/components/Navbar.svelte';
+	import Navbar from '$src/components/site/Navbar.svelte';
 </script>
 
 <header>
