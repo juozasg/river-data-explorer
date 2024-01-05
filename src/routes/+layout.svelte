@@ -1,11 +1,11 @@
 <script lang="ts">
 	import '$src/styles/app.scss';
 
-	import SiteNavMenu from '$src/components/SiteNavMenu.svelte';
+	import Navbar from '$src/components/Navbar.svelte';
 </script>
 
 <header>
-	<SiteNavMenu></SiteNavMenu>
+	<Navbar/>
 </header>
 
 <main>
