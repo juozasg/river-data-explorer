@@ -1,3 +1,10 @@
+<script lang="ts">
+    const getVariableRoutes = async () => {
+        const response = await fetch(`/api/variables`);
+        return await response.json();
+    }
+</script>
+
 <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
   <ul class="pure-menu-list">
       <li class="pure-menu-item pure-menu-selected">
@@ -21,7 +28,7 @@
           </ul>
       </li>
       <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-          <a id="menu-link-variables" class="pure-menu-link">Variables</a>
+          <a href="#!" id="menu-link-variables" class="pure-menu-link">Variables</a>
           <ul class="pure-menu-children">
               <li class="pure-menu-item">
                   <a href="/variables/ph" class="pure-menu-link">pH</a>
