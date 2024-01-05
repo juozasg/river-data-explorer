@@ -1,7 +1,6 @@
 <script lang="ts">
-	import '../app.scss';
+	import '$src/styles/app.scss';
 
-	import '$lib/styles/global.scss';
 	import SiteNavMenu from '$src/components/SiteNavMenu.svelte';
 </script>
 
