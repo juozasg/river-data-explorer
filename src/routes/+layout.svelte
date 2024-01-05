@@ -8,8 +8,10 @@
 	<Navbar/>
 </header>
 
-<main>
-	<slot />
+<main class="section">
+	<div class="content">
+		<slot />
+	</div>
 </main>
 
 

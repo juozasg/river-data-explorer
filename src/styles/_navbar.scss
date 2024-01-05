@@ -1,0 +1,24 @@
+nav {
+	.navbar-start {
+		column-gap: 12px;
+		padding-bottom: 5px;
+    margin-left: 10px;
+	}
+
+	.navbar-item {
+		font-size: 1.4rem;
+		// padding-bottom: 2px;
+		&:hover, .navbar-link:hover {
+			color: $stjoe-blue !important;
+		}
+	}
+
+	a.navbar-item:hover {
+		text-decoration: underline !important;
+		text-underline-offset: 0.2em;
+	}
+
+	.is-active {
+		font-weight: bold;
+	}
+}

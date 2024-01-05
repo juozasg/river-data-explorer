@@ -8,16 +8,20 @@
 
 <nav class="navbar is-fixed-top is-transparent" aria-label="main navigation">
 	<div class="navbar-brand">
-		<a href="#!" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+		<a class="navbar-item" href="/">
+      <img src="/sjrbc-logo.png" alt="SJRBC Logo">
+    </a>
+
+		<a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
 			<span aria-hidden="true"></span>
 			<span aria-hidden="true"></span>
 			<span aria-hidden="true"></span>
 		</a>
 	</div>
 
-	<div id="navbarBasicExample" class="navbar-menu">
+	<div class="navbar-menu">
 		<div class="navbar-start">
-			<a href="/" class="navbar-item is-active is-underlined has-text-weight-semibold">
+			<a href="/" class="navbar-item is-active">
 				Home
 			</a>
 
@@ -26,7 +30,7 @@
 			</a>
 
 			<div class="navbar-item has-dropdown is-hoverable">
-				<a href="#!" class="navbar-link">
+				<a class="navbar-link is-arrowless">
 					Regions
 				</a>
 				<div class="navbar-dropdown is-boxed">
@@ -40,7 +44,7 @@
 			</div>
 
 			<div class="navbar-item has-dropdown is-hoverable">
-				<a href="#!" class="navbar-link">
+				<a class="navbar-link is-arrowless">
 					Variables
 				</a>
 				<div class="navbar-dropdown is-boxed">
