@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import NavbarSlugLink from './NavbarSlugLink.svelte';
 
 	// console.log(page);
 
@@ -9,9 +10,10 @@
 	}
 
 	const isRoute = (routeId: string) => $page.route?.id === routeId
-	const isSlugRoute = (routeId: string, slug: string) => $page.route?.id === routeId && $page.params.slug === slug;
 </script>
 
+
+<!-- {#snippet slugRouteLink(route)} -->
 
 <nav class="navbar is-fixed-top is-transparent" aria-label="main navigation">
 	<div class="navbar-brand">
@@ -55,9 +57,8 @@
 					Variables
 				</a>
 				<div class="navbar-dropdown is-boxed">
-					<a href="/variables/ph" class="navbar-item" class:navbar-item-selected={isSlugRoute('/variables/[slug]', 'ph')}>
-						pH
-					</a>
+					<NavbarSlugLink routeId="/variables/[slug]" slug="ph" title="pH"/>
+
 					<a href="/variables/fishIbi" class="navbar-item">
 						Fish IBI
 					</a>

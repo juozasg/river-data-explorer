@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-
 	const { data } = $props();
 	const Content = $derived(data.Content);
 	const metadata = $derived(data.metadata);
