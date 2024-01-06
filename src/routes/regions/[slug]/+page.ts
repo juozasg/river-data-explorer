@@ -1,6 +1,4 @@
 import type { MarkdownComponent } from "$src/lib/types/page";
-import { getMarkdownPages } from "$src/lib/utils";
-import type { EntryGenerator } from "./$types";
 
 export async function load({params}) {
 	const page: MarkdownComponent = await import(`../${params.slug}.md`);
@@ -11,9 +9,16 @@ export async function load({params}) {
 	};
 }
 
-// required for SSG pre-rendering
+/*
+// no longer required for SSG pre-rendering
+// since +layout.ts now loads the list of markdown pages
+// and Navbar renders links to each markdown page
+import { getMarkdownPages } from "$src/lib/utils";
+import type { EntryGenerator } from "./$types";
+
 export const entries: EntryGenerator = async () => {
 	const mdPages = await getMarkdownPages(import.meta.glob('/src/routes/regions/*.md'));
 
 	return mdPages.map(({ slug }) => ({ slug }));
 };
+*/
