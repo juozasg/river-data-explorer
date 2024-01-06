@@ -1,21 +1,14 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import type { MarkdownPage } from '$src/lib/types/page';
 	import NavbarSlugLink from './NavbarSlugLink.svelte';
 
-	// console.log(page);
+	interface Props {
+    regionPages: MarkdownPage[]
+    variablePages: MarkdownPage[]
+  }
 
-	let variablePages = $state([]);
-
-	const variablesPagePaths = async () => {
-		const response = await fetch(`/api/variables`);
-		return await response.json();
-	}
-	// const a = getVariableRoutes();
-	$effect(async () => {
-		const pagesPaths = await variablesPagePaths();
-		console.log(pagesPaths);
-		variablePages = pagesPaths;
-	});
+	const { regionPages, variablePages } = $props<Props>();
 
 	const isRoute = (routeId: string) => $page.route?.id === routeId
 </script>
@@ -49,12 +42,9 @@
 					Regions
 				</a>
 				<div class="navbar-dropdown is-boxed">
-					<a href="/regions/huc01" class="navbar-item">
-						Watershed 01
-					</a>
-					<a href="/regions/huc02" class="navbar-item">
-						Watershed 02
-					</a>
+					{#each regionPages as page}
+						<NavbarSlugLink routeId="/region/[slug]" {page}/>
+					{/each}
 				</div>
 			</div>
 
@@ -63,9 +53,9 @@
 					Variables
 				</a>
 				<div class="navbar-dropdown is-boxed">
-					<!-- {#each variablePages as {slug, metadata}}
-						<NavbarSlugLink routeId="/variables/[slug]" slug={slug} title={metadata.title}/>
-					{/each} -->
+					{#each variablePages as page}
+						<NavbarSlugLink routeId="/variables/[slug]" {page}/>
+					{/each}
 				</div>
 			</div>
 		</div>

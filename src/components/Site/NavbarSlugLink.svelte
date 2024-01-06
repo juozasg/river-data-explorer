@@ -1,18 +1,19 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import type { MarkdownPage } from '$src/lib/types/page';
 
 	interface Props {
     routeId: string
-    slug: string
-    title: string
+    page: MarkdownPage
   }
 
-	const { routeId, slug, title } = $props<Props>();
-	const href = $derived(routeId.replace('[slug]', slug));
+	const { routeId, page: mdPage } = $props<Props>();
+	const href = routeId.replace('[slug]', mdPage.slug);
+	const title = mdPage.metadata.title;
 
 	const isSlugRoute = (routeId: string, slug: string) => $page.route?.id === routeId && $page.params.slug === slug;
 </script>
 
-<a {href} class="navbar-item" class:navbar-item-selected={isSlugRoute(routeId, slug)}>
+<a {href} class="navbar-item" class:navbar-item-selected={isSlugRoute(routeId, mdPage.slug)}>
 	{title}
 </a>

@@ -7,5 +7,3 @@ export const counter = {
   increment: () => count += 1
 }
 
-
-console.log(vv);

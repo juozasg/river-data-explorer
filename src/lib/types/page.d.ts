@@ -3,9 +3,14 @@ export type PageMetadata = {
   huc?: string
 };
 
-export interface MarkdownComponent {
+export type MarkdownComponent = {
 	default: any;
 	metadata: PageMetadata;
+}
+
+export type MarkdownPage = {
+	metadata: PageMetadata;
+	slug: string;
 }
 
 export type ImportGlobRecord = Record<string, () => Promise<any>>;
