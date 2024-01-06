@@ -4,13 +4,11 @@
 	import { page } from '$app/stores';
 	import Navbar from '$src/components/site/Navbar.svelte';
 
-	// const { data } = $props();
-	// console.log(data);
+	const { data } = $props();
 </script>
 
 <header>
-	<!-- <Navbar regionPages={data.regionPages} variablePages={data.variablePages} /> -->
-	<!-- <Navbar regionPages={[]} variablePages={[]} /> -->
+	<Navbar regionPages={data.regionPages} variablePages={data.variablePages} />
 </header>
 
 <main class="section">

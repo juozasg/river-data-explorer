@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { vv, counter } from '$src/value.svelte.js'
+  import { vv, counter } from '$src/value.svelte'
 
   import A from '$src/components/A.svelte';
   import B from '$src/components/B.svelte';

@@ -43,7 +43,7 @@
 				</a>
 				<div class="navbar-dropdown is-boxed">
 					{#each regionPages as page}
-						<NavbarSlugLink routeId="/region/[slug]" {page}/>
+						<NavbarSlugLink routeId="/regions/[slug]" {page}/>
 					{/each}
 				</div>
 			</div>
