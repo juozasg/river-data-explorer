@@ -1,5 +1,3 @@
-import path from 'path';
-
 import type { MarkdownComponent, ImportGlobRecord, MarkdownPage } from '$lib/types/page';
 
 export const getMarkdownPages = async (allMdPages: ImportGlobRecord): Promise<MarkdownPage[]> => {
@@ -9,10 +7,15 @@ export const getMarkdownPages = async (allMdPages: ImportGlobRecord): Promise<Ma
 
 			return {
 				metadata,
-				slug: path.basename(modulePath, '.md') as string
+				slug: basename(modulePath, '.md')
 			};
 		})
 	);
 
 	return allPages;
 };
+
+export const basename = (path: string, ext?: string): string => {
+	const f = path.split('/').pop() as string;
+	return ext ? f.slice(0, -ext.length) : f;
+}

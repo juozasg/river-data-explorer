@@ -2,6 +2,7 @@ import type { MarkdownComponent } from "$src/lib/types/page";
 import { getMarkdownPages } from "$src/lib/utils";
 import type { EntryGenerator } from './$types';
 
+
 export async function load({params}) {
 	const page: MarkdownComponent = await import(`../${params.slug}.md`);
 
