@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { mdiHelpCircleOutline as helpCircle} from '@mdi/js';
 
 	import { page, navigating } from '$app/stores';
 	import type { MarkdownPage } from '$src/lib/types/page';
 	import NavbarSlugLink from './NavbarSlugLink.svelte';
+	import NavbarHelpLink from './NavbarHelpLink.svelte';
 
 	interface Props {
     regionPages: MarkdownPage[]
@@ -77,12 +77,7 @@
 
 		<div class="navbar-end">
 			<hr/>
-			<a class="navbar-item help">
-				<span class="text">Help</span>
-				<svg class="" style="width: 36px;" viewBox="0 0 24 24">
-					<path d={helpCircle} />
-				</svg>
-			</a>
+			<NavbarHelpLink/>
 		</div>
 	</div>
 </nav>
