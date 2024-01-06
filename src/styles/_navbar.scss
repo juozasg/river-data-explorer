@@ -56,6 +56,10 @@ nav {
 		margin-left: 10px;
 		padding-bottom: 0;
 
+		svg, svg:active, svg:focus, svg:hover {
+			outline: none;
+		}
+
 		&:hover {
 			fill: $stjoe-blue;
 			cursor: pointer;

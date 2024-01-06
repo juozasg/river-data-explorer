@@ -7,6 +7,9 @@
 	const closeHelpModal = () => showHelpModal = false;
 </script>
 
+
+<svelte:document onkeydown={() => showHelpModal = !showHelpModal} />
+
 <a role="button" class="navbar-item help"
 		onclick={() => showHelpModal = true}
 		tabindex="0">
