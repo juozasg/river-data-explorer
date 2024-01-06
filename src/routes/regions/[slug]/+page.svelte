@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>Watershed: {metadata.title} ({metadata.huc})</title>
+	<title>Region: {metadata.title} ({metadata.huc})</title>
 	<meta name="description" content="St Joseph River watershed Hydrological Unit HUC ${metadata.huc} water quality information">
 </svelte:head>
 

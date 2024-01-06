@@ -41,6 +41,8 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@mdi/js": "^7.4.47",
+		"@mdi/light-js": "^0.2.63",
 		"bulma": "^0.9.4"
 	}
 }

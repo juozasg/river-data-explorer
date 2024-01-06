@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { mdiHelpCircleOutline as helpCircle} from '@mdi/js';
+	import { mdilHelpCircle as helpCircleLight } from '@mdi/light-js';
+
 	import { page } from '$app/stores';
 	import type { MarkdownPage } from '$src/lib/types/page';
 	import NavbarSlugLink from './NavbarSlugLink.svelte';
@@ -59,6 +62,13 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="navbar-end">
+			<div class="navbar-item">
+				<svg class="help-button" style="width: 36px;" viewBox="0 0 24 24">
+					<path d={helpCircle} />
+				</svg>
+			</div>
+		</div>
 	</div>
 </nav>
-

@@ -1,8 +1,10 @@
 <script lang="ts">
+
   import { counter } from '$src/value.svelte.js';
 
   let {foo = "default"} = $props();
 </script>
+
 
 
 <h3>A</h3>

@@ -7,6 +7,7 @@
 	const { data } = $props();
 </script>
 
+
 <header>
 	<Navbar regionPages={data.regionPages} variablePages={data.variablePages} />
 </header>
@@ -21,7 +22,6 @@
 	<hr/>
 
 	<pre>{JSON.stringify($page, null, 2)}</pre>
-
 </main>
 
 
