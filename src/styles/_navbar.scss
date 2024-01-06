@@ -2,7 +2,7 @@ nav {
 	.navbar-start {
 		column-gap: 12px;
 		padding-bottom: 8px;
-    margin-left: 10px;
+		margin-left: 10px;
 	}
 
 	.navbar-end {
@@ -37,11 +37,63 @@ nav {
 		}
 	}
 
-	svg.help-button {
+	.navbar-end hr {
+		display: none;
+	}
+
+	.is-active .navbar-end {
+		padding-bottom: 0;
+		hr {
+			display: block;
+			margin: 0px 0 10px 0;
+		}
+	}
+
+
+
+	.navbar-item.help {
 		fill: $grey;
+		margin-left: 10px;
+		padding-bottom: 0;
+
 		&:hover {
 			fill: $stjoe-blue;
 			cursor: pointer;
+			text-decoration: none !important;
+			.text {
+				text-decoration: underline !important;
+			}
+		}
+
+		.text {
+			display: none;
+			position: relative;
+			bottom: 11px;
+			@media (max-width: $navbar-breakpoint) {
+				display: inline-block;
+			}
+		}
+	}
+
+
+	// animation
+	.navbar-menu.is-active {
+		animation: navAnim 0.15s ease-in;
+	}
+
+	@keyframes navAnim {
+		0% {
+			display: none;
+			opacity: 0;
+			height: 0;
+		}
+		1% {
+			display: block;
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+			height: 600px;
 		}
 	}
 }

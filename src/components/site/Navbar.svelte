@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { mdiHelpCircleOutline as helpCircle} from '@mdi/js';
-	import { mdilHelpCircle as helpCircleLight } from '@mdi/light-js';
 
 	import { page } from '$app/stores';
 	import type { MarkdownPage } from '$src/lib/types/page';
 	import NavbarSlugLink from './NavbarSlugLink.svelte';
+	import { slide, fade } from 'svelte/transition';
+	let transKey = {}
+
 
 	interface Props {
     regionPages: MarkdownPage[]
@@ -14,6 +16,8 @@
 	const { regionPages, variablePages } = $props<Props>();
 
 	const isRoute = (routeId: string) => $page.route?.id === routeId
+
+	let burgerActive = $state(true);
 </script>
 
 
@@ -23,16 +27,22 @@
       <img src="/sjrbc-logo.png" alt="SJRBC Logo">
     </a>
 
-		<a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+		<a role="button" class="navbar-burger"
+					class:is-active={burgerActive}
+					onclick={() => burgerActive = !burgerActive}
+			 		aria-label="menu" aria-expanded="false" tabindex="0">
 			<span aria-hidden="true"></span>
 			<span aria-hidden="true"></span>
 			<span aria-hidden="true"></span>
 		</a>
 	</div>
 
-	<div class="navbar-menu">
+	{#key transKey}
+	<div class="navbar-menu"
+				transition:fly={{duration: 1000}}
+				class:is-active={burgerActive}>
 		<div class="navbar-start">
-			<a href="/" class="navbar-item is-active" class:navbar-item-selected={isRoute('/')}>
+			<a href="/" class="navbar-item" class:navbar-item-selected={isRoute('/')}>
 				Home
 			</a>
 
@@ -64,11 +74,14 @@
 		</div>
 
 		<div class="navbar-end">
-			<div class="navbar-item">
-				<svg class="help-button" style="width: 36px;" viewBox="0 0 24 24">
+			<hr/>
+			<a class="navbar-item help">
+				<span class="text">Help</span>
+				<svg class="" style="width: 36px;" viewBox="0 0 24 24">
 					<path d={helpCircle} />
 				</svg>
-			</div>
+			</a>
 		</div>
 	</div>
+	{/key}
 </nav>
