@@ -1,7 +1,6 @@
 @import 'bulma/sass/base/_all';
 @import 'bulma/sass/utilities/_all';
-@import 'bulma/sass/elements/content';
-@import 'bulma/sass/elements/container';
+@import 'bulma/sass/elements/_all';
 @import 'bulma/sass/components/navbar';
 @import 'bulma/sass/components/modal';
 @import 'bulma/sass/layout/_all';
@@ -12,4 +11,6 @@
 body {
 	font-size: 1.1rem;
 	color: $grey-darker;
+	// .is-clipped
+	overflow: hidden !important
 }
