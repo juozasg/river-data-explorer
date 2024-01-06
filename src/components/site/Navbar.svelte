@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { mdiHelpCircleOutline as helpCircle} from '@mdi/js';
 
-	import { page } from '$app/stores';
+	import { page, navigating } from '$app/stores';
 	import type { MarkdownPage } from '$src/lib/types/page';
 	import NavbarSlugLink from './NavbarSlugLink.svelte';
 
@@ -15,6 +15,13 @@
 	const isRoute = (routeId: string) => $page.route?.id === routeId
 
 	let burgerActive = $state(false);
+
+	$effect(() => {
+		if($navigating) {
+			burgerActive = false;
+		}
+	});
+
 </script>
 
 
