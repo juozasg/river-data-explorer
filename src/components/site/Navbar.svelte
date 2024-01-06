@@ -4,9 +4,6 @@
 	import { page } from '$app/stores';
 	import type { MarkdownPage } from '$src/lib/types/page';
 	import NavbarSlugLink from './NavbarSlugLink.svelte';
-	import { slide, fade } from 'svelte/transition';
-	let transKey = {}
-
 
 	interface Props {
     regionPages: MarkdownPage[]
@@ -17,7 +14,7 @@
 
 	const isRoute = (routeId: string) => $page.route?.id === routeId
 
-	let burgerActive = $state(true);
+	let burgerActive = $state(false);
 </script>
 
 
@@ -37,9 +34,7 @@
 		</a>
 	</div>
 
-	{#key transKey}
 	<div class="navbar-menu"
-				transition:fly={{duration: 1000}}
 				class:is-active={burgerActive}>
 		<div class="navbar-start">
 			<a href="/" class="navbar-item" class:navbar-item-selected={isRoute('/')}>
@@ -83,5 +78,4 @@
 			</a>
 		</div>
 	</div>
-	{/key}
 </nav>
