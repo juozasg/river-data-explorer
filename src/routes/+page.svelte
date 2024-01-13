@@ -1,8 +1,5 @@
 <script lang="ts">
-  import { vv, counter } from '$src/value.svelte'
-
-  import A from '$src/components/A.svelte';
-  import B from '$src/components/B.svelte';
+  import WebMap from '$src/components/WebMap.svelte';
 </script>
 
 
@@ -15,13 +12,8 @@
 <!-- svelte-ignore a11y-distracting-elements -->
 <marquee>🚧🏗️ UNDER CONSTRUCTION... 🏗️🚧</marquee>
 
-<pre>Trying state {counter.count}</pre>
+<WebMap/>
 
-
-<A foo={"no way"}/>
-<hr/>
-
-<B/>
 
 <style lang="scss">
   marquee {
