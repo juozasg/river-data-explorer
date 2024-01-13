@@ -5,10 +5,17 @@
 	let showHelpModal = $state(false);
 
 	const closeHelpModal = () => showHelpModal = false;
+	const toggleHelpModalOnH = (e: { key: string; }) => {
+		if(e.key === 'H' || e.key === 'h') {
+			showHelpModal = !showHelpModal
+		}
+	}
 </script>
 
+<!-- const closeOnEscape = (e: { key: string; }) => {if(e.key === 'Escape') closeHelpModal()}; -->
 
-<svelte:document onkeydown={() => showHelpModal = !showHelpModal} />
+
+<svelte:document onkeydown={toggleHelpModalOnH}/>
 
 <a role="button" class="navbar-item help"
 		onclick={() => showHelpModal = true}
