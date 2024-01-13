@@ -5,6 +5,7 @@
 	import Navbar from '$src/components/site/Navbar.svelte';
 
 	const { data } = $props();
+
 </script>
 
 

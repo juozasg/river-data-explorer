@@ -2,11 +2,9 @@
 
   import pkg from 'maplibre-gl';
   const {Map, NavigationControl, GeolocateControl, ScaleControl, AttributionControl} = pkg;
+
   // import { map } from '$lib/stores';
-
   // import { PUBLIC_MAPTILER_KEY } from '$env/static/public';
-
-
 
   // TODO: embed with and height. refactor
   // let {width = "100vw", height = "100vh"} = $props();
@@ -20,7 +18,7 @@
   const init = () => {
     const _map = new Map({
       container: mapContainer!,
-      style: `https://api.maptiler.com/maps/streets/style.json?key=${maptilerKey}`,
+      style: `https://api.maptiler.com/maps/topo/style.json?key=${maptilerKey}`,
       center: [-86.24799777882635, 41.68664479708422],
       zoom: 8,
       hash: false,
@@ -37,6 +35,7 @@
     _map.addControl(new ScaleControl({ maxWidth: 80, unit: 'metric' }), 'bottom-left');
     _map.addControl(new AttributionControl({ compact: true }), 'bottom-right');
 
+
     // map.set(_map);
   };
 
@@ -44,31 +43,24 @@
     if(mapContainer) init();
   });
 
-  // const map = new maplibregl.Map({
-    //   container: 'map', // container id
-    //   style: 'https://demotiles.maplibre.org/style.json', // style URL
-    //   center: [0, 0], // starting position [lng, lat]
-    //   zoom: 1 // starting zoom
-    // });
-</script>
+  </script>
 
 
+  <h3>MapLibre Web Map</h3>
 
-  <h3>This is a web map</h3>
-
-  <em>mappy map map</em>
+  <em>embedded mappy map map</em>
 
   <div class="map" id="map" bind:this={mapContainer}></div>
 
 
 
-<style>
-  #map {
-    /* position: absolute; */
-    /* top: 0; */
-    /* bottom: 0; */
-    height: 500px;
-    width: 100%;
-    z-index: 1;
-  }
-</style>
+  <style>
+    #map {
+      /* position: absolute; */
+      /* top: 0; */
+      /* bottom: 0; */
+      height: 500px;
+      width: 100%;
+      z-index: 1;
+    }
+  </style>
