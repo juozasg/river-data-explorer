@@ -7,10 +7,12 @@
 @import 'bulma/sass/helpers/typography';
 
 @import 'maplibre-gl/dist/maplibre-gl.css';
+@import '@maptiler/sdk/dist/maptiler-sdk.css';
 
 
 @import './navbar.scss';
 @import './kbd.scss';
+@import './basemap_switcher.scss';
 
 body {
 	font-size: 1.1rem;
