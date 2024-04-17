@@ -1,5 +1,5 @@
 import * as maptilersdk from '@maptiler/sdk';
-import { Map } from 'maplibre-gl';
+import * as mlgl from 'maplibre-gl';
 
 export const basemaps = {
 	"TOPO": {
@@ -15,7 +15,7 @@ export const initialBasemapStyle = (maptilersdk.MapStyle as any)[Object.keys(bas
 export class BasemapSwitcherControl {
 	private _container: HTMLDivElement;
 	private _options: any;
-	private _map?: Map;
+	private _map?: mlgl.Map;
 
 	constructor(options: any) {
 		this._options = { ...options };
@@ -44,7 +44,7 @@ export class BasemapSwitcherControl {
 		});
 	}
 
-	onAdd(map: Map) {
+	onAdd(map: mlgl.Map) {
 		this._map = map;
 		const basemaps = this._options.basemaps;
 		Object.keys(basemaps).forEach((layerId) => {
