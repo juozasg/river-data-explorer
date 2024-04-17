@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, beforeAll, vi } from 'vitest';
 import { createRoot } from 'svelte';
 
 import IndexPage from '$routes/+page.svelte'
@@ -11,6 +11,9 @@ describe('sum test', () => {
 	let instance = null;
 
 	beforeEach(() => {
+
+		vi.mock('maplibre-gl', () => ({__esModule: true}));
+
 		const host = document.createElement('div');
 		document.body.appendChild(host);
 
@@ -19,6 +22,12 @@ describe('sum test', () => {
 		console.log(instance);
 		// TODO: https://github.com/testing-library/svelte-testing-library/issues/284
 		// instance = render()
+
+	});
+
+
+	beforeAll(() => {
+
 	});
 
 
