@@ -11,6 +11,13 @@ type SeriesScales = {
   [key: string]: any;
 }
 
+type SeriesCategoryNames = {
+  [key: string]: {[key: string]: string};
+}
+
+type SeriesCategoryColors = {
+  [key: string]: {[key: string]: string};
+}
 
 const interpolateBuYlRd = (x) => {
   return d3.interpolateRdYlBu(Math.abs(x - 1.0));
@@ -129,6 +136,22 @@ const numericFormats: SeriesNames = {
   invertMichigan: "%d",
   doPerc: "%.1f",
   chlorophyll: "%.1f",
+}
+
+const categoryNames: SeriesCategoryNames = {
+  wet: {
+    "0": "Dry",
+    "1": "Wet",
+    undefined: "Unknown",
+  },
+}
+
+const categoryColors: SeriesCategoryNames = {
+  wet: {
+    "0": "fffd37.", // sunshine yellow
+    "1": "002366", // royal blue
+    undefined: "000000", // black
+  },
 }
 
 export const radiusRange = [9, 20];
