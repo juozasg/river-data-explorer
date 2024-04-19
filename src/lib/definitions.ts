@@ -28,14 +28,6 @@ const interpolateDatainfo = (x) => {
   return d3.interpolateMagma(datainfoScaleTransform(x));
 }
 
-
-// export const seriesIds = new Set([
-//   'siteId', 'date', 'bod', 'bodPercent', 'chlorides', 'do', 'doContactTank', 'doOutfall',
-//   'ecoli', 'flow', 'ibi', 'invertIndiana', 'invertMacro', 'invertMichigan',
-//   'invertNarrative', 'nitrates', 'ph', 'phosphorus', 'spc', 'tds',
-//   'temp', 'tss', 'turbidity', 'wet']);
-
-
 export const labels: SeriesNames = {
   datainfo: "Last Measured",
 
