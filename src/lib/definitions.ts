@@ -138,7 +138,7 @@ const numericFormats: SeriesNames = {
   chlorophyll: "%.1f",
 }
 
-const categoryNames: SeriesCategoryNames = {
+export const categoryNames: SeriesCategoryNames = {
   wet: {
     "0": "Dry",
     "1": "Wet",
@@ -146,7 +146,7 @@ const categoryNames: SeriesCategoryNames = {
   },
 }
 
-const categoryColors: SeriesCategoryNames = {
+export const categoryColors: SeriesCategoryNames = {
   wet: {
     "0": "fffd37.", // sunshine yellow
     "1": "002366", // royal blue
