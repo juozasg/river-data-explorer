@@ -1,8 +1,9 @@
 
 <script lang="ts">
-	let { closeHelpModal } = $props<{ closeHelpModal: () => any }>();
+	type Props = { closeFn: () => void }
+	let { closeFn }: Props  = $props();
 
-	const closeOnEscape = (e: { key: string; }) => {if(e.key === 'Escape') closeHelpModal()};
+	const closeOnEscape = (e: { key: string; }) => {if(e.key === 'Escape') closeFn()};
 </script>
 
 
@@ -11,13 +12,13 @@
 <div class="modal is-active">
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div class="modal-background"
-	onclick={closeHelpModal}></div>
+	onclick={closeFn}></div>
 
 	<div class="modal-card">
 		<header class="modal-card-head">
 			<p class="modal-card-title">Help</p>
 			<button class="delete"
-			onclick={closeHelpModal}
+			onclick={closeFn}
 			aria-label="close"></button>
 		</header>
 

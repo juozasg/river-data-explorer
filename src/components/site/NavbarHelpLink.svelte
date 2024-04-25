@@ -4,7 +4,7 @@
 
 	let showHelpModal = $state(false);
 
-	const closeHelpModal = () => showHelpModal = false;
+	const closeFn = () => { showHelpModal = false };
 	const toggleHelpModalOnH = (e: { key: string; }) => {
 		if(e.key === 'H' || e.key === 'h') {
 			showHelpModal = !showHelpModal
@@ -12,7 +12,7 @@
 	}
 </script>
 
-<!-- const closeOnEscape = (e: { key: string; }) => {if(e.key === 'Escape') closeHelpModal()}; -->
+<!-- const closeOnEscape = (e: { key: string; }) => {if(e.key === 'Escape') closeFn()}; -->
 
 
 <svelte:document onkeydown={toggleHelpModalOnH}/>
@@ -27,5 +27,5 @@
 </a>
 
 {#if showHelpModal}
-	<HelpModal {closeHelpModal}/>
+	<HelpModal {closeFn}/>
 {/if}

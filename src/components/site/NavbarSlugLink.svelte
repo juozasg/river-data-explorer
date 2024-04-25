@@ -7,7 +7,7 @@
     page: MarkdownPage
   }
 
-	const { routeId, page: mdPage } = $props<Props>();
+	const { routeId, page: mdPage }: Props = $props();
 	const href = routeId.replace('[slug]', mdPage.slug);
 	const title = mdPage.metadata.title;
 

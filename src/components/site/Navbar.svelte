@@ -10,7 +10,7 @@
     variablePages: MarkdownPage[]
   }
 
-	const { regionPages, variablePages } = $props<Props>();
+	const { regionPages, variablePages }: Props = $props();
 
 	const isRoute = (routeId: string) => $page.route?.id === routeId
 
