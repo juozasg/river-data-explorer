@@ -14,9 +14,6 @@
   </script>
 
 
-  <h3>MapLibre Web Map</h3>
-
-  <em>embedded mappy map map</em>
 
   <div class="map" id="map" bind:this={mapContainer}></div>
 
