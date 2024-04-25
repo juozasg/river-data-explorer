@@ -5,39 +5,8 @@ title: About
 # About
 
 
-*St. Joseph River Basin Comission* has information about __river water quality.__
+*St. Joseph River Basin Comission* has information about __river water quality!__
 
-Very long line that takes up the entire container width Very long line that takes up the entire container width Very long line that takes up the entire container width Very long line that takes up the entire container width Very long line that takes up the entire container width Very long line that takes up the entire container width Very long line that takes up the entire container width Very long line that takes up the entire container width
+Currently hosted at [https://website.riverdata.app/](https://website.riverdata.app/)
 
-Here's a picture of a random mountain:
-
-![The San Juan Mountains are beautiful!](/san-juan-mountains.jpg "San Juan Mountains")
-
-<h1>Looong page</h1>
-
-
-![The San Juan Mountains are beautiful!](/san-juan-mountains.jpg "San Juan Mountains")
-
-
-
-![The San Juan Mountains are beautiful!](/san-juan-mountains.jpg "San Juan Mountains")
-
-
-
-![The San Juan Mountains are beautiful!](/san-juan-mountains.jpg "San Juan Mountains")
-
-
-
-![The San Juan Mountains are beautiful!](/san-juan-mountains.jpg "San Juan Mountains")
-
-
-
-
-![The San Juan Mountains are beautiful!](/san-juan-mountains.jpg "San Juan Mountains")
-
-
-
-![The San Juan Mountains are beautiful!](/san-juan-mountains.jpg "San Juan Mountains")
-
-
-[Home](/)
+Web application [code](https://github.com/juozasg/river-data-explorer/tree/svelte5) and [data](https://github.com/Limnogirl90/SJRBC-web-map-data/tree/main) for this web site is available on GitHub.
