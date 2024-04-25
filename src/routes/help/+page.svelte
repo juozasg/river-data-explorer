@@ -1,7 +1,13 @@
+<script lang="ts">
+	const { data } = $props();
+	const Content = $derived(data.Content);
+	const metadata = $derived(data.metadata);
+</script>
+
 <svelte:head>
-	<title>Help</title>
+	<title>{data.metadata.title}</title>
 </svelte:head>
 
-<div>
-	<h3>Help</h3>
-</div>
+<article>
+	<Content/>
+</article>

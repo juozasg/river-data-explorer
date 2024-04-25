@@ -3,7 +3,7 @@
 	import { page, navigating } from '$app/stores';
 	import type { MarkdownPage } from '$src/lib/types/page';
 	import NavbarSlugLink from './NavbarSlugLink.svelte';
-	import NavbarHelpLink from './NavbarHelpLink.svelte';
+	import NavbarHelpLink from '../modal/ModalLink.svelte';
 
 	interface Props {
     regionPages: MarkdownPage[]
@@ -21,7 +21,6 @@
 			burgerActive = false;
 		}
 	});
-
 </script>
 
 
@@ -83,9 +82,7 @@
 			</a>
 		</div>
 
-		<div class="navbar-end">
-			<hr/>
-			<NavbarHelpLink/>
-		</div>
+		<!-- <div class="navbar-end">
+		</div> -->
 	</div>
 </nav>

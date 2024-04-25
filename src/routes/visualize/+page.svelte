@@ -3,5 +3,5 @@
 </svelte:head>
 
 <div>
-	<h3>Visualize</h3>
+	<h2>Visualize</h2>
 </div>

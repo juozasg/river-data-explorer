@@ -1,13 +1,15 @@
+
 <script lang="ts">
+	// WIP factoring out the modal
 	import { mdiHelpCircleOutline as helpCircle} from '@mdi/js';
-	import HelpModal from './HelpModal.svelte';
+	import Modal from './Modal.svelte';
 
-	let showHelpModal = $state(false);
+	let showModal = $state(false);
 
-	const closeFn = () => { showHelpModal = false };
-	const toggleHelpModalOnH = (e: { key: string; }) => {
+	const closeFn = () => { showModal = false };
+	const toggleModalOnH = (e: { key: string; }) => {
 		if(e.key === 'H' || e.key === 'h') {
-			showHelpModal = !showHelpModal
+			showModal = !showModal
 		}
 	}
 </script>
@@ -15,10 +17,10 @@
 <!-- const closeOnEscape = (e: { key: string; }) => {if(e.key === 'Escape') closeFn()}; -->
 
 
-<svelte:document onkeydown={toggleHelpModalOnH}/>
+<svelte:document onkeydown={toggleModalOnH}/>
 
 <a role="button" class="navbar-item help"
-		onclick={() => showHelpModal = true}
+		onclick={() => showModal = true}
 		tabindex="0">
 	<span class="text">Help</span>
 	<svg class="" style="width: 36px;" viewBox="0 0 24 24">
@@ -26,6 +28,6 @@
 	</svg>
 </a>
 
-{#if showHelpModal}
-	<HelpModal {closeFn}/>
+{#if showModal}
+	<Modal {closeFn}/>
 {/if}
