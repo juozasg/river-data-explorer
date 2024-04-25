@@ -73,6 +73,14 @@
 					{/each}
 				</div>
 			</div>
+
+			<a href="/visualize" class="navbar-item" class:navbar-item-selected={isRoute('/visualize')}>
+				Visualize
+			</a>
+
+			<a href="/help" class="navbar-item" class:navbar-item-selected={isRoute('/help')}>
+				Help
+			</a>
 		</div>
 
 		<div class="navbar-end">

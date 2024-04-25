@@ -8,12 +8,14 @@
 	<meta name="description" content="St Joseph River (Indiana) watershed water quality information, data and web map">
 </svelte:head>
 
-<h1>Welcome to the new website 'Home Page'</h1>
-<!-- svelte-ignore a11y-distracting-elements -->
-<marquee>🚧🏗️ UNDER CONSTRUCTION... 🏗️🚧</marquee>
+<h1>St. Joseph River Basin Data</h1>
+
 
 <WebMap/>
 
+
+<!-- svelte-ignore a11y-distracting-elements -->
+<marquee>🚧🏗️ UNDER CONSTRUCTION... 🏗️🚧</marquee>
 
 <style lang="scss">
   marquee {

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import '$src/styles/app.scss';
 
-	import { page } from '$app/stores';
 	import Navbar from '$src/components/site/Navbar.svelte';
+	import DebugFooter from '$src/components/site/DebugFooter.svelte';
 
 	const { data } = $props();
 
@@ -22,7 +22,9 @@
 
 	<hr/>
 
-	<pre>{JSON.stringify($page, null, 2)}</pre>
+	<footer class="footer">
+		<DebugFooter />
+	</footer>
 </main>
 
 
