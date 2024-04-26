@@ -41,4 +41,32 @@
 		font-size: 1.8rem;
 		font-weight: 600;
 	}
+
+	// .navbar-item.help {
+	// 	fill: $danger;
+	// 	margin-left: 10px;
+	// 	padding-bottom: 0;
+
+	// 	svg, svg:active, svg:focus, svg:hover {
+	// 		outline: none;
+	// 	}
+
+	// 	&:hover {
+	// 		fill: $stjoe-blue;
+	// 		cursor: pointer;
+	// 		text-decoration: none !important;
+	// 		.text {
+	// 			text-decoration: underline !important;
+	// 		}
+	// 	}
+
+	// 	.text {
+	// 		display: none;
+	// 		position: relative;
+	// 		bottom: 11px;
+	// 		@media (max-width: $navbar-breakpoint) {
+	// 			display: inline-block;
+	// 		}
+	// 	}
+	// }
 </style>
