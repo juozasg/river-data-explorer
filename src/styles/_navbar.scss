@@ -71,6 +71,18 @@ nav {
 		}
 	}
 
+	// arrow
+	.navbar-link:not(.is-arrowless)::after {
+		height: 0.5rem;
+		width: 0.5rem;
+		top: 59%;
+		right: 0px;
+	}
+
+	.navbar-link:not(.is-arrowless) {
+    padding-right: 0.9em;
+}
+
 	// nested navbars
 	// https://codepen.io/lublak/pen/mdmEdKN
 	.navbar-item.is-hoverable:hover .navbar-dropdown .navbar-dropdown {
@@ -101,7 +113,16 @@ nav {
 	}
 
 	.navbar-dropdown .navbar-item.has-dropdown > .navbar-link:not(.is-arrowless) {
-		padding-right: 2.5em;
+		padding-right: 0.5em;
+		flex-basis: 80%;
+		&::after {
+			right: -10px;
+		}
+	}
+
+	nav .navbar-dropdown .navbar-item .navbar-dropdown {
+    // top: -10px;
+		// margin-left: 20px;
 	}
 
 }

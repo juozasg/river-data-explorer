@@ -62,7 +62,7 @@
 									<a href="/regions/counties" class="navbar-item" class:navbar-item-selected={false}>Michigan</a>
 							</div> -->
 			<div class="navbar-item has-dropdown is-hoverable">
-				<a class="navbar-link is-arrowless" class:navbar-item-selected={isRoute('/variables/[slug]')}>
+				<a class="navbar-link" class:navbar-item-selected={isRoute('/variables/[slug]')}>
 					Variables
 				</a>
 				<div class="navbar-dropdown is-boxed">

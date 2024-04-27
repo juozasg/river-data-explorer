@@ -26,7 +26,7 @@
 
 <DropdownItem>
 	{@render link("Basin")}
-	<div class="navbar-dropdown">
+	<div class="navbar-dropdown is-boxed">
 		{@render item("Indiana")}
 		{@render item("Michigan")}
 		<DropdownItem>
@@ -47,7 +47,7 @@
 
 
 {#snippet dropdownBox(sublabels)}
-	<div class="navbar-dropdown">
+	<div class="navbar-dropdown is-boxed">
 			{#each sublabels as label}
 				{@render item(label)}
 			{/each}
