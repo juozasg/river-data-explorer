@@ -1,9 +1,10 @@
 <script lang="ts">
+  import NavbarBasin from './navbar/Basin.svelte';
+
 
 	import { page, navigating } from '$app/stores';
 	import type { MarkdownPage } from '$src/lib/types/page';
-	import NavbarSlugLink from './NavbarSlugLink.svelte';
-	import NavbarHelpLink from '../modal/ModalLink.svelte';
+	import NavbarSlugLink from './navbar/SlugLink.svelte';
 
 	interface Props {
     regionPages: MarkdownPage[]
@@ -51,25 +52,24 @@
 				About
 			</a>
 
-			<div class="navbar-item has-dropdown is-hoverable">
-				<a class="navbar-link is-arrowless" class:navbar-item-selected={isRoute('/regions/[slug]')}>
-					Regions
-				</a>
-				<div class="navbar-dropdown is-boxed">
-					{#each regionPages as page}
-						<NavbarSlugLink routeId="/regions/[slug]" {page}/>
-					{/each}
-				</div>
-			</div>
+			<NavbarBasin/>
 
+							<!-- <div class="navbar-dropdown is-boxed">
+									<a href="/regions/counties" class="navbar-item" class:navbar-item-selected={false}>Counties</a>
+									<a href="/regions/counties" class="navbar-item" class:navbar-item-selected={false}>Rivers</a>
+									<a href="/regions/counties" class="navbar-item" class:navbar-item-selected={false}>Streams</a>
+									<a href="/regions/counties" class="navbar-item" class:navbar-item-selected={false}>Indiana</a>
+									<a href="/regions/counties" class="navbar-item" class:navbar-item-selected={false}>Michigan</a>
+							</div> -->
 			<div class="navbar-item has-dropdown is-hoverable">
 				<a class="navbar-link is-arrowless" class:navbar-item-selected={isRoute('/variables/[slug]')}>
 					Variables
 				</a>
 				<div class="navbar-dropdown is-boxed">
 					{#each variablePages as page}
-						<NavbarSlugLink routeId="/variables/[slug]" {page}/>
+					<NavbarSlugLink routeId="/variables/[slug]" {page}/>
 					{/each}
+					<!-- <hr class="navbar-divider"> -->
 				</div>
 			</div>
 
