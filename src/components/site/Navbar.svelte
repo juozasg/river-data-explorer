@@ -54,13 +54,6 @@
 
 			<NavbarBasin/>
 
-							<!-- <div class="navbar-dropdown is-boxed">
-									<a href="/regions/counties" class="navbar-item" class:navbar-item-selected={false}>Counties</a>
-									<a href="/regions/counties" class="navbar-item" class:navbar-item-selected={false}>Rivers</a>
-									<a href="/regions/counties" class="navbar-item" class:navbar-item-selected={false}>Streams</a>
-									<a href="/regions/counties" class="navbar-item" class:navbar-item-selected={false}>Indiana</a>
-									<a href="/regions/counties" class="navbar-item" class:navbar-item-selected={false}>Michigan</a>
-							</div> -->
 			<div class="navbar-item has-dropdown is-hoverable">
 				<a class="navbar-link" class:navbar-item-selected={isRoute('/variables/[slug]')}>
 					Variables
