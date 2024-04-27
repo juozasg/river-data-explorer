@@ -27,6 +27,8 @@
 <DropdownItem>
 	{@render link("Basin")}
 	<div class="navbar-dropdown is-boxed">
+		{@render item("Search...")}
+		<hr class="navbar-divider">
 		{@render item("Indiana")}
 		{@render item("Michigan")}
 		<DropdownItem>
@@ -40,8 +42,7 @@
 		</DropdownItem>
 
 		{@render item("HUC12")}
-		<hr class="navbar-divider">
-		{@render item("Search")}
+
 	</div>
 </DropdownItem>
 

@@ -79,9 +79,10 @@ nav {
 		right: 0px;
 	}
 
+
 	.navbar-link:not(.is-arrowless) {
     padding-right: 0.9em;
-}
+	}
 
 	// nested navbars
 	// https://codepen.io/lublak/pen/mdmEdKN
@@ -120,11 +121,37 @@ nav {
 		}
 	}
 
-	nav .navbar-dropdown .navbar-item .navbar-dropdown {
-    // top: -10px;
-		// margin-left: 20px;
-	}
-
 }
 
+
+@media (max-width: 689px) {
+	nav {
+
+		.navbar-item.has-dropdown .navbar-item.has-dropdown {
+			padding-left: 8px;
+		}
+
+		.navbar-link:not(.is-arrowless)::after {
+			right: 20px;
+		}
+
+		.navbar-dropdown .navbar-item .navbar-dropdown {
+			margin-left: 14px !important;
+			box-shadow: none !important;
+		}
+
+		.navbar-item {
+			&.has-dropdown {
+				.navbar-dropdown {
+					display: none;
+				}
+				&:hover {
+					.navbar-dropdown {
+						display: block !important;
+					}
+				}
+			}
+		}
+	}
+}
 
