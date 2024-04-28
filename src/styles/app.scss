@@ -29,17 +29,21 @@ body {
 	-khtml-user-select: none;
 	-webkit-user-select: none;
 
-	/*
-		Introduced in IE 10.
-		See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
-	*/
 	-ms-user-select: none;
 	user-select: none;
-
 
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
   -o-user-drag: none;
-  user-drag: none;
+}
+
+nav {
+	*, *::after, *::before {
+		-webkit-user-select: none;
+		user-select: none;
+		-webkit-user-drag: none;
+		-webkit-app-region: no-drag;
+		cursor: default;
+	}
 }

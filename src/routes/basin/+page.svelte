@@ -1,14 +1,12 @@
 <script lang="ts">
 	import WebMap from "$src/components/WebMap.svelte";
-
-
 </script>
 
 <svelte:head>
 	<title>Search the Basin</title>
 </svelte:head>
 
-<h4 class="has-text-centered">Select region or area type</h4>
+<h4 class="has-text-centered">Select watershed region</h4>
 
 
 <div class="tabs is-toggle is-centered">
