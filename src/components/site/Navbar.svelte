@@ -25,9 +25,9 @@
 </script>
 
 
-<nav class="navbar is-fixed-top is-transparent" aria-label="main navigation">
+<nav class="navbar is-fixed-top is-transparent unselectable" aria-label="main navigation">
 	<div class="navbar-brand">
-		<a class="navbar-item" href="/">
+		<a class="navbar-item" href="/" draggable="false">
       <img src="/sjrbc-logo.png" alt="SJRBC Logo">
     </a>
 
