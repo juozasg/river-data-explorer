@@ -5,25 +5,26 @@
   // TODO: embed with and height. refactor
   // let {width = "100vw", height = "100vh"} = $props();
 
+  const { height = "500px", width = "100%" } = $props();
+
   let mapContainer: HTMLDivElement | null = $state(null);
 
   $effect(() => {
-    if(mapContainer) createMaptilerMap();
+    if(mapContainer) createMaptilerMap(mapContainer);
   });
 
-  </script>
+</script>
 
 
+<div class="map" bind:this={mapContainer}></div>
 
-  <div class="map" id="map" bind:this={mapContainer}></div>
-
-  <style>
-    #map {
-      /* position: absolute; */
-      /* top: 0; */
-      /* bottom: 0; */
-      height: 500px;
-      width: 100%;
-      z-index: 1;
-    }
-  </style>
+<style>
+  .map {
+    /* position: absolute; */
+    /* top: 0; */
+    /* bottom: 0; */
+    height: var(--map-height, 500px);
+    width: var(--map-width, 100%);
+    z-index: 1;
+  }
+</style>
