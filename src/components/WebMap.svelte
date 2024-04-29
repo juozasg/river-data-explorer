@@ -1,6 +1,6 @@
 <script lang="ts">
-  import * as maptilersdk from '@maptiler/sdk';
-  import { createMaptilerMap } from '$lib/maplibre';
+  import { createMaptilerMap as createMaplibreMap } from '$lib/maplibre';
+	import { mapMouseLocation } from '$src/state/mapMouse.svelte';
 
   // TODO: embed with and height. refactor
   // let {width = "100vw", height = "100vh"} = $props();
@@ -10,14 +10,17 @@
   let mapContainer: HTMLDivElement | null = $state(null);
 
   $effect(() => {
-    if(mapContainer) createMaptilerMap(mapContainer);
+    if(mapContainer) createMaplibreMap(mapContainer);
   });
 
 </script>
 
-
-<div class="map" bind:this={mapContainer}></div>
-
+<div style="position: relative">
+  <div class="map" bind:this={mapContainer}></div>
+  {#if mapMouseLocation.lngLat}
+    <pre>{mapMouseLocation.lngLat} press C to copy</pre>
+  {/if}
+</div>
 <style>
   .map {
     /* position: absolute; */
@@ -26,5 +29,14 @@
     height: var(--map-height, 500px);
     width: var(--map-width, 100%);
     z-index: 1;
+  }
+
+  pre {
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    z-index: 2;
+    background: none;
+    padding: 0.5rem;
   }
 </style>
