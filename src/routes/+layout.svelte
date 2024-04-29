@@ -14,7 +14,7 @@
 </header>
 
 <main class="section">
-	<div class="container">
+	<div class="container is-fluid">
 		<div class="content">
 			<slot />
 		</div>

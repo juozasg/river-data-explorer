@@ -13,7 +13,7 @@
 <RegionTypeTabs></RegionTypeTabs>
 
 <div class="areas">
-  <WebMap --map-height="100vh"/>
+  <WebMap --map-height="70vh"/>
 </div>
 
 <h4 class="has-text-centered">Select data</h4>
@@ -21,10 +21,10 @@
 
 <div class="details">
   <div class="columns">
-    <div class="column col1">
+    <div class="column map-preview-column">
       <WebMap --map-height="400px"/>
     </div>
-    <div class="column col2">Sites and variables here</div>
+    <div class="column dataset-column">Sites and variables here</div>
   </div>
 </div>
 
@@ -56,17 +56,14 @@
     gap: 1rem;
   }
 
-  .col2 {
-    min-height: 400px;
-  }
-
-
   .column {
     padding: 0;
     margin-bottom: 1rem;
   }
 
-  .col2 {
+  .dataset-column {
+    min-height: 400px;
+
     /* margin-left: 1rem; */
     background-color: #f0f0f0;
     font-size: 3rem;
