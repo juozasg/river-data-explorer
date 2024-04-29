@@ -1,3 +1,4 @@
+
 @import 'bulma/sass/base/_all';
 @import 'bulma/sass/utilities/_all';
 @import 'bulma/sass/elements/_all';
@@ -16,6 +17,8 @@
 @import './kbd.scss';
 @import './basemap_switcher.scss';
 
+
+
 body {
 	font-size: 1.1rem;
 	color: $grey-darker;
@@ -25,26 +28,9 @@ body {
 
 
 
-.unselectable {
-	-moz-user-select: -moz-none;
-	-khtml-user-select: none;
-	-webkit-user-select: none;
+// @use "bulma/sass/utilities/mixins";
 
-	-ms-user-select: none;
-	user-select: none;
-
-  -webkit-user-drag: none;
-  -khtml-user-drag: none;
-  -moz-user-drag: none;
-  -o-user-drag: none;
-}
-
-nav {
-	*, *::after, *::before {
-		-webkit-user-select: none;
-		user-select: none;
-		-webkit-user-drag: none;
-		-webkit-app-region: no-drag;
-		cursor: default;
-	}
-}
+// @include mixins.mobile {
+//   // Styles applied
+//   // below $tablet
+// }
