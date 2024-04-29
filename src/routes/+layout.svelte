@@ -3,8 +3,14 @@
 
 	import Navbar from '$src/components/site/Navbar.svelte';
 	import DebugFooter from '$src/components/site/DebugFooter.svelte';
+	import { copyLngLat } from '$src/components/copyLngLat';
+	import { onMount } from 'svelte';
 
 	const { data } = $props();
+
+	onMount(() => {
+		document.addEventListener('keydown', copyLngLat);
+	});
 
 </script>
 
@@ -26,7 +32,6 @@
 		<DebugFooter />
 	</footer>
 </main>
-
 
 
 

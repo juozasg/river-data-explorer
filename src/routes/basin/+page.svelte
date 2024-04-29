@@ -12,14 +12,7 @@
   //   console.log("map effect", mapMouseLocation.map);
   // });
 
-  // document.addEventListener('keydown', (e) => {
-  //   if (e.key === 'c') {
-  //     if(mapMouseLocation.lngLat) {
-  //       navigator.clipboard.writeText(JSON.stringify(mapMouseLocation.lngLat));
-  //       console.log("copied", mapMouseLocation.lngLat);
-  //     }
-  //   }
-  // });
+
 </script>
 
 <svelte:head>

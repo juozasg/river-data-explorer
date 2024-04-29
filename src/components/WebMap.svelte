@@ -1,6 +1,8 @@
 <script lang="ts">
+
   import { createMaptilerMap as createMaplibreMap } from '$lib/maplibre';
 	import { mapMouseLocation } from '$src/state/mapMouse.svelte';
+	import { copyLngLat, formatLngLat } from './copyLngLat';
 
   // TODO: embed with and height. refactor
   // let {width = "100vw", height = "100vh"} = $props();
@@ -13,14 +15,17 @@
     if(mapContainer) createMaplibreMap(mapContainer);
   });
 
+
 </script>
 
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div style="position: relative">
   <div class="map" bind:this={mapContainer}></div>
   {#if mapMouseLocation.lngLat}
-    <pre>{mapMouseLocation.lngLat} press C to copy</pre>
+    <pre>{formatLngLat(mapMouseLocation.lngLat)} press C to copy</pre>
   {/if}
 </div>
+
 <style>
   .map {
     /* position: absolute; */
