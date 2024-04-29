@@ -79,6 +79,12 @@
     margin-bottom: 1rem;
   }
 
+
+  .results {
+    height: 400px;
+    background-color: aquamarine;
+  }
+
   .dataset-column {
     min-height: 400px;
 
