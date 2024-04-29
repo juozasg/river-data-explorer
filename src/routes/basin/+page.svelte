@@ -1,4 +1,6 @@
 <script lang="ts">
+  import RegionTypeTabs from './RegionTypeTabs.svelte';
+
 	import WebMap from "$src/components/WebMap.svelte";
 </script>
 
@@ -8,39 +10,10 @@
 
 <h4 class="has-text-centered">Select watershed region</h4>
 
-
-<div class="tabs is-toggle is-centered">
-  <ul>
-    <li class="is-active">
-      <a>
-        <span>State</span>
-      </a>
-    </li>
-    <li>
-      <a>
-        <span>County</span>
-      </a>
-    </li>
-    <li>
-      <a>
-        <span>River (HUC10)</span>
-      </a>
-    </li>
-    <li>
-      <a>
-        <span>Stream (HUC12)</span>
-      </a>
-    </li>
-    <li>
-      <a>
-        <span>Custom Area...</span>
-      </a>
-    </li>
-  </ul>
-</div>
+<RegionTypeTabs></RegionTypeTabs>
 
 <div class="areas">
-  <WebMap --map-height="700px"/>
+  <WebMap --map-height="100vh"/>
 </div>
 
 <h4 class="has-text-centered">Select data</h4>
@@ -58,9 +31,12 @@
 
 <h4 class="has-text-centered">Statistics/results go here...</h4>
 
+<div class="results">
+  <a href="/regions/indiana">Indiana</a>
+</div>
 
 
-<a href="/regions/indiana">Indiana</a>
+
 
 <style>
 	h4 {
@@ -71,18 +47,23 @@
     margin-bottom: 2.5rem;
   }
 
-  .columns {
-    margin: 0;
+  .details {
+    margin-top: 1rem;
   }
 
-  .col1 {
-    margin-right: 1rem;
+  .columns {
+    margin: 0;
+    gap: 1rem;
   }
+
+  .col2 {
+    min-height: 400px;
+  }
+
 
   .column {
     padding: 0;
     margin-bottom: 1rem;
-
   }
 
   .col2 {
