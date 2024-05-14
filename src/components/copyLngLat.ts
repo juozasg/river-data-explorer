@@ -2,7 +2,8 @@ import { mapMouseLocation } from "$src/state/mapMouse.svelte";
 import type { LngLat } from "maplibre-gl";
 
 export const formatLngLat = (lngLat: LngLat) => {
-	return lngLat.toArray().map((n) => n.toFixed(4)).join(", ");
+	const [lon, lat] = lngLat.toArray();
+	return [lat, lon].map((n) => n.toFixed(4)).join(", ");
 };
 
 export const copyLngLat = (e: KeyboardEvent) => {
