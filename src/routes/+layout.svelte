@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '$src/styles/app.scss';
 
+  import Notifications from '$src/components/site/Notifications.svelte';
 	import Navbar from '$src/components/site/Navbar.svelte';
 	import DebugFooter from '$src/components/site/DebugFooter.svelte';
 	import { copyLngLat } from '$lib/copyLngLat.js';
@@ -11,20 +12,16 @@
 	onMount(() => {
 		document.body.addEventListener('keydown', copyLngLat);
 	});
-
 </script>
-
 
 <header>
 	<Navbar regionPages={data.regionPages} variablePages={data.variablePages} />
 </header>
 
+<Notifications/>
 
 <main class="section">
-	<div class="notification is-primary">
-		<button class="delete"></button>
-		Copied ABC, XYZ......
-	</div>
+
 	<div class="container is-fluid">
 		<div class="content">
 			<slot />
@@ -37,8 +34,6 @@
 		<DebugFooter />
 	</footer>
 </main>
-
-
 
 
 <!--

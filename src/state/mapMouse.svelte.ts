@@ -1,13 +1,6 @@
 import type { Point } from "$src/types/basic";
 import type { LngLat, MapMouseEvent } from "maplibre-gl";
 
-let count = $state(0);
-
-export const counter = {
-  get count() { return count },
-  increment: () => count += 1
-}
-
 export class MapMouseLocation {
   lngLat: LngLat | null = $state(null);
   point: Point | null = $state(null);

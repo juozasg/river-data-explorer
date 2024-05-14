@@ -1,4 +1,5 @@
 import { mapMouseLocation } from "$src/state/mapMouse.svelte";
+import { notify } from "$src/state/notifications.svelte";
 import type { LngLat } from "maplibre-gl";
 
 export const formatLngLat = (lngLat: LngLat, fractionDigits?: number) => {
@@ -18,6 +19,7 @@ export const copyLngLat = (e: KeyboardEvent) => {
 		if(mapMouseLocation.lngLat) {
 			navigator.clipboard.writeText(formatLngLat(mapMouseLocation.lngLat));
 			console.log("copied", mapMouseLocation.lngLat);
+			notify("Copied " + formatLngLat(mapMouseLocation.lngLat));
 		}
 	}
 };
