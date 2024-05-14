@@ -47,6 +47,10 @@
         {
             "folderPath": "river-data-explorer/node_modules/",
             "badge": "𐕣"
+        },
+        {
+            "folderPath": "river-data-explorer/build/",
+            "badge": "🏗️"
         }
     ],
 }
