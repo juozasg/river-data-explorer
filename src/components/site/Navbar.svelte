@@ -60,9 +60,8 @@
 				</a>
 				<div class="navbar-dropdown is-boxed">
 					{#each variablePages as page}
-					<NavbarSlugLink routeId="/variables/[slug]" {page}/>
+						<NavbarSlugLink routeId="/variables/[slug]" {page}/>
 					{/each}
-					<!-- <hr class="navbar-divider"> -->
 				</div>
 			</div>
 

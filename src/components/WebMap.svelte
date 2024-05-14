@@ -1,21 +1,18 @@
 <script lang="ts">
+	import type { LngLatLike } from 'maplibre-gl';
 
-  import { createMaptilerMap as createMaplibreMap } from '$lib/maplibre';
+  import { createMaptilerMap as createMaplibreMap } from '$lib/maplibre/maplibre';
 	import { mapMouseLocation } from '$src/state/mapMouse.svelte';
 	import { formatLngLat } from '$lib/copyLngLat';
 
-  // TODO: embed with and height. refactor
-  // let {width = "100vw", height = "100vh"} = $props();
-
-  const { height = "500px", width = "100%" } = $props();
+  interface Props { zoom?: number, center?: LngLatLike};
+  const { zoom, center }: Props = $props();
 
   let mapContainer: HTMLDivElement | null = $state(null);
 
   $effect(() => {
-    if(mapContainer) createMaplibreMap(mapContainer);
+    if(mapContainer) createMaplibreMap(mapContainer, zoom, center);
   });
-
-
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
