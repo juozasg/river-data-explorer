@@ -1,16 +1,17 @@
 import * as maptilersdk from '@maptiler/sdk';
-import { LngLat } from "maplibre-gl";
+import * as ml from 'maplibre-gl';
+
 
 import { BasemapSwitcherControl, basemaps, initialBasemapStyle } from './BasemapSwitcherControl';
 import { mapMouseLocation } from '$src/state/mapMouse.svelte';
 
 
-export const createMaptilerMap = (mapContainer: HTMLDivElement, zoom?: number, center?: LngLat) => {
+export const createMaptilerMap = (mapContainer: HTMLDivElement, zoom?: number, center?: ml.LngLat) => {
 	const maptilerKey = '4zPvHZlweLbGaEy9LI4Z';
 	maptilersdk.config.apiKey = maptilerKey;
 
 	zoom ??= 8;
-	center ??= new LngLat(-85.61660125969536, 41.82930544846346);
+	center ??= new ml.LngLat(-85.61660125969536, 41.82930544846346);
 
 	const _map = new maptilersdk.Map({
 		container: mapContainer, // container's id or the HTML element to render the map
