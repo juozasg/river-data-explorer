@@ -1,3 +1,17 @@
 {
     "typescript.tsdk": "node_modules/typescript/lib",
+    "folder-color.pathColors": [
+        {
+            "folderPath": "river-data-explorer/src/styles/",
+            "badge": "💅"
+        },
+        {
+            "folderPath": "river-data-explorer/src/routes/",
+            "badge": "🔄"
+        },
+        {
+            "folderPath": "river-data-explorer/src/lib/",
+            "badge": "📗"
+        }
+    ],
 }
