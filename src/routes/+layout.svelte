@@ -3,7 +3,7 @@
 
 	import Navbar from '$src/components/site/Navbar.svelte';
 	import DebugFooter from '$src/components/site/DebugFooter.svelte';
-	import { copyLngLat } from '$src/components/copyLngLat';
+	import { copyLngLat } from '$lib/copyLngLat.js';
 	import { onMount } from 'svelte';
 
 	const { data } = $props();
@@ -19,7 +19,12 @@
 	<Navbar regionPages={data.regionPages} variablePages={data.variablePages} />
 </header>
 
+
 <main class="section">
+	<div class="notification is-primary">
+		<button class="delete"></button>
+		Copied ABC, XYZ......
+	</div>
 	<div class="container is-fluid">
 		<div class="content">
 			<slot />

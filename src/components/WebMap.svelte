@@ -2,7 +2,7 @@
 
   import { createMaptilerMap as createMaplibreMap } from '$lib/maplibre';
 	import { mapMouseLocation } from '$src/state/mapMouse.svelte';
-	import { formatLngLat } from './copyLngLat';
+	import { formatLngLat } from '$lib/copyLngLat';
 
   // TODO: embed with and height. refactor
   // let {width = "100vw", height = "100vh"} = $props();

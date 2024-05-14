@@ -1,17 +1,22 @@
 import * as maptilersdk from '@maptiler/sdk';
+import { LngLat } from "maplibre-gl";
+
 import { BasemapSwitcherControl, basemaps, initialBasemapStyle } from './BasemapSwitcherControl';
 import { mapMouseLocation } from '$src/state/mapMouse.svelte';
 
 
-export const createMaptilerMap = (mapContainer: HTMLDivElement) => {
+export const createMaptilerMap = (mapContainer: HTMLDivElement, zoom?: number, center?: LngLat) => {
 	const maptilerKey = '4zPvHZlweLbGaEy9LI4Z';
 	maptilersdk.config.apiKey = maptilerKey;
+
+	zoom ??= 8;
+	center ??= new LngLat(-85.61660125969536, 41.82930544846346);
 
 	const _map = new maptilersdk.Map({
 		container: mapContainer, // container's id or the HTML element to render the map
 		style: initialBasemapStyle,
-		center: [-85.47151366816674, 41.808299937760914], // starting position [lng, lat]
-		zoom: 8, // starting zoom
+		center: center, // starting position [lng, lat]
+		zoom: zoom, // starting zoom
 	});
 
 	_map.addControl(new BasemapSwitcherControl({basemaps: basemaps, initialBasemap: initialBasemapStyle}), 'bottom-right');
