@@ -1,18 +1,6 @@
 <script lang="ts">
   import RegionTypeTabs from './RegionTypeTabs.svelte';
 	import WebMap from "$src/components/WebMap.svelte";
-	import { mapMouseLocation } from '$src/state/mapMouse.svelte';
-
-
-  // $effect(() => {
-  //   console.log("latlon effect", mapMouseLocation.lngLat);
-  // });
-
-  // $effect(() => {
-  //   console.log("map effect", mapMouseLocation.map);
-  // });
-
-
 </script>
 
 <svelte:head>

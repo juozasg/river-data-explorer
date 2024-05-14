@@ -2,7 +2,7 @@
 
   import { createMaptilerMap as createMaplibreMap } from '$lib/maplibre';
 	import { mapMouseLocation } from '$src/state/mapMouse.svelte';
-	import { copyLngLat, formatLngLat } from './copyLngLat';
+	import { formatLngLat } from './copyLngLat';
 
   // TODO: embed with and height. refactor
   // let {width = "100vw", height = "100vh"} = $props();
@@ -22,7 +22,7 @@
 <div style="position: relative">
   <div class="map" bind:this={mapContainer}></div>
   {#if mapMouseLocation.lngLat}
-    <pre>{formatLngLat(mapMouseLocation.lngLat)} press C to copy</pre>
+    <pre>{formatLngLat(mapMouseLocation.lngLat, 4)} press C to copy</pre>
   {/if}
 </div>
 

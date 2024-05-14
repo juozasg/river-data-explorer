@@ -1,9 +1,11 @@
 import { mapMouseLocation } from "$src/state/mapMouse.svelte";
 import type { LngLat } from "maplibre-gl";
 
-export const formatLngLat = (lngLat: LngLat) => {
+export const formatLngLat = (lngLat: LngLat, fractionDigits?: number) => {
+	const numberFormat = (n: number) => fractionDigits ? n.toFixed(fractionDigits) : n;
+
 	const [lon, lat] = lngLat.toArray();
-	return [lat, lon].map((n) => n.toFixed(4)).join(", ");
+	return [lat, lon].map((n) => numberFormat(n)).join(", ");
 };
 
 export const copyLngLat = (e: KeyboardEvent) => {
@@ -14,7 +16,7 @@ export const copyLngLat = (e: KeyboardEvent) => {
 
 	if (e.key === 'c') {
 		if(mapMouseLocation.lngLat) {
-			navigator.clipboard.writeText(mapMouseLocation.lngLat.toArray().join(", "));
+			navigator.clipboard.writeText(formatLngLat(mapMouseLocation.lngLat));
 			console.log("copied", mapMouseLocation.lngLat);
 		}
 	}

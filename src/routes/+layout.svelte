@@ -9,7 +9,7 @@
 	const { data } = $props();
 
 	onMount(() => {
-		document.addEventListener('keydown', copyLngLat);
+		document.body.addEventListener('keydown', copyLngLat);
 	});
 
 </script>

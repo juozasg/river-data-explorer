@@ -1,8 +1,6 @@
 import type { Point } from "$src/types/basic";
 import type { LngLat, MapMouseEvent } from "maplibre-gl";
 
-export const vv = 14;
-
 let count = $state(0);
 
 export const counter = {
