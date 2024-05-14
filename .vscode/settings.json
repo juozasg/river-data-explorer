@@ -43,6 +43,10 @@
         {
             "folderPath": "river-data-explorer/src/",
             "color": "foldercolorizer.Thistle"
+        },
+        {
+            "folderPath": "river-data-explorer/node_modules/",
+            "badge": "𐕣"
         }
     ],
 }
