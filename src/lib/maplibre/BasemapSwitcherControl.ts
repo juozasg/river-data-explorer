@@ -16,8 +16,10 @@ export class BasemapSwitcherControl {
 	private _container: HTMLDivElement;
 	private _options: any;
 	private _map?: ml.Map;
+	private _callback: () => void;
 
-	constructor(options: any) {
+	constructor(switchCallback: () => void, options: any) {
+		this._callback = switchCallback;
 		this._options = { ...options };
 		this._container = document.createElement("div");
 		this._container.classList.add("maplibregl-ctrl");
@@ -58,8 +60,20 @@ export class BasemapSwitcherControl {
 				activeElement?.classList.remove("active");
 				basemapContainer.classList.add("active");
 				const styles = maptilersdk.MapStyle as any;
-				map.setStyle(styles[layerId]);
+				const newStyle = styles[layerId];
+
+				if(newStyle.name !== map.getStyle().name) {
+					// console.log("style switching");
+					map.setStyle(styles[layerId]);
+
+					// reapply sources and layers
+					map.once('idle', () => {
+						this._callback();
+						// console.log('map idle reload callback');
+					});
+				}
 			});
+			Object.assign
 			basemapContainer.classList.add("hidden");
 			this._container.appendChild(basemapContainer);
 			if (this._options.initialBasemap.id === layerId) {
