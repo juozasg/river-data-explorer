@@ -3,7 +3,8 @@ import type { LngLatLike } from 'maplibre-gl';
 
 import { BasemapSwitcherControl, basemaps, initialBasemapStyle } from './BasemapSwitcherControl';
 import { mapMouseLocation } from '$src/state/mapMouse.svelte';
-import { notify } from '$src/state/notifications.svelte';
+// import { notify } from '$src/state/notifications.svelte';
+import { onAreaHover } from './areaSelection';
 
 
 
@@ -19,6 +20,7 @@ export const createMaptilerMap = (mapContainer: HTMLDivElement, zoom?: number, c
 		style: initialBasemapStyle,
 		center: center, // starting position [lng, lat]
 		zoom: zoom, // starting zoom
+		minZoom: 3,
 	});
 
 	_map.addControl(new BasemapSwitcherControl(() => createLayers(_map), {basemaps: basemaps, initialBasemap: initialBasemapStyle}), 'bottom-right');
@@ -28,9 +30,9 @@ export const createMaptilerMap = (mapContainer: HTMLDivElement, zoom?: number, c
 		createLayers(_map);
 	});
 
-	createLayerEventListeners(_map);
+	createMapEventListeners(_map);
+	createMapLayerEventListeners(_map);
 };
-
 
 function createLayers(map: maptilersdk.Map) {
 	map.addSource('huc10', {
@@ -69,9 +71,8 @@ function createLayers(map: maptilersdk.Map) {
 	});
 }
 
-let hoveredHuc10: string | number | undefined;
 
-function createLayerEventListeners(map: maptilersdk.Map) {
+function createMapEventListeners(map: maptilersdk.Map) {
 	map.on('mousemove', (e): void => {
 		// e.lngLat is the longitude, latitude geographical position of the event
 		// e.point is the x, y coordinates of the mousemove event relative
@@ -81,43 +82,8 @@ function createLayerEventListeners(map: maptilersdk.Map) {
 	map.on('mouseout', (): void => {
 		mapMouseLocation.onMouseOut()
 	});
+}
 
-	// When the user moves their mouse over the huclayer, we'll update the
-	// feature state for the feature under the mouse.
-	map.on('mousemove', 'huc10', (e) => {
-		if (e!.features!.length > 0) {
-			const feature = e.features![0];
-			if (hoveredHuc10 && hoveredHuc10 === feature.id) {
-				return;
-			}
-
-			if (hoveredHuc10) {
-				map.setFeatureState(
-					{source: 'huc10', id: hoveredHuc10},
-					{hover: false}
-				);
-			}
-
-			hoveredHuc10 = feature.id;
-			const hoveredName = feature.properties?.name;
-			map.setFeatureState(
-				{source: 'huc10', id: hoveredHuc10},
-				{hover: true}
-			);
-			console.log(`huc10 ${hoveredHuc10} (${hoveredName})`, feature);
-		}
-	});
-
-	// When the mouse leaves the huclayer, update the feature state of the
-	// previously hovered feature.
-	map.on('mouseleave', 'huc10', () => {
-		// if (hoveredStateId) {
-		// 	map.setFeatureState(
-		// 		{source: 'huc10', id: hoveredStateId},
-		// 		{hover: false}
-		// 	);
-		// }
-
-		// hoveredStateId = undefined;
-	});
+function createMapLayerEventListeners(_map: maptilersdk.Map) {
+	onAreaHover(_map);
 }
