@@ -1,8 +1,17 @@
 import * as maptilersdk from '@maptiler/sdk';
+import * as ml from 'maplibre-gl';
+
 
 export let hoveredHuc10: string | number | undefined | null;
 
+
+
 export function onAreaHover(map: maptilersdk.Map) {
+	// Create a popup, but don't add it to the map yet.
+	const popup = new ml.Popup({
+		closeButton: false,
+		closeOnClick: false
+	});
 	// When the user moves their mouse over the huclayer, we'll update the
 	// feature state for the feature under the mouse.
 	map.on('mousemove', 'huc10', (e) => {
@@ -25,7 +34,19 @@ export function onAreaHover(map: maptilersdk.Map) {
 				{ source: 'huc10', id: hoveredHuc10 },
 				{ hover: true }
 			);
-			console.log(`huc10 ${hoveredHuc10} (${hoveredName})`, feature);
+			const geometry = feature.geometry as any;
+			const point = geometry.coordinates[0][0];
+			const description = `<h4>${hoveredName}</h4>`;
+
+			console.log(`huc10 ${hoveredHuc10} (${hoveredName})`, feature, point);
+			popup.setLngLat(point).setHTML(description).addTo(map);
+			// console.log(geometry.coordinates[0][0]);
+
+
+
+
+			// showPopup(map, feature);
+			// const coords = feature.properties.centroid;
 		}
 	});
 
