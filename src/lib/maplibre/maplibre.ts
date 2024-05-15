@@ -36,6 +36,7 @@ function createLayers(map: maptilersdk.Map) {
 	map.addSource('huc10', {
 		type: 'geojson',
 		data: '/layers/huc10.geojson',
+		promoteId: 'huc10'
 	});
 
 	map.addLayer({
@@ -68,7 +69,7 @@ function createLayers(map: maptilersdk.Map) {
 	});
 }
 
-let hoveredStateId: string | number | undefined;
+let hoveredHuc10: string | number | undefined;
 
 function createLayerEventListeners(map: maptilersdk.Map) {
 	map.on('mousemove', (e): void => {
@@ -84,21 +85,27 @@ function createLayerEventListeners(map: maptilersdk.Map) {
 	// When the user moves their mouse over the huclayer, we'll update the
 	// feature state for the feature under the mouse.
 	map.on('mousemove', 'huc10', (e) => {
-		// if (e!.features!.length > 0) {
-		// 	if (hoveredStateId) {
-		// 		map.setFeatureState(
-		// 			{source: 'huc10', id: hoveredStateId},
-		// 			{hover: false}
-		// 		);
-		// 	}
-		// 	hoveredStateId = e.features![0].id;
-		// 	// console.log(e.features![0]);
-		// 	map.setFeatureState(
-		// 		{source: 'huc10', id: hoveredStateId},
-		// 		{hover: true}
-		// 	);
-		// 	// notify(`HUC10: ${hoveredStateId}`);
-		// }
+		if (e!.features!.length > 0) {
+			const feature = e.features![0];
+			if (hoveredHuc10 && hoveredHuc10 === feature.id) {
+				return;
+			}
+
+			if (hoveredHuc10) {
+				map.setFeatureState(
+					{source: 'huc10', id: hoveredHuc10},
+					{hover: false}
+				);
+			}
+
+			hoveredHuc10 = feature.id;
+			const hoveredName = feature.properties?.name;
+			map.setFeatureState(
+				{source: 'huc10', id: hoveredHuc10},
+				{hover: true}
+			);
+			console.log(`huc10 ${hoveredHuc10} (${hoveredName})`, feature);
+		}
 	});
 
 	// When the mouse leaves the huclayer, update the feature state of the
