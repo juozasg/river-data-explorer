@@ -1,10 +1,11 @@
 import * as maptilersdk from '@maptiler/sdk';
+import * as ml from 'maplibre-gl';
 import type { LngLatLike } from 'maplibre-gl';
 
 import { BasemapSwitcherControl, basemaps, initialBasemapStyle } from './BasemapSwitcherControl';
 import { mapMouseLocation } from '$src/state/mapMouse.svelte';
 // import { notify } from '$src/state/notifications.svelte';
-import { onAreaHover } from './areaSelection';
+import { createPolygonMouseListeners } from './polygon';
 
 
 
@@ -34,7 +35,7 @@ export const createMaptilerMap = (mapContainer: HTMLDivElement, zoom?: number, c
 	createMapLayerEventListeners(_map);
 };
 
-function createLayers(map: maptilersdk.Map) {
+function createLayers(map: ml.Map) {
 	map.addSource('huc10', {
 		type: 'geojson',
 		data: '/layers/huc10.geojson',
@@ -47,9 +48,12 @@ function createLayers(map: maptilersdk.Map) {
 		source: 'huc10',
 		layout: {},
 		paint: {
-			'fill-color': '#088',
-			// 'fill-opacity': 0.8,
-			// 'fill-outline-color': '#a00'
+			'fill-color': [
+				'case',
+				['boolean', ['feature-state', 'selected'], true],
+				'#688',
+				'#088'
+			],
 			'fill-opacity': [
 				'case',
 				['boolean', ['feature-state', 'hover'], false],
@@ -72,7 +76,7 @@ function createLayers(map: maptilersdk.Map) {
 }
 
 
-function createMapEventListeners(map: maptilersdk.Map) {
+function createMapEventListeners(map: ml.Map) {
 	map.on('mousemove', (e): void => {
 		// e.lngLat is the longitude, latitude geographical position of the event
 		// e.point is the x, y coordinates of the mousemove event relative
@@ -84,6 +88,6 @@ function createMapEventListeners(map: maptilersdk.Map) {
 	});
 }
 
-function createMapLayerEventListeners(_map: maptilersdk.Map) {
-	onAreaHover(_map);
+function createMapLayerEventListeners(_map: ml.Map) {
+	createPolygonMouseListeners(_map);
 }
