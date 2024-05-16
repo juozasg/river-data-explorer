@@ -9,8 +9,7 @@
   {#if selectedArea.feature}
   <div class="level-left">
     <div class="level-item">
-
-      <p class="subtitle is-5"><strong>{selectedArea.description}</strong></p>
+      <p class="subtitle is-5"><strong>HUC10:</strong> {selectedArea.description} <a href="#section-select-area">Change</a></p>
     </div>
   </div>
 
@@ -22,8 +21,6 @@
       <VariablesSelect/>
     </div>
   </div>
-
-
   {/if}
 
 </div>

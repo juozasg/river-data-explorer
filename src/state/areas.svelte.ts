@@ -12,7 +12,7 @@ abstract class FeatureState {
 	get description() {
 		if(this.feature) {
 			const name = this.feature.properties?.name;
-			return `huc10 ${this.feature.id} (${name})`;
+			return `${this.feature.id} (${name})`;
 		} else {
 			return 'none';
 		}

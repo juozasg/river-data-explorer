@@ -72,7 +72,7 @@ export default class AreasMap extends MapController {
 
 		selectedArea.update(this.map, feature ?? null);
 
-		const areaDetails = window.document.getElementById("area-details");
+		const areaDetails = window.document.getElementById("section-select-area-data");
 		console.log('areaDetails', areaDetails);
 		if(areaDetails) {
 			areaDetails.scrollIntoView({behavior: "smooth", block: "start"});

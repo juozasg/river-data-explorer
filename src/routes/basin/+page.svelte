@@ -9,7 +9,7 @@
 <title>Search the Basin</title>
 </svelte:head>
 
-<h4 class="has-text-centered">Select watershed region</h4>
+<h4 id="section-select-area" class="has-text-centered">Select watershed region</h4>
 
 <RegionTypeTabs></RegionTypeTabs>
 
@@ -17,7 +17,7 @@
   <WebMap type='areas' --map-height="70vh" zoom={8.35}/>
 </div>
 
-<h4  id="area-details" class="has-text-centered">Select data</h4>
+<h4 id="section-select-area-data" class="has-text-centered">Select data</h4>
 
 <AreaSitesVariableSelects/>
 

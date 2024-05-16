@@ -19,6 +19,9 @@
 @import './navbar.scss';
 @import './notification.scss';
 
+html {
+	scroll-padding-top: 4rem;
+}
 
 body {
 	font-size: 1.1rem;
