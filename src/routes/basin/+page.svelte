@@ -12,7 +12,7 @@
 <RegionTypeTabs></RegionTypeTabs>
 
 <div class="areas">
-  <WebMap --map-height="70vh" zoom={8.35}/>
+  <WebMap type='areas' --map-height="70vh" zoom={8.35}/>
 </div>
 
 <h4 class="has-text-centered">Select data</h4>
@@ -21,7 +21,7 @@
 <div class="details">
   <div class="columns">
     <div class="column map-preview-column">
-      <WebMap --map-height="400px"/>
+      <WebMap type='sites' --map-height="400px"/>
     </div>
     <div class="column dataset-column">Sites and variables here</div>
   </div>

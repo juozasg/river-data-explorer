@@ -1,18 +1,20 @@
 <script lang="ts">
 	import type { LngLatLike } from 'maplibre-gl';
 
-  import { createMaptilerMap as createMaplibreMap } from '$lib/maplibre/maplibre';
+  import { createMap as createMaplibreMap, type MapType } from '$src/lib/map/createMap';
 	import { mapMouseLocation } from '$src/state/mapMouse.svelte';
 	import { formatLngLat } from '$lib/copyLngLat';
 	import { selectedPolygonFeature } from '$src/state/mapPolygon.svelte';
 
-  interface Props { zoom?: number, center?: LngLatLike};
-  const { zoom, center }: Props = $props();
+  interface Props { type: MapType, zoom?: number, center?: LngLatLike};
+  const {type = 'areas',  zoom, center }: Props = $props();
 
   let mapContainer: HTMLDivElement | null = $state(null);
 
   $effect(() => {
-    if(mapContainer) createMaplibreMap(mapContainer, zoom, center);
+    if(mapContainer){
+      createMaplibreMap(mapContainer, type, zoom, center);
+    }
   });
 </script>
 
@@ -22,7 +24,10 @@
   {#if mapMouseLocation.lngLat}
     <pre>{formatLngLat(mapMouseLocation.lngLat, 4)} press C to copy</pre>
   {/if}
-  <i>Selected feature: {selectedPolygonFeature.description}</i>
+
+  {#if type == 'areas'}
+    <i>Selected feature: {selectedPolygonFeature.description}</i>
+  {/if}
 </div>
 
 <style>

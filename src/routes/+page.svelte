@@ -11,7 +11,7 @@
 <h1>St. Joseph River Basin Data</h1>
 
 
-<WebMap zoom={7.8}/>
+<WebMap type='areas' zoom={7.8}/>
 
 
 <!-- svelte-ignore a11y-distracting-elements -->

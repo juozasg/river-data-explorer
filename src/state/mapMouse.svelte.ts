@@ -6,10 +6,6 @@ export class MapMouseLocation {
   point: Point | null = $state(null);
   map: any = $state(null);
 
-  constructor() {
-
-  }
-
   onMouseMove(map: any, e: MapMouseEvent & any) {
     this.lngLat = e.lngLat.wrap();
     this.point = e.point;
