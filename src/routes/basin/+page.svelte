@@ -2,7 +2,9 @@
 
   import RegionTypeTabs from './RegionTypeTabs.svelte';
   import WebMap from "$src/components/WebMap.svelte";
-	import AreaSitesVariableSelects from '$src/components/basin/AreaSitesVariableSelects.svelte';
+  import AreaSitesVariableSelects from '$src/components/basin/AreaSitesVariableSelects.svelte';
+
+  let selectedDate = $state(2002);
 </script>
 
 <svelte:head>
@@ -30,8 +32,13 @@
   </div>
 </div>
 
+<div class="timelapse-container">
+  <div id="slider-description"><strong>{selectedDate}</strong></div>
+  <input id="slider" type="range" min="1990" max="2024" step="1" bind:value={selectedDate}>
+</div>
 
-<h4 class="has-text-centered">Statistics/results go here...</h4>
+
+<h4 id="section-area-data-results" class="has-text-centered">Results</h4>
 
 <div class="results">
   <a href="/regions/indiana">Indiana</a>
@@ -41,6 +48,21 @@
 
 
 <style>
+  .timelapse-container {
+    margin-top: 1rem;
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* align-items: center; */
+    #slider-description {
+      text-align: center;
+    }
+
+    #slider {
+      width: 100%;
+    }
+
+  }
+
   h4 {
     margin-bottom: 0.2rem;
   }
@@ -63,10 +85,14 @@
     margin-bottom: 1rem;
   }
 
+  #section-area-data-results {
+    margin-top: 2rem;
+  }
 
   .results {
     height: 400px;
     background-color: aquamarine;
+    margin-top: 1rem;
   }
 
   .dataset-column {

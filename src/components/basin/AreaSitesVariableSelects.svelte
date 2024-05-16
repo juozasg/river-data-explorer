@@ -2,7 +2,7 @@
   import { selectedArea } from '$src/state/areas.svelte';
 
   import SiteSelect from './SiteSelect.svelte';
-	import VariablesSelect from './VariablesSelect.svelte';
+  import VariablesSelect from './VariablesSelect.svelte';
 </script>
 
 <div class="level">
@@ -21,6 +21,15 @@
       <VariablesSelect/>
     </div>
   </div>
+
+  {:else}
+
+  <div class="level-left">
+    <div class="level-item">
+      <p class="subtitle is-5"><a href="#section-select-area">Select watershed region</a></p>
+    </div>
+  </div>
+
   {/if}
 
 </div>
