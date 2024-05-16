@@ -37,6 +37,8 @@ export function createMap (mapContainer: HTMLDivElement, type: MapType, zoom?: n
 				initialBasemap: initialBasemapStyle
 			}),
 		'bottom-right');
+
+	return controller;
 };
 
 

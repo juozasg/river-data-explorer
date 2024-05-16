@@ -1,6 +1,6 @@
 import { addHoverTooltipPopup, clearHoverTooltipPopup } from '$src/lib/map/widgets/hoveredTooltipPopup';
+import { createPopupWorkaround } from '$src/lib/utils/createPopupWorkaround';
 import * as ml from 'maplibre-gl';
-
 
 abstract class FeatureState {
 	feature: ml.MapGeoJSONFeature | null = $state(null);
@@ -21,14 +21,10 @@ abstract class FeatureState {
 
 export class HoveredFeature extends FeatureState {
 	feature: ml.MapGeoJSONFeature | null = $state(null);
-	tooltipPopup: ml.Popup = new ml.Popup({
-		closeButton: false,
-		closeOnClick: false
-	});
+	tooltipPopup: ml.Popup = createPopupWorkaround();
 
 	constructor() {
 		super();
-
 	}
 
 	update(map: ml.Map, feature: ml.MapGeoJSONFeature | null) {

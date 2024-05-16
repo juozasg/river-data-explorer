@@ -34,7 +34,7 @@ export default class AreasMap extends MapController {
 		});
 
 		this.map.addLayer({
-			'id': 'huc10-outline2',
+			'id': 'huc10-outline',
 			'type': 'line',
 			'source': 'huc10',
 			'layout': {},

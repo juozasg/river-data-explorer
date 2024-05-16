@@ -1,20 +1,30 @@
 <script lang="ts">
-	import type { LngLatLike } from 'maplibre-gl';
+  import type { LngLatLike } from 'maplibre-gl';
 
   import { createMap as createMaplibreMap, type MapType } from '$lib/map/createMap';
-	import { mapMouseLocation } from '$src/state/mapMouse.svelte';
-	import { formatLngLat } from '$lib/copyLngLat';
-	import { selectedArea } from '$src/state/areas.svelte';
+  import { mapMouseLocation } from '$src/state/mapMouse.svelte';
+  import { formatLngLat } from '$lib/copyLngLat';
+  import { selectedArea } from '$src/state/areas.svelte';
+  import type MapController from '$src/lib/map/controllers/mapController';
+  import SitesMap from '$src/lib/map/controllers/sitesMap';
 
   interface Props { type: MapType, zoom?: number, center?: LngLatLike};
   const {type = 'areas',  zoom, center }: Props = $props();
 
   let mapContainer: HTMLDivElement | null = $state(null);
+  let controller: MapController;
 
   $effect(() => {
     if(mapContainer){
-      createMaplibreMap(mapContainer, type, zoom, center);
+      controller = createMaplibreMap(mapContainer, type, zoom, center);
     }
+  });
+
+  $effect(() => {
+    if(controller instanceof SitesMap) {
+      controller.onAreaSelected(selectedArea.feature);
+    }
+    console.log(`selected feature effect: ${selectedArea.description}`);
   });
 </script>
 
@@ -22,11 +32,11 @@
 <div style="position: relative">
   <div class="map" bind:this={mapContainer}></div>
   {#if mapMouseLocation.lngLat}
-    <pre>{formatLngLat(mapMouseLocation.lngLat, 4)} press C to copy</pre>
+  <pre>{formatLngLat(mapMouseLocation.lngLat, 4)} press C to copy</pre>
   {/if}
 
   {#if type == 'areas'}
-    <i>Selected feature: {selectedArea.description}</i>
+  <i>Selected feature: {selectedArea.description}</i>
   {/if}
 </div>
 
