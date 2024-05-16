@@ -71,6 +71,12 @@ export default class AreasMap extends MapController {
 		const feature = this.map.queryRenderedFeatures(e.point).filter((f) => f.layer.id === 'huc10')[0];
 
 		selectedArea.update(this.map, feature ?? null);
+
+		const areaDetails = window.document.getElementById("area-details");
+		console.log('areaDetails', areaDetails);
+		if(areaDetails) {
+			areaDetails.scrollIntoView({behavior: "smooth", block: "start"});
+		}
 		console.log('selected', feature);
 	}
 

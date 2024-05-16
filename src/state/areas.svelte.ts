@@ -75,7 +75,7 @@ export class SelectedFeature extends FeatureState  {
 		if(feature.id) {
 			map.setFeatureState(
 				{ source: 'huc10', id: feature.id },
-				{ hover: true }
+				{ selected: true }
 			);
 		}
 	}
