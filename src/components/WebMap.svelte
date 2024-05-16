@@ -4,6 +4,7 @@
   import { createMaptilerMap as createMaplibreMap } from '$lib/maplibre/maplibre';
 	import { mapMouseLocation } from '$src/state/mapMouse.svelte';
 	import { formatLngLat } from '$lib/copyLngLat';
+	import { selectedPolygonFeature } from '$src/state/mapPolygon.svelte';
 
   interface Props { zoom?: number, center?: LngLatLike};
   const { zoom, center }: Props = $props();
@@ -21,6 +22,7 @@
   {#if mapMouseLocation.lngLat}
     <pre>{formatLngLat(mapMouseLocation.lngLat, 4)} press C to copy</pre>
   {/if}
+  <i>Selected feature: {selectedPolygonFeature.description}</i>
 </div>
 
 <style>

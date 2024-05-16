@@ -5,7 +5,7 @@ import type { LngLatLike } from 'maplibre-gl';
 import { BasemapSwitcherControl, basemaps, initialBasemapStyle } from './BasemapSwitcherControl';
 import { mapMouseLocation } from '$src/state/mapMouse.svelte';
 // import { notify } from '$src/state/notifications.svelte';
-import { createPolygonMouseListeners } from './polygon';
+import { createPolygonMouseListeners } from './events/polygon';
 
 
 
@@ -50,14 +50,16 @@ function createLayers(map: ml.Map) {
 		paint: {
 			'fill-color': [
 				'case',
-				['boolean', ['feature-state', 'selected'], true],
-				'#688',
-				'#088'
+				['boolean', ['feature-state', 'selected'], false],
+				'#098',
+				'#698'
 			],
 			'fill-opacity': [
 				'case',
 				['boolean', ['feature-state', 'hover'], false],
-				0.8,
+				0.6,
+				['boolean', ['feature-state', 'selected'], false],
+				0.7,
 				0.3
 			]
 		}
