@@ -1,36 +1,33 @@
+import { hoveredPolygonFeature } from '$src/state/mapPolygon.svelte';
 import * as ml from 'maplibre-gl';
 
 // TODO: move to component scope so differring maps can have their own hover and select state
-export let hoveredHuc10: string | number | undefined | null;
+// export let hoveredHuc10: string | number | undefined | null;
 
 
-function setHoverPolygonId(map: ml.Map, feature: ml.MapGeoJSONFeature) {
-	if (hoveredHuc10 && hoveredHuc10 === feature.id) {
-		return;
-	}
-
-	if (hoveredHuc10) {
+function setHoverPolygon(map: ml.Map, feature: ml.MapGeoJSONFeature) {
+	if(hoveredPolygonFeature.id) {
 		map.setFeatureState(
-			{ source: 'huc10', id: hoveredHuc10 },
+			{ source: 'huc10', id: hoveredPolygonFeature.id },
 			{ hover: false }
 		);
 	}
 
-	hoveredHuc10 = feature.id;
+	hoveredPolygonFeature.set(feature);
 	map.setFeatureState(
-		{ source: 'huc10', id: hoveredHuc10 },
+		{ source: 'huc10', id: hoveredPolygonFeature.id },
 		{ hover: true }
 	);
 }
 
-function clearHoverPolygonId(map: ml.Map) {
-	if (hoveredHuc10) {
+function clearHoverPolygon(map: ml.Map) {
+	if(hoveredPolygonFeature.id) {
 		map.setFeatureState(
-			{source: 'huc10', id: hoveredHuc10},
+			{source: 'huc10', id: hoveredPolygonFeature.id},
 			{hover: false}
 		);
 	}
-	hoveredHuc10 = null;
+	hoveredPolygonFeature.clear();
 }
 
 function addHoverPolygonPopup(map: ml.Map, feature: ml.MapGeoJSONFeature, popup: ml.Popup) {
@@ -40,7 +37,7 @@ function addHoverPolygonPopup(map: ml.Map, feature: ml.MapGeoJSONFeature, popup:
 	const point = geometry.coordinates[0][0];
 	const description = `<h4>${hoveredName}</h4>`;
 
-	console.log(`huc10 ${hoveredHuc10} (${hoveredName})`, feature, point);
+	// console.log(`huc10 ${hoveredPolygonFeature.id} (${hoveredName})`, feature, point);
 	popup.setLngLat(point).setHTML(description).addTo(map);
 }
 
@@ -61,16 +58,18 @@ export function createPolygonMouseListeners(map: ml.Map) {
 	map.on('mousemove', 'huc10', (e) => {
 		if (e!.features!.length > 0) {
 			const feature = e.features![0];
-
-			setHoverPolygonId(map, feature);
-			addHoverPolygonPopup(map, feature, popup);
+			// different feature than current one
+			if (hoveredPolygonFeature.id !== feature.id) {
+				setHoverPolygon(map, feature);
+				addHoverPolygonPopup(map, feature, popup);
+			}
 		}
 	});
 
 	// When the mouse leaves the huclayer, update the feature state of the
 	// previously hovered feature.
 	map.on('mouseleave', 'huc10', () => {
-		clearHoverPolygonId(map);
+		clearHoverPolygon(map);
 		clearHoverPolygonPopup(map, popup)
 	});
 

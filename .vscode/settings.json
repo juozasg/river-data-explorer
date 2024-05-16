@@ -4,7 +4,7 @@
         {
             "folderPath": "river-data-explorer/src/styles/",
             "badge": "💅",
-            "color": "foldercolorizer.LightPink"
+            "color": "foldercolorizer.DeepPink"
         },
         {
             "folderPath": "river-data-explorer/src/routes/",
@@ -19,7 +19,7 @@
         {
             "folderPath": "river-data-explorer/src/components/",
             "badge": "💠",
-            "color": "foldercolorizer.White"
+            "color": "foldercolorizer.DarkOrchid"
         },
         {
             "folderPath": "river-data-explorer/src/types/",
@@ -29,7 +29,7 @@
         {
             "folderPath": "river-data-explorer/src/state/",
             "badge": "🗽",
-            "color": "foldercolorizer.LightSkyBlue"
+            "color": "foldercolorizer.CarrotOrange"
         },
         {
             "folderPath": "river-data-explorer/tests/",
@@ -39,10 +39,6 @@
         {
             "folderPath": "river-data-explorer/static/",
             "badge": "🌫"
-        },
-        {
-            "folderPath": "river-data-explorer/src/",
-            "color": "foldercolorizer.Thistle"
         },
         {
             "folderPath": "river-data-explorer/node_modules/",
