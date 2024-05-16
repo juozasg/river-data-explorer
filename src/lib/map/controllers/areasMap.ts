@@ -1,5 +1,6 @@
-import { createPolygonMouseListeners } from '../events/polygon';
+import { hoveredArea, selectedArea } from '$src/state/areas.svelte';
 import MapController from './mapController';
+import type { MapMouseEvent } from 'maplibre-gl';
 
 export default class AreasMap extends MapController {
 	createLayers() {
@@ -49,8 +50,28 @@ export default class AreasMap extends MapController {
 		this.createMapLayerEventListeners();
 	}
 
-
 	private createMapLayerEventListeners() {
-		createPolygonMouseListeners(this.map);
+		// When the user moves their mouse over the huc layer set hover state
+		this.map.on('mousemove', 'huc10', (e) => {
+			if (e!.features!.length > 0) {
+				const feature = e.features![0];
+				hoveredArea.update(this.map, feature);
+			}
+		});
+
+		// When the mouse leaves the huc layer clear hover state
+		this.map.on('mouseleave', 'huc10', () => {
+			hoveredArea.clear(this.map);
+		});
+
+		this.map.on('click', (e) => this.mapClicked(e));
 	}
+
+	private mapClicked(e: MapMouseEvent) {
+		const feature = this.map.queryRenderedFeatures(e.point).filter((f) => f.layer.id === 'huc10')[0];
+
+		selectedArea.update(this.map, feature ?? null);
+		console.log('selected', feature);
+	}
+
 }

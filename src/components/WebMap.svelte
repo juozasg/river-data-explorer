@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { LngLatLike } from 'maplibre-gl';
 
-  import { createMap as createMaplibreMap, type MapType } from '$src/lib/map/createMap';
+  import { createMap as createMaplibreMap, type MapType } from '$lib/map/createMap';
 	import { mapMouseLocation } from '$src/state/mapMouse.svelte';
 	import { formatLngLat } from '$lib/copyLngLat';
-	import { selectedPolygonFeature } from '$src/state/mapPolygon.svelte';
+	import { selectedArea } from '$src/state/areas.svelte';
 
   interface Props { type: MapType, zoom?: number, center?: LngLatLike};
   const {type = 'areas',  zoom, center }: Props = $props();
@@ -26,7 +26,7 @@
   {/if}
 
   {#if type == 'areas'}
-    <i>Selected feature: {selectedPolygonFeature.description}</i>
+    <i>Selected feature: {selectedArea.description}</i>
   {/if}
 </div>
 
