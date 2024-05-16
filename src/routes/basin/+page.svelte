@@ -1,10 +1,12 @@
 <script lang="ts">
+
   import RegionTypeTabs from './RegionTypeTabs.svelte';
-	import WebMap from "$src/components/WebMap.svelte";
+  import WebMap from "$src/components/WebMap.svelte";
+	import AreaSitesVariableSelects from '$src/components/basin/AreaSitesVariableSelects.svelte';
 </script>
 
 <svelte:head>
-	<title>Search the Basin</title>
+<title>Search the Basin</title>
 </svelte:head>
 
 <h4 class="has-text-centered">Select watershed region</h4>
@@ -17,6 +19,7 @@
 
 <h4 class="has-text-centered">Select data</h4>
 
+<AreaSitesVariableSelects/>
 
 <div class="details">
   <div class="columns">
@@ -38,9 +41,9 @@
 
 
 <style>
-	h4 {
-		margin-bottom: 0.2rem;
-	}
+  h4 {
+    margin-bottom: 0.2rem;
+  }
 
   .areas {
     margin-bottom: 2.5rem;

@@ -35,9 +35,6 @@
   <pre>{formatLngLat(mapMouseLocation.lngLat, 4)} press C to copy</pre>
   {/if}
 
-  {#if type == 'areas'}
-  <i>Selected feature: {selectedArea.description}</i>
-  {/if}
 </div>
 
 <style>
