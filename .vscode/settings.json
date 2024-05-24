@@ -4,7 +4,7 @@
         {
             "folderPath": "river-data-explorer/src/styles/",
             "badge": "💅",
-            "color": "foldercolorizer.DeepPink"
+            "color": "foldercolorizer.MaximumYellowRed"
         },
         {
             "folderPath": "river-data-explorer/src/routes/",
@@ -19,7 +19,7 @@
         {
             "folderPath": "river-data-explorer/src/components/",
             "badge": "💠",
-            "color": "foldercolorizer.DarkOrchid"
+            "color": "foldercolorizer.LightPink"
         },
         {
             "folderPath": "river-data-explorer/src/types/",
