@@ -50,7 +50,7 @@
   pre {
     position: absolute;
     bottom: 0px;
-    left: 0;
+    left: 110px;
     z-index: 2;
     background: none;
     padding: 0.5rem;

@@ -26,10 +26,6 @@
 				<div style="margin-bottom: 1rem">
 					<strong>Modal Text...</strong>
 				</div>
-
-
-
-
 			</div>
 		</section>
 	</div>

@@ -28,7 +28,7 @@
     <div class="column map-preview-column">
       <WebMap type='sites' --map-height="400px"/>
     </div>
-    <div class="column dataset-column">Sites and variables here</div>
+    <div class="column dataset-column">Region Dashboard</div>
   </div>
 </div>
 
