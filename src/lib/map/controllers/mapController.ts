@@ -1,4 +1,4 @@
-import { mapMouseLocation } from '$src/state/mapMouse.svelte';
+import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte.svelte';
 import * as ml from 'maplibre-gl';
 
 export default abstract class MapController {

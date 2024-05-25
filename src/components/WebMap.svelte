@@ -2,9 +2,9 @@
 	import type { LngLatLike } from 'maplibre-gl';
 
 	import { createMap as createMaplibreMap, type MapType } from '$lib/map/createMap';
-	import { mapMouseLocation } from '$src/state/mapMouse.svelte';
+	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte.svelte';
 	import { formatLngLat } from '$lib/copyLngLat';
-	import { selectedArea } from '$src/state/areas.svelte';
+	import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 	import type MapController from '$src/lib/map/controllers/mapController';
 	import SitesMap from '$src/lib/map/controllers/sitesMap';
 
@@ -28,7 +28,7 @@
 		if (controller instanceof SitesMap) {
 			controller.onAreaSelected(selectedArea.feature);
 		}
-		console.log(`selected feature effect: ${selectedArea.description}`);
+		// console.log(`selected feature effect: ${selectedArea.description}`);
 	});
 </script>
 

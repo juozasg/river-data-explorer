@@ -1,4 +1,4 @@
-import type { Site } from "$src/lib/types/model";
+import type { Site } from "$src/lib/types/site";
 
 export class Sites {
 	sites: Site[] = $state([]);
@@ -7,7 +7,6 @@ export class Sites {
 	add(site: Site) {
 		this.sites.push(site);
 	}
-
 
 }
 

@@ -1,4 +1,4 @@
-import type { Point } from "$src/types/basic";
+import type { Point } from "$lib/types/basic";
 import type { LngLat, MapMouseEvent } from "maplibre-gl";
 
 export class MapMouseLocation {

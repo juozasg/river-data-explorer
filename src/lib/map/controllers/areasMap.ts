@@ -1,4 +1,4 @@
-import { hoveredArea, selectedArea } from '$src/state/areas.svelte';
+import { hoveredArea, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 import MapController from './mapController';
 import type { MapMouseEvent } from 'maplibre-gl';
 

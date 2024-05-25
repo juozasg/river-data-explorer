@@ -61,8 +61,6 @@ export class HoveredFeature extends FeatureState {
 }
 
 export class SelectedFeature extends FeatureState  {
-	feature: ml.MapGeoJSONFeature | null = $state(null);
-
 	update(map: ml.Map, feature: ml.MapGeoJSONFeature) {
 		// if nothing changed, do nothing
 		if(feature?.id === this.feature?.id) {
