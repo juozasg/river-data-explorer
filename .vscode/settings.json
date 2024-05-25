@@ -27,7 +27,7 @@
             "badge": "📜"
         },
         {
-            "folderPath": "river-data-explorer/src/state/",
+            "folderPath": "river-data-explorer/src/appstate/",
             "badge": "🗽",
             "color": "foldercolorizer.CarrotOrange"
         },
@@ -38,7 +38,8 @@
         },
         {
             "folderPath": "river-data-explorer/static/",
-            "badge": "🌫"
+            "badge": "🌫",
+            "color": "foldercolorizer.GreenYellow"
         },
         {
             "folderPath": "river-data-explorer/node_modules/",
@@ -51,6 +52,10 @@
         {
             "folderPath": "river-data-explorer/src/lib/types/",
             "color": "foldercolorizer.GreenYellow"
+        },
+        {
+            "folderPath": "river-data-explorer/src/",
+            "color": "foldercolorizer.AntiqueWhite"
         }
     ],
 }
