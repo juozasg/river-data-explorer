@@ -47,6 +47,10 @@
         {
             "folderPath": "river-data-explorer/build/",
             "badge": "🏗️"
+        },
+        {
+            "folderPath": "river-data-explorer/src/lib/types/",
+            "color": "foldercolorizer.GreenYellow"
         }
     ],
 }

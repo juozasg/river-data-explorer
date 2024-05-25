@@ -1,4 +1,4 @@
-import type { MarkdownComponent } from "$src/lib/types/page";
+import type { MarkdownComponent } from "$src/types/page";
 
 export async function load({params}) {
 	const page: MarkdownComponent = await import(`../${params.slug}.md`);

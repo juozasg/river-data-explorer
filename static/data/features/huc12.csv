@@ -1,0 +1,174 @@
+huc12,name,areaSqkm,nonContributingAreaSqkm,statesfps,humod
+40500010101,Carpenter Lake-South Branch Hog Creek,53.02,0,26,NM
+40500010102,Duck Lake-South Branch Hog Creek,74.53,0,26,NM
+40500010103,Tallahassee Drain,62.11,0,"18,26",NM
+40500010104,Coldwater Lake,55.03,0,26,IT
+40500010105,Marble Lake,97.67,0,26,IT
+40500010106,East Branch Sauk River,44.14,0,26,
+40500010107,Blackhawk Millpond-Coldwater River,74.56,0,26,NM
+40500010108,Mud Creek,52.87,0,26,NM
+40500010109,South Branch Hog Creek,97.08,0,26,NM
+40500010110,Hog Creek,54.23,0,26,NM
+40500010111,Hodunk Pond-Coldwater River,99.84,0,26,NM
+40500010201,Beebe Lake-Beebe Creek,62.78,0,26,NM
+40500010202,Beebe Creek,48.84,0,26,NM
+40500010203,Mill Pond-Saint Joseph River,46.98,0,26,GC
+40500010204,Sand Creek,53.47,0,26,NM
+40500010205,Soap Creek-Saint Joseph River,116.51,0,26,NM
+40500010206,Old Homer Lake-Saint Joseph River,44.69,0,26,NM
+40500010207,Tekonsha Creek,57.2,0,26,NM
+40500010208,Wilder Lake-Saint Joseph River,70.54,0,26,NM
+40500010209,Burnett Creek-Saint Joseph River,72.86,0,26,NM
+40500010301,Nottawa Lake-Nottawa Creek,61.03,0,26,NM
+40500010302,Mud Creek-Nottawa Creek,77.86,0,26,NM
+40500010303,Alder Creek,40.54,0,26,NM
+40500010304,Pine Creek,128.74,0,26,NM
+40500010305,Bear Creek,52.97,0,26,NM
+40500010306,Mud Lake-Nottawa Creek,100.54,0,26,NM
+40500010401,Corey Lake-Swan Creek,143.25,0,26,NM
+40500010402,Little Swan Creek,81.48,0,26,NM
+40500010403,Spencer Creek-Saint Joseph River,112.39,0,26,NM
+40500010404,Swan Creek,67.92,0,26,NM
+40500010405,Mud Lake-Saint Joseph River,59.13,0,26,NM
+40500010406,Sturgeon Lake-Saint Joseph River,67.07,0,26,NM
+40500010501,Headwaters Portage River,91.49,0,26,NM
+40500010502,Gourdneck Creek,88.82,0,26,NM
+40500010503,Portage Creek,68.96,0,26,NM
+40500010504,Butternut Creek-Bear Creek,50.26,0,26,NM
+40500010505,Indian Lake-Portage River,92.14,0,26,NM
+40500010506,Goose Lake Drain-Portage River,116.6,0,26,NM
+40500010601,Upper Flowerfield Creek,56.35,0,26,NM
+40500010602,Middle Flowerfield Creek,47.23,0,26,NM
+40500010603,Pickerel Lake-Rocky River,108.22,0,26,NM
+40500010604,Lower Flowerfield Creek,50.99,0,26,NM
+40500010605,Four County Drain-Rocky River,112.88,0,26,NM
+40500010606,Kerr Creek-Rocky River,78.47,0,26,NM
+40500010701,Headwaters Prairie River,76.05,0,"18,26",NM
+40500010702,Gilead Lake-Prairie River,94.62,0,26,GC
+40500010703,Stewart Lake Drain-Prairie River,52.08,0,26,GC
+40500010704,Prairie River Lake-Prairie River,71.68,0,26,NM
+40500010705,Spring Creek,74.12,0,26,NM
+40500010706,Templare Lake-Prairie River,47.32,0,26,"GC,CD"
+40500010707,Bullhead Lake-Prairie River,56.28,0,26,"GC,CD"
+40500010801,Snow Lake,106.09,0,"18,26",NM
+40500010802,Tamarack Lake,52.44,12.01108048,18,NC
+40500010803,Lake James-Crooked Creek,44.8,4.5931861,18,NC
+40500010804,Town of Orland-Fawn River,42.2,28.2673171,18,NC
+40500010805,Himebaugh Drain-Fawn River,96.31,0,"18,26",NM
+40500010806,Clear Lake-Fawn River,106.67,0,"18,26",NM
+40500010807,Wegner Ditch-Fawn River,79.75,0,"18,26",NM
+40500010808,Sherman Mill Creek,55.34,0,26,NM
+40500010809,Fawn River Drain-Fawn River,85.61,0,26,NM
+40500010901,Headwaters Little Portage Creek,72.42,0,26,NM
+40500010902,Little Portage Creek,42.28,0,26,NM
+40500010903,Sturgis Dam-Saint Joseph River,45.25,0,26,DM
+40500010904,City of Florence-Saint Joseph River,82.87,0,26,"GC,CD"
+40500011001,Pigeon Lake-Pigeon Creek,89.52,0,"18,26",ID
+40500011002,Mud Creek-Pigeon Creek,47.31,8.57124948,18,"CD,NC"
+40500011003,Long Lake-Pigeon Creek,74.52,16.9563434,18,NC
+40500011004,Headwaters Turkey Creek,47.69,0,18,NM
+40500011005,Big Turkey Lake-Turkey Creek,44.59,0,18,NM
+40500011006,Silver Lake-Pigeon Creek,52.43,12.21342348,18,NC
+40500011007,Otter Lake-Pigeon Creek,42.47,0,18,CD
+40500011008,Little Turkey Lake-Turkey Creek,53.17,3.9861571,18,"NC,IT"
+40500011009,Green Lake-Pigeon Creek,54.97,18.21087,18,NC
+40500011010,Mongo Millpond-Pigeon Creek,42.58,13.64196506,18,"DM,NC,IT"
+40500011101,East Fly Creek,62.65,2.33099136,18,NC
+40500011102,Fly Creek,49.43,1.6592126,18,"CD,NC"
+40500011103,Cline Lake-Pigeon River,70.07,10.91033456,18,NC
+40500011104,Buck Lake-Buck Creek,66.73,2.4685846,18,"CD,NC,DD"
+40500011105,Page Ditch,51.19,7.34100404,18,"CD,NC"
+40500011106,VanNatta Ditch-Pigeon River,82.31,0,18,NM
+40500011107,Stag Lake-Pigeon River,92.33,0,"18,26",NM
+40500011201,Emma Lake-Emma Ditch,88.8,0,18,"CD,DD"
+40500011202,Little Elkhart River Ditch,48.11,14.49585252,18,"CD,NC"
+40500011203,Rowe Eden Ditch,78.11,0,18,CD
+40500011204,Mather Ditch-Little Elkhart River,74.54,0,18,CD
+40500011205,Duck Lake-Little Elkhart River,46.28,14.24090034,18,NC
+40500011301,Headwaters Mill Creek,65.12,0,26,NM
+40500011302,Wood Lake-Mill Creek,50.81,0,26,NM
+40500011303,Trout Creek,81.08,0,"18,26",NM
+40500011304,Black Creek-Saint Joseph River,93.54,0,"18,26","GC,CD"
+40500011305,York Township Ditch-Saint Joseph River,40.88,0,"18,26",NM
+40500011401,Headwaters Christiana Creek,96.69,0,26,NM
+40500011402,Diamond Lake-Christiana Creek,133.11,0,26,NM
+40500011403,Christiana Lake-Christiana Creek,75.22,0,"18,26",DM
+40500011501,Tamarack Lake-Little Elkhart Creek,51.04,0,18,NM
+40500011502,Dallas Lake-Little Elkhart Creek,53.88,0,18,NM
+40500011503,Oliver Lake-Little Elkhart Creek,40.99,0,18,NM
+40500011504,Waterhouse Ditch-Henderson Lake Ditch,51.79,0,18,NM
+40500011505,Oviate Ditch-Middle Branch Elkhart River,44.6,0,18,NM
+40500011506,Jones Lake-North Branch Elkhart River,105.46,0,18,NM
+40500011507,Huston Ditch-North Branch Elkhart River,74.85,0,18,CD
+40500011601,Rivir Lake-Forker Creek,49.05,0,18,CD
+40500011602,Winebrenner Branch-Carrol Creek,49.8,0,18,CD
+40500011603,Skinner Lake-Croft Ditch,64.62,0,18,NM
+40500011604,Muncie Lake-South Branch Elkhart River,42.67,0,18,NM
+40500011605,Diamond Lake-South Branch Elkhart River,92.73,0,18,NM
+40500011701,Village Lake-Turkey Creek,41.02,0,18,NM
+40500011702,Lake Wawasee-Turkey Creek,57.58,0,18,NM
+40500011703,Wabee Lake-Hammond Ditch,39.47,8.27987556,18,NC
+40500011704,Hoopingarner Ditch-Turkey Creek,55.09,0,18,NM
+40500011705,Coppes Ditch-Turkey Creek,57.78,0,18,CD
+40500011706,Berlin Court Ditch,48.72,0,18,CD
+40500011707,Omar Neff Ditch-Turkey Creek,51.38,0,18,"CD,ID"
+40500011708,Dausman Ditch-Turkey Creek,76.95,0,18,CD
+40500011709,Swoveland Ditch-Turkey Creek,47.54,0,18,CD
+40500011801,Phillips Ditch-Stony Creek,52.7,5.71011946,18,NC
+40500011802,Indian Lake-Elkhart River,81.71,0,18,NM
+40500011803,Headwaters Solomon Creek,61.37,0,18,NM
+40500011804,Hire Ditch-Solomon Creek,57.45,0,18,CD
+40500011805,Whetten Ditch-Elkhart River,73.72,0,18,NM
+40500011901,Hoover Ditch-Rock Run Creek,55.34,1.9020242,18,"CD,NC"
+40500011902,Horn Ditch-Rock Run Creek,57.28,2.48477204,18,"CD,NC"
+40500011903,Headwaters Yellow Creek,85.62,0,18,NM
+40500011904,Goshen Dam Pond-Elkhart River,94.14,0,18,NM
+40500012001,Washington Tap Ditch-Saint Joseph River,42.23,0,"18,26",NM
+40500012002,Indian Creek-Pine Creek,82.46,22.77572808,18,"CD,NC"
+40500012003,Puterbaugh Creek,43.5,0,"18,26",NM
+40500012004,Sheep Creek-Saint Joseph River,85.95,0,"18,26",NM
+40500012101,Grimes Ditch,54.02,0,18,CD
+40500012102,Wisler Ditch-Baugo Creek,60.72,0,18,"CD,PS"
+40500012103,Township Ditch-Baugo Creek,42.24,0,18,CD
+40500012104,Rogers Ditch-Baugo Creek,50.57,0,18,CD
+40500012201,Cebas Creek,94.75,0,"18,26",NM
+40500012202,City of Elkhart-Saint Joseph River,51.65,0,18,NC
+40500012203,Eller Ditch-Saint Joseph River,60.43,0,18,"CD,NC"
+40500012204,Willow Creek-Saint Joseph River,53.03,0,18,NC
+40500012205,Auten Ditch-Saint Joseph River,91.25,0,18,"CD,NC,PS"
+40500012206,Judy Creek,96.9,0,"18,26",CD
+40500012207,Pinhook Lake-Saint Joseph River,75.65,0,"18,26",NM
+40500012208,Dutch Corners-Saint Joseph River,44.56,0,"18,26",NM
+40500012209,Brandywine Creek,73.75,0,"18,26",NM
+40500012210,City of Niles-Saint Joseph River,35.44,0,26,NM
+40500012301,Spring Creek-Dowagiac River,114.7,0,26,NM
+40500012302,Silver Creek,31.57,0,26,NM
+40500012303,Bunker Lake-Dowagiac Creek,57.83,0,26,NM
+40500012304,La Grange Lake-Dowagiac Creek,134.23,0,26,NM
+40500012305,Indian Lake-Dowagiac River,142.1,0,26,NM
+40500012306,Pokagon Creek,89.36,0,26,NM
+40500012307,Peavine Creek-Dowagiac River,81.79,0,26,NM
+40500012308,McKinzie Creek-Dowagiac River,82.22,0,26,NM
+40500012401,Lawton Drain-South Branch Paw Paw River,67.86,0,26,NM
+40500012402,East Branch Paw Paw River,87.6,0,26,NM
+40500012403,Cambell Creek-North Branch Paw Paw River,69.66,0,26,"GC,CD"
+40500012404,Chase Lake-Brandywine Creek,79.81,0,26,NM
+40500012405,South Branch Paw Paw River,107.75,0,26,NM
+40500012406,Hayden Creek-North Branch Paw Paw River,98.57,0,26,NM
+40500012501,Brush Creek,106.2,0,26,NM
+40500012502,Headwaters Paw Paw River,74.88,0,26,NM
+40500012503,Mud Lake Drain,40.71,0,26,NM
+40500012504,Hog Creek-Paw Paw River,72.51,0,26,NM
+40500012505,Paw Paw Lake,42.13,0,26,"GC,CD"
+40500012506,Mill Creek,74.94,0,26,NM
+40500012507,Ryno Drain-Paw Paw River,87.37,0,26,NM
+40500012508,Blue Creek-Paw Paw River,84.23,0,26,NM
+40500012509,Ox Creek-Paw Paw River,62.38,0,26,NM
+40500012601,McCoy Creek,66.95,0,"18,26",NM
+40500012602,Webster Lake-Saint Jospeh River,95.66,0,26,NM
+40500012603,Lake Chapin-Saint Joseph River,63.94,0,26,DM
+40500012604,Love Creek-Saint Joseph River,72.84,0,26,NM
+40500012605,Lemon Creek-Saint Joseph River,134.4,0,26,NM
+40500012606,Pipestone Creek,48.29,0,26,NM
+40500012607,Hickory Creek,137.3,0,26,NM
+40500012608,Big Meadow Drain-Saint Joseph River,68.75,0,26,NM

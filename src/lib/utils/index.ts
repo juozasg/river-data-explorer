@@ -1,4 +1,4 @@
-import type { MarkdownComponent, ImportGlobRecord, MarkdownPage } from '$lib/types/page';
+import type { MarkdownComponent, ImportGlobRecord, MarkdownPage } from '$src/types/page';
 
 export const getMarkdownPages = async (allMdPages: ImportGlobRecord): Promise<MarkdownPage[]> => {
 	const allPages = await Promise.all(
