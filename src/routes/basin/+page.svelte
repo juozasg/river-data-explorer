@@ -13,7 +13,7 @@
 
 <h4 id="section-select-area" class="has-text-centered">Select watershed region</h4>
 
-<RegionTypeTabs></RegionTypeTabs>
+<RegionTypeTabs/>
 
 <div class="areas">
   <WebMap type='areas' --map-height="70vh" zoom={8.35}/>
