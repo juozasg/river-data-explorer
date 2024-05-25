@@ -2,7 +2,7 @@ import * as sr from 'svelte/reactivity';
 
 import type { County, CountyFips, State, StateFips } from "$lib/types/fips";
 import { startedLoading } from "../ui/loadingItem.svelte";
-import { parseCsv } from "../../lib/datastore";
+import { parseCsv } from "../../lib/data/datastore";
 
 
 export function countyStateFips(county: CountyFips): StateFips {
