@@ -14,7 +14,7 @@
         {
             "folderPath": "river-data-explorer/src/lib/",
             "badge": "📗",
-            "color": "foldercolorizer.LimeGreen"
+            "color": "foldercolorizer.green"
         },
         {
             "folderPath": "river-data-explorer/src/components/",
@@ -51,7 +51,7 @@
         },
         {
             "folderPath": "river-data-explorer/src/lib/types/",
-            "color": "foldercolorizer.GreenYellow"
+            "color": "foldercolorizer.CadetBlue"
         },
         {
             "folderPath": "river-data-explorer/src/",
