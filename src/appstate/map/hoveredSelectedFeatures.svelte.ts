@@ -70,7 +70,7 @@ export class SelectedFeature extends FeatureState  {
 		this.clear(map);
 		this.feature = feature;
 
-		if(feature.id) {
+		if(feature) {
 			map.setFeatureState(
 				{ source: 'huc10', id: feature.id },
 				{ selected: true }

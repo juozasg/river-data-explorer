@@ -1,4 +1,4 @@
-import { loadAppData } from '$src/appstate/load.js';
+import { loadAppData } from "$lib/data/loadAppData";
 
 export const prerender = true;
 export const trailingSlash = 'always';
