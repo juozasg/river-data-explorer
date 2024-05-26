@@ -4,9 +4,9 @@ import { sha1 } from '../utils/digest';
 import { dataManifest } from './loadAppData';
 
 // https://raw.githubusercontent.com/juozasg/SJRBC-web-map-data/webapp/features/counties.csv
-export async function loadCsv(path: string) {
+export async function loadDataCsv(path: string) {
 	try {
-		const text = await loadText(path);
+		const text = await loadDataText(path);
 		return parse(text, { header: true })
 	} catch (e) {
 		console.error(`Failed to load data from ${path}`, e);
@@ -15,13 +15,25 @@ export async function loadCsv(path: string) {
 	}
 }
 
-async function loadText(path: string) {
+
+export async function loadDataJson(path: string) {
+	// event.fetc
+	const response = await fetchDataWithCache(path);
+	// console.log(response)
+
+	const text = await response.clone().text();
+	console.log('loadDataJson', text.slice(0, 100) + '...')
+	return response.json();
+}
+
+
+export async function loadDataText(path: string) {
 	// event.fetc
 	const response = await fetchDataWithCache(path);
 	// console.log(response)
 
 	const text = await response.text();
-	console.log('loadText', text.slice(0, 100) + '...')
+	console.log('loadDataText', text.slice(0, 100) + '...')
 	return text;
 }
 

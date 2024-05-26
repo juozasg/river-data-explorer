@@ -1,12 +1,15 @@
 import { hoveredArea, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
+import { loadDataJson } from '$src/lib/data/cachedDataLoad';
 import MapController from './mapController';
 import type { MapMouseEvent } from 'maplibre-gl';
 
 export default class AreasMap extends MapController {
-	createLayers() {
+	async createLayers() {
+		const data = await loadDataJson('geojson/huc10.geojson');
+
 		this.map.addSource('huc10', {
 			type: 'geojson',
-			data: '/data/geojson/huc10.geojson',
+			data: data,
 			promoteId: 'huc10'
 		});
 

@@ -1,3 +1,4 @@
+import { loadDataJson } from "$src/lib/data/cachedDataLoad";
 import MapController from "./mapController";
 import * as ml from 'maplibre-gl';
 
@@ -5,10 +6,11 @@ import * as ml from 'maplibre-gl';
 export default class SitesMap extends MapController {
 	selectedAreaFeatureId: number | string | null = null;
 
-	createLayers() {
+	async createLayers() {
+		const data = await loadDataJson('geojson/huc10.geojson');
 		this.map.addSource('sites-huc10', {
 			type: 'geojson',
-			data: '/data/geojson/huc10.geojson',
+			data: data,
 			promoteId: 'huc10'
 		});
 
