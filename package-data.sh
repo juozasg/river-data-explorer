@@ -1,5 +1,4 @@
-#!/usr/bin/env bash
-pushd .
+#!/usr/bin/env sh
 rm -rf tmp
 mkdir -p tmp
 cd tmp
@@ -18,6 +17,6 @@ echo "}" >> data-manifest.json
 
 cat data-manifest.json
 
-popd
+cd ../..
 rm -rf static/data
 mv tmp/data static/data
