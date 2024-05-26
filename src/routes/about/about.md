@@ -9,4 +9,4 @@ title: About
 
 Currently hosted at [https://website.riverdata.app/](https://website.riverdata.app/)
 
-Web application [code](https://github.com/juozasg/river-data-explorer/tree/svelte5) and [data](https://github.com/Limnogirl90/SJRBC-web-map-data/tree/main) for this web site is available on GitHub.
+Web application [code](https://github.com/juozasg/river-data-explorer/tree/svelte5) and [data](https://github.com/juozasg/SJRBC-web-map-data/tree/webapp) for this web site is available on GitHub.
