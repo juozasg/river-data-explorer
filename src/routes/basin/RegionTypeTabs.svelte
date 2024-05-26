@@ -15,7 +15,7 @@
     {@render item('River (HUC10)', 'huc10')}
     {@render item('County', 'county')}
     {@render item('State', 'state')}
-    {@render item('Basin', 'basin')}
+    {@render item('Basin (HUC8)', 'basin')}
     {@render item('Custom Area...', 'custom')}
   </ul>
 </div>
