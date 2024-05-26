@@ -35,7 +35,7 @@ export default abstract class MapController {
 	// }
 
 	setSites(sites: Site[]) {
-		// x
+		console.log(`create ${sites.length} markers for map`, this.map)
 		for (const marker of this.markersOnMap) {
 			marker.remove();
 		}

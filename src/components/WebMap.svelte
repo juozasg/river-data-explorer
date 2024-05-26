@@ -33,14 +33,8 @@
 	});
 
 	$effect(() => {
-		console.log('sites $state effect');
 		if (controller) {
-			console.log('sites $state effect SETSITES', sites.all);
 			controller.setSites(sites.all);
-
-			// sites.all.forEach((site) => {
-			// 	controller.addSite(site);
-			// });
 		}
 	});
 </script>
