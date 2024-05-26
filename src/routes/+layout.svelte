@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { loadAppData } from "$lib/data/loadAppData";
 	import '$src/styles/app.scss';
 
   import Notifications from '$src/components/site/Notifications.svelte';
@@ -11,6 +12,8 @@
 
 	onMount(() => {
 		document.body.addEventListener('keydown', copyLngLat);
+
+		loadAppData(data.dataManifest, data.dataVariables);
 	});
 </script>
 

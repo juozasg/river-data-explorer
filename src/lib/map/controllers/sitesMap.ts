@@ -8,7 +8,7 @@ export default class SitesMap extends MapController {
 	createLayers() {
 		this.map.addSource('sites-huc10', {
 			type: 'geojson',
-			data: '/layers/huc10.geojson',
+			data: '/data/geojson/huc10.geojson',
 			promoteId: 'huc10'
 		});
 

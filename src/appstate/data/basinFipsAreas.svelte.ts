@@ -1,8 +1,8 @@
 import * as sr from 'svelte/reactivity';
 
 import type { County, CountyFips, State, StateFips } from "$lib/types/fips";
-import { startedLoading } from "../ui/loadingItem.svelte";
-import { parseCsv } from "../../lib/data/datastore";
+import { loadCsv } from "$lib/data/cachedDataLoad";
+import { startedLoading } from '../ui/loadingItem.svelte';
 
 
 export function countyStateFips(county: CountyFips): StateFips {
@@ -20,7 +20,7 @@ export async function loadBasinFipsData() {
 	basinStates.set(26, { id: 26, name: "Michigan", abbr: "MI" });
 
 	const path = 'features/counties.csv';
-	const countiesRows = await parseCsv(path) as [any];
+	const countiesRows = await loadCsv(path) as [any];
 
 	for (const row of countiesRows) {
 		// countyfp,statefp,countyns,name,nameLegal,lat,lon,areaLandSqkm,areaWaterSqkm
