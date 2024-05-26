@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/bash
 set -e
 
 rm -rf tmp
@@ -20,7 +20,7 @@ echo "{" > data-manifest.json
 while IFS='  ' read -r sha name; do
 	  current_line=$(($current_line + 1))
 
-    /bin/echo -n '  "'$name'": "'$sha'"' >> data-manifest.json
+    echo -n '  "'$name'": "'$sha'"' >> data-manifest.json
 
 		if [[ $current_line -ne $last_line ]]; then
     	# is NOT last line
