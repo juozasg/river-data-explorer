@@ -6,7 +6,7 @@ export default class AreasMap extends MapController {
 	createLayers() {
 		this.map.addSource('huc10', {
 			type: 'geojson',
-			data: '/layers/huc10.geojson',
+			data: '/data/geojson/huc10.geojson',
 			promoteId: 'huc10'
 		});
 
