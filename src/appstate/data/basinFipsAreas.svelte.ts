@@ -20,7 +20,7 @@ export async function loadBasinFipsData() {
 	basinStates.set(26, { id: 26, name: "Michigan", abbr: "MI" });
 
 	const path = 'features/counties.csv';
-	const countiesRows = await loadDataCsv(path) as [any];
+	const countiesRows = await loadDataCsv(path);
 
 	for (const row of countiesRows) {
 		// countyfp,statefp,countyns,name,nameLegal,lat,lon,areaLandSqkm,areaWaterSqkm

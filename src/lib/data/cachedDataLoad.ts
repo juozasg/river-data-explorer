@@ -4,10 +4,13 @@ import { sha1 } from '../utils/digest';
 import { dataManifest } from './loadAppData';
 
 // https://raw.githubusercontent.com/juozasg/SJRBC-web-map-data/webapp/features/counties.csv
-export async function loadDataCsv(path: string) {
+export async function loadDataCsv(path: string): Promise<Record<string, any>[]> {
 	try {
 		const text = await loadDataText(path);
-		return parse(text, { header: true })
+		const lines = text.trim().split("\n").filter(line => line.trim() !== "");
+		const withoutEmptyLines = lines.join("\n");
+
+		return parse(withoutEmptyLines, { header: true })
 	} catch (e) {
 		console.error(`Failed to load data from ${path}`, e);
 		notify(`Failed to load data from ${path}`, 'error', 6000);
@@ -15,25 +18,22 @@ export async function loadDataCsv(path: string) {
 	}
 }
 
-
 export async function loadDataJson(path: string) {
-	// event.fetc
 	const response = await fetchDataWithCache(path);
 	// console.log(response)
 
-	const text = await response.clone().text();
-	console.log('loadDataJson', text.slice(0, 100) + '...')
+	// const text = await response.clone().text();
+	// console.log('loadDataJson', text.slice(0, 100) + '...')
 	return response.json();
 }
 
 
 export async function loadDataText(path: string) {
-	// event.fetc
 	const response = await fetchDataWithCache(path);
 	// console.log(response)
 
 	const text = await response.text();
-	console.log('loadDataText', text.slice(0, 100) + '...')
+	// console.log('loadDataText', text.slice(0, 100) + '...')
 	return text;
 }
 
@@ -44,11 +44,13 @@ async function fetchDataWithCache(path: string) {
 
 	const cachedResponse = await cache.match(url);
 	if (cachedResponse && await sha1Matches(cachedResponse, manifestSha1)) {
-		console.log('cache hit', path, manifestSha1);
+		console.log('data cache hit', path, manifestSha1);
 		return cachedResponse;
 	}
 
 	const response = await fetch(url);
+	console.log('data fetch ', url);
+
 	if (!response.ok) throw new Error('Request failed.');
 
 	cache.put(url, response.clone());

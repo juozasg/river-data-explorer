@@ -7,6 +7,7 @@
 	import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 	import type MapController from '$src/lib/map/controllers/mapController';
 	import SitesMap from '$src/lib/map/controllers/sitesMap';
+	import { sites } from '$src/appstate/sites.svelte';
 
 	interface Props {
 		type: MapType;
@@ -29,6 +30,18 @@
 			controller.onAreaSelected(selectedArea.feature);
 		}
 		// console.log(`selected feature effect: ${selectedArea.description}`);
+	});
+
+	$effect(() => {
+		console.log('sites $state effect');
+		if (controller) {
+			console.log('sites $state effect SETSITES', sites.all);
+			controller.setSites(sites.all);
+
+			// sites.all.forEach((site) => {
+			// 	controller.addSite(site);
+			// });
+		}
 	});
 </script>
 

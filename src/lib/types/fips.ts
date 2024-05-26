@@ -1,7 +1,8 @@
 export enum StateFips {
 	Indiana = 18,
-	Michigan = 26
-}
+	Michigan = 26,
+	UnknownState = 99
+};
 
 export enum CountyFips {
 	Berrien = 26021,
@@ -18,8 +19,9 @@ export enum CountyFips {
 	StJosephIN = 18141,
 	StJosephMI = 26149,
 	Steuben = 18151,
-	VanBuren = 26159
-}
+	VanBuren = 26159,
+	UnknownCounty = 99999
+};
 
 export type State = {
 	id: StateFips;
@@ -36,4 +38,3 @@ export type County = {
 	areaLand: number;
 	areaWater: number;
 };
-

@@ -1,11 +1,14 @@
 import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte.svelte';
+import type { Site } from '$src/lib/types/site';
 import * as ml from 'maplibre-gl';
 
 export default abstract class MapController {
 	map: ml.Map;
+	markersOnMap: ml.Marker[];
 
 	constructor(map: ml.Map) {
 		this.map = map;
+		this.markersOnMap = [];
 	}
 
 	abstract createLayers(): void;
@@ -23,4 +26,32 @@ export default abstract class MapController {
 		});
 	}
 
+	// clearMarkers() {
+	// 	for (const marker of this.markersOnMap) {
+	// 		marker.remove();
+	// 	}
+
+	// 	this.markersOnMap = [];
+	// }
+
+	setSites(sites: Site[]) {
+		// x
+		for (const marker of this.markersOnMap) {
+			marker.remove();
+		}
+
+		this.markersOnMap = [];
+
+		for (const site of sites) {
+			try {
+				const marker = new ml.Marker()
+					.setLngLat([site.lon, site.lat])
+					.addTo(this.map);
+					this.markersOnMap.push(marker);
+			} catch (error) {
+				console.log('Error adding site marker', error, site);
+			}
+
+		}
+	}
 }
