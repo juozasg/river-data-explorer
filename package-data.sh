@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 pushd .
 rm -rf tmp
 mkdir -p tmp
