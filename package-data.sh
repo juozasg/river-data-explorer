@@ -11,13 +11,13 @@ cd data
 find * -type f -exec sha1sum {} \; > sha1.txt
 # cat sha1.txt | jq -nR '{inputs | split("  ") | {sha1: .[0], path: .[1]}}'
 # jq -R 'split(" ") | {(.[0]): .[1]}' sha1.txt
-echo "{" > sha1.json
+echo "{" > data-manifest.json
 while IFS='  ' read -r sha name; do
-    echo '"'$name'": "'$sha'",' >> sha1.json
+    echo '  "'$name'": "'$sha'",' >> data-manifest.json
 done < sha1.txt
-echo "}" >> sha1.json
+echo "}" >> data-manifest.json
 
-cat sha1.json
+cat data-manifest.json
 
 popd
 rm -rf static/data
