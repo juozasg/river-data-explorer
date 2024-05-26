@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 rm -rf tmp
 mkdir -p tmp
 cd tmp
@@ -9,10 +9,23 @@ cd data
 
 
 find * -type f -exec sha1sum {} \; > sha1.txt
+
+
+last_line=$(wc -l < sha1.txt)
+current_line=0
+
 echo "{" > data-manifest.json
 while IFS='  ' read -r sha name; do
-    echo '  "'$name'": "'$sha'",' >> data-manifest.json
+	  current_line=$(($current_line + 1))
+
+    echo -n '  "'$name'": "'$sha'"' >> data-manifest.json
+
+		if [[ $current_line -ne $last_line ]]; then
+    	# is NOT last line
+			echo "," >> data-manifest.json
+		fi
 done < sha1.txt
+echo "" >> data-manifest.json
 echo "}" >> data-manifest.json
 
 cat data-manifest.json
