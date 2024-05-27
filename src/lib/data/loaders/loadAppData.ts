@@ -1,5 +1,6 @@
 import { loadBasinFipsData } from "$src/appstate/data/basinFipsAreas.svelte";
-import { loadSitesCsv } from "$src/appstate/sites.svelte";
+import { loadSitesCsv } from "./loadSitesCsv";
+import { loadSitesUsgsWS } from "./loadSitesUsgsWS";
 
 // data-manifest.json
 export type SHA1Digest = string;
@@ -18,6 +19,7 @@ export async function loadAppData(manifest: object, variables: object) {
 	// async go brr
 	loadBasinFipsData();
 	loadSitesCsv();
+	loadSitesUsgsWS();
 }
 
 

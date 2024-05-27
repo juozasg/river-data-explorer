@@ -44,14 +44,29 @@ export default abstract class MapController {
 
 		for (const site of sites) {
 			try {
-				const marker = new ml.Marker()
-					.setLngLat([site.lon, site.lat])
-					.addTo(this.map);
-					this.markersOnMap.push(marker);
+				this.createMarker(site);
 			} catch (error) {
 				console.log('Error adding site marker', error, site);
 			}
 
 		}
+	}
+
+	private createMarker(site: Site) {
+		let color = '#2299ff';
+		switch (site.dataset) {
+			case 'elkhart':
+				color = '#2222ff';
+				break;
+			case 'usgs':
+				color = '#22ffff';
+				break;
+			default:
+				color = '#2299ff';
+		};
+		const marker = new ml.Marker({color: color})
+			.setLngLat([site.lon, site.lat])
+			.addTo(this.map);
+		this.markersOnMap.push(marker);
 	}
 }

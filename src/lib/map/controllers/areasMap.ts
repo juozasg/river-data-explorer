@@ -1,7 +1,8 @@
+import type { MapMouseEvent } from 'maplibre-gl';
+
 import { hoveredArea, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 import { loadDataJson } from '$src/lib/data/cachedDataLoad';
 import MapController from './mapController';
-import type { MapMouseEvent } from 'maplibre-gl';
 
 export default class AreasMap extends MapController {
 	async createLayers() {

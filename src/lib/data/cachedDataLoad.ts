@@ -1,7 +1,8 @@
-import { notify } from '$src/appstate/ui/notifications.svelte';
 import parse from 'csv-simple-parser';
+
+import { notify } from '$src/appstate/ui/notifications.svelte';
 import { sha1 } from '../utils/digest';
-import { dataManifest } from './loadAppData';
+import { dataManifest } from './loaders/loadAppData';
 
 // https://raw.githubusercontent.com/juozasg/SJRBC-web-map-data/webapp/features/counties.csv
 export async function loadDataCsv(path: string): Promise<Record<string, any>[]> {

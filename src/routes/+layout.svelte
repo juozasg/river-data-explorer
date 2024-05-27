@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { loadAppData } from "$lib/data/loadAppData";
+	import { loadAppData } from "$src/lib/data/loaders/loadAppData.js";
 	import '$src/styles/app.scss';
 
   import Notifications from '$src/components/site/Notifications.svelte';
