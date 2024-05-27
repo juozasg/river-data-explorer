@@ -1,4 +1,5 @@
 import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte.svelte';
+import { Sites } from '$src/appstate/sites.svelte';
 import type { Site } from '$src/lib/types/site';
 import * as ml from 'maplibre-gl';
 
@@ -26,22 +27,20 @@ export default abstract class MapController {
 		});
 	}
 
-	// clearMarkers() {
-	// 	for (const marker of this.markersOnMap) {
-	// 		marker.remove();
-	// 	}
-
-	// 	this.markersOnMap = [];
-	// }
-
-	setSites(sites: Site[]) {
-		console.log(`create ${sites.length} markers for map`, this.map)
+	clearMarkers() {
+		console.log(`MARKERS clear ${this.markersOnMap.length} for map`, this.map)
 		for (const marker of this.markersOnMap) {
 			marker.remove();
 		}
-
 		this.markersOnMap = [];
+	}
 
+	setSites(sitesState: Sites) {
+		const sites: Site[] = sitesState.all;
+
+		this.clearMarkers();
+
+		console.log(`MARKERS create ${sites.length} for map`, this.map)
 		for (const site of sites) {
 			try {
 				this.createMarker(site);
@@ -68,5 +67,11 @@ export default abstract class MapController {
 			.setLngLat([site.lon, site.lat])
 			.addTo(this.map);
 		this.markersOnMap.push(marker);
+	}
+
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	onAreaSelected(feature: ml.MapGeoJSONFeature | null) {
+		return;
 	}
 }

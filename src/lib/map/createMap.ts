@@ -57,6 +57,8 @@ function createMaptilerMap(mapContainer: HTMLDivElement, zoom?: number , center?
 		minZoom: 3,
 	});
 
+	// map.style.sourceCaches['basemap-v9'].update(map.transform)
+
 	return map;
 }
 
