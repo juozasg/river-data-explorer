@@ -1,5 +1,5 @@
 <script lang="ts">
-  import WebMap from '$src/components/WebMap.svelte';
+  import WebMap from '$src/components/maps/WebMap.svelte';
 </script>
 
 

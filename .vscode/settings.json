@@ -18,7 +18,7 @@
         },
         {
             "folderPath": "river-data-explorer/src/components/",
-            "badge": "💠",
+            "badge": "🏄‍♀️",
             "color": "foldercolorizer.LightPink"
         },
         {
@@ -56,6 +56,10 @@
         {
             "folderPath": "river-data-explorer/src/",
             "color": "foldercolorizer.AntiqueWhite"
+        },
+        {
+            "folderPath": "river-data-explorer/src/components/maps/WebMap.svelte/",
+            "badge": "🏄‍♀️"
         }
     ],
 }

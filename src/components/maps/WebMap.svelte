@@ -31,7 +31,6 @@
 
 	$effect(() => controller.setSites(sites));
 
-	$inspect(geometries.sitesHuc10)
 </script>
 
 <!-- <select bind:value={basemap}>

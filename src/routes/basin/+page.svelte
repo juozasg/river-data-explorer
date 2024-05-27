@@ -1,7 +1,7 @@
 <script lang="ts">
 
   import RegionTypeTabs from './RegionTypeTabs.svelte';
-  import WebMap from "$src/components/WebMap.svelte";
+  import WebMap from "$src/components/maps/WebMap.svelte";
   import AreaSitesVariableSelects from '$src/components/basin/AreaSitesVariableSelects.svelte';
 
   let selectedDate = $state(2002);
