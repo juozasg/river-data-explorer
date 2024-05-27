@@ -3,10 +3,12 @@ import type { MapMouseEvent } from 'maplibre-gl';
 import { hoveredArea, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 import { loadDataJson } from '$src/lib/data/cachedDataLoad';
 import MapController from './mapController';
+import { geometries } from '$src/appstate/data/geometries.svelte';
 
 export default class AreasMap extends MapController {
 	async createLayers() {
 		const data = await loadDataJson('geojson/huc10.geojson');
+		geometries.setHuc10(data);
 
 		this.map.addSource('huc10', {
 			type: 'geojson',

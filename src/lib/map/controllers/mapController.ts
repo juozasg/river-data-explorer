@@ -1,4 +1,4 @@
-import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte.svelte';
+import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
 import { Sites } from '$src/appstate/sites.svelte';
 import type { Site } from '$src/lib/types/site';
 import * as ml from 'maplibre-gl';

@@ -21,6 +21,7 @@ export async function loadSitesUsgsWS() {
 		console.error('Error loading USGS sites', error);
 		notify(`Error loading USGS sites ${url}`, 'error', 6000);
 	} finally {
+		sites.reindexGeometries();
 		finishedLoading();
 	}
 }
@@ -44,11 +45,9 @@ function timeseriesToSites(timeSeries: any) {
 			// calculated when everything is loaded
 			state: StateFips.UnknownState,
 			county: CountyFips.UnknownCounty,
-			huc10: '1122334455',
-			huc12: '112233445566',
+			huc10: '',
+			huc12: '',
 		};
-
-		// console.log('USGS site', site);
 
 		sites.add(site);
 	}

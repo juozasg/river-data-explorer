@@ -29,12 +29,14 @@ export async function loadSitesCsv() {
 			// calculated when everything is loaded
 			state: StateFips.UnknownState,
 			county: CountyFips.UnknownCounty,
-			huc10: '1122334455',
-			huc12: '112233445566',
+			huc10: '',
+			huc12: '',
 		};
 
 		sites.add(site);
 	}
+
+	sites.reindexGeometries();
 
 	finishedLoading();
 }

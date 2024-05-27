@@ -1,4 +1,4 @@
-import { mapMouseLocation } from "$src/appstate/map/mapMouse.svelte.svelte";
+import { mapMouseLocation } from "$src/appstate/map/mapMouse.svelte";
 import { notify } from "$src/appstate/ui/notifications.svelte";
 import type { LngLat } from "maplibre-gl";
 

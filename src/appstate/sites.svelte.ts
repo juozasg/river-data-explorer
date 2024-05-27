@@ -1,4 +1,5 @@
 import type { Site } from "$lib/types/site";
+import { geometries } from "./data/geometries.svelte";
 
 export class Sites {
 	sites: Site[] = $state([]);
@@ -18,6 +19,15 @@ export class Sites {
 
 	findById(siteId: string) {
 		return this.sites.find(s => s.id === siteId);
+	}
+
+	reindexGeometries() {
+		for (const site of this.sites) {
+			if(!site.huc10) {
+				const huc10 = geometries.getFeatureAtLatLon('huc10', site.lat, site.lon);
+				site.huc10 = huc10?.properties?.huc10 || '';
+			}
+		}
 	}
 }
 

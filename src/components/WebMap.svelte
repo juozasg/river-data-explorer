@@ -2,13 +2,14 @@
 	import type { LngLatLike } from 'maplibre-gl';
 
 	import { createMap as createMaplibreMap, type MapType } from '$lib/map/createMap';
-	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte.svelte';
+	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
 	import { formatLngLat } from '$lib/copyLngLat';
 	import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 	import type MapController from '$src/lib/map/controllers/mapController';
 	import SitesMap from '$src/lib/map/controllers/sitesMap';
 	import { sites } from '$src/appstate/sites.svelte';
 	import { onMount } from 'svelte';
+	import { geometries } from '$src/appstate/data/geometries.svelte';
 
 	interface Props {
 		type: MapType;
@@ -30,7 +31,7 @@
 
 	$effect(() => controller.setSites(sites));
 
-	// $
+	$inspect(geometries.sitesHuc10)
 </script>
 
 <!-- <select bind:value={basemap}>
