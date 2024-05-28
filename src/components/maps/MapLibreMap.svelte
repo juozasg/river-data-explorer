@@ -1,13 +1,11 @@
 <script lang="ts">
 	import * as maptilersdk from '@maptiler/sdk';
-	import type { LngLatLike } from 'maplibre-gl';
-	import * as ml from 'maplibre-gl';
 
 	import { formatLngLat } from '$lib/copyLngLat';
 	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
 	import { listenMouseMoveCoordinates } from '$src/lib/map/mouseMoveCoordinates';
-	import { onMount } from 'svelte';
 	import type { MapLibreMapProps } from '$src/lib/types/components';
+	import { onMount } from 'svelte';
 
 
 	let {

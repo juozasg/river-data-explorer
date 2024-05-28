@@ -1,16 +1,15 @@
 <script lang="ts">
 	import RegionTypeTabs from './RegionTypeTabs.svelte';
-	import WebMap from '$src/components/maps/WebMap.svelte';
 	import AreaSitesVariableSelects from '$src/components/basin/AreaSitesVariableSelects.svelte';
 	import AreaSelectorMap from '$src/components/maps/AreaSelectorMap.svelte';
-	import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
+	import SiteSelectorMap from '$src/components/maps/SiteSelectorMap.svelte';
 
 	let selectedDate = $state(2002);
 
 	const onSelected = () => {
 		const areaDetailsElement = window.document.getElementById('section-select-area-data');
 		console.log('areaDetailsElement', areaDetailsElement);
-    areaDetailsElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // areaDetailsElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 	};
 </script>
 
@@ -33,7 +32,7 @@
 <div class="details">
 	<div class="columns">
 		<div class="column map-preview-column">
-			<WebMap type="sites" --map-height="400px" />
+			<SiteSelectorMap --map-height="400px" />
 		</div>
 		<div class="column dataset-column">Region Dashboard</div>
 	</div>

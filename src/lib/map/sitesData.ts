@@ -1,28 +1,34 @@
 import { geometries } from '$src/appstate/data/geometries.svelte';
 import { loadDataJson } from '$src/lib/data/cachedDataLoad';
 import * as ml from 'maplibre-gl';
+import { onceIdle } from '../utils/maplibre';
 
-export async function addSourceHuc10(map: ml.Map): Promise<void> {
+export async function addDataHuc10(map: ml.Map): Promise<void> {
 	const data = await loadDataJson('geojson/huc10.geojson');
 	geometries.setHuc10(data);
 
-	map.addSource('sites-huc10', {
+	if (map.getSource('huc10')) return;
+
+	map.addSource('huc10', {
 		type: 'geojson',
 		data: data,
 		promoteId: 'huc10'
 	});
+
+
+	await onceIdle(map);
+	addLayersHuc10(map);
 }
 
-export function rebuildLayersHuc10(map: ml.Map): void {
+function addLayersHuc10(map: ml.Map): void {
 	if (map.getLayer('sites-huc10-outline')) map.removeLayer('sites-huc10-outline');
 	if (map.getLayer('sites-huc10')) map.removeLayer('sites-huc10');
 
 	map.addLayer({
 		id: 'sites-huc10',
 		type: 'fill',
-		source: 'sites-huc10',
-		layout: {
-		},
+		source: 'huc10',
+		layout: {},
 		paint: {
 			// 'fill-color': [
 			// 	'case',
@@ -35,26 +41,23 @@ export function rebuildLayersHuc10(map: ml.Map): void {
 				'case',
 				['boolean', ['feature-state', 'selected'], false],
 				0.4,
-				0
+				0.
 			],
 		}
 	});
-
+	console.log('2', map.loaded());
 	map.addLayer({
 		'id': 'sites-huc10-outline',
 		'type': 'line',
-		'source': 'sites-huc10',
+		'source': 'huc10',
 		'layout': {},
 		'paint': {
 			'line-color': '#844',
 			'line-width': 1,
-			'line-opacity': [
-				'case',
-				['boolean', ['feature-state', 'selected'], false],
-				1,
-				0
-			],
+			'line-opacity': 0.8,
 
 		}
 	});
+	console.log('3', map.loaded());
+	console.log(map.style._layers)
 }

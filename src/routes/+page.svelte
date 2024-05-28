@@ -1,6 +1,5 @@
 <script lang="ts">
   import AreaSelectorMap from '$src/components/maps/AreaSelectorMap.svelte';
-import WebMap from '$src/components/maps/WebMap.svelte';
 
 </script>
 
