@@ -3,21 +3,16 @@
 	import type { LngLatLike } from 'maplibre-gl';
 	import * as ml from 'maplibre-gl';
 
-	import { createMap as createMaplibreMap, type MapType } from '$lib/map/createMap';
-	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
 	import { formatLngLat } from '$lib/copyLngLat';
-	import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
-	import type MapController from '$src/lib/map/controllers/mapController';
-	import SitesMap from '$src/lib/map/controllers/sitesMap';
-	import { sites } from '$src/appstate/sites.svelte';
-	import { onMount } from 'svelte';
-	import { geometries } from '$src/appstate/data/geometries.svelte';
-	import { base } from '$app/paths';
+	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
 	import { listenMouseMoveCoordinates } from '$src/lib/map/controllers/mouseMoveCoordinates';
+	import { onMount } from 'svelte';
 
 	interface Props {
 		zoom?: number;
 		center?: LngLatLike;
+		loadData: (map: ml.Map) => void;
+
 		divElement?: HTMLDivElement;
 		mlMap?: ml.Map;
 	}
@@ -25,6 +20,7 @@
 	let {
 		zoom = 8,
 		center = [-85.616, 41.825],
+		loadData,
 		divElement = $bindable(),
 		mlMap = $bindable()
 	}: Props = $props();
@@ -34,18 +30,18 @@
 	export const test = '123';
 
 	$effect(() => {
+		console.log('FX', 'try to set style')
 		if (!mlMap) return;
 
 		const style = maptilersdk.MapStyle[baseStyleId];
 
 		(mlMap as maptilersdk.Map).setStyle(style);
+		console.log('FX', 'set style!')
 
 		// reapply sources and layers
 		mlMap.once('idle', () => {
-			console.log('map idle');
-			// reload
-			// this._callback();
-			// console.log('map idle reload callback');
+			console.log('FX map idle ');
+			loadData(mlMap!);
 		});
 	});
 
@@ -55,7 +51,7 @@
 
 		mlMap = new maptilersdk.Map({
 			container: divElement!, // container's id or the HTML element to render the map
-			style: maptilersdk.MapStyle.TOPO,
+			style: maptilersdk.MapStyle[baseStyleId], // style URL
 			center, // starting position [lng, lat]
 			zoom, // starting zoom
 			minZoom: 3
@@ -97,12 +93,4 @@
 		padding: 0.5rem;
 	}
 
-	#loading-map {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		z-index: 2;
-		font-size: 3rem;
-	}
 </style>
