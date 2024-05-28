@@ -7,7 +7,7 @@
 	import { addDataHuc10 } from '$src/lib/map/addDataSitesMap';
 
 	import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
-	import { fitFeatureBounds } from '$src/lib/utils/maplibre';
+	import { fitFeatureBounds, setFeatureState } from '$src/lib/utils/maplibre';
 
 	// type Props = {
 	// 	onSelected?: () => void;
@@ -24,26 +24,18 @@
 	});
 
 	$effect(() => {
-		console.log('FX siteselector', mlMap, selectedArea.feature, mlMap?.loaded());
-
+		selectedArea.feature;
+		console.log('FX TESTTEST siteselector', mlMap, mlMap?.loaded());
 		if (!mlMap) return;
-		if (!mlMap.loaded()) return;
 		const map = mlMap!;
-
-		console.log('FX set data!');
-		const t = Date.now();
 
 
 		map.querySourceFeatures('huc10').forEach((feature) => {
-			map.setFeatureState({ source: 'huc10', id: feature.id }, { selected: false });
+			setFeatureState(map, 'huc10', feature.id, { selected: false });
 		});
 
 		if (selectedArea.feature) {
-			const dt = Date.now() - t;
-			console.log('FX set sitesarea selected', selectedArea.id);
-			console.log('dt', dt);
-
-			map.setFeatureState({ source: 'huc10', id: selectedArea.feature.id }, { selected: true });
+			setFeatureState(map, 'huc10', selectedArea.feature.id, { selected: true });
 			fitFeatureBounds(map, selectedArea.feature);
 		}
 	});

@@ -1,5 +1,6 @@
 import { addHoverTooltipPopup, clearHoverTooltipPopup } from '$src/lib/map/widgets/hoveredTooltipPopup';
 import { createPopupWorkaround } from '$src/lib/utils/createPopupWorkaround';
+import { setFeatureState } from '$src/lib/utils/maplibre';
 import * as ml from 'maplibre-gl';
 
 abstract class FeatureState {
@@ -37,22 +38,15 @@ export class HoveredFeature extends FeatureState {
 		this.feature = feature;
 
 		if(feature) {
-			map.setFeatureState(
-				{ source: 'huc10', id: feature.id },
-				{ hover: true }
-			);
-
+			setFeatureState(map, 'huc10', feature.id, { hover: true });
 			addHoverTooltipPopup(map, feature, this.tooltipPopup);
 		}
 
 	}
 
 	clear(map: ml.Map) {
-		if(this.feature?.id) {
-			map.setFeatureState(
-				{ source: 'huc10', id: this.feature.id },
-				{ hover: false }
-			);
+		if(this.feature?.id)	 {
+			setFeatureState(map, 'huc10', this.feature.id, { hover: false });
 		}
 
 		this.feature = null;
@@ -71,10 +65,7 @@ export class SelectedFeature extends FeatureState  {
 		this.feature = feature;
 
 		if(feature) {
-			map.setFeatureState(
-				{ source: 'huc10', id: feature.id },
-				{ selected: true }
-			);
+			setFeatureState(map, 'huc10', feature.id, { selected: true });
 		}
 
 		return true;
@@ -82,20 +73,14 @@ export class SelectedFeature extends FeatureState  {
 
 	clear(map: ml.Map) {
 		if(this.feature?.id) {
-			map.setFeatureState(
-				{ source: 'huc10', id: this.feature.id },
-				{ selected: false }
-			);
+			setFeatureState(map, 'huc10', this.feature.id, { selected: false });
 		}
 		this.feature = null;
 	}
 
 	dataReloaded(map: ml.Map) {
 		if(this.feature?.id) {
-			map.setFeatureState(
-				{ source: 'huc10', id: this.feature.id },
-				{ selected: true }
-			);
+			setFeatureState(map, 'huc10', this.feature.id, { selected: true });
 		}
 	}
 }

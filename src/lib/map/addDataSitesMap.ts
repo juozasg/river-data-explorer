@@ -9,13 +9,13 @@ export async function addDataHuc10(map: ml.Map): Promise<void> {
 	const data = await loadDataJson('geojson/huc10.geojson');
 	geometries.setHuc10(data);
 
-	if (map.getSource('huc10')) return;
-
-	map.addSource('huc10', {
-		type: 'geojson',
-		data: data,
-		promoteId: 'huc10'
-	});
+	if (!map.getSource('huc10')) {
+		map.addSource('huc10', {
+			type: 'geojson',
+			data: data,
+			promoteId: 'huc10'
+		});
+	}
 
 	await onceIdle(map);
 	selectedArea.dataReloaded(map);
@@ -47,7 +47,7 @@ function addLayersHuc10(map: ml.Map): void {
 			],
 		}
 	});
-	console.log('2', map.loaded());
+
 	map.addLayer({
 		'id': 'sites-huc10-outline',
 		'type': 'line',
@@ -60,6 +60,4 @@ function addLayersHuc10(map: ml.Map): void {
 
 		}
 	});
-	console.log('3', map.loaded());
-	console.log(map.style._layers)
 }

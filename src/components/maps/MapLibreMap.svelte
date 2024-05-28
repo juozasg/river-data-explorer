@@ -7,7 +7,6 @@
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 	import { onMount } from 'svelte';
 
-
 	let {
 		zoom = 8,
 		center = [-85.616, 41.825],
@@ -43,6 +42,13 @@
 		});
 
 		listenMouseMoveCoordinates(mlMap);
+
+		setTimeout(() => {
+			const attribCtrl = divElement!.querySelectorAll('details.maplibregl-ctrl-attrib');
+			attribCtrl.forEach((ctrl) => {
+				ctrl.classList.remove('maplibregl-compact-show');
+			});
+		}, 1000);
 	});
 </script>
 
@@ -77,5 +83,4 @@
 		background: none;
 		padding: 0.5rem;
 	}
-
 </style>

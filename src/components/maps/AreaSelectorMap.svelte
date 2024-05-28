@@ -7,6 +7,7 @@
 
 	import { addDataHuc10 } from '$src/lib/map/addDataAreasMap';
 	import { hoveredArea, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
+	import { sites } from '$src/appstate/sites.svelte';
 
 	type Props = {
 		onSelected?: () => void;
@@ -37,11 +38,19 @@
 		map.on('click', (e) => {
 			const feature = map.queryRenderedFeatures(e.point).filter((f) => f.layer.id === 'huc10')[0];
 			const changed = selectedArea.update(map, feature ?? null);
-
+			// console.log('CLICK', selectedArea.feature, changed)
 			if(selectedArea.feature && changed) {
 				onSelected?.();
 			}
 		});
+	});
+
+
+	$effect(() => {
+		console.log('MARKERS for sites: ', sites.all.length);
+		for(const site in sites.all) {
+			console.log('MARKERS create marker for site')
+		}
 	});
 
 // TODO: markers

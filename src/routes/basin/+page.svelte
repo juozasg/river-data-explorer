@@ -3,14 +3,19 @@
 	import AreaSitesVariableSelects from '$src/components/basin/AreaSitesVariableSelects.svelte';
 	import AreaSelectorMap from '$src/components/maps/AreaSelectorMap.svelte';
 	import SiteSelectorMap from '$src/components/maps/SiteSelectorMap.svelte';
+	import { onMount } from 'svelte';
 
 	let selectedDate = $state(2002);
 
 	const onSelected = () => {
 		const areaDetailsElement = window.document.getElementById('section-select-area-data');
 		console.log('areaDetailsElement', areaDetailsElement);
-    // areaDetailsElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    areaDetailsElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 	};
+
+	onMount(() => {
+		console.log('BASIN MOUNTED');
+	});
 </script>
 
 <svelte:head>
