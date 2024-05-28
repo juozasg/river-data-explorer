@@ -40,6 +40,8 @@ export default abstract class MapController {
 
 		this.clearMarkers();
 
+		return;
+
 		console.log(`MARKERS create ${sites.length} for map`, this.map)
 		for (const site of sites) {
 			try {

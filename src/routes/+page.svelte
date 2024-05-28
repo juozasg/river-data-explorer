@@ -1,5 +1,6 @@
 <script lang="ts">
-  import WebMap from '$src/components/maps/WebMap.svelte';
+  import AreaSelectorMap from '$src/components/maps/AreaSelectorMap.svelte';
+import WebMap from '$src/components/maps/WebMap.svelte';
 </script>
 
 
@@ -11,7 +12,8 @@
 <h1>St. Joseph River Basin Data</h1>
 
 
-<WebMap type='areas' zoom={7.8}/>
+<!-- <WebMap type='areas' zoom={7.8}/> -->
+<AreaSelectorMap zoom={7.8}/>
 
 
 <!-- svelte-ignore a11y-distracting-elements -->
