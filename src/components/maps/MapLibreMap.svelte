@@ -7,15 +7,8 @@
 	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
 	import { listenMouseMoveCoordinates } from '$src/lib/map/mouseMoveCoordinates';
 	import { onMount } from 'svelte';
+	import type { MapLibreMapProps } from '$src/lib/types/components';
 
-	interface Props {
-		zoom?: number;
-		center?: LngLatLike;
-		loadData: (map: ml.Map) => void;
-
-		divElement?: HTMLDivElement;
-		mlMap?: ml.Map;
-	}
 
 	let {
 		zoom = 8,
@@ -23,7 +16,7 @@
 		loadData,
 		divElement = $bindable(),
 		mlMap = $bindable()
-	}: Props = $props();
+	}: MapLibreMapProps = $props();
 
 	let baseStyleId: 'TOPO' | 'SATELLITE' = $state('TOPO');
 
@@ -31,7 +24,6 @@
 		if (!mlMap) return;
 
 		const style = maptilersdk.MapStyle[baseStyleId];
-
 		(mlMap as maptilersdk.Map).setStyle(style);
 
 		// reapply sources and layers

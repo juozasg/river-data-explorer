@@ -3,7 +3,7 @@ import * as ml from 'maplibre-gl';
 import { Sites } from '$src/appstate/sites.svelte';
 import type { Site } from '$src/lib/types/site';
 
-export default abstract class MarkersCont {
+export default abstract class MarkersController {
 	map: ml.Map;
 	markersOnMap: ml.Marker[];
 

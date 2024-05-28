@@ -2,13 +2,15 @@
 	import * as ml from 'maplibre-gl';
 	import { onMount } from 'svelte';
 
-	import { addLayersHuc10, addSourceHuc10 } from '$src/lib/map/areasData';
 	import MapLibreMap from './MapLibreMap.svelte';
+	import type { MapLibreMapProps } from '$src/lib/types/components';
+
+	import { rebuildLayersHuc10, addSourceHuc10 } from '$src/lib/map/areasData';
 	import { hoveredArea, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 
 	type Props = {
 		onSelected?: () => void;
-	} & any;
+	} & Partial<MapLibreMapProps>;
 
 	let { onSelected, ...others }: Props = $props();
 
@@ -18,7 +20,7 @@
 
 	const loadData = async (map: ml.Map) => {
 		await addSourceHuc10(map);
-		addLayersHuc10(map);
+		rebuildLayersHuc10(map);
 	};
 
 	onMount(() => {
@@ -47,7 +49,7 @@
 		});
 	});
 
-	// TODO: hover and selection logic
+// TODO: markers
 </script>
 
 <MapLibreMap bind:this={mapContainer} {loadData} bind:divElement bind:mlMap {...others} />

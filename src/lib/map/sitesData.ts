@@ -13,7 +13,10 @@ export async function addSourceHuc10(map: ml.Map): Promise<void> {
 	});
 }
 
-export async function addLayersHuc10(map: ml.Map): Promise<void> {
+export function rebuildLayersHuc10(map: ml.Map): void {
+	if (map.getLayer('sites-huc10-outline')) map.removeLayer('sites-huc10-outline');
+	if (map.getLayer('sites-huc10')) map.removeLayer('sites-huc10');
+
 	map.addLayer({
 		id: 'sites-huc10',
 		type: 'fill',

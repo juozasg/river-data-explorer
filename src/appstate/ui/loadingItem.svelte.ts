@@ -3,12 +3,12 @@ import { notify } from "./notifications.svelte";
 
 export const startedLoading = (label: string) => {
 	// return close() function
-	console.log('startedLoading', label);
+	// console.log('startedLoading', label);
 	const closeNotification = notify(`Loading ${label}...`, 'info', 0);
 
 	return () => {
 		closeNotification();
-		console.log('finishedLoading', label);
+		// console.log('finishedLoading', label);
 	};
 
 	// loadingItems.push([id, label]);
