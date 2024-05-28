@@ -8,17 +8,17 @@
         },
         {
             "folderPath": "river-data-explorer/src/routes/",
-            "badge": "🔄",
+            "badge": "〒",
             "color": "foldercolorizer.DeepSkyBlue"
         },
         {
             "folderPath": "river-data-explorer/src/lib/",
-            "badge": "📗",
+            "badge": "▱",
             "color": "foldercolorizer.green"
         },
         {
             "folderPath": "river-data-explorer/src/components/",
-            "badge": "🏄‍♀️",
+            "badge": "⌂",
             "color": "foldercolorizer.LightPink"
         },
         {
@@ -28,7 +28,7 @@
         },
         {
             "folderPath": "river-data-explorer/src/appstate/",
-            "badge": "🗽",
+            "badge": "⌺",
             "color": "foldercolorizer.CarrotOrange"
         },
         {
