@@ -1,30 +1,15 @@
-import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
-import { Sites } from '$src/appstate/sites.svelte';
-import type { Site } from '$src/lib/types/site';
 import * as ml from 'maplibre-gl';
 
-export default abstract class MapController {
+import { Sites } from '$src/appstate/sites.svelte';
+import type { Site } from '$src/lib/types/site';
+
+export default abstract class MarkersCont {
 	map: ml.Map;
 	markersOnMap: ml.Marker[];
 
 	constructor(map: ml.Map) {
 		this.map = map;
 		this.markersOnMap = [];
-	}
-
-	abstract createLayers(): void;
-	abstract createEventListeners(): void;
-
-	protected createMouseCoordinatesListeners() {
-		this.map.on('mousemove', (e): void => {
-			// e.lngLat is the longitude, latitude geographical position of the event
-			// e.point is the x, y coordinates of the mousemove event relative
-			mapMouseLocation.onMouseMove(this.map, e);
-		});
-
-		this.map.on('mouseout', (): void => {
-			mapMouseLocation.onMouseOut();
-		});
 	}
 
 	clearMarkers() {
@@ -65,15 +50,10 @@ export default abstract class MapController {
 			default:
 				color = '#2299ff';
 		};
-		const marker = new ml.Marker({color: color})
+		const marker = new ml.Marker({ color: color })
 			.setLngLat([site.lon, site.lat])
 			.addTo(this.map);
 		this.markersOnMap.push(marker);
 	}
 
-
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	onAreaSelected(feature: ml.MapGeoJSONFeature | null) {
-		return;
-	}
 }

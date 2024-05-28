@@ -5,7 +5,7 @@
 
 	import { formatLngLat } from '$lib/copyLngLat';
 	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
-	import { listenMouseMoveCoordinates } from '$src/lib/map/controllers/mouseMoveCoordinates';
+	import { listenMouseMoveCoordinates } from '$src/lib/map/mouseMoveCoordinates';
 	import { onMount } from 'svelte';
 
 	interface Props {
@@ -27,20 +27,15 @@
 
 	let baseStyleId: 'TOPO' | 'SATELLITE' = $state('TOPO');
 
-	export const test = '123';
-
 	$effect(() => {
-		console.log('FX', 'try to set style')
 		if (!mlMap) return;
 
 		const style = maptilersdk.MapStyle[baseStyleId];
 
 		(mlMap as maptilersdk.Map).setStyle(style);
-		console.log('FX', 'set style!')
 
 		// reapply sources and layers
 		mlMap.once('idle', () => {
-			console.log('FX map idle ');
 			loadData(mlMap!);
 		});
 	});

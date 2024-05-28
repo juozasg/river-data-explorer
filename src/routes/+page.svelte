@@ -1,6 +1,7 @@
 <script lang="ts">
   import AreaSelectorMap from '$src/components/maps/AreaSelectorMap.svelte';
 import WebMap from '$src/components/maps/WebMap.svelte';
+
 </script>
 
 
@@ -13,7 +14,7 @@ import WebMap from '$src/components/maps/WebMap.svelte';
 
 
 <!-- <WebMap type='areas' zoom={7.8}/> -->
-<AreaSelectorMap zoom={7.8}/>
+<AreaSelectorMap onSelected={() => console.log('ASM onSelected') } zoom={7.8}/>
 
 
 <!-- svelte-ignore a11y-distracting-elements -->

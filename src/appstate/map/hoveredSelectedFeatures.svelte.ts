@@ -61,10 +61,10 @@ export class HoveredFeature extends FeatureState {
 }
 
 export class SelectedFeature extends FeatureState  {
-	update(map: ml.Map, feature: ml.MapGeoJSONFeature) {
+	update(map: ml.Map, feature: ml.MapGeoJSONFeature): boolean {
 		// if nothing changed, do nothing
 		if(feature?.id === this.feature?.id) {
-			return;
+			return false;
 		}
 
 		this.clear(map);
@@ -76,6 +76,8 @@ export class SelectedFeature extends FeatureState  {
 				{ selected: true }
 			);
 		}
+
+		return true;
 	}
 
 	clear(map: ml.Map) {

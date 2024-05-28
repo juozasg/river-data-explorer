@@ -1,11 +1,11 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import type { LngLatLike } from 'maplibre-gl';
 
 	import { createMap as createMaplibreMap, type MapType } from '$lib/map/createMap';
 	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
 	import { formatLngLat } from '$lib/copyLngLat';
 	import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
-	import type MapController from '$src/lib/map/controllers/mapController';
+	import type MapController from '$src/lib/map/controllers/markersController';
 	import SitesMap from '$src/lib/map/controllers/sitesMap';
 	import { sites } from '$src/appstate/sites.svelte';
 	import { onMount } from 'svelte';
@@ -39,7 +39,7 @@
 </select> -->
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div style="position: relative">
+<!-- <div style="position: relative">
 	<div class="map" bind:this={mapDiv}></div>
 	{#if mapMouseLocation.lngLat}
 		<pre>{formatLngLat(mapMouseLocation.lngLat, 4)} press C to copy</pre>
@@ -64,4 +64,4 @@
 		background: none;
 		padding: 0.5rem;
 	}
-</style>
+</style> -->

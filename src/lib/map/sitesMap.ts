@@ -1,65 +1,11 @@
-import { loadDataJson } from "$src/lib/data/cachedDataLoad";
-import MapController from "./mapController";
+import MapController from "./markersController";
 import * as ml from 'maplibre-gl';
 
 
 export default class SitesMap extends MapController {
 	selectedAreaFeatureId: number | string | null = null;
 
-	async createLayers() {
-		const data = await loadDataJson('geojson/huc10.geojson');
-		this.map.addSource('sites-huc10', {
-			type: 'geojson',
-			data: data,
-			promoteId: 'huc10'
-		});
 
-		this.map.addLayer({
-			id: 'sites-huc10',
-			type: 'fill',
-			source: 'sites-huc10',
-			layout: {
-			},
-			paint: {
-				// 'fill-color': [
-				// 	'case',
-				// 	['boolean', ['feature-state', 'selected'], false],
-				// 	'#098',
-				// 	'#698'
-				// ],
-				'fill-color': '#CC8',
-				'fill-opacity': [
-					'case',
-					['boolean', ['feature-state', 'selected'], false],
-					0.4,
-					0
-				],
-			}
-		});
-
-		this.map.addLayer({
-			'id': 'sites-huc10-outline',
-			'type': 'line',
-			'source': 'sites-huc10',
-			'layout': {},
-			'paint': {
-				'line-color': '#844',
-				'line-width': 1,
-				'line-opacity': [
-					'case',
-					['boolean', ['feature-state', 'selected'], false],
-					1,
-					0
-				],
-
-			}
-		});
-
-	}
-
-	createEventListeners() {
-		this.createMouseCoordinatesListeners();
-	}
 
 	onAreaSelected(feature: ml.MapGeoJSONFeature | null) {
 		if(this.map._fullyLoaded) {
