@@ -89,6 +89,15 @@ export class SelectedFeature extends FeatureState  {
 		}
 		this.feature = null;
 	}
+
+	dataReloaded(map: ml.Map) {
+		if(this.feature?.id) {
+			map.setFeatureState(
+				{ source: 'huc10', id: this.feature.id },
+				{ selected: true }
+			);
+		}
+	}
 }
 
 export const hoveredArea = new HoveredFeature();

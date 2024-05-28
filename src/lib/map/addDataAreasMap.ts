@@ -1,8 +1,10 @@
 import { geometries } from '$src/appstate/data/geometries.svelte';
 import { loadDataJson } from '$src/lib/data/cachedDataLoad';
 import * as ml from 'maplibre-gl';
+import { onceIdle } from '../utils/maplibre';
+import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 
-export async function addSourceHuc10(map: ml.Map): Promise<void> {
+export async function addDataHuc10(map: ml.Map): Promise<void> {
 	const data = await loadDataJson('geojson/huc10.geojson');
 	geometries.setHuc10(data);
 
@@ -13,9 +15,13 @@ export async function addSourceHuc10(map: ml.Map): Promise<void> {
 		data: data,
 		promoteId: 'huc10'
 	});
+
+	await onceIdle(map);
+	selectedArea.dataReloaded(map);
+	addLayersHuc10(map);
 }
 
-export function rebuildLayersHuc10(map: ml.Map): void {
+function addLayersHuc10(map: ml.Map): void {
 	if(map.getLayer('huc10-outline')) map.removeLayer('huc10-outline');
 	if(map.getLayer('huc10')) map.removeLayer('huc10');
 

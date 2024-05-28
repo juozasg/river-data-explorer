@@ -5,7 +5,7 @@
 	import MapLibreMap from './MapLibreMap.svelte';
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 
-	import { rebuildLayersHuc10, addSourceHuc10 } from '$src/lib/map/areasData';
+	import { addDataHuc10 } from '$src/lib/map/addDataAreasMap';
 	import { hoveredArea, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 
 	type Props = {
@@ -17,11 +17,6 @@
 	let mapContainer: MapLibreMap;
 	let divElement: HTMLDivElement | undefined = $state();
 	let mlMap: ml.Map | undefined = $state();
-
-	const loadData = async (map: ml.Map) => {
-		await addSourceHuc10(map);
-		rebuildLayersHuc10(map);
-	};
 
 	onMount(() => {
 		console.log('AreaSelectorMap onMount', divElement, mlMap, mapContainer);
@@ -52,4 +47,4 @@
 // TODO: markers
 </script>
 
-<MapLibreMap bind:this={mapContainer} {loadData} bind:divElement bind:mlMap {...others} />
+<MapLibreMap bind:this={mapContainer} loadData={addDataHuc10} bind:divElement bind:mlMap {...others} />

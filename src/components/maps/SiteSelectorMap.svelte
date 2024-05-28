@@ -4,11 +4,10 @@
 
 	import type { MapLibreMapProps } from '$lib/types/components';
 	import MapLibreMap from './MapLibreMap.svelte';
-	import { addDataHuc10 } from '$lib/map/sitesData';
+	import { addDataHuc10 } from '$src/lib/map/addDataSitesMap';
 
 	import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
-	import { fitFeatureBounds, onceIdle } from '$src/lib/utils/maplibre';
-	import { bounds } from '$src/lib/utils/geoutils';
+	import { fitFeatureBounds } from '$src/lib/utils/maplibre';
 
 	// type Props = {
 	// 	onSelected?: () => void;
@@ -19,10 +18,6 @@
 	let mapContainer: MapLibreMap;
 	let divElement: HTMLDivElement | undefined = $state();
 	let mlMap: ml.Map | undefined = $state();
-
-	const loadData = (map: ml.Map) => {
-		addDataHuc10(map);
-	};
 
 	onMount(() => {
 		console.log('SiteSelectorMap onMount', divElement, mlMap, mapContainer);
@@ -54,4 +49,4 @@
 	});
 </script>
 
-<MapLibreMap bind:this={mapContainer} {loadData} bind:divElement bind:mlMap {...others} />
+<MapLibreMap bind:this={mapContainer} loadData={addDataHuc10} bind:divElement bind:mlMap {...others} />

@@ -1,7 +1,9 @@
+import * as ml from 'maplibre-gl';
+
 import { geometries } from '$src/appstate/data/geometries.svelte';
 import { loadDataJson } from '$src/lib/data/cachedDataLoad';
-import * as ml from 'maplibre-gl';
 import { onceIdle } from '../utils/maplibre';
+import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 
 export async function addDataHuc10(map: ml.Map): Promise<void> {
 	const data = await loadDataJson('geojson/huc10.geojson');
@@ -15,8 +17,8 @@ export async function addDataHuc10(map: ml.Map): Promise<void> {
 		promoteId: 'huc10'
 	});
 
-
 	await onceIdle(map);
+	selectedArea.dataReloaded(map);
 	addLayersHuc10(map);
 }
 
