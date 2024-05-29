@@ -1,4 +1,5 @@
 import { loadBasinFipsData } from "$src/appstate/data/basinFipsAreas.svelte";
+import { loadGeoindexData } from "$src/appstate/data/geoindexes.svelte";
 import { loadSitesCsv } from "./loadSitesCsv";
 import { loadSitesUsgsWS } from "./loadSitesUsgsWS";
 
@@ -20,6 +21,7 @@ export async function loadAppData(manifest: object, variables: object) {
 	loadBasinFipsData();
 	loadSitesCsv();
 	loadSitesUsgsWS();
+	loadGeoindexData();
 }
 
 

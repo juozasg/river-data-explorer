@@ -20,7 +20,7 @@
 	}: MapLibreMapProps = $props();
 
 	let baseStyleId: 'TOPO' | 'SATELLITE' = $state('TOPO');
-	let showRiverLayer = $state(true);
+	let showRiverLayer = $state(false);
 
 	let mlmFsm:
 		| 'init'
@@ -89,9 +89,6 @@
 <div style="position: relative">
 	<LayerSwitcher bind:baseStyleId bind:showRiverLayer />
 	<div class="map" bind:this={divElement}>
-		<br />
-		<br />
-		Loading Map...
 	</div>
 	{#if mapMouseLocation.lngLat}
 		<pre>{formatLngLat(mapMouseLocation.lngLat, 4)} press C to copy</pre>

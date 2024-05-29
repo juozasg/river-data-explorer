@@ -4,7 +4,7 @@ import { sites } from "../sites.svelte";
 
 export const sitesGeoindex: { [key: string]: {huc10: string }} = {};
 
-export async function loadBasinFipsData() {
+export async function loadGeoindexData() {
 	const finishedLoading = startedLoading("Geodata Indexes");
 
 	const path = 'indexes/sites.csv';
@@ -16,5 +16,6 @@ export async function loadBasinFipsData() {
 	});
 
 	finishedLoading();
+	console.log('loaded sitesGeoindex', sitesGeoindex);
 	sites.reindexGeometries();
 }

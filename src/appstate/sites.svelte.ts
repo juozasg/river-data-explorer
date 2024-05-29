@@ -33,7 +33,6 @@ export class Sites {
 
 export const sites = new Sites();
 
-
 export function splitSiteId(siteId: string): { dataset: string, num: number } {
 	const [dataset, ns] = siteId.split('-');
 	return {dataset, num: parseInt(ns) };

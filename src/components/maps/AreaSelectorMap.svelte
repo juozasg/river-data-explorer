@@ -7,7 +7,7 @@
 
 	import { addLayers } from '$src/lib/map/addDataAreasMap';
 	import { hoveredArea, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
-	import { sites, splitSiteId } from '$src/appstate/sites.svelte';
+	import { sites } from '$src/appstate/sites.svelte';
 	import type { Site } from '$src/lib/types/site';
 	import { addSources } from '$src/lib/map/addDataMap';
 
@@ -47,16 +47,25 @@
 		});
 	});
 
-	const makeMarker = (node: HTMLElement, site: Site) => {
+	const makeMarker = (node: HTMLDivElement, site: Site) => {
 		const map = mlMap!;
-		const marker = new ml.Marker({ element: node })
-			.setLngLat([site.lon, site.lat])
-			.addTo(map);
+		const marker = new ml.Marker({ element: node }).setLngLat([site.lon, site.lat]).addTo(map);
 		return {
 			destroy() {
 				marker.remove();
 			}
 		};
+	};
+
+	$effect(() => {
+		// console.log('NOFX', hoveredArea.feature?.id)
+		// console.log(sites.all.map((site) => site.huc10));
+		const inArea = sites.all.filter((site) => site.huc10 === hoveredArea.feature?.id);
+		// console.log('inArea', inArea);
+	});
+
+	const markermouse = (site) => {
+		console.log('markermouseover', site);
 	};
 </script>
 
@@ -70,8 +79,13 @@
 />
 
 {#each sites.all as site}
-	<div class="marker" use:makeMarker={site} class:area-hovered={hoveredArea.containsSite(site)}>
-	</div>
+	<!-- svelte-ignore a11y-no-static-element-interactions -->
+	<div
+		class="marker"
+		onmouseenter={() => markermouse(site)}
+		use:makeMarker={site}
+		class:area-hovered={hoveredArea.containsSite(site)}
+	></div>
 {/each}
 
 <style>
@@ -88,14 +102,12 @@
 		height: 10px;
 		background-color: rgb(226, 120, 255);
 
-
 		/* .num { */
-			/* font-size: 0.6em; */
+		/* font-size: 0.6em; */
 		/* } */
 	}
 
 	.marker.area-hovered {
 		background-color: rgb(255, 120, 120);
 	}
-
 </style>
