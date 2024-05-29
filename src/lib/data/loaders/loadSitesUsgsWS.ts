@@ -8,6 +8,7 @@ export const usgsStationIds = '04096405,04096515,04097500,040975299,04097540,040
 
 
 export async function loadSitesUsgsWS() {
+	return;
 	const finishedLoading = startedLoading("USGS Sites");
 	const url = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${usgsStationIds}&siteStatus=all`;
 
