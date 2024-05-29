@@ -7,13 +7,9 @@
 	interface Props {
 		baseStyleId: string;
 		showRiverLayer: boolean;
-	};
+	}
 
-	let {
-		baseStyleId = $bindable(),
-		showRiverLayer = $bindable()
-	}: Props = $props();
-
+	let { baseStyleId = $bindable(), showRiverLayer = $bindable() }: Props = $props();
 
 	const setTopographic = () => {
 		baseStyleId = 'TOPO';
@@ -36,7 +32,6 @@
 		showLayersDropdown = !showLayersDropdown;
 	};
 </script>
-
 
 <div class="map-layer-switcher dropdown" class:is-active={showLayersDropdown}>
 	<div class="dropdown-trigger">
@@ -75,4 +70,8 @@
 		z-index: 1000;
 	}
 
+	div.dropdown-item:hover {
+		background-color: hsl(0, 0%, 96%);
+		color: hsl(0, 0%, 4%);
+	}
 </style>

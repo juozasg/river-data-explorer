@@ -26,13 +26,11 @@
 		| 'init'
 		| 'loading-style'
 		| 'style-loaded'
-		| 'loading-sources'
-		| 'sources-loaded'
-		| 'loading-layers'
+		| 'loading-data'
 		| 'loaded' = $state('init');
 
 	$effect(() => {
-		if (!mlMap) return;
+		if(!mlMap) return;
 
 		const style = maptilersdk.MapStyle[baseStyleId];
 		(mlMap as maptilersdk.Map).setStyle(style);
@@ -40,18 +38,14 @@
 	});
 
 	$effect(() => {
-		if (mlmFsm === 'style-loaded') {
-			mlmFsm = 'loading-sources';
-			addSources(mlMap!);
+		if(mlmFsm === 'style-loaded') {
+			mlmFsm = 'loading-data';
+			addSources(mlMap!).then(() => {
+				addLayers(mlMap!);
+			});
 		}
 	});
 
-	$effect(() => {
-		if (mlmFsm === 'sources-loaded') {
-			mlmFsm = 'loading-layers';
-			addLayers(mlMap!);
-		}
-	});
 
 	$effect(() => {
 		if (mlmFsm === 'loaded') {
@@ -81,15 +75,10 @@
 				mlmFsm = 'style-loaded';
 			}
 
-			if (mlmFsm === 'loading-sources') {
-				mlmFsm = 'sources-loaded';
-			}
-
-			if (mlmFsm === 'loading-layers') {
+			if (mlmFsm === 'loading-data') {
 				mlmFsm = 'loaded';
 			}
 		});
-
 
 		listenMouseMoveCoordinates(mlMap);
 		toggleoffAttribution(divElement!);

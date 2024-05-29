@@ -23,6 +23,8 @@ export async function addSources(map: ml.Map): Promise<void> {
 		addDataSourceGeoJSON(map, 'mainstem'),
 		addDataSourceGeoJSON(map, 'tributaries')
 	]);
+
+	return Promise.resolve();
 }
 
 export function addRiverLayers(map: ml.Map): void {
