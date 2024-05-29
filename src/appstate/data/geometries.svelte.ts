@@ -40,16 +40,6 @@ export class Geometries {
 		}
 	}
 
-	getFeatureAtLatLon(collection: GeometryCollection, lat: number, lon: any): GeoJSON.Feature | undefined {
-		// const point = [lon, lat];
-		return;
-
-		// for(const feature of this.huc10.features) {
-		// 	if(boolInPoly(point, feature.geometry)) {
-		// 		return feature;
-		// 	}
-		// }
-	}
 }
 
 

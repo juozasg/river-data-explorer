@@ -1,5 +1,5 @@
 import type { Site } from "$lib/types/site";
-import { geometries } from "./data/geometries.svelte";
+import { sitesGeoindex } from "./data/geoindexes.svelte";
 
 export class Sites {
 	sites: Site[] = $state([]);
@@ -24,9 +24,8 @@ export class Sites {
 	reindexGeometries() {
 		for (const site of this.sites) {
 			if(!site.huc10) {
-				const huc10 = geometries.getFeatureAtLatLon('huc10', site.lat, site.lon);
-				// console.log('georef', site.id, huc10?.properties?.huc10);
-				site.huc10 = huc10?.properties?.huc10 || '';
+				site.huc10 = sitesGeoindex[site.id]?.huc10 || '';
+				// console.log('set index', site.id, site.huc10);
 			}
 		}
 	}

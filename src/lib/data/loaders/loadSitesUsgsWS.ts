@@ -2,7 +2,7 @@ import { startedLoading } from "$src/appstate/ui/loadingItem.svelte";
 import { sites } from "$src/appstate/sites.svelte";
 import { notify } from "$src/appstate/ui/notifications.svelte";
 import type { Site } from "$src/lib/types/site";
-import { StateFips, CountyFips } from "$src/lib/types/fips";
+import { StateFips, StateCountyFips } from "$src/lib/types/fips";
 
 export const usgsStationIds = '04096405,04096515,04097500,040975299,04097540,04099000,04100500,04101000,04101500,04101535,04101800,04102500,04099750';
 
@@ -44,7 +44,7 @@ function timeseriesToSites(timeSeries: any) {
 
 			// calculated when everything is loaded
 			state: StateFips.UnknownState,
-			county: CountyFips.UnknownCounty,
+			county: StateCountyFips.UnknownCounty,
 			huc10: '',
 			huc12: '',
 		};

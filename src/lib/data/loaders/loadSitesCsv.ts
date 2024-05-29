@@ -1,7 +1,7 @@
 import { loadDataCsv } from "$lib/data/cachedDataLoad";
 import { dataPathsStartingWith } from "$lib/data/loaders/loadAppData";
 import type { Site } from "$lib/types/site";
-import { CountyFips, StateFips } from "$src/lib/types/fips";
+import { StateCountyFips, StateFips } from "$src/lib/types/fips";
 import { startedLoading } from "../../../appstate/ui/loadingItem.svelte";
 import { splitSiteId, sites } from "../../../appstate/sites.svelte";
 
@@ -28,7 +28,7 @@ export async function loadSitesCsv() {
 
 			// calculated when everything is loaded
 			state: StateFips.UnknownState,
-			county: CountyFips.UnknownCounty,
+			county: StateCountyFips.UnknownCounty,
 			huc10: '',
 			huc12: '',
 		};
