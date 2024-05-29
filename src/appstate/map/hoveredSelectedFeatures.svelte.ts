@@ -1,4 +1,5 @@
 import { addHoverTooltipPopup, clearHoverTooltipPopup } from '$src/lib/map/widgets/hoveredTooltipPopup';
+import type { Site } from '$src/lib/types/site';
 import { createPopupWorkaround } from '$src/lib/utils/createPopupWorkaround';
 import { setFeatureState } from '$src/lib/utils/maplibre';
 import * as ml from 'maplibre-gl';
@@ -51,6 +52,11 @@ export class HoveredFeature extends FeatureState {
 
 		this.feature = null;
 		clearHoverTooltipPopup(map, this.tooltipPopup)
+	}
+
+	containsSite(site: Site) {
+		// return true;
+		return this.feature?.id === site.huc10;
 	}
 }
 

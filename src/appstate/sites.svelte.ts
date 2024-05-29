@@ -25,6 +25,7 @@ export class Sites {
 		for (const site of this.sites) {
 			if(!site.huc10) {
 				const huc10 = geometries.getFeatureAtLatLon('huc10', site.lat, site.lon);
+				// console.log('georef', site.id, huc10?.properties?.huc10);
 				site.huc10 = huc10?.properties?.huc10 || '';
 			}
 		}

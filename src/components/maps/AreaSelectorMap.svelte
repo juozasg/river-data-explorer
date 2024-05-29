@@ -7,7 +7,8 @@
 
 	import { addDataHuc10 } from '$src/lib/map/addDataAreasMap';
 	import { hoveredArea, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
-	import { sites } from '$src/appstate/sites.svelte';
+	import { sites, splitSiteId } from '$src/appstate/sites.svelte';
+	import type { Site } from '$src/lib/types/site';
 
 	type Props = {
 		onSelected?: () => void;
@@ -39,21 +40,69 @@
 			const feature = map.queryRenderedFeatures(e.point).filter((f) => f.layer.id === 'huc10')[0];
 			const changed = selectedArea.update(map, feature ?? null);
 			// console.log('CLICK', selectedArea.feature, changed)
-			if(selectedArea.feature && changed) {
+			if (selectedArea.feature && changed) {
 				onSelected?.();
 			}
 		});
 	});
 
-
 	$effect(() => {
 		console.log('MARKERS for sites: ', sites.all.length);
-		for(const site in sites.all) {
-			console.log('MARKERS create marker for site')
+		for (const site in sites.all) {
+			console.log('MARKERS create marker for site');
 		}
 	});
 
-// TODO: markers
+	const makeMarker = (node: HTMLElement, site: Site) => {
+		const map = mlMap!;
+		const marker = new ml.Marker({ element: node })
+			.setLngLat([site.lon, site.lat])
+			.addTo(map);
+		return {
+			destroy() {
+				marker.remove();
+			}
+		};
+	};
 </script>
 
-<MapLibreMap bind:this={mapContainer} loadData={addDataHuc10} bind:divElement bind:mlMap {...others} />
+<MapLibreMap
+	bind:this={mapContainer}
+	loadData={addDataHuc10}
+	bind:divElement
+	bind:mlMap
+	{...others}
+/>
+
+{#each sites.all as site}
+	<div class="marker" use:makeMarker={site} class:area-hovered={hoveredArea.containsSite(site)}>
+		<!-- <div>{site.dataset}</div> -->
+		<!-- <div class="num">{splitSiteId(site.id).num}</div> -->
+	</div>
+{/each}
+
+<style>
+	.marker {
+		/* position: absolute; */
+		/* background-color: white; */
+		border: 1px solid #222;
+
+		/* margin: 2px; */
+		/* display: flex; */
+		/* flex-direction: column; */
+		/* align-items: center; */
+		width: 10px;
+		height: 10px;
+		background-color: rgb(226, 120, 255);
+
+
+		/* .num { */
+			/* font-size: 0.6em; */
+		/* } */
+	}
+
+	.marker.area-hovered {
+		background-color: rgb(255, 120, 120);
+	}
+
+</style>
