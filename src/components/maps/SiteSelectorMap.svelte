@@ -4,10 +4,11 @@
 
 	import type { MapLibreMapProps } from '$lib/types/components';
 	import MapLibreMap from './MapLibreMap.svelte';
-	import { addDataHuc10 } from '$src/lib/map/addDataSitesMap';
+	import { addLayers } from '$src/lib/map/addDataSitesMap';
 
 	import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 	import { fitFeatureBounds, setFeatureState } from '$src/lib/utils/maplibre';
+	import { addSources } from '$src/lib/map/addDataMap';
 
 	// type Props = {
 	// 	onSelected?: () => void;
@@ -41,4 +42,4 @@
 	});
 </script>
 
-<MapLibreMap bind:this={mapContainer} loadData={addDataHuc10} bind:divElement bind:mlMap {...others} />
+<MapLibreMap bind:this={mapContainer} {addSources} {addLayers} bind:divElement bind:mlMap {...others} />

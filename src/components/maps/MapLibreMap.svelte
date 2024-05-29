@@ -7,47 +7,57 @@
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 	import { onMount } from 'svelte';
 	import LayerSwitcher from './LayerSwitcher.svelte';
-	import { toggleRiverLayerVisibility } from '$src/lib/map/addSourcesLayers';
-	import { onceIdle } from '$src/lib/utils/maplibre';
+	import { toggleRiverLayerVisibility } from '$src/lib/map/addDataMap';
+	import { toggleoffAttribution } from '$src/lib/utils/maplibre';
 
 	let {
 		zoom = 8,
 		center = [-85.616, 41.825],
-		loadData,
+		addSources,
+		addLayers,
 		divElement = $bindable(),
 		mlMap = $bindable()
 	}: MapLibreMapProps = $props();
 
 	let baseStyleId: 'TOPO' | 'SATELLITE' = $state('TOPO');
-	let showRiverLayer = $state(false);
-	let dataLoaded = $state(false);
+	let showRiverLayer = $state(true);
 
-
-	$effect(() => {
-		console.log('FX show river layer', showRiverLayer, dataLoaded, mlMap)
-		if (!mlMap || !dataLoaded) return;
-		toggleRiverLayerVisibility(mlMap, showRiverLayer);
-	});
-
+	let mlmFsm:
+		| 'init'
+		| 'loading-style'
+		| 'style-loaded'
+		| 'loading-sources'
+		| 'sources-loaded'
+		| 'loading-layers'
+		| 'loaded' = $state('init');
 
 	$effect(() => {
 		if (!mlMap) return;
 
 		const style = maptilersdk.MapStyle[baseStyleId];
 		(mlMap as maptilersdk.Map).setStyle(style);
-		dataLoaded = false;
-
-		// reapply sources and layers
-		mlMap.once('idle', async () => {
-			loadData(mlMap!);
-			await onceIdle(mlMap);
-			console.log('MLM once idle showRiver', showRiverLayer)
-			toggleRiverLayerVisibility(mlMap, showRiverLayer);
-
-			dataLoaded = true;
-		});
+		mlmFsm = 'loading-style';
 	});
 
+	$effect(() => {
+		if (mlmFsm === 'style-loaded') {
+			mlmFsm = 'loading-sources';
+			addSources(mlMap!);
+		}
+	});
+
+	$effect(() => {
+		if (mlmFsm === 'sources-loaded') {
+			mlmFsm = 'loading-layers';
+			addLayers(mlMap!);
+		}
+	});
+
+	$effect(() => {
+		if (mlmFsm === 'loaded') {
+			toggleRiverLayerVisibility(mlMap!, showRiverLayer);
+		}
+	});
 
 	onMount(() => {
 		const maptilerKey = '4zPvHZlweLbGaEy9LI4Z';
@@ -61,23 +71,39 @@
 			minZoom: 3
 		});
 
-		listenMouseMoveCoordinates(mlMap);
+		// only fires for the initial style, not for map.setStyle!
+		mlMap.on('style.load', () => {
+			mlmFsm = 'style-loaded';
+		});
 
-		setTimeout(() => {
-			const attribCtrl = divElement!.querySelectorAll('details.maplibregl-ctrl-attrib');
-			attribCtrl.forEach((ctrl) => {
-				ctrl.classList.remove('maplibregl-compact-show');
-			});
-		}, 1000);
+		mlMap.on('idle', () => {
+			if (mlmFsm === 'loading-style') {
+				mlmFsm = 'style-loaded';
+			}
+
+			if (mlmFsm === 'loading-sources') {
+				mlmFsm = 'sources-loaded';
+			}
+
+			if (mlmFsm === 'loading-layers') {
+				mlmFsm = 'loaded';
+			}
+		});
+
+
+		listenMouseMoveCoordinates(mlMap);
+		toggleoffAttribution(divElement!);
 	});
 </script>
 
-
-<LayerSwitcher bind:baseStyleId bind:showRiverLayer />
-
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div style="position: relative">
-	<div class="map" bind:this={divElement}>Loading Map...</div>
+	<LayerSwitcher bind:baseStyleId bind:showRiverLayer />
+	<div class="map" bind:this={divElement}>
+		<br />
+		<br />
+		Loading Map...
+	</div>
 	{#if mapMouseLocation.lngLat}
 		<pre>{formatLngLat(mapMouseLocation.lngLat, 4)} press C to copy</pre>
 	{/if}

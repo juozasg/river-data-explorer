@@ -5,10 +5,11 @@
 	import MapLibreMap from './MapLibreMap.svelte';
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 
-	import { addDataHuc10 } from '$src/lib/map/addDataAreasMap';
+	import { addLayers } from '$src/lib/map/addDataAreasMap';
 	import { hoveredArea, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 	import { sites, splitSiteId } from '$src/appstate/sites.svelte';
 	import type { Site } from '$src/lib/types/site';
+	import { addSources } from '$src/lib/map/addDataMap';
 
 	type Props = {
 		onSelected?: () => void;
@@ -46,13 +47,6 @@
 		});
 	});
 
-	$effect(() => {
-		console.log('MARKERS for sites: ', sites.all.length);
-		for (const site in sites.all) {
-			console.log('MARKERS create marker for site');
-		}
-	});
-
 	const makeMarker = (node: HTMLElement, site: Site) => {
 		const map = mlMap!;
 		const marker = new ml.Marker({ element: node })
@@ -68,7 +62,8 @@
 
 <MapLibreMap
 	bind:this={mapContainer}
-	loadData={addDataHuc10}
+	{addSources}
+	{addLayers}
 	bind:divElement
 	bind:mlMap
 	{...others}
@@ -76,8 +71,6 @@
 
 {#each sites.all as site}
 	<div class="marker" use:makeMarker={site} class:area-hovered={hoveredArea.containsSite(site)}>
-		<!-- <div>{site.dataset}</div> -->
-		<!-- <div class="num">{splitSiteId(site.id).num}</div> -->
 	</div>
 {/each}
 

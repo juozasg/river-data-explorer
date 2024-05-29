@@ -84,7 +84,7 @@ export class SelectedFeature extends FeatureState  {
 		this.feature = null;
 	}
 
-	dataReloaded(map: ml.Map) {
+	applyFeatureState(map: ml.Map) {
 		if(this.feature?.id) {
 			setFeatureState(map, 'huc10', this.feature.id, { selected: true });
 		}

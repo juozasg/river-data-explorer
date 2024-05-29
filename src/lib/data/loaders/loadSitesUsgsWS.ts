@@ -14,7 +14,7 @@ export async function loadSitesUsgsWS() {
 	try {
 		const response = await fetch(url);
 		const usgsSites = await response.json();
-		console.log('USGS', usgsSites);
+		// console.log('USGS', usgsSites);
 		timeseriesToSites(usgsSites.value.timeSeries);
 		// sites.add({});
 	} catch (error) {

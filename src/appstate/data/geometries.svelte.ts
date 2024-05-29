@@ -28,7 +28,10 @@ export class Geometries {
 	}
 
 
-	set(name: GeometryCollection, data: GeoJSON.FeatureCollection) {
+	set(name: GeometryCollection | string, data: GeoJSON.FeatureCollection) {
+		if(!collectionNames.includes(name as any)) {
+			return;
+		}
 		const numFeatures = this.collections.get(name)?.features.length;
 		this.collections.set(name, data);
 

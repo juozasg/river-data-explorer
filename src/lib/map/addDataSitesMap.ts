@@ -1,17 +1,14 @@
 import * as ml from 'maplibre-gl';
 
-import { onceIdle } from '../utils/maplibre';
 import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
-import { addDataSourceGeoJSON, addRiverData } from './addSourcesLayers';
+import { addRiverLayers } from './addDataMap';
 
-export async function addDataHuc10(map: ml.Map): Promise<void> {
-	await addDataSourceGeoJSON(map, 'huc10', 'huc10');
-	await onceIdle(map);
-
-	addRiverData(map);
-	selectedArea.dataReloaded(map);
+export async function addLayers(map: ml.Map): Promise<void> {
+	addRiverLayers(map);
+	selectedArea.applyFeatureState(map);
 	addLayersHuc10(map);
 }
+
 
 function addLayersHuc10(map: ml.Map): void {
 	if (map.getLayer('sites-huc10-outline')) map.removeLayer('sites-huc10-outline');

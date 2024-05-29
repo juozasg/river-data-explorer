@@ -2,7 +2,7 @@ import * as ml from 'maplibre-gl';
 import { bounds } from './geoutils';
 
 export function onceIdle(map: ml.Map) {
-	if(map._fullyLoaded) return Promise.resolve();
+	if(map.loaded()) return Promise.resolve();
 	return new Promise<void>((resolve) => {
 		map.once('idle', () => resolve())
 	})
@@ -29,5 +29,15 @@ export function setFeatureState(map: ml.Map, source: string, id: string | undefi
 	} catch (e) {
 		console.error('setFeatureState failed', e);
 	}
+}
 
+
+
+export function toggleoffAttribution(divElement: HTMLElement){
+	setTimeout(() => {
+		const attribCtrl = divElement!.querySelectorAll('details.maplibregl-ctrl-attrib');
+		attribCtrl.forEach((ctrl) => {
+			ctrl.classList.remove('maplibregl-compact-show');
+		});
+	}, 1000);
 }

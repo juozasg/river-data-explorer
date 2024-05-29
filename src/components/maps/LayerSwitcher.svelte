@@ -17,12 +17,12 @@
 
 	const setTopographic = () => {
 		baseStyleId = 'TOPO';
-		console.log('TOPO')
+		// console.log('TOPO')
 	};
 
 	const setSatellite = () => {
 		baseStyleId = 'SATELLITE';
-		console.log('SATELLITE')
+		// console.log('SATELLITE')
 	};
 
 	onMount(() => {
@@ -66,3 +66,13 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	.map-layer-switcher {
+		position: absolute;
+		top: 10px;
+		left: 10px;
+		z-index: 1000;
+	}
+
+</style>
