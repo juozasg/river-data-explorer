@@ -17,10 +17,12 @@
 
 	const setTopographic = () => {
 		baseStyleId = 'TOPO';
+		console.log('TOPO')
 	};
 
 	const setSatellite = () => {
 		baseStyleId = 'SATELLITE';
+		console.log('SATELLITE')
 	};
 
 	onMount(() => {

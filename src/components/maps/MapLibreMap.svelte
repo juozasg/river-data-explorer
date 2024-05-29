@@ -7,6 +7,8 @@
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 	import { onMount } from 'svelte';
 	import LayerSwitcher from './LayerSwitcher.svelte';
+	import { toggleRiverLayerVisibility } from '$src/lib/map/addSourcesLayers';
+	import { onceIdle } from '$src/lib/utils/maplibre';
 
 	let {
 		zoom = 8,
@@ -17,7 +19,15 @@
 	}: MapLibreMapProps = $props();
 
 	let baseStyleId: 'TOPO' | 'SATELLITE' = $state('TOPO');
-	let showRiverLayer = $state(false)
+	let showRiverLayer = $state(false);
+	let dataLoaded = $state(false);
+
+
+	$effect(() => {
+		console.log('FX show river layer', showRiverLayer, dataLoaded, mlMap)
+		if (!mlMap || !dataLoaded) return;
+		toggleRiverLayerVisibility(mlMap, showRiverLayer);
+	});
 
 
 	$effect(() => {
@@ -25,10 +35,16 @@
 
 		const style = maptilersdk.MapStyle[baseStyleId];
 		(mlMap as maptilersdk.Map).setStyle(style);
+		dataLoaded = false;
 
 		// reapply sources and layers
-		mlMap.once('idle', () => {
+		mlMap.once('idle', async () => {
 			loadData(mlMap!);
+			await onceIdle(mlMap);
+			console.log('MLM once idle showRiver', showRiverLayer)
+			toggleRiverLayerVisibility(mlMap, showRiverLayer);
+
+			dataLoaded = true;
 		});
 	});
 
@@ -56,10 +72,6 @@
 	});
 </script>
 
-<!-- <select bind:value={baseStyleId}>
-	<option value="TOPO">Topo</option>
-	<option value="SATELLITE">Imagery</option>
-</select> -->
 
 <LayerSwitcher bind:baseStyleId bind:showRiverLayer />
 

@@ -2,12 +2,13 @@ import * as ml from 'maplibre-gl';
 
 import { onceIdle } from '../utils/maplibre';
 import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
-import { addDataSourceGeoJSON } from './addSources';
+import { addDataSourceGeoJSON, addRiverData } from './addSourcesLayers';
 
 export async function addDataHuc10(map: ml.Map): Promise<void> {
 	await addDataSourceGeoJSON(map, 'huc10', 'huc10');
-
 	await onceIdle(map);
+
+	addRiverData(map);
 	selectedArea.dataReloaded(map);
 	addLayersHuc10(map);
 }

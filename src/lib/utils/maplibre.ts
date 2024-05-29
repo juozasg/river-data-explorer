@@ -2,6 +2,7 @@ import * as ml from 'maplibre-gl';
 import { bounds } from './geoutils';
 
 export function onceIdle(map: ml.Map) {
+	if(map._fullyLoaded) return Promise.resolve();
 	return new Promise<void>((resolve) => {
 		map.once('idle', () => resolve())
 	})
