@@ -1,0 +1,18 @@
+.map-layer-switcher.dropdown {
+	.dropdown-trigger {
+		.dropdown-label {
+			padding-right: 1rem;
+			font-weight: 600;
+		}
+
+		.dropdown-arrow {
+			@include mixins.arrow(rgb(74, 74, 74));
+			right: 0.8rem;
+			top: 52%;
+		}
+	}
+
+	.dropdown-menu {
+		width: 14rem;
+	}
+}

@@ -14,10 +14,11 @@
 @import '@maptiler/sdk/dist/maptiler-sdk.css';
 
 
-@import './basemap_switcher.scss';
+// @import './basemap_switcher.scss';
 @import './kbd.scss';
 @import './navbar.scss';
 @import './notification.scss';
+@import './layer_dropdown.scss';
 
 html {
 	scroll-padding-top: 4rem;
@@ -41,21 +42,4 @@ body {
 		padding-left: 0px;
 		padding-right: 0px;
 	}
-}
-
-
-.dropdown-trigger {
-	.dropdown-label {
-		padding-right: 1rem;
-		font-weight: 600;
-	}
-	.dropdown-arrow {
-		@include mixins.arrow(rgb(74, 74, 74));
-		right: 0.8rem;
-		top: 52%;
-	}
-}
-
-.dropdown-menu {
-	width: 14rem;
 }

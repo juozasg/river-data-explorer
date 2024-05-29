@@ -6,6 +6,7 @@
 	import { listenMouseMoveCoordinates } from '$src/lib/map/mouseMoveCoordinates';
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 	import { onMount } from 'svelte';
+	import LayerSwitcher from './LayerSwitcher.svelte';
 
 	let {
 		zoom = 8,
@@ -16,6 +17,8 @@
 	}: MapLibreMapProps = $props();
 
 	let baseStyleId: 'TOPO' | 'SATELLITE' = $state('TOPO');
+	let showRiverLayer = $state(false)
+
 
 	$effect(() => {
 		if (!mlMap) return;
@@ -28,6 +31,7 @@
 			loadData(mlMap!);
 		});
 	});
+
 
 	onMount(() => {
 		const maptilerKey = '4zPvHZlweLbGaEy9LI4Z';
@@ -52,10 +56,12 @@
 	});
 </script>
 
-<select bind:value={baseStyleId}>
+<!-- <select bind:value={baseStyleId}>
 	<option value="TOPO">Topo</option>
 	<option value="SATELLITE">Imagery</option>
-</select>
+</select> -->
+
+<LayerSwitcher bind:baseStyleId bind:showRiverLayer />
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div style="position: relative">
