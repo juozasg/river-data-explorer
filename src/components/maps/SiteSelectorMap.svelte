@@ -73,7 +73,7 @@
 />
 
 
-{#each sites.selected as site}
+{#each sites.selected as site (site.id)}
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div
 		class="marker"
