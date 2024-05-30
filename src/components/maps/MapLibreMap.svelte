@@ -22,9 +22,9 @@
 	}: MapLibreMapProps = $props();
 
 	let baseStyleId: 'TOPO' | 'SATELLITE' = $state('TOPO');
-	let showRiverLayer = $state(false);
+	let showRiverLayer = $state(true);
 
-	let tooltipComponent: MapTooltip = $state();
+	let tooltipComponent: MapTooltip | undefined = $state();
 
 	let mlmFsm: 'init' | 'loading-style' | 'style-loaded' | 'loading-data' | 'loaded' =
 	$state('init');
@@ -84,11 +84,11 @@
 	});
 
 	export const showTooltip = (x: number, y: number) => {
-		tooltipComponent.showTooltip(x, y);
+		tooltipComponent?.showTooltip(x, y);
 	}
 
 	export const hideTooltip = () => {
-		tooltipComponent.hideTooltip();
+		tooltipComponent?.hideTooltip();
 	}
 
 </script>
