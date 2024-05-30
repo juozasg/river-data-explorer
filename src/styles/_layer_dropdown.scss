@@ -1,8 +1,11 @@
 .map-layer-switcher.dropdown {
 	.dropdown-trigger {
+		width: 10rem;
 		.dropdown-label {
 			padding-right: 1rem;
 			font-weight: 600;
+			// font-size: 1.2rem;
+
 		}
 
 		.dropdown-arrow {
@@ -13,6 +16,7 @@
 	}
 
 	.dropdown-menu {
-		width: 14rem;
+		width: 20rem;
+		.dropdown-item {font-size: 1rem;}
 	}
 }

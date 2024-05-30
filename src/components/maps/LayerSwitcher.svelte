@@ -36,7 +36,7 @@
 <div class="map-layer-switcher dropdown" class:is-active={showLayersDropdown}>
 	<div class="dropdown-trigger">
 		<button
-			class="button is-small"
+			class="button"
 			aria-haspopup="true"
 			aria-controls="dropdown-menu3"
 			onclick={dropdownToggle}
@@ -68,6 +68,7 @@
 		top: 10px;
 		left: 10px;
 		z-index: 1000;
+
 	}
 
 	div.dropdown-item:hover {
