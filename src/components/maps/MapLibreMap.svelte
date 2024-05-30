@@ -25,8 +25,13 @@
 
 	let tooltip: HTMLDivElement | undefined = $state();
 
+	$effect(() => {
+		console.log('tooltil HTML div changed', tooltip, tooltip?.getBoundingClientRect());
+		console.log('tooltip content changed', tooltipContent);
+	});
+
 	let mlmFsm: 'init' | 'loading-style' | 'style-loaded' | 'loading-data' | 'loaded' =
-		$state('init');
+	$state('init');
 
 	$effect(() => {
 		if (!mlMap) return;
@@ -85,24 +90,30 @@
 	// TOOLTIP
 	// map div top corner = (0,0)
 	export const showTooltip = (x: number, y: number) => {
-		if (tooltip) {
-			flushSync(); // get rect
-			const ttHeight = tooltip?.getClientRects()[0]?.height || 0;
-			// console.log(x, y, ttHeight, tooltip?.getClientRects());
+		setTimeout(() => {
+			if (tooltip) {
+				flushSync(); // get rect
 
-			tooltip.style.opacity = '1';
-			tooltip.style.left = x + 'px';
-			tooltip.style.top = y - 12 - ttHeight + 'px';
-			// console.log('ttHeight', ttHeight, 'style.top', tooltip.style.top);
-		}
+
+				const ttHeight = tooltip?.getClientRects()[0]?.height || 0;
+
+				tooltip.style.opacity = '1';
+				tooltip.style.left = x + 'px';
+				tooltip.style.top = y - 12 - ttHeight + 'px';
+				// console.log('ttHeight', ttHeight, 'style.top', tooltip.style.top);
+			}
+		}, 0);
 	};
 
 	export const hideTooltip = () => {
-		if (tooltip) {
-		// 	tooltip.style.display = 'none';
-		tooltip.style.opacity = '0';
-		tooltip.style.left = '-9999px'; // hide it offscreen
-		}
+		setTimeout(() => {
+			if (tooltip) {
+				// 	tooltip.style.display = 'none';
+				tooltip.style.opacity = '0';
+				tooltip.style.left = '-9999px'; // hide it offscreen
+				// flushSync(); // get rect
+			}
+		}, 0);
 	};
 </script>
 
@@ -111,7 +122,7 @@
 	<LayerSwitcher bind:baseStyleId bind:showRiverLayer />
 	<div class="map" bind:this={divElement}></div>
 	{#if mapMouseLocation.lngLat}
-		<pre>{formatLngLat(mapMouseLocation.lngLat, 4)} press C to copy</pre>
+	<pre>{formatLngLat(mapMouseLocation.lngLat, 4)} press C to copy</pre>
 	{/if}
 
 	<div bind:this={tooltip} class="hover-tooltip" style="position: absolute; pointer-events: none;">

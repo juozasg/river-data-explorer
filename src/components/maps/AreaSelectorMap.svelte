@@ -107,6 +107,7 @@
 		width: 10px;
 		height: 10px;
 		background-color: rgb(226, 120, 255);
+		pointer-events: none;
 	}
 
 	.marker.area-hovered {

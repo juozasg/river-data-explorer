@@ -54,7 +54,7 @@
 		const [x, y] = [e.clientX - (rect!.left || 0), e.clientY - (rect!.top || 0)];
 
 		// console.log(x, y)
-		mlmComponent.showTooltip(x + 2, y - 38);
+		mlmComponent.showTooltip(x, y );
 		hoveredSite = site;
 	};
 
