@@ -6,7 +6,7 @@
 	import MapLibreMap from './MapLibreMap.svelte';
 	import { addLayers } from '$src/lib/map/addDataSitesMap';
 
-	import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
+	import { hoveredSite, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 	import { fitFeatureBounds, makeSiteMarker, setFeatureState } from '$src/lib/utils/maplibre';
 	import { addSources } from '$src/lib/map/addDataMap';
 	import { sites } from '$src/appstate/sites.svelte';
@@ -22,7 +22,6 @@
 	let divElement: HTMLDivElement | undefined = $state();
 	let mlMap: ml.Map | undefined = $state();
 
-	let hoveredSite: Site | undefined = $state();
 	let tooltip: HTMLDivElement | undefined = $state();
 
 	onMount(() => {
@@ -55,20 +54,19 @@
 
 		// console.log(x, y)
 		mlmComponent.showTooltip(x, y );
-		hoveredSite = site;
+		hoveredSite.set(site);
 	};
 
 	const mouseLeaveMarker = (e: MouseEvent, site: Site) => {
-		hoveredSite = undefined;
+		hoveredSite.set(undefined);
 		mlmComponent.hideTooltip();
-
 	};
 </script>
 
 
 {#snippet tooltipContent()}
-		<h5>{hoveredSite?.name || ''}</h5>
-		<p>{hoveredSite?.id || ''}</p>
+		<h5>{hoveredSite.site?.name || ''}</h5>
+		<p>{hoveredSite.site?.id || ''}</p>
 {/snippet}
 
 <MapLibreMap

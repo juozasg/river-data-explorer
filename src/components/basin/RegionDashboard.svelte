@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { datasets } from '$src/appstate/data/datasets.svelte';
-	import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
+	import { hoveredSite, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 	import { sites as sitesState } from '$src/appstate/sites.svelte';
 	import type { Site } from '$src/lib/types/site';
+	import { mdiDetails } from '@mdi/js';
 
 	const area = $derived(selectedArea);
 	const sites = $derived(sitesState.selected);
@@ -68,7 +69,95 @@
 	{/if}
 </p>
 
+{#snippet thead()}
+<thead>
+	<tr>
+		<th>Variable</th>
+		<th>From</th>
+		<th>To</th>
+		<th># obs</th>
+		<th>Min</th>
+		<th>Max</th>
+		<th>Mean</th>
+		<th>Median</th>
+		<th>Std Dev</th>
+	</tr>
+</thead>
+{/snippet}
+
+
+
+{#snippet tbody()}
+<tbody>
+	<tr>
+		<td>Temperature</td>
+		<td>2009-01-01</td>
+		<td>2020-09-31</td>
+		<td>53</td>
+		<td>0.2</td>
+		<td>101.6</td>
+		<td>60.0</td>
+		<td>60.0</td>
+		<td>15.2</td>
+	</tr>
+	<tr>
+		<td>ph</td>
+		<td>2009-01-01</td>
+		<td>2020-09-31</td>
+		<td>53</td>
+		<td>0.2</td>
+		<td>101.6</td>
+		<td>60.0</td>
+		<td>60.0</td>
+		<td>15.2</td>
+	</tr>
+	<tr>
+		<td>Dissolved Oxygen</td>
+		<td>2009-01-01</td>
+		<td>2020-09-31</td>
+		<td>53</td>
+		<td>0.2</td>
+		<td>101.6</td>
+		<td>60.0</td>
+		<td>60.0</td>
+		<td>15.2</td>
+	</tr>
+	<tr>
+		<td>Phosphate</td>
+		<td>2009-01-01</td>
+		<td>2020-09-31</td>
+		<td>53</td>
+		<td>0.2</td>
+		<td>101.6</td>
+		<td>60.0</td>
+		<td>60.0</td>
+		<td>15.2</td>
+	</tr>
+</tbody>
+{/snippet}
+
+<div class="details">
+
+<table class="table">
+	{@render thead()}
+	{@render tbody()}
+</table>
+
+
+{#if hoveredSite.site}
+	<h5>{hoveredSite.site?.name}</h5>
+	<table class="table">
+		{@render thead()}
+		{@render tbody()}
+	</table>
+{/if}
+
+</div>
+
 <style>
+	.details {
+		height: 600px;
+	}
 	p {
 		margin-bottom: 0.2rem !important;
 	}

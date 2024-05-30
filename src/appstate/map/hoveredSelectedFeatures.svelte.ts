@@ -91,3 +91,16 @@ export class SelectedFeature extends FeatureState  {
 
 export const hoveredArea = new HoveredFeature();
 export const selectedArea = new SelectedFeature();
+
+let _hoveredSite: Site | undefined = $state();
+
+export const hoveredSite = {
+	get site() {
+		return _hoveredSite;
+	},
+
+	set(site: Site | undefined)  {
+		_hoveredSite = site;
+	}
+}
+
