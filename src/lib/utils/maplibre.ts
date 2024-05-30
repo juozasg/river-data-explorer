@@ -1,5 +1,6 @@
 import * as ml from 'maplibre-gl';
 import { bounds } from './geoutils';
+import type { Site } from '../types/site';
 
 export function onceIdle(map: ml.Map) {
 	if(map.loaded()) return Promise.resolve();
@@ -41,3 +42,13 @@ export function toggleoffAttribution(divElement: HTMLElement){
 		});
 	}, 1000);
 }
+
+
+export function makeSiteMarker(node: HTMLElement, map: ml.Map,site: Site) {
+	const marker = new ml.Marker({ element: node }).setLngLat([site.lon, site.lat]).addTo(map);
+	return {
+		destroy() {
+			marker.remove();
+		}
+	};
+};

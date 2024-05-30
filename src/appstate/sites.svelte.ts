@@ -2,8 +2,8 @@ import type { Site } from "$lib/types/site";
 import { sitesGeoindex } from "./data/geoindexes.svelte";
 
 export class Sites {
-	sites: Site[] = $state([]);
-	selectedSites: Site[] = $state([]);
+	private sites: Site[] = $state([]);
+	private selectedSites: Site[] = $state([]);
 
 	add(site: Site) {
 		this.sites.push(site);
@@ -15,6 +15,14 @@ export class Sites {
 
 	get selected() {
 		return this.selectedSites;
+	}
+
+	inHuc10(huc10: string | undefined | number) {
+		return this.sites.filter(s => s.huc10 === huc10);
+	}
+
+	selectInHuc10(huc10: string) {
+		this.selectedSites = this.sites.filter(s => s.huc10 === huc10);
 	}
 
 	findById(siteId: string) {

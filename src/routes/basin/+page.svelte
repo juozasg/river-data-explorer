@@ -13,9 +13,8 @@
     areaDetailsElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 	};
 
-	onMount(() => {
-		console.log('BASIN MOUNTED');
-	});
+
+
 </script>
 
 <svelte:head>
