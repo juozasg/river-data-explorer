@@ -69,9 +69,6 @@
 {#snippet tooltipContent()}
 		<h5>{hoveredSite?.name || ''}</h5>
 		<p>{hoveredSite?.id || ''}</p>
-		<p>{hoveredSite?.id || ''}</p>
-		<p>{hoveredSite?.id || ''}</p>
-		<p>{hoveredSite?.id || ''}</p>
 {/snippet}
 
 <MapLibreMap

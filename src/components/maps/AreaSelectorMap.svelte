@@ -40,7 +40,15 @@
 
 
 		// When the mouse leaves the huc layer clear hover state
-		map.on('mouseleave', 'huc10', () => {
+		map.on('mouseleave', 'huc10', (e) => {
+			console.log('huc10 mouseleave', e);
+			const features = map.queryRenderedFeatures(e.point);
+			const huc10 = features.find((f) => f.source === 'huc10');
+			if(huc10 && hoveredArea.feature?.id === huc10.id) {
+				// didn't leave feature, only hovered on a marker
+				return;
+			}
+
 			hoveredArea.clear(map);
 			mlmComponent.hideTooltip();
 		});
@@ -64,8 +72,8 @@
 		return makeSiteMarker(node, mlMap!, site);
 	};
 
-	const markermouse = (site: Site) => {
-		// console.log('markermouse', site?.id, site);
+	const markermouse = (e: MouseEvent, site: Site) => {
+		console.log('markermouse', site?.id, site);
 	};
 </script>
 
@@ -94,7 +102,7 @@
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div
 		class="marker"
-		onmouseenter={() => markermouse(site)}
+		onmouseenter={(e) => markermouse(e, site)}
 		use:makeMarker={site}
 		class:area-hovered={siteHovered(site)}
 	></div>
@@ -107,7 +115,7 @@
 		width: 10px;
 		height: 10px;
 		background-color: rgb(226, 120, 255);
-		pointer-events: none;
+		pointer-events: auto;
 	}
 
 	.marker.area-hovered {

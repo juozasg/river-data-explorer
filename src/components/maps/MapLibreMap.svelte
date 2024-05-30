@@ -9,6 +9,7 @@
 	import LayerSwitcher from './LayerSwitcher.svelte';
 	import { toggleRiverLayerVisibility } from '$src/lib/map/addDataMap';
 	import { toggleoffAttribution } from '$src/lib/utils/maplibre';
+	import MapTooltip from './MapTooltip.svelte';
 
 	let {
 		zoom = 8,
@@ -23,12 +24,7 @@
 	let baseStyleId: 'TOPO' | 'SATELLITE' = $state('TOPO');
 	let showRiverLayer = $state(false);
 
-	let tooltip: HTMLDivElement | undefined = $state();
-
-	$effect(() => {
-		console.log('tooltil HTML div changed', tooltip, tooltip?.getBoundingClientRect());
-		console.log('tooltip content changed', tooltipContent);
-	});
+	let tooltipComponent: MapTooltip = $state();
 
 	let mlmFsm: 'init' | 'loading-style' | 'style-loaded' | 'loading-data' | 'loaded' =
 	$state('init');
@@ -87,34 +83,14 @@
 		toggleoffAttribution(divElement!);
 	});
 
-	// TOOLTIP
-	// map div top corner = (0,0)
 	export const showTooltip = (x: number, y: number) => {
-		setTimeout(() => {
-			if (tooltip) {
-				flushSync(); // get rect
-
-
-				const ttHeight = tooltip?.getClientRects()[0]?.height || 0;
-
-				tooltip.style.opacity = '1';
-				tooltip.style.left = x + 'px';
-				tooltip.style.top = y - 12 - ttHeight + 'px';
-				// console.log('ttHeight', ttHeight, 'style.top', tooltip.style.top);
-			}
-		}, 0);
-	};
+		tooltipComponent.showTooltip(x, y);
+	}
 
 	export const hideTooltip = () => {
-		setTimeout(() => {
-			if (tooltip) {
-				// 	tooltip.style.display = 'none';
-				tooltip.style.opacity = '0';
-				tooltip.style.left = '-9999px'; // hide it offscreen
-				// flushSync(); // get rect
-			}
-		}, 0);
-	};
+		tooltipComponent.hideTooltip();
+	}
+
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -125,9 +101,7 @@
 	<pre>{formatLngLat(mapMouseLocation.lngLat, 4)} press C to copy</pre>
 	{/if}
 
-	<div bind:this={tooltip} class="hover-tooltip" style="position: absolute; pointer-events: none;">
-		{@render tooltipContent()}
-	</div>
+	<MapTooltip bind:this={tooltipComponent} {tooltipContent} />
 </div>
 
 <style>
