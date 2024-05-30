@@ -50,8 +50,8 @@
 <h4 id="section-area-data-results" class="has-text-centered">Results</h4>
 
 <div class="results">
-	<a href="/regions/indiana">Indiana</a>
 </div> -->
+<a href="/regions/indiana"></a>
 
 <style>
 	.timelapse-container {
