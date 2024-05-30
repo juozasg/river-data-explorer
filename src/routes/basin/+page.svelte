@@ -27,7 +27,7 @@
 	<AreaSelectorMap {onSelected} --map-height="70vh" zoom={8.35} />
 </div>
 
-<h4 id="section-select-area-data" class="has-text-centered">Select data</h4>
+<h4 id="section-select-area-data" class="has-text-centered">Region Data</h4>
 
 <AreaSitesVariableSelects />
 
