@@ -39,12 +39,18 @@
 				if(tooltip) {
 					tooltip.style.display = 'block';
 					tooltip.style.left = e.point.x + 'px';
-					tooltip.style.top = e.point.y - 30 + 'px';
+					tooltip.style.top = e.point.y  + 'px';
 				}
-			} else {
-				console.log('++mousemove huc10', 'no features')
 			}
+
 		});
+
+		map.on('mouseleave', 'huc10', (e) => {
+			if(tooltip) {
+					tooltip.style.display = 'none';
+				}
+		});
+
 
 		// When the mouse leaves the huc layer clear hover state
 		map.on('mouseleave', 'huc10', () => {
@@ -56,19 +62,17 @@
 			const changed = selectedArea.update(map, feature ?? null);
 			// console.log('CLICK', selectedArea.feature, changed)
 			if (selectedArea.feature && changed) {
+				sites.selectInHuc10(selectedArea.feature.id as string);
 				onSelected?.();
+				console.log('SELECTED', selectedArea.feature.id, sites.inHuc10(selectedArea.feature.id));
 			}
 		});
 	});
 
 	$effect(() => {
-		// console.log('NOFX', hoveredArea.feature?.id)
-		// console.log(sites.all.map((site) => site.huc10));
-		// sites.selected = sites.all.filter((site) => site.huc10 === hoveredArea.feature?.id);
+
 		if(hoveredArea.feature?.id) {
-			// console.log('hovered CHANGED', hoveredArea.feature.id, Date.now())
-			// sites.selectInHuc10(hoveredArea.feature.id as string);
-			// hoveredArea.redrawTooltip(mlMap!);
+
 		}
 		// console.log('inArea', inArea);
 	});
@@ -93,12 +97,15 @@
 	{...others}
 />
 
-{#if hoveredArea.feature}
+<!-- {#if hoveredArea.feature} -->
 	<div bind:this={tooltip} class="hover-tooltip" style="position: absolute; z-index: 10; pointer-events: none;">
-		<h5>{hoveredArea.feature.properties?.name}</h5>
-		<p><b>{sites.inHuc10(hoveredArea.feature.id).length}</b> sites</p>
+		<h5>{hoveredArea.feature?.properties?.name || ''}</h5>
+		{#if hoveredArea.feature}
+			<i>huc10: {hoveredArea.feature.id}</i>
+			<p><b>{sites.inHuc10(hoveredArea.feature.id).length}</b> sites</p>
+		{/if}
 	</div>
-{/if}
+<!-- {/if} -->
 
 {#each sites.all as site}
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -111,37 +118,26 @@
 {/each}
 
 <style>
+	.marker {
+		border: 1px solid #222;
+
+		width: 10px;
+		height: 10px;
+		background-color: rgb(226, 120, 255);
+	}
+
+	.marker.area-hovered {
+		background-color: rgb(255, 120, 120);
+	}
+
 	.hover-tooltip {
 		background-color: white;
 		border: 1px solid #222;
 		padding: 5px;
 		font-size: 80%;
 
+		display: none;
 		position: absolute;
-		/* display: block; */
-		top: -200px;
 		z-index: 1000;
-	}
-
-	.marker {
-		/* position: absolute; */
-		/* background-color: white; */
-		border: 1px solid #222;
-
-		/* margin: 2px; */
-		/* display: flex; */
-		/* flex-direction: column; */
-		/* align-items: center; */
-		width: 10px;
-		height: 10px;
-		background-color: rgb(226, 120, 255);
-
-		/* .num { */
-		/* font-size: 0.6em; */
-		/* } */
-	}
-
-	.marker.area-hovered {
-		background-color: rgb(255, 120, 120);
 	}
 </style>

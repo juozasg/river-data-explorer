@@ -22,7 +22,7 @@ export class Sites {
 	}
 
 	selectInHuc10(huc10: string) {
-		this.selectedSites = this.sites.filter(s => s.huc10 === huc10);
+		this.selectedSites = this.inHuc10(huc10);
 	}
 
 	findById(siteId: string) {

@@ -42,7 +42,7 @@
 	</div>
 </div>
 
-<div class="timelapse-container">
+<!-- <div class="timelapse-container">
 	<div id="slider-description"><strong>{selectedDate}</strong></div>
 	<input id="slider" type="range" min="1990" max="2024" step="1" bind:value={selectedDate} />
 </div>
@@ -51,7 +51,7 @@
 
 <div class="results">
 	<a href="/regions/indiana">Indiana</a>
-</div>
+</div> -->
 
 <style>
 	.timelapse-container {
