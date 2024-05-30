@@ -1,20 +1,18 @@
 <script lang="ts">
 	import RegionTypeTabs from './RegionTypeTabs.svelte';
 	import AreaSitesVariableSelects from '$src/components/basin/AreaSitesVariableSelects.svelte';
+	import RegionDashboard from '$src/components/basin/RegionDashboard.svelte';
 	import AreaSelectorMap from '$src/components/maps/AreaSelectorMap.svelte';
 	import SiteSelectorMap from '$src/components/maps/SiteSelectorMap.svelte';
-	import { onMount } from 'svelte';
+	import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 
 	let selectedDate = $state(2002);
 
 	const onSelected = () => {
 		const areaDetailsElement = window.document.getElementById('section-select-area-data');
 		console.log('areaDetailsElement', areaDetailsElement);
-    areaDetailsElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		areaDetailsElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 	};
-
-
-
 </script>
 
 <svelte:head>
@@ -38,7 +36,15 @@
 		<div class="column map-preview-column">
 			<SiteSelectorMap --map-height="400px" />
 		</div>
-		<div class="column dataset-column">Region Dashboard</div>
+		<div class="column dataset-column">
+			{#if selectedArea.feature}
+				<RegionDashboard />
+			{:else}
+				<div class="placeholder">
+					<h2><a href="#section-select-area">Select watershed region</a></h2>
+				</div>
+			{/if}
+		</div>
 	</div>
 </div>
 
@@ -104,14 +110,17 @@
 		min-height: 400px;
 
 		/* margin-left: 1rem; */
-		background-color: #f0f0f0;
-		font-size: 3rem;
+		/* background-color: #f0f0f0; */
+		/* font-size: 3rem; */
 		/* text-align: center; */
 		padding: 1rem;
+		padding-top: 0;
 
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		align-items: center;
+		.placeholder {
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+		}
 	}
 </style>

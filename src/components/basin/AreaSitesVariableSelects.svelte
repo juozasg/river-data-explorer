@@ -15,10 +15,10 @@
 
   <div class="level-right">
     <div class="level-item">
-      <SiteSelect/>
+      <!-- <SiteSelect/> -->
     </div>
     <div class="level-item">
-      <VariablesSelect/>
+      <!-- <VariablesSelect/> -->
     </div>
   </div>
 
@@ -26,7 +26,7 @@
 
   <div class="level-left">
     <div class="level-item">
-      <p class="subtitle is-5"><a href="#section-select-area">Select watershed region</a></p>
+      <p class="subtitle is-5"><a href="#section-select-area"></a></p>
     </div>
   </div>
 

@@ -83,10 +83,10 @@
 		const feature = mlMap!.queryRenderedFeatures(point).filter((f) => f.layer.id === 'huc10')[0];
 		const changed = selectedArea.update(mlMap!, feature ?? null);
 		// console.log('CLICK', selectedArea.feature, changed)
-		if (selectedArea.feature && changed) {
-			sites.selectInHuc10(selectedArea.feature.id as string);
+		if( changed) {
+			sites.selectInHuc10(selectedArea?.feature?.id as string | undefined);
 			onSelected?.();
-			console.log('SELECTED', selectedArea.feature.id, sites.inHuc10(selectedArea.feature.id));
+			console.log('SELECTED', selectedArea?.feature?.id, sites.inHuc10(selectedArea?.feature?.id));
 		}
 	}
 </script>

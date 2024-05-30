@@ -9,6 +9,10 @@ abstract class FeatureState {
 		return this.feature?.id
 	};
 
+	get name() {
+		return this.feature?.properties?.name || '';
+	}
+
 	get description() {
 		if(this.feature) {
 			const name = this.feature.properties?.name;
