@@ -11,8 +11,6 @@
 	import type { Site } from '$src/lib/types/site';
 	import { addSources } from '$src/lib/map/addDataMap';
 	import { makeSiteMarker } from '$src/lib/utils/maplibre';
-	import { mdiPaperclipLock } from '@mdi/js';
-	import { Point } from '@maptiler/sdk';
 
 	type Props = {
 		onSelected?: () => void;
