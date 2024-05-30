@@ -18,7 +18,7 @@
 
 	let { ...others }: Partial<MapLibreMapProps> = $props();
 
-	let mapContainer: MapLibreMap;
+	let mlmComponent: MapLibreMap;
 	let divElement: HTMLDivElement | undefined = $state();
 	let mlMap: ml.Map | undefined = $state();
 
@@ -26,7 +26,7 @@
 	let tooltip: HTMLDivElement | undefined = $state();
 
 	onMount(() => {
-		console.log('SiteSelectorMap onMount', divElement, mlMap, mapContainer);
+		console.log('SiteSelectorMap onMount', divElement, mlMap, mlmComponent);
 	});
 
 	$effect(() => {
@@ -49,24 +49,36 @@
 		return makeSiteMarker(node, mlMap!, site);
 	};
 
-	const onmouseenter = (e: MouseEvent, site: Site) => {
-		hoveredSite = site;
+	const mouseEnterMarker = (e: MouseEvent, site: Site) => {
+		const rect = divElement?.getClientRects()[0];
+		const [x, y] = [e.clientX - (rect!.left || 0), e.clientY - (rect!.top || 0)];
 
-		// if(tooltip) {
-		// 	// const rect = divElement?.getBoundingClientRect();
-		// 	// console.log(rect, e.clientX, e.clientY);
-		// 	// tooltip.style.left = (rect!.x + e.clientX) + 'px';
-		// 	// tooltip.style.top = (rect!.y + e.clientY) + 'px';
-		// 	// tooltip.style.display = 'block';
-		// }
-		// console.log('onmouseenter', site?.id, site);
+		// console.log(x, y)
+		mlmComponent.showTooltip(x + 2, y - 38);
+		hoveredSite = site;
+	};
+
+	const mouseLeaveMarker = (e: MouseEvent, site: Site) => {
+		hoveredSite = undefined;
+		mlmComponent.hideTooltip();
+
 	};
 </script>
 
+
+{#snippet tooltipContent()}
+		<h5>{hoveredSite?.name || ''}</h5>
+		<p>{hoveredSite?.id || ''}</p>
+		<p>{hoveredSite?.id || ''}</p>
+		<p>{hoveredSite?.id || ''}</p>
+		<p>{hoveredSite?.id || ''}</p>
+{/snippet}
+
 <MapLibreMap
-	bind:this={mapContainer}
+	bind:this={mlmComponent}
 	{addSources}
 	{addLayers}
+	{tooltipContent}
 	bind:divElement
 	bind:mlMap
 	{...others}
@@ -77,24 +89,14 @@
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div
 		class="marker"
-		onmouseenter={(e) => onmouseenter(e, site)}
-		onmouseleave={() => (hoveredSite = undefined)}
+		onmouseenter={(e) => mouseEnterMarker(e, site)}
+		onmouseleave={(e) => mouseLeaveMarker(e, site)}
 		use:makeMarker={site}
 	>
 		<div class="marker-box"></div>
 	</div>
 {/each}
 
-{#if hoveredSite}
-	<div
-		bind:this={tooltip}
-		class="hover-tooltip"
-		style="position: absolute; z-index: 10; pointer-events: none;"
-	>
-		<h5>{hoveredSite.id}</h5>
-		<p><b>{hoveredSite.name}</b></p>
-	</div>
-{/if}
 
 <style>
 	.marker {
@@ -109,14 +111,4 @@
 		}
 	}
 
-	.hover-tooltip {
-		background-color: white;
-		border: 1px solid #222;
-		padding: 5px;
-		font-size: 80%;
-
-		/* position: absolute; */
-		/* top: -200px; */
-		z-index: 1000;
-	}
 </style>

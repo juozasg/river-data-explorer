@@ -1,4 +1,6 @@
 import * as ml from 'maplibre-gl';
+import type { Snippet } from 'svelte';
+
 
 export interface MapLibreMapProps {
 	zoom?: number;
@@ -8,4 +10,6 @@ export interface MapLibreMapProps {
 
 	divElement?: HTMLDivElement;
 	mlMap?: ml.Map;
+
+	tooltipContent: any;
 }

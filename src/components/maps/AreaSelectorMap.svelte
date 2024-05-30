@@ -11,7 +11,6 @@
 	import type { Site } from '$src/lib/types/site';
 	import { addSources } from '$src/lib/map/addDataMap';
 	import { makeSiteMarker } from '$src/lib/utils/maplibre';
-	import { createPopupWorkaround } from '$src/lib/utils/createPopupWorkaround';
 
 	type Props = {
 		onSelected?: () => void;
@@ -19,42 +18,31 @@
 
 	let { onSelected, ...others }: Props = $props();
 
-	// const tooltipPopup: ml.Popup = createPopupWorkaround();
-	let tooltip: HTMLDivElement | undefined = $state();
+	// let tooltipElement: HTMLDivElement | undefined = $state();
 
 
-	let mapContainer: MapLibreMap;
+	let mlmComponent: MapLibreMap;
 	let divElement: HTMLDivElement | undefined = $state();
 	let mlMap: ml.Map | undefined = $state();
 
 	onMount(() => {
-		console.log('AreaSelectorMap onMount', divElement, mlMap, mapContainer);
+		console.log('AreaSelectorMap onMount', divElement, mlMap, mlmComponent);
 		const map = mlMap!;
 
 		map.on('mousemove', 'huc10', (e) => {
 			if (e!.features!.length > 0) {
 				const feature = e.features![0];
 				hoveredArea.update(map, feature);
-
-				if(tooltip) {
-					tooltip.style.display = 'block';
-					tooltip.style.left = e.point.x + 'px';
-					tooltip.style.top = e.point.y  + 'px';
-				}
+				mlmComponent.showTooltip(e.point.x, e.point.y);
 			}
 
-		});
-
-		map.on('mouseleave', 'huc10', (e) => {
-			if(tooltip) {
-					tooltip.style.display = 'none';
-				}
 		});
 
 
 		// When the mouse leaves the huc layer clear hover state
 		map.on('mouseleave', 'huc10', () => {
 			hoveredArea.clear(map);
+			mlmComponent.hideTooltip();
 		});
 
 		map.on('click', (e) => {
@@ -69,13 +57,6 @@
 		});
 	});
 
-	$effect(() => {
-
-		if(hoveredArea.feature?.id) {
-
-		}
-		// console.log('inArea', inArea);
-	});
 
 	const siteHovered = (site: Site) => hoveredArea.containsSite(site)
 
@@ -84,28 +65,30 @@
 	};
 
 	const markermouse = (site: Site) => {
-		console.log('markermouse', site?.id, site);
+		// console.log('markermouse', site?.id, site);
 	};
 </script>
 
-<MapLibreMap
-	bind:this={mapContainer}
-	{addSources}
-	{addLayers}
-	bind:divElement
-	bind:mlMap
-	{...others}
-/>
 
-<!-- {#if hoveredArea.feature} -->
-	<div bind:this={tooltip} class="hover-tooltip" style="position: absolute; z-index: 10; pointer-events: none;">
+{#snippet tooltipContent()}
 		<h5>{hoveredArea.feature?.properties?.name || ''}</h5>
 		{#if hoveredArea.feature}
 			<i>huc10: {hoveredArea.feature.id}</i>
 			<p><b>{sites.inHuc10(hoveredArea.feature.id).length}</b> sites</p>
 		{/if}
-	</div>
-<!-- {/if} -->
+{/snippet}
+
+<MapLibreMap
+	bind:this={mlmComponent}
+	{addSources}
+	{addLayers}
+	{tooltipContent}
+	bind:divElement
+	bind:mlMap
+	{...others}
+/>
+
+
 
 {#each sites.all as site}
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -128,16 +111,5 @@
 
 	.marker.area-hovered {
 		background-color: rgb(255, 120, 120);
-	}
-
-	.hover-tooltip {
-		background-color: white;
-		border: 1px solid #222;
-		padding: 5px;
-		font-size: 80%;
-
-		display: none;
-		position: absolute;
-		z-index: 1000;
 	}
 </style>

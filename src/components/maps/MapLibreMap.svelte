@@ -5,7 +5,7 @@
 	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
 	import { listenMouseMoveCoordinates } from '$src/lib/map/mouseMoveCoordinates';
 	import type { MapLibreMapProps } from '$src/lib/types/components';
-	import { onMount } from 'svelte';
+	import { flushSync, onMount } from 'svelte';
 	import LayerSwitcher from './LayerSwitcher.svelte';
 	import { toggleRiverLayerVisibility } from '$src/lib/map/addDataMap';
 	import { toggleoffAttribution } from '$src/lib/utils/maplibre';
@@ -16,21 +16,20 @@
 		addSources,
 		addLayers,
 		divElement = $bindable(),
-		mlMap = $bindable()
+		mlMap = $bindable(),
+		tooltipContent
 	}: MapLibreMapProps = $props();
 
 	let baseStyleId: 'TOPO' | 'SATELLITE' = $state('TOPO');
 	let showRiverLayer = $state(false);
 
-	let mlmFsm:
-		| 'init'
-		| 'loading-style'
-		| 'style-loaded'
-		| 'loading-data'
-		| 'loaded' = $state('init');
+	let tooltip: HTMLDivElement | undefined = $state();
+
+	let mlmFsm: 'init' | 'loading-style' | 'style-loaded' | 'loading-data' | 'loaded' =
+		$state('init');
 
 	$effect(() => {
-		if(!mlMap) return;
+		if (!mlMap) return;
 
 		const style = maptilersdk.MapStyle[baseStyleId];
 		(mlMap as maptilersdk.Map).setStyle(style);
@@ -38,14 +37,13 @@
 	});
 
 	$effect(() => {
-		if(mlmFsm === 'style-loaded') {
+		if (mlmFsm === 'style-loaded') {
 			mlmFsm = 'loading-data';
 			addSources(mlMap!).then(() => {
 				addLayers(mlMap!);
 			});
 		}
 	});
-
 
 	$effect(() => {
 		if (mlmFsm === 'loaded') {
@@ -83,16 +81,42 @@
 		listenMouseMoveCoordinates(mlMap);
 		toggleoffAttribution(divElement!);
 	});
+
+	// TOOLTIP
+	// map div top corner = (0,0)
+	export const showTooltip = (x: number, y: number) => {
+		if (tooltip) {
+			flushSync(); // get rect
+			const ttHeight = tooltip?.getClientRects()[0]?.height || 0;
+			// console.log(x, y, ttHeight, tooltip?.getClientRects());
+
+			tooltip.style.opacity = '1';
+			tooltip.style.left = x + 'px';
+			tooltip.style.top = y - 12 - ttHeight + 'px';
+			// console.log('ttHeight', ttHeight, 'style.top', tooltip.style.top);
+		}
+	};
+
+	export const hideTooltip = () => {
+		if (tooltip) {
+		// 	tooltip.style.display = 'none';
+		tooltip.style.opacity = '0';
+		tooltip.style.left = '-9999px'; // hide it offscreen
+		}
+	};
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div style="position: relative">
 	<LayerSwitcher bind:baseStyleId bind:showRiverLayer />
-	<div class="map" bind:this={divElement}>
-	</div>
+	<div class="map" bind:this={divElement}></div>
 	{#if mapMouseLocation.lngLat}
 		<pre>{formatLngLat(mapMouseLocation.lngLat, 4)} press C to copy</pre>
 	{/if}
+
+	<div bind:this={tooltip} class="hover-tooltip" style="position: absolute; pointer-events: none;">
+		{@render tooltipContent()}
+	</div>
 </div>
 
 <style>
@@ -107,10 +131,22 @@
 
 	pre {
 		position: absolute;
-		bottom: 0px;
+		bottom: -22px;
 		left: 110px;
 		z-index: 2;
 		background: none;
 		padding: 0.5rem;
+		pointer-events: none;
+	}
+
+	.hover-tooltip {
+		background-color: white;
+		border: 1px solid #222;
+		padding: 5px;
+		font-size: 80%;
+
+		opacity: 0;
+		position: absolute;
+		z-index: 1001;
 	}
 </style>
