@@ -11,6 +11,8 @@
 	{#if visible }
 		<pre>{JSON.stringify($page, null, 2)}</pre>
 	{/if}
+
+	<a href="/regions/indiana"></a>
 </div>
 
 <style>
