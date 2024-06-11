@@ -6,7 +6,7 @@
 	import MapLibreMap from './MapLibreMap.svelte';
 	import { addLayers } from '$src/lib/map/addDataSitesMap';
 
-	import { hoveredSite, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
+	import { hoveredSite, selectedSite, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 	import { fitFeatureBounds, makeSiteMarker, setFeatureState } from '$src/lib/utils/maplibre';
 	import { addSources } from '$src/lib/map/addDataMap';
 	import { sites } from '$src/appstate/sites.svelte';
@@ -22,10 +22,10 @@
 	let divElement: HTMLDivElement | undefined = $state();
 	let mlMap: ml.Map | undefined = $state();
 
-	let tooltip: HTMLDivElement | undefined = $state();
 
 	onMount(() => {
 		console.log('SiteSelectorMap onMount', divElement, mlMap, mlmComponent);
+		mlMap!.on('click', (e) => mapClick(e.point));
 	});
 
 	$effect(() => {
@@ -61,6 +61,26 @@
 		hoveredSite.set(undefined);
 		mlmComponent.hideTooltip();
 	};
+
+	function mapClick(point: ml.PointLike) {
+		console.log(point);
+		if (!mlMap) return;
+		if(hoveredSite.site) {
+			selectedSite.set(hoveredSite.site);
+			console.log('SELECTED SITE', selectedSite);
+		} else {
+			selectedSite.set(undefined);
+		}
+
+		// const feature = mlMap!.queryRenderedFeatures(point).filter((f) => f.layer.id === 'huc10')[0];
+		// const changed = selectedArea.update(mlMap!, feature ?? null);
+		// // console.log('CLICK', selectedArea.feature, changed)
+		// if( changed) {
+		// 	sites.selectInHuc10(selectedArea?.feature?.id as string | undefined);
+		// 	onSelected?.();
+		// 	console.log('SELECTED', selectedArea?.feature?.id, sites.inHuc10(selectedArea?.feature?.id));
+		// }
+	}
 </script>
 
 

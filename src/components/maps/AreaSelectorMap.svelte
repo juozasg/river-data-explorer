@@ -55,7 +55,7 @@
 
 	setTimeout(() => {
 		try {
-			if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+			if(window && window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
 				console.log('LOCALHOST DEBUGGING');
 				console.log('timeout click');
 				mapClick([379, 207.5546875]);

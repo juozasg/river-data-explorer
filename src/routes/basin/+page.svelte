@@ -57,22 +57,9 @@
 
 <div class="results">
 </div> -->
-<a href="/regions/indiana"></a>
+<!-- <a href="/regions/indiana"></a> -->
 
 <style>
-	.timelapse-container {
-		margin-top: 1rem;
-		/* display: flex; */
-		/* flex-direction: column; */
-		/* align-items: center; */
-		#slider-description {
-			text-align: center;
-		}
-
-		#slider {
-			width: 100%;
-		}
-	}
 
 	h4 {
 		margin-bottom: 0.2rem;

@@ -104,3 +104,16 @@ export const hoveredSite = {
 	}
 }
 
+
+let _selectedSite: Site | undefined = $state();
+
+export const selectedSite = {
+	get site() {
+		return _selectedSite;
+	},
+
+	set(site: Site | undefined)  {
+		_selectedSite = site;
+	}
+}
+

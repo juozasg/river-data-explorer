@@ -4,7 +4,6 @@ import { StateFips, type County, type StateCountyFips, type State } from "$lib/t
 import { loadDataCsv } from "$lib/data/cachedDataLoad";
 import { startedLoading } from '../ui/loadingItem.svelte';
 
-
 export function countyStateFips(county: StateCountyFips): StateFips {
 	return county.slice(0, 2) as StateFips;
 }
