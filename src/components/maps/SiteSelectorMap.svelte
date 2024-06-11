@@ -23,6 +23,7 @@
 	let mlMap: ml.Map | undefined = $state();
 
 
+
 	onMount(() => {
 		console.log('SiteSelectorMap onMount', divElement, mlMap, mlmComponent);
 		mlMap!.on('click', (e) => mapClick(e.point));
@@ -71,15 +72,6 @@
 		} else {
 			selectedSite.set(undefined);
 		}
-
-		// const feature = mlMap!.queryRenderedFeatures(point).filter((f) => f.layer.id === 'huc10')[0];
-		// const changed = selectedArea.update(mlMap!, feature ?? null);
-		// // console.log('CLICK', selectedArea.feature, changed)
-		// if( changed) {
-		// 	sites.selectInHuc10(selectedArea?.feature?.id as string | undefined);
-		// 	onSelected?.();
-		// 	console.log('SELECTED', selectedArea?.feature?.id, sites.inHuc10(selectedArea?.feature?.id));
-		// }
 	}
 </script>
 
@@ -100,10 +92,12 @@
 />
 
 
-{#each sites.selected as site (site.id)}
+{#each sites.all as site (site.id)}
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div
 		class="marker"
+		class:is-selected={selectedSite.site?.id === site.id}
+		class:is-outside-area={selectedArea.feature?.id !== site.huc10}
 		onmouseenter={(e) => mouseEnterMarker(e, site)}
 		onmouseleave={(e) => mouseLeaveMarker(e, site)}
 		use:makeMarker={site}
@@ -123,6 +117,19 @@
 			width: 16px;
 			height: 16px;
 			background-color: rgba(90, 20, 110, 0.5);
+		}
+	}
+
+	.marker.is-selected {
+		.marker-box {
+			background-color: rgba(90, 20, 110, 1);
+			border: 3px solid #e80f62;
+		}
+	}
+
+	.marker.is-outside-area {
+		.marker-box {
+			background-color: rgb(138, 138, 138);
 		}
 	}
 

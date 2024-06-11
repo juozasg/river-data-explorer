@@ -58,7 +58,7 @@
 	const fmtDate = (date: Date): string => `${shortMon(date)} ${date.getDay()}, ${date.getFullYear()}`
 </script>
 
-<h4>{area.name}</h4>
+<h5>Region: {area.name} (HUC10: {area.id})</h5>
 <p><b>{sites.length}</b> sites</p>
 <p><b>{varsNumber}</b> variables</p>
 <p><b>{recordsNumber}</b> observations
@@ -145,11 +145,13 @@
 
 
 {#if selectedSite.site}
-	<h5>{selectedSite.site?.name}</h5>
+	<h5>Site: {selectedSite.site?.name} ({selectedSite.site?.id})</h5>
 	<table class="table">
 		{@render thead()}
 		{@render tbody()}
 	</table>
+{:else}
+	<h5>Click a site marker on the map to select</h5>
 {/if}
 
 </div>
