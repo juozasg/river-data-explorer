@@ -1,7 +1,5 @@
 import * as sr from "svelte/reactivity";
 import { sites } from "../sites.svelte";
-// import boolInPoly from "@turf/boolean-point-in-polygon";
-
 
 const emptyGeoJSON: GeoJSON.FeatureCollection = {
 	type: "FeatureCollection",
@@ -14,7 +12,6 @@ const collectionNames = ['huc10', 'huc12', 'huc8', 'counties', 'basin-states'] a
 export type GeometryCollection = typeof collectionNames[number];
 
 export class Geometries {
-	// huc10: GeoJSON.FeatureCollection = $state(emptyGeoJSON);
 	collections: Map<string, GeoJSON.FeatureCollection> = new sr.Map();
 
 	constructor() {
@@ -39,7 +36,6 @@ export class Geometries {
 			sites.reindexGeometries();
 		}
 	}
-
 }
 
 

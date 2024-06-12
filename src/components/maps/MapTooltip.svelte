@@ -9,6 +9,7 @@
 	import LayerSwitcher from './LayerSwitcher.svelte';
 	import { toggleRiverLayerVisibility } from '$src/lib/map/addDataMap';
 	import { toggleoffAttribution } from '$src/lib/utils/maplibre';
+	import { toggleHideTooltips } from '$src/appstate/ui/tooltips.svelte';
 
 	let {
 		tooltipContent
@@ -16,11 +17,21 @@
 
 
 	let tooltip: HTMLDivElement | undefined = $state();
+	let lastMouseLocation = { x: 0, y: 0 };
+
+	$effect(() => {
+		if (toggleHideTooltips.hide == true) {
+			 hideTooltip();
+		} else {
+			showTooltip(lastMouseLocation.x, lastMouseLocation.y);
+		}
+	});
 
 	// map div top corner = (0,0)
 	export const showTooltip = (x: number, y: number) => {
+		lastMouseLocation = { x, y };
 		setTimeout(() => {
-			if (tooltip) {
+			if(tooltip && !toggleHideTooltips.hide) {
 				flushSync(); // get rect
 
 				const ttHeight = tooltip?.getClientRects()[0]?.height || 0;
@@ -48,6 +59,7 @@
 
 	<div bind:this={tooltip} class="hover-tooltip" style="position: absolute; pointer-events: none;">
 		{@render tooltipContent()}
+		<span class="hint"><i><kbd>T</kbd> to hide</i></span>
 	</div>
 
 <style>
@@ -61,5 +73,18 @@
 		opacity: 0;
 		position: absolute;
 		z-index: 1001;
+	}
+
+	.hint {
+		display: inline-block;
+		position: absolute;
+		bottom: 2px;
+		right: 6px;
+		font-size: 12px;
+		text-align: right;
+
+		kbd {
+			font-size: 12px;
+		}
 	}
 </style>

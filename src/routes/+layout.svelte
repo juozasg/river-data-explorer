@@ -7,11 +7,13 @@
 	import DebugFooter from '$src/components/site/DebugFooter.svelte';
 	import { copyLngLat } from '$lib/copyLngLat.js';
 	import { onMount } from 'svelte';
+	import { toggleHideTooltips } from "$src/appstate/ui/tooltips.svelte.js";
 
 	const { data } = $props();
 
 	onMount(() => {
 		document.body.addEventListener('keydown', copyLngLat);
+		document.body.addEventListener('keydown', toggleHideTooltips.keydown);
 
 		loadAppData(data.dataManifest, data.dataVariables);
 	});
