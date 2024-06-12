@@ -1,15 +1,7 @@
 <script lang="ts">
-	import * as maptilersdk from '@maptiler/sdk';
 
-	import { formatLngLat } from '$lib/copyLngLat';
-	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
-	import { listenMouseMoveCoordinates } from '$src/lib/map/mouseMoveCoordinates';
-	import type { MapLibreMapProps } from '$src/lib/types/components';
-	import { flushSync, onMount } from 'svelte';
-	import LayerSwitcher from './LayerSwitcher.svelte';
-	import { toggleRiverLayerVisibility } from '$src/lib/map/addDataMap';
-	import { toggleoffAttribution } from '$src/lib/utils/maplibre';
 	import { toggleHideTooltips } from '$src/appstate/ui/tooltips.svelte';
+	import { flushSync } from 'svelte';
 
 	let {
 		tooltipContent

@@ -2,18 +2,18 @@
 	import { loadAppData } from "$src/lib/data/loaders/loadAppData.js";
 	import '$src/styles/app.scss';
 
+  import { copyLngLat } from '$lib/copyLngLat.js';
+  import { toggleHideTooltipsKeydown } from "$src/appstate/ui/tooltips.svelte.js";
+  import DebugFooter from '$src/components/site/DebugFooter.svelte';
+  import Navbar from '$src/components/site/Navbar.svelte';
   import Notifications from '$src/components/site/Notifications.svelte';
-	import Navbar from '$src/components/site/Navbar.svelte';
-	import DebugFooter from '$src/components/site/DebugFooter.svelte';
-	import { copyLngLat } from '$lib/copyLngLat.js';
-	import { onMount } from 'svelte';
-	import { toggleHideTooltips } from "$src/appstate/ui/tooltips.svelte.js";
+  import { onMount } from 'svelte';
 
 	const { data } = $props();
 
 	onMount(() => {
 		document.body.addEventListener('keydown', copyLngLat);
-		document.body.addEventListener('keydown', toggleHideTooltips.keydown);
+		document.body.addEventListener('keydown', toggleHideTooltipsKeydown);
 
 		loadAppData(data.dataManifest, data.dataVariables);
 	});
