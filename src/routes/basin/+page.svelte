@@ -83,16 +83,6 @@
 		margin-bottom: 1rem;
 	}
 
-	#section-area-data-results {
-		margin-top: 2rem;
-	}
-
-	.results {
-		height: 400px;
-		background-color: aquamarine;
-		margin-top: 1rem;
-	}
-
 	.dataset-column {
 		min-height: 400px;
 

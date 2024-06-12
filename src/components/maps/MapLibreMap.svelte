@@ -123,15 +123,4 @@
 		padding: 0.5rem;
 		pointer-events: none;
 	}
-
-	.hover-tooltip {
-		background-color: white;
-		border: 1px solid #222;
-		padding: 5px;
-		font-size: 80%;
-
-		opacity: 0;
-		position: absolute;
-		z-index: 1001;
-	}
 </style>
