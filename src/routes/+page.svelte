@@ -21,7 +21,11 @@
 <AreaSelectorMap zoom={7.8} />
 
 <!-- svelte-ignore a11y-distracting-elements -->
-<marquee>🚧🏗️ UNDER CONSTRUCTION... 🏗️🚧</marquee>
+<marquee>🚧🏗️ UNDER CONSTRUCTION... 		<math><mfrac>
+	<mn>1</mn>
+	<msup><mi>n</mi><mn>2</mn></msup>
+</mfrac></math> 🏗️🚧</marquee>
+
 
 <style lang="scss">
 	marquee {
