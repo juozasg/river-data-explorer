@@ -5,7 +5,7 @@
 	import MapLibreMap from './MapLibreMap.svelte';
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 
-	import { addLayers } from '$src/lib/map/addDataAreasMap';
+	import { addLayers } from '$src/lib/map/addDataHomePageMap';
 	import { hoveredArea, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
 	import type { Site } from '$src/lib/types/site';
@@ -50,7 +50,7 @@
 			mlmComponent.hideTooltip();
 		});
 
-		map.on('click', (e) => mapClick(e.point));
+		// map.on('click', (e) => mapClick(e.point));
 	});
 
 	setTimeout(() => {
@@ -76,16 +76,7 @@
 	};
 
 	function mapClick(point: ml.PointLike) {
-		console.log(point);
-		if (!mlMap) return;
-		const feature = mlMap!.queryRenderedFeatures(point).filter((f) => f.layer.id === 'huc10')[0];
-		const changed = selectedArea.update(mlMap!, feature ?? null);
-		// console.log('CLICK', selectedArea.feature, changed)
-		if( changed) {
-			sites.selectInHuc10(selectedArea?.feature?.id as string | undefined);
-			onSelected?.();
-			console.log('SELECTED', selectedArea?.feature?.id, sites.inHuc10(selectedArea?.feature?.id));
-		}
+
 	}
 </script>
 
@@ -107,7 +98,8 @@
 	{...others}
 />
 
-{#each sites.all as site}
+<!-- {#each sites.all as site} -->
+{#each [] as site}
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div
 		class="marker"

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import AreaSelectorMap from '$src/components/maps/AreaSelectorMap.svelte';
+	import HomePageMap from "$src/components/maps/HomePageMap.svelte";
+
 
 </script>
 
@@ -18,18 +19,20 @@
 <h1>St. Joseph River Basin Data</h1>
 
 
-<AreaSelectorMap zoom={7.8} />
+<HomePageMap zoom={8.2} --map-width={'100%'} --map-height={'650px'} />
 
 <!-- svelte-ignore a11y-distracting-elements -->
-<marquee>🚧🏗️ UNDER CONSTRUCTION... 		<math><mfrac>
-	<mn>1</mn>
-	<msup><mi>n</mi><mn>2</mn></msup>
-</mfrac></math> 🏗️🚧</marquee>
+<marquee>🚧🏗️ UNDER CONSTRUCTION... 		 🏗️🚧</marquee>
 
+
+<!-- <math><mfrac>
+	<mn>x</mn>
+	<msup><mi>y</mi><mn>z</mn></msup>
+</mfrac></math> -->
 
 <style lang="scss">
 	marquee {
-		color: orange;
+		color: rgb(150, 73, 164);
 		font-size: 30px;
 		max-width: 630px;
 	}

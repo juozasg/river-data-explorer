@@ -20,6 +20,7 @@ export async function addDataSourceGeoJSON(map: ml.Map, name: GeometryCollection
 export async function addSources(map: ml.Map): Promise<void> {
 	await Promise.all([
 		addDataSourceGeoJSON(map, 'huc10', 'huc10'),
+		addDataSourceGeoJSON(map, 'huc8', 'huc8'),
 		addDataSourceGeoJSON(map, 'mainstem'),
 		addDataSourceGeoJSON(map, 'tributaries')
 	]);
@@ -28,11 +29,11 @@ export async function addSources(map: ml.Map): Promise<void> {
 }
 
 export function addRiverLayers(map: ml.Map): void {
-	if (map.getLayer('mainstem')) map.removeLayer('mainstem');
-	if (map.getLayer('tributaries')) map.removeLayer('tributaries');
+	if (map.getLayer('sjrbc-mainstem')) map.removeLayer('sjrbc-mainstem');
+	if (map.getLayer('sjrbc-tributaries')) map.removeLayer('sjrbc-tributaries');
 
 	map.addLayer({
-		id: 'mainstem',
+		id: 'sjrbc-mainstem',
 		type: 'line',
 		source: 'mainstem',
 		layout: {
@@ -45,7 +46,7 @@ export function addRiverLayers(map: ml.Map): void {
 	});
 
 	map.addLayer({
-		id: 'tributaries',
+		id: 'sjrbc-tributaries',
 		type: 'line',
 		source: 'tributaries',
 		layout: {
@@ -59,6 +60,6 @@ export function addRiverLayers(map: ml.Map): void {
 }
 
 export async function toggleRiverLayerVisibility(map: ml.Map, visible: boolean) {
-	if(map.getLayer('mainstem')) map.setLayoutProperty('mainstem', 'visibility', visible ? 'visible' : 'none');
-	if(map.getLayer('tributaries')) map.setLayoutProperty('tributaries', 'visibility', visible ? 'visible' : 'none');
+	if(map.getLayer('sjrbc-mainstem')) map.setLayoutProperty('sjrbc-mainstem', 'visibility', visible ? 'visible' : 'none');
+	if(map.getLayer('sjrbc-tributaries')) map.setLayoutProperty('sjrbc-tributaries', 'visibility', visible ? 'visible' : 'none');
 }
