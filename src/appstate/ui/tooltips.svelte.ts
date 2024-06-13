@@ -8,6 +8,10 @@ export const toggleHideTooltips = {
 }
 
 export function toggleHideTooltipsKeydown(e: KeyboardEvent) {
+	if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+		return;
+	}
+
 	if(e.key === 't') {
 		_toggleHideTooltips = !_toggleHideTooltips;
 	}

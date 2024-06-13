@@ -9,13 +9,13 @@
 
 
 	let tooltip: HTMLDivElement | undefined = $state();
-	let lastMouseLocation = { x: 0, y: 0 };
+	let lastMouseLocation: { x: number; y: number } | undefined;
 
 	$effect(() => {
 		if (toggleHideTooltips.hide == true) {
 			 hideTooltip();
 		} else {
-			showTooltip(lastMouseLocation.x, lastMouseLocation.y);
+			if(lastMouseLocation) showTooltip(lastMouseLocation.x, lastMouseLocation.y);
 		}
 	});
 
@@ -31,6 +31,7 @@
 				tooltip.style.opacity = '1';
 				tooltip.style.left = x + 'px';
 				tooltip.style.top = y - 12 - ttHeight + 'px';
+
 				// console.log('ttHeight', ttHeight, 'style.top', tooltip.style.top);
 			}
 		}, 0);
