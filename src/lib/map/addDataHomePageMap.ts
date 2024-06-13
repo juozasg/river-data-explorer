@@ -24,7 +24,7 @@ function addLayersHuc8(map: ml.Map): void {
 	map.addLayer({
 		'id': 'sjrbc-huc8-outline',
 		'type': 'line',
-		'source': 'huc8',
+		'source': 'sjrbc-huc8',
 		'layout': {},
 		'paint': {
 			'line-color': '#e7ff35',

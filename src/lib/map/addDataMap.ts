@@ -7,8 +7,8 @@ export async function addDataSourceGeoJSON(map: ml.Map, name: GeometryCollection
 	const data = await loadDataJson(`geojson/${name}.geojson`);
 	geometries.set(name, data);
 
-	if(!map.getSource(name)) {
-		map.addSource(name, {
+	if(!map.getSource(`sjrbc-${name}`)) {
+		map.addSource(`sjrbc-${name}`, {
 			type: 'geojson',
 			data: data,
 			promoteId: promoteId
@@ -35,26 +35,29 @@ export function addRiverLayers(map: ml.Map): void {
 	map.addLayer({
 		id: 'sjrbc-mainstem',
 		type: 'line',
-		source: 'mainstem',
+		source: 'sjrbc-mainstem',
 		layout: {
-			'visibility': 'none',
+			'visibility': 'visible',
 		},
 		paint: {
 			'line-color': '#00F',
-			'line-width': 3
+			'line-width': 3,
+			'line-opacity': 0.5,
 		}
 	});
 
 	map.addLayer({
 		id: 'sjrbc-tributaries',
 		type: 'line',
-		source: 'tributaries',
+		source: 'sjrbc-tributaries',
 		layout: {
-			'visibility': 'none',
+			'visibility': 'visible',
 		},
 		paint: {
 			'line-color': '#00F',
-			'line-width': 1.5
+			'line-width': 1.5,
+			'line-opacity': 0.5,
+
 		}
 	});
 }

@@ -26,8 +26,9 @@
 	const arcgisServicesStyles = 'https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles/'
 	const apiKey = "AAPK3dfaa40a13c0404983142c26b566596ammsJLVROPRkVaZnrwj6bYIrYdi4FEikx7NZpYg7f5M9XlV2RFL6PgxMA_56IceHv";
 
+	const basemapEnum = 'e20332d6d2af43ff8402bb155df01467';
 	const basemapStyles = {
-		TOPO: `${arcgisServicesStyles}/arcgis/outdoor/?token=${apiKey}`,
+		TOPO: `https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles/items/${basemapEnum}?token=${apiKey}`,
 		SATELLITE: `${arcgisServicesStyles}/arcgis/imagery/?token=${apiKey}`
 	};
 	let showRiverLayer = $state(true);
@@ -42,12 +43,16 @@
 
 
 		const keepSources: any = {};
-		if(previousStyle.sources.huc8) {
-			keepSources['huc8'] = previousStyle.sources.huc8;
-		}
-		const keepLayers = previousStyle.layers?.filter((l: any) => l.id.match(/^sjrb-/)) || [];
 
-		return {
+		for(const source in previousStyle.sources) {
+			if (source.match(/^sjrbc-/)) {
+				keepSources[source] = previousStyle.sources[source];
+			}
+		}
+
+		const keepLayers = previousStyle.layers?.filter((l: any) => l.id.match(/^sjrbc-/)) || [];
+
+		const updatedSpec = {
 			...nextStyle,
 			sources: {
 				...nextStyle.sources,
@@ -55,15 +60,20 @@
 			},
 			layers: [
 				...nextStyle.layers,
-				keepLayers,
-			// ]
+				...keepLayers,
+			]
 		};
+		console.log(updatedSpec, '----UPDATED SPEC');
+		return updatedSpec;
 	}
+
+
 	$effect(() => {
 		if (!mlMap) return;
 
 		// const style = maptilersdk.MapStyle[baseStyleId];
 		// (mlMap as maptilersdk.Map).setStyle(style);
+		console.log('SET STYLE EFFECT', baseStyleId, mlMap)
 
 		const style = basemapStyles[baseStyleId];
 		mlMap.setStyle(style, {transformStyle});
@@ -75,7 +85,6 @@
 	// $effect(() => {
 	// 	if (mlmFsm === 'style-loaded') {
 	// 		mlmFsm = 'loading-data';
-
 	// 	}
 	// });
 
@@ -103,19 +112,25 @@
 			minZoom: 3
 		});
 
-		// only fires for the initial style, not for map.setStyle!
-		mlMap.on('style.load', () => {
-			mlmFsm = 'style-loaded';
+
+
+		// only fires for the initial style, not for map.setStyle
+		mlMap.once('style.load', () => {
+			// mlmFsm = 'style-loaded';
+			console.log('STYYYYLEE LOADEDED')
+			addSources(mlMap!).then(() => {
+				addLayers(mlMap!);
+			});
 		});
 
 		mlMap.on('idle', () => {
-			if (mlmFsm === 'loading-style') {
-				mlmFsm = 'style-loaded';
-			}
+			// if (mlmFsm === 'loading-style') {
+				// mlmFsm = 'style-loaded';
+			// }
 
-			if (mlmFsm === 'loading-data') {
+			// if (mlmFsm === 'loading-data') {
 				mlmFsm = 'loaded';
-			}
+			// }
 		});
 
 		listenMouseMoveCoordinates(mlMap);
