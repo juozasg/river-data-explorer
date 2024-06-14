@@ -19,3 +19,11 @@ export const basename = (path: string, ext?: string): string => {
 	const f = path.split('/').pop() as string;
 	return ext ? f.slice(0, -ext.length) : f;
 }
+
+
+export function partition(array: any[], filter: (e: any, i: number, arr: any[]) => any) {
+  const pass: any[] = []
+	const fail: any[] = [];
+  array.forEach((e, idx, arr) => (filter(e, idx, arr) ? pass : fail).push(e));
+  return [pass, fail];
+}

@@ -61,6 +61,7 @@
 		background-color: white;
 		border: 1px solid #222;
 		padding: 5px;
+		padding-bottom: 1.5rem;
 		font-size: 80%;
 
 		opacity: 0;

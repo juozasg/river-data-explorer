@@ -1,16 +1,16 @@
 <script lang="ts">
 	import * as ml from 'maplibre-gl';
-	import * as maptilersdk from '@maptiler/sdk';
 
 	import { formatLngLat } from '$lib/copyLngLat';
 	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
+	import { transformStyle } from '$src/lib/map/mapStyle';
 	import { listenMouseMoveCoordinates } from '$src/lib/map/mouseMoveCoordinates';
 	import type { MapLibreMapProps } from '$src/lib/types/components';
-	import { flushSync, onMount } from 'svelte';
-	import LayerSwitcher from './LayerSwitcher.svelte';
-	import { toggleRiverLayerVisibility } from '$src/lib/map/addDataMap';
 	import { toggleoffAttribution } from '$src/lib/utils/maplibre';
+	import { onMount } from 'svelte';
+	import LayerSwitcher from './LayerSwitcher.svelte';
 	import MapTooltip from './MapTooltip.svelte';
+	import { toggleRiverLayerVisibility } from '$src/lib/map/addDataMap';
 
 	let {
 		zoom = 8,
@@ -31,110 +31,44 @@
 		TOPO: `https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles/items/${basemapEnum}?token=${apiKey}`,
 		SATELLITE: `${arcgisServicesStyles}/arcgis/imagery/?token=${apiKey}`
 	};
+
 	let showRiverLayer = $state(true);
-
 	let tooltipComponent: MapTooltip | undefined = $state();
-
-	let mlmFsm: 'init' | 'loading-style' | 'style-loaded' | 'loading-data' | 'loaded' =
-	$state('init');
-
-	const transformStyle = (previousStyle: ml.StyleSpecification | any, nextStyle: ml.StyleSpecification) => {
-		console.log(previousStyle, nextStyle, 'STYLE TRANSFORM');
-
-
-		const keepSources: any = {};
-
-		for(const source in previousStyle.sources) {
-			if (source.match(/^sjrbc-/)) {
-				keepSources[source] = previousStyle.sources[source];
-			}
-		}
-
-		const keepLayers = previousStyle.layers?.filter((l: any) => l.id.match(/^sjrbc-/)) || [];
-
-		const updatedSpec = {
-			...nextStyle,
-			sources: {
-				...nextStyle.sources,
-				...keepSources,
-			},
-			layers: [
-				...nextStyle.layers,
-				...keepLayers,
-			]
-		};
-		console.log(updatedSpec, '----UPDATED SPEC');
-		return updatedSpec;
-	}
-
 
 	$effect(() => {
 		if (!mlMap) return;
 
-		// const style = maptilersdk.MapStyle[baseStyleId];
-		// (mlMap as maptilersdk.Map).setStyle(style);
-		console.log('SET STYLE EFFECT', baseStyleId, mlMap)
-
 		const style = basemapStyles[baseStyleId];
 		mlMap.setStyle(style, {transformStyle});
-		// mlmFsm = 'loading-style';
 	});
 
-
-
-	// $effect(() => {
-	// 	if (mlmFsm === 'style-loaded') {
-	// 		mlmFsm = 'loading-data';
-	// 	}
-	// });
-
-	// $effect(() => {
-	// 	if (mlmFsm === 'loaded') {
-	// 		toggleRiverLayerVisibility(mlMap!, showRiverLayer);
-	// 	}
-	// });
-
 	onMount(() => {
-		// const maptilerKey = '4zPvHZlweLbGaEy9LI4Z';
-		// maptilersdk.config.apiKey = maptilerKey;
-
-		// const basemapEnum = "arcgis/outdoor";
-		// const basemapEnum = "arcgis/imagery";
-
 		const style = basemapStyles[baseStyleId];
 		mlMap = new ml.Map({
 			container: divElement!, // container's id or the HTML element to render the map
-			// style: maptilersdk.MapStyle[baseStyleId], // style URL
-			// style: `https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles/${basemapEnum}?token=${apiKey}`,
 			style,
 			center, // starting position [lng, lat]
 			zoom, // starting zoom
 			minZoom: 3
 		});
 
-
-
 		// only fires for the initial style, not for map.setStyle
 		mlMap.once('style.load', () => {
-			// mlmFsm = 'style-loaded';
-			console.log('STYYYYLEE LOADEDED')
 			addSources(mlMap!).then(() => {
 				addLayers(mlMap!);
+				const style = basemapStyles[baseStyleId];
+				mlMap!.setStyle(style, {transformStyle}); // force transformStyle to reorder layers
+				toggleRiverLayerVisibility(mlMap!, showRiverLayer);
 			});
-		});
-
-		mlMap.on('idle', () => {
-			// if (mlmFsm === 'loading-style') {
-				// mlmFsm = 'style-loaded';
-			// }
-
-			// if (mlmFsm === 'loading-data') {
-				mlmFsm = 'loaded';
-			// }
 		});
 
 		listenMouseMoveCoordinates(mlMap);
 		toggleoffAttribution(divElement!);
+	});
+
+	$effect(() => {
+		if (!mlMap) return;
+		toggleRiverLayerVisibility(mlMap, showRiverLayer);
 	});
 
 	export const showTooltip = (x: number, y: number) => {

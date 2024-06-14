@@ -18,73 +18,92 @@
 
 	let { onSelected, ...others }: Props = $props();
 
-	// let tooltipElement: HTMLDivElement | undefined = $state();
-
 	let mlmComponent: MapLibreMap;
 	let divElement: HTMLDivElement | undefined = $state();
 	let mlMap: ml.Map | undefined = $state();
 
+	let hoveredFeature: ml.MapGeoJSONFeature | Site | null = $state(null);
+
 	onMount(() => {
-		console.log('AreaSelectorMap onMount', divElement, mlMap, mlmComponent);
+		console.log('HomePageMap onMount', divElement, mlMap, mlmComponent);
 		const map = mlMap!;
 
-		map.on('mousemove', 'huc10', (e) => {
-			if (e!.features!.length > 0) {
-				const feature = e.features![0];
-				hoveredArea.update(map, feature);
+		map.on('mousemove', (e) => {
+			const features = map.queryRenderedFeatures(e.point).filter((f) => f.layer.id.match(/sjrbc-/));
+			if (features.length) {
+				// currently not hovering site
+				if (hoveredFeature == null || 'properties' in hoveredFeature) {
+					const riverHoverFeatures = features.filter((f) => f.layer.id.match(/river-hover/));
+					if (riverHoverFeatures.length) {
+						const riverHoverFeature = riverHoverFeatures[0];
+						console.log('hovered river feature', { source: riverHoverFeature.source,
+							id: riverHoverFeature.id }, riverHoverFeature)
+
+
+						map.setFeatureState(
+							{ source: riverHoverFeature.source,
+								id: riverHoverFeature.id },
+							{ hover: true }
+						);
+						hoveredFeature = riverHoverFeature;
+					}
+					const layerIds = riverHoverFeatures.map((f) => f.layer.id);
+					// console.log('queryRenderedFeatures', layerIds, features);
+				}
+			}
+
+			if(hoveredFeature) {
 				mlmComponent.showTooltip(e.point.x, e.point.y);
+			} else {
+				mlmComponent.hideTooltip();
 			}
 		});
-
-		// When the mouse leaves the huc layer clear hover state
-		map.on('mouseleave', 'huc10', (e) => {
-			// console.log('huc10 mouseleave', e);
-			const features = map.queryRenderedFeatures(e.point);
-			const huc10 = features.find((f) => f.source === 'huc10');
-			if (huc10 && hoveredArea.feature?.id === huc10.id) {
-				// didn't leave feature, only hovered on a marker
-				return;
-			}
-
-			hoveredArea.clear(map);
-			mlmComponent.hideTooltip();
-		});
-
-		// map.on('click', (e) => mapClick(e.point));
 	});
-
-	setTimeout(() => {
-		try {
-			if(window && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-				console.log('LOCALHOST DEBUGGING');
-				console.log('timeout click');
-				mapClick([379, 207.5546875]);
-			}
-		} catch (e) {
-			console.error('timeout click error', e);
-		}
-	}, 1000);
-
-	const siteHovered = (site: Site) => hoveredArea.containsSite(site);
 
 	const makeMarker = (node: HTMLElement, site: Site) => {
 		return makeSiteMarker(node, mlMap!, site);
 	};
 
-	const markermouse = (e: MouseEvent, site: Site) => {
-		console.log('markermouse', site?.id, site);
+	const markerMouseEnter = (e: MouseEvent, site: Site) => {
+		// console.log('markermouse', site?.id, site);
+		hoveredFeature = site;
 	};
 
-	function mapClick(point: ml.PointLike) {
+	const markerMouseLeave = (e: MouseEvent, site: Site) => {
+		// console.log('markermouse', site?.id, site);
+		hoveredFeature = null;
+	};
 
-	}
+	function mapClick(point: ml.PointLike) {}
+
+	const hoveredName = () => {
+		if (hoveredFeature) {
+			if ('properties' in hoveredFeature) {
+				return hoveredFeature.properties.name;
+			} else {
+				return hoveredFeature.name;
+			}
+		}
+		return '';
+	};
+
+	const idLabel = () => {
+		if (hoveredFeature) {
+			if ('properties' in hoveredFeature) {
+				return 'ID';
+			} else {
+				return 'Site ID';
+			}
+		}
+		return '';
+	};
 </script>
 
 {#snippet tooltipContent()}
-	<h5>{hoveredArea.feature?.properties?.name || ''}</h5>
-	{#if hoveredArea.feature}
-		<i>huc10: {hoveredArea.feature.id}</i>
-		<p><b>{sites.inHuc10(hoveredArea.feature.id).length}</b> sites</p>
+	<h5>{hoveredName() || ''}</h5>
+	{#if hoveredFeature}
+		<i>{idLabel()}: {hoveredFeature.id}</i>
+		<!-- <p><b>{sites.inHuc10(hoveredArea.feature.id).length}</b> sites</p> -->
 	{/if}
 {/snippet}
 
@@ -99,27 +118,36 @@
 />
 
 <!-- {#each sites.all as site} -->
-{#each [] as site}
+{#each sites.all as site}
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div
 		class="marker"
-		onmouseenter={(e) => markermouse(e, site)}
+		onmouseenter={(e) => markerMouseEnter(e, site)}
+		onmouseleave={(e) => markerMouseLeave(e, site)}
 		use:makeMarker={site}
-		class:area-hovered={siteHovered(site)}
-	></div>
+		>
+		<!-- class:site-hovered={siteHovered(site)} -->
+		<div class="marker-box"></div>
+	</div>
 {/each}
 
 <style>
 	.marker {
-		border: 1px solid #222;
+		.marker-box {
+			border: 1.5px solid #3b084b;
+			border-radius: 5px;
+			transform: rotateY(0deg) rotate(45deg);
 
-		width: 10px;
-		height: 10px;
-		background-color: rgb(226, 120, 255);
-		pointer-events: auto;
-	}
+			width: 10px;
+			height: 10px;
+			background-color: #8011a3aa;
 
-	.marker.area-hovered {
-		background-color: rgb(255, 120, 120);
+			&:hover {
+				background-color: #F8EBC0;
+				width: 20px;
+				height: 20px;
+				border-radius: 10px;
+			}
+		}
 	}
 </style>
