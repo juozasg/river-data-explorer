@@ -19,7 +19,6 @@ export function fitFeatureBounds(map: ml.Map, feature: GeoJSON.Feature) {
 	});
 }
 
-// set feature state with waiting for map to load if needed
 export function setFeatureState(map: ml.Map, source: string, id: string | undefined | number, state: any) {
 	// console.log('setFeatureState', source, id, state, map.loaded());
 	try {

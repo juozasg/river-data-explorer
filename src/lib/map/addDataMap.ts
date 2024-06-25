@@ -44,12 +44,7 @@ export function addRiverLayers(map: ml.Map): void {
 			// 'line-width': 3,
 			'line-opacity': 1,
 
-			'line-width': [
-				'case',
-				['boolean', ['feature-state', 'hover'], false],
-				40,
-				25
-			]
+			'line-width': 3.5
 		}
 	});
 
@@ -62,7 +57,7 @@ export function addRiverLayers(map: ml.Map): void {
 		},
 		paint: {
 			'line-color': '#1db2e7',
-			'line-width': 1.5,
+			'line-width': 2,
 			'line-opacity': 1,
 
 		}

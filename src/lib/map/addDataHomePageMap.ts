@@ -1,7 +1,7 @@
 
 import * as ml from 'maplibre-gl';
 import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
-import {  addRiverLayers} from './addDataMap';
+import { addRiverLayers } from './addDataMap';
 
 
 export async function addLayers(map: ml.Map): Promise<void> {
@@ -39,7 +39,7 @@ function addLayersHuc8(map: ml.Map): void {
 		'paint': {
 			'line-color': '#0C2470',
 			'line-width': 1,
-		// 	'line-dasharray': [1, 1],
+			// 	'line-dasharray': [1, 1],
 		}
 	});
 
@@ -50,21 +50,24 @@ function addLayersHuc8(map: ml.Map): void {
 
 
 function addRiverHoverLayers(map: ml.Map): void {
+	const hoverColor = '#0a4358';
 	map.addLayer({
 		id: 'sjrbc-river-hover-mainstem',
 		type: 'line',
 		source: 'sjrbc-mainstem',
 		layout: {
 			'visibility': 'visible',
+			'line-join': 'bevel',
+			'line-cap': 'round'
 		},
 		paint: {
-			'line-color': '#F00',
-			'line-width': 8,
+			'line-color': hoverColor,
+			'line-width': 14,
 			'line-opacity': [
 				'case',
 				['boolean', ['feature-state', 'hover'], false],
 				1,
-				0.1
+				0
 			]
 		}
 	});
@@ -75,15 +78,17 @@ function addRiverHoverLayers(map: ml.Map): void {
 		source: 'sjrbc-tributaries',
 		layout: {
 			'visibility': 'visible',
+			'line-join': 'bevel',
+			'line-cap': 'round'
 		},
 		paint: {
-			'line-color': '#F00',
-			'line-width': 8,
+			'line-color': hoverColor,
+			'line-width': 14,
 			'line-opacity': [
 				'case',
 				['boolean', ['feature-state', 'hover'], false],
 				1,
-				0.1
+				0
 			]
 		}
 	});
