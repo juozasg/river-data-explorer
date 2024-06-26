@@ -32,19 +32,24 @@
 	{#if selectedArea.feature}
 		<h4 class="has-text-centered">Region: {selectedArea.name} (HUC10: {selectedArea.id})<a href="#basin-areas">Change</a></h4>
 
+		<div></div>
+
 
 		<div class="columns">
 			<div class="column map-preview-column">
-				<SiteSelectorMap --map-height="400px" />
+				<SiteSelectorMap --map-height="calc((100vh - 96px)/2)" />
+				<div id='basin-plot'>
+
+				</div>
 			</div>
 			<div class="column dataset-column">
 				<RegionDashboard />
 			</div>
 		</div>
-		<!-- {:else}
+		 {:else}
 	<div class="placeholder">
 		<h2><a href="#section-select-area">Select watershed region</a></h2>
-	</div> -->
+	</div>
 	{/if}
 </div>
 
@@ -70,9 +75,14 @@
 
 	#basin-details {
 		margin-top: 1rem;
-		/* border: 1px solid aqua; */
+		border: 1px solid aqua;
 		height: calc(100vh - 80px);
 
+		#basin-plot {
+			margin-top: 1rem;
+			border: 1px solid red;
+			height: calc((100vh - 200px)/2);
+		}
 		h4 a {
 			margin-left: 1rem;
 			font-weight: 400;

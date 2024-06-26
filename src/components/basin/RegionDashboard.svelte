@@ -58,16 +58,6 @@
 	const fmtDate = (date: Date): string => `${shortMon(date)} ${date.getDay()}, ${date.getFullYear()}`
 </script>
 
-<p><b>{sites.length}</b> sites</p>
-<p><b>{varsNumber}</b> variables</p>
-<p><b>{recordsNumber}</b> observations
-	{#if firstObs && lastObs}
-	<span class='timespan'>
-	 from <b>{fmtDate(firstObs)}</b> to <b>{fmtDate(lastObs)}</b>
-	</span>
-	{/if}
-</p>
-
 {#snippet thead()}
 <thead>
 	<tr>
@@ -132,10 +122,43 @@
 		<td>60.0</td>
 		<td>15.2</td>
 	</tr>
+	<tr>
+		<td>Dissolved Oxygen</td>
+		<td>2009-01-01</td>
+		<td>2020-09-31</td>
+		<td>53</td>
+		<td>0.2</td>
+		<td>101.6</td>
+		<td>60.0</td>
+		<td>60.0</td>
+		<td>15.2</td>
+	</tr>
+	<tr>
+		<td>Phosphate</td>
+		<td>2009-01-01</td>
+		<td>2020-09-31</td>
+		<td>53</td>
+		<td>0.2</td>
+		<td>101.6</td>
+		<td>60.0</td>
+		<td>60.0</td>
+		<td>15.2</td>
+	</tr>
 </tbody>
 {/snippet}
 
-<div class="details">
+<div id="panel">
+
+	<p><b>{sites.length}</b> sites</p>
+	<p><b>{varsNumber}</b> variables</p>
+	<p><b>{recordsNumber}</b> observations
+		{#if firstObs && lastObs}
+		<span class='timespan'>
+		 from <b>{fmtDate(firstObs)}</b> to <b>{fmtDate(lastObs)}</b>
+		</span>
+		{/if}
+	</p>
+
 
 <table class="table">
 	{@render thead()}
@@ -156,8 +179,14 @@
 </div>
 
 <style>
-	.details {
-		height: 600px;
+	#panel {
+		/* height: 600px; */
+		/* height: calc(100vh - 120px); */
+		height: 100%;
+		max-height: 100%;
+		border: 1px solid maroon;
+		overflow-y: scroll;
+		position: absolute;
 	}
 	p {
 		margin-bottom: 0.2rem !important;

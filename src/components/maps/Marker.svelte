@@ -39,6 +39,7 @@
 
 <style>
 	.marker {
+		/* opacity: 0.8; */
 		padding: 3px;
 		.marker-box {
 			border: 1px solid #3b084b;
