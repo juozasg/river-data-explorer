@@ -6,7 +6,7 @@
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 
 	import { addLayers } from '$src/lib/data/map/areasMapData';
-	import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
+	import { HoveredFeatureState, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
 	import type { Site } from '$src/lib/types/site';
 	import { addSources } from '$src/lib/data/map/mapData';
@@ -19,36 +19,25 @@
 
 	let { onSelected, ...others }: Props = $props();
 
-	// let tooltipElement: HTMLDivElement | undefined = $state();
-
 	let mlmComponent: MapLibreMap;
 	let divElement: HTMLDivElement | undefined = $state();
 	let mlMap: ml.Map | undefined = $state();
+	const hoveredArea = new HoveredFeatureState();
+
 
 	onMount(() => {
 		console.log('AreaSelectorMap onMount', divElement, mlMap, mlmComponent);
 		const map = mlMap!;
 
-		map.on('mousemove', 'huc10', (e) => {
-			if (e!.features!.length > 0) {
-				const feature = e.features![0];
-				hoveredArea.update(map, feature);
+		map.on('mousemove', 'sjriver-huc10', (e) => {
+			hoveredArea.mouseMove(e, ['sjriver-huc10']);
+
+			if(hoveredArea.feature) {
 				mlmComponent.showTooltip(e.point.x, e.point.y);
+			} else {
+				console.log('hide tooltip')
+				mlmComponent.hideTooltip();
 			}
-		});
-
-		// When the mouse leaves the huc layer clear hover state
-		map.on('mouseleave', 'huc10', (e) => {
-			// console.log('huc10 mouseleave', e);
-			const features = map.queryRenderedFeatures(e.point);
-			const huc10 = features.find((f) => f.source === 'huc10');
-			if (huc10 && hoveredArea.feature?.id === huc10.id) {
-				// didn't leave feature, only hovered on a marker
-				return;
-			}
-
-			hoveredArea.clear(map);
-			mlmComponent.hideTooltip();
 		});
 
 		map.on('click', (e) => mapClick(e.point));
@@ -66,7 +55,7 @@
 	// 	}
 	// }, 1000);
 
-	const siteHovered = (site: Site) => hoveredArea.containsSite(site);
+	// const siteHovered = (site: Site) => hoveredArea.containsSite(site);
 
 	const makeMarker = (node: HTMLElement, site: Site) => {
 		return makeSiteMarker(node, mlMap!, site);

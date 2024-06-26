@@ -2,17 +2,15 @@
 	import * as ml from 'maplibre-gl';
 	import { onMount } from 'svelte';
 
-	import MapLibreMap from './MapLibreMap.svelte';
 	import type { MapLibreMapProps } from '$src/lib/types/components';
+	import MapLibreMap from './MapLibreMap.svelte';
 
-	import { addLayers } from '$src/lib/data/map/homePageMapData';
-	import { sites } from '$src/appstate/sites.svelte';
-	import type { Site } from '$src/lib/types/site';
-	import { addSources } from '$src/lib/data/map/mapData';
-	import { makeSiteMarker } from '$src/lib/utils/maplibre';
-	import type { BBoxLike } from '$src/lib/types/basic';
-	import Marker from './Marker.svelte';
 	import { HoveredFeatureState } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
+	import { sites } from '$src/appstate/sites.svelte';
+	import { addLayers } from '$src/lib/data/map/homePageMapData';
+	import { addSources } from '$src/lib/data/map/mapData';
+	import type { Site } from '$src/lib/types/site';
+	import Marker from './Marker.svelte';
 
 	type Props = {
 		onSelected?: () => void;
@@ -24,8 +22,8 @@
 	let divElement: HTMLDivElement | undefined = $state();
 	let mlMap: ml.Map | undefined = $state();
 
-	let hoveredRiver = new HoveredFeatureState(10);
-	let hoveredArea = new HoveredFeatureState();
+	const hoveredRiver = new HoveredFeatureState(10);
+	const hoveredArea = new HoveredFeatureState();
 	let hoveredSite: Site | null = $state(null);
 
 	onMount(() => {
@@ -36,7 +34,7 @@
 			hoveredRiver.mouseMove(e, ['sjriver-river']);
 			hoveredArea.mouseMove(e, ['sjriver-huc10']);
 
-			if (hoveredRiver || hoveredSite || hoveredArea.feature) {
+			if(hoveredRiver.feature || hoveredSite || hoveredArea.feature) {
 				mlmComponent.showTooltip(e.point.x, e.point.y);
 			} else {
 				mlmComponent.hideTooltip();

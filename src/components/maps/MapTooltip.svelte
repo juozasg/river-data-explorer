@@ -19,22 +19,19 @@
 	// map div top corner = (0,0)
 	export const showTooltip = (x: number, y: number) => {
 		lastMouseLocation = { x, y };
-		setTimeout(() => {
 		if(tooltip && !toggleHideTooltips.hide) {
 			const containerHeight = tooltip.parentElement?.clientHeight || 0;
 
-			tooltip.style.opacity = '1';
+			tooltip.style.display = 'block';
 			tooltip.style.left = x + 6 + 'px';
 			tooltip.style.bottom = (containerHeight - y + 12) + 'px';
 		}
-	}, 0);
 	};
 
 	export const hideTooltip = () => {
-		if (tooltip) {
-			// tooltip.style.display = 'none';
-			tooltip.style.opacity = '0';
-			tooltip.style.left = '-9999px'; // hide it offscreen
+		if(tooltip) {
+			console.log('HIDE TOOLTIP')
+			tooltip.style.display = 'none';
 		}
 	};
 </script>
@@ -56,8 +53,9 @@
 		font-size: 80%;
 		min-width: 200px;
 
-		opacity: 0;
+		/* opacity: 1; */
 		position: absolute;
+		display: none;
 		z-index: 1001;
 	}
 

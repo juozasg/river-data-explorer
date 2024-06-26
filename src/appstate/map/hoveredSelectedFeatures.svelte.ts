@@ -53,6 +53,8 @@ export class HoveredFeatureState extends FeatureState {
 		if(hoveredFeatures.length) {
 			this.feature = hoveredFeatures[0];
 			map.setFeatureState({ source: hoveredFeatures[0].source, id: hoveredFeatures[0].id }, { hover: true });
+		} else {
+			console.log('no features found', e.point, queryGeom, layers)
 		}
 	}
 }

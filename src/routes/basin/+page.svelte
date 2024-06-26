@@ -34,7 +34,7 @@
 <div class="details">
 	<div class="columns">
 		<div class="column map-preview-column">
-			<SiteSelectorMap --map-height="400px" />
+			<!-- <SiteSelectorMap --map-height="400px" /> -->
 		</div>
 		<div class="column dataset-column">
 			{#if selectedArea.feature}
