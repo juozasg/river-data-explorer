@@ -32,22 +32,20 @@
 	$effect(() => {
 		selectedArea.feature;
 		console.log('FX TESTTEST siteselector', mlMap, mlMap?.loaded());
-		if (!mlMap) return;
+		if(!mlMap) return;
 		const map = mlMap!;
 
-		map.querySourceFeatures('sjriver-sites-huc10').forEach((feature) => {
-			setFeatureState(map, 'sjriver-sites-huc10', feature.id, { selected: false });
+		map.querySourceFeatures('sjriver-huc10').forEach((feature) => {
+			setFeatureState(map, 'sjriver-huc10', feature.id, { selected: false });
+			console.log('FALSE', feature.id);
 		});
 
 		if(selectedArea.feature) {
-			setFeatureState(map, 'sjriver-sites-huc10', selectedArea.feature.id, { selected: true });
+			setFeatureState(map, 'sjriver-huc10', selectedArea.feature.id, { selected: true });
 			fitFeatureBounds(map, selectedArea.feature);
+			console.log('---TRUE0---', selectedArea.feature.id);
 		}
 	});
-
-	const makeMarker = (node: HTMLElement, site: Site) => {
-		return makeSiteMarker(node, mlMap!, site);
-	};
 
 	const markerMouseEnter = (e: MouseEvent, site: Site) => {
 		const rect = divElement?.getClientRects()[0];

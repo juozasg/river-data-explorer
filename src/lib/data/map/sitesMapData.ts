@@ -24,25 +24,37 @@ function addLayersHuc10(map: ml.Map): void {
 			// 	'#098',
 			// 	'#698'
 			// ],
-			'fill-color': '#CC8',
+			'fill-color': '#098',
 			'fill-opacity': [
 				'case',
 				['boolean', ['feature-state', 'selected'], false],
 				0.4,
-				0.
+				0
 			],
 		}
 	});
 
 	map.addLayer({
-		'id': 'sites-huc10-outline',
+		'id': 'sjriver-huc10-outline',
 		'type': 'line',
 		'source': 'sjriver-huc10',
 		'layout': {},
 		'paint': {
-			'line-color': '#844',
+			'line-color': '#584070',
 			'line-width': 1,
-			'line-opacity': 0.8,
+			'line-opacity': 0.4,
 		}
 	});
+
+	// map.addLayer({
+	// 	'id': 'sites-huc10-outline',
+	// 	'type': 'line',
+	// 	'source': 'sjriver-huc10',
+	// 	'layout': {},
+	// 	'paint': {
+	// 		'line-color': '#844',
+	// 		'line-width': 4,
+	// 		'line-opacity': 0.8,
+	// 	}
+	// });
 }

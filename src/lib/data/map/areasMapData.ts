@@ -8,7 +8,6 @@ export async function addLayers(map: ml.Map): Promise<void> {
 	addRiverLayers(map);
 }
 
-
 function addLayersHuc10(map: ml.Map): void {
 	map.addLayer({
 		id: 'sjriver-huc10',
