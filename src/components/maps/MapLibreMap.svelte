@@ -3,14 +3,13 @@
 
 	import { formatLngLat } from '$lib/copyLngLat';
 	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
-	import { transformStyle } from '$src/lib/map/mapStyle';
-	import { listenMouseMoveCoordinates } from '$src/lib/map/mouseMoveCoordinates';
+	import { transformStyle } from '$src/lib/transformMapStyle';
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 	import { toggleoffAttribution } from '$src/lib/utils/maplibre';
 	import { onMount } from 'svelte';
 	import LayerSwitcher from './LayerSwitcher.svelte';
 	import MapTooltip from './MapTooltip.svelte';
-	import { toggleRiverLayerVisibility } from '$src/lib/map/addDataMap';
+	import { toggleRiverLayerVisibility } from '$src/lib/data/map/mapData';
 
 	let {
 		zoom = 8,
@@ -19,12 +18,17 @@
 		addLayers,
 		divElement = $bindable(),
 		mlMap = $bindable(),
-		tooltipContent
+		tooltipContent,
+		...otherProps
 	}: MapLibreMapProps = $props();
 
+	console.log(JSON.stringify(otherProps));
+
 	let baseStyleId: 'TOPO' | 'SATELLITE' = $state('TOPO');
-	const arcgisServicesStyles = 'https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles/'
-	const apiKey = "AAPK3dfaa40a13c0404983142c26b566596ammsJLVROPRkVaZnrwj6bYIrYdi4FEikx7NZpYg7f5M9XlV2RFL6PgxMA_56IceHv";
+	const arcgisServicesStyles =
+		'https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles/';
+	const apiKey =
+		'AAPK3dfaa40a13c0404983142c26b566596ammsJLVROPRkVaZnrwj6bYIrYdi4FEikx7NZpYg7f5M9XlV2RFL6PgxMA_56IceHv';
 
 	const basemapEnum = 'e20332d6d2af43ff8402bb155df01467';
 	const basemapStyles = {
@@ -39,7 +43,7 @@
 		if (!mlMap) return;
 
 		const style = basemapStyles[baseStyleId];
-		mlMap.setStyle(style, {transformStyle});
+		mlMap.setStyle(style, { transformStyle });
 	});
 
 	onMount(() => {
@@ -57,12 +61,22 @@
 			addSources(mlMap!).then(() => {
 				addLayers(mlMap!);
 				const style = basemapStyles[baseStyleId];
-				mlMap!.setStyle(style, {transformStyle}); // force transformStyle to reorder layers
+				mlMap!.setStyle(style, { transformStyle }); // force transformStyle to reorder layers
 				toggleRiverLayerVisibility(mlMap!, showRiverLayer);
 			});
 		});
 
-		listenMouseMoveCoordinates(mlMap);
+		// global state for mouse x,y and lonlat location
+		// used for C to copy lonlat
+		mlMap.on('mousemove', (e): void => {
+			mapMouseLocation.onMouseMove(mlMap, e);
+		});
+
+		mlMap.on('mouseout', (): void => {
+			mapMouseLocation.onMouseOut();
+			hideTooltip();
+		});
+
 		toggleoffAttribution(divElement!);
 	});
 
@@ -73,12 +87,11 @@
 
 	export const showTooltip = (x: number, y: number) => {
 		tooltipComponent?.showTooltip(x, y);
-	}
+	};
 
 	export const hideTooltip = () => {
 		tooltipComponent?.hideTooltip();
-	}
-
+	};
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -86,10 +99,10 @@
 	<LayerSwitcher bind:baseStyleId bind:showRiverLayer />
 	<div class="map" bind:this={divElement}></div>
 	{#if mapMouseLocation.lngLat}
-	<pre>{formatLngLat(mapMouseLocation.lngLat, 4)} press C to copy</pre>
+		<pre>{formatLngLat(mapMouseLocation.lngLat, 4)} press C to copy</pre>
 	{/if}
 
-	<MapTooltip bind:this={tooltipComponent} {tooltipContent} />
+	<MapTooltip bind:this={tooltipComponent} {tooltipContent}/>
 </div>
 
 <style>

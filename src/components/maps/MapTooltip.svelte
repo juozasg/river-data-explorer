@@ -19,14 +19,15 @@
 	// map div top corner = (0,0)
 	export const showTooltip = (x: number, y: number) => {
 		lastMouseLocation = { x, y };
+		setTimeout(() => {
 		if(tooltip && !toggleHideTooltips.hide) {
 			const containerHeight = tooltip.parentElement?.clientHeight || 0;
 
 			tooltip.style.opacity = '1';
-			tooltip.style.left = x + 'px';
-			// tooltip.style.top = y - 12 - ttHeight + 'px';
-			tooltip.style.bottom = (containerHeight - y) + 'px';
+			tooltip.style.left = x + 6 + 'px';
+			tooltip.style.bottom = (containerHeight - y + 12) + 'px';
 		}
+	}, 0);
 	};
 
 	export const hideTooltip = () => {
@@ -53,8 +54,7 @@
 		padding: 5px;
 		padding-bottom: 1.5rem;
 		font-size: 80%;
-		min-width: 120px;
-		max-width: 300px;
+		min-width: 200px;
 
 		opacity: 0;
 		position: absolute;

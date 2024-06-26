@@ -5,11 +5,11 @@
 	import MapLibreMap from './MapLibreMap.svelte';
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 
-	import { addLayers } from '$src/lib/map/addDataAreasMap';
+	import { addLayers } from '$src/lib/data/map/areasMapData';
 	import { hoveredArea, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
 	import type { Site } from '$src/lib/types/site';
-	import { addSources } from '$src/lib/map/addDataMap';
+	import { addSources } from '$src/lib/data/map/mapData';
 	import { makeSiteMarker } from '$src/lib/utils/maplibre';
 
 	type Props = {

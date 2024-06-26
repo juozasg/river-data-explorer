@@ -5,11 +5,12 @@
 	import MapLibreMap from './MapLibreMap.svelte';
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 
-	import { addLayers } from '$src/lib/map/addDataHomePageMap';
+	import { addLayers } from '$src/lib/data/map/homePageMapData';
 	import { sites } from '$src/appstate/sites.svelte';
 	import type { Site } from '$src/lib/types/site';
-	import { addSources } from '$src/lib/map/addDataMap';
+	import { addSources } from '$src/lib/data/map/mapData';
 	import { makeSiteMarker } from '$src/lib/utils/maplibre';
+	import type { BBoxLike } from '$src/lib/types/basic';
 
 	type Props = {
 		onSelected?: () => void;
@@ -30,45 +31,35 @@
 		const map = mlMap!;
 
 		map.on('mousemove', (e) => {
-			const features = map.queryRenderedFeatures(e.point).filter((f) => f.layer.id.match(/sjrbc-/));
-			if(hoveredRiver) {
-				console.log('hoveredRiver=false', hoveredRiver.source, hoveredRiver.id)
-				map.setFeatureState(
-					{ source: hoveredRiver.source, id: hoveredRiver.id },
-					{ hover: false }
-				);
+			if (hoveredRiver) {
+				map.setFeatureState({ source: hoveredRiver.source, id: hoveredRiver.id }, { hover: false });
 				hoveredRiver = null;
 			}
 
-			if(hoveredArea) {
-				map.setFeatureState(
-					{ source: hoveredArea.source, id: hoveredArea.id },
-					{ hover: false }
-				);
+			if (hoveredArea) {
+				map.setFeatureState({ source: hoveredArea.source, id: hoveredArea.id }, { hover: false });
 				hoveredArea = null;
 			}
 
-			if(features.length) {
-				const riverHoverFeatures = features.filter((f) => f.layer.id.match(/river-hover/));
-				if(riverHoverFeatures.length) {
-					hoveredRiver = riverHoverFeatures[0];
+			const hucHoverFeatures = map
+				.queryRenderedFeatures(e.point)
+				.filter((f) => f.layer.id.match(/sjriver-huc/));
+			if (hucHoverFeatures.length) {
+				hoveredArea = hucHoverFeatures[0];
+				map.setFeatureState({ source: hoveredArea.source, id: hoveredArea.id }, { hover: true });
+			}
 
-					map.setFeatureState(
-						{ source: hoveredRiver.source, id: hoveredRiver.id },
-						{ hover: true }
-					);
-				}
+			const bbox: BBoxLike = [
+				[e.point.x - 10, e.point.y - 10],
+				[e.point.x + 10, e.point.y + 10]
+			];
 
-				const hucHoverFeatures = features.filter((f) => f.layer.id.match(/sjrbc-huc/));
-				if(hucHoverFeatures.length) {
-					hoveredArea = hucHoverFeatures[0];
-					map.setFeatureState(
-						{ source: hoveredArea.source, id: hoveredArea.id },
-						{ hover: true }
-					);
-				}
-				// const layerIds = riverHoverFeatures.map((f) => f.layer.id);
-				// console.log('queryRenderedFeatures', layerIds, features);
+			const riverHoverFeatures = map.queryRenderedFeatures(bbox, { layers: ['sjriver-river'] });
+
+			if (riverHoverFeatures.length) {
+				hoveredRiver = riverHoverFeatures[0];
+
+				map.setFeatureState({ source: hoveredRiver.source, id: hoveredRiver.id }, { hover: true });
 			}
 
 			if (hoveredRiver || hoveredSite || hoveredArea) {
@@ -94,7 +85,6 @@
 	};
 
 	function mapClick(point: ml.PointLike) {}
-
 </script>
 
 {#snippet tooltipContent()}
@@ -104,7 +94,7 @@
 	{/if}
 	{#if hoveredRiver}
 		<h5 class="river">River: {hoveredRiver?.properties.name || ''}</h5>
-		<i>ID: {hoveredRiver.id}</i>
+		<!-- <i>ID: {hoveredRiver.id}</i> -->
 	{/if}
 	{#if hoveredSite}
 		<h5 class="site">Site: {hoveredSite.name || ''}</h5>
@@ -148,6 +138,7 @@
 	}
 
 	.marker {
+		padding: 3px;
 		.marker-box {
 			border: 1px solid #3b084b;
 			border-radius: 0px;
@@ -163,6 +154,15 @@
 				height: 20px;
 				border-radius: 10px;
 			}
+		}
+	}
+
+	.marker:hover {
+		.marker-box {
+			background-color: #CDF8C0;
+			width: 20px;
+			height: 20px;
+			border-radius: 10px;
 		}
 	}
 </style>

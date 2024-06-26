@@ -1,12 +1,13 @@
 import * as ml from 'maplibre-gl';
 
 import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
-import { addRiverLayers } from './addDataMap';
+import { addRiverLayers } from './mapData';
 
 export async function addLayers(map: ml.Map): Promise<void> {
-	addRiverLayers(map);
-	selectedArea.applyFeatureState(map);
 	addLayersHuc10(map);
+	selectedArea.applyFeatureState(map);
+
+	addRiverLayers(map);
 }
 
 

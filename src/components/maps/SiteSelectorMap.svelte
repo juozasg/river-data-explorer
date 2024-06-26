@@ -4,11 +4,11 @@
 
 	import type { MapLibreMapProps } from '$lib/types/components';
 	import MapLibreMap from './MapLibreMap.svelte';
-	import { addLayers } from '$src/lib/map/addDataSitesMap';
+	import { addLayers } from '$src/lib/data/map/sitesMapData';
 
 	import { hoveredSite, selectedSite, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 	import { fitFeatureBounds, makeSiteMarker, setFeatureState } from '$src/lib/utils/maplibre';
-	import { addSources } from '$src/lib/map/addDataMap';
+	import { addSources } from '$src/lib/data/map/mapData';
 	import { sites } from '$src/appstate/sites.svelte';
 	import type { Site } from '$src/lib/types/site';
 
