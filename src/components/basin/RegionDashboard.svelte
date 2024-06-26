@@ -75,6 +75,21 @@
 {/snippet}
 
 
+{#snippet phosphate()}
+<tr>
+	<td>Phosphate</td>
+	<td>2009-01-01</td>
+	<td>2020-09-31</td>
+	<td>53</td>
+	<td>0.2</td>
+	<td>101.6</td>
+	<td>60.0</td>
+	<td>60.0</td>
+	<td>15.2</td>
+</tr>
+{/snippet}
+
+
 
 {#snippet tbody()}
 <tbody>
@@ -133,17 +148,19 @@
 		<td>60.0</td>
 		<td>15.2</td>
 	</tr>
-	<tr>
-		<td>Phosphate</td>
-		<td>2009-01-01</td>
-		<td>2020-09-31</td>
-		<td>53</td>
-		<td>0.2</td>
-		<td>101.6</td>
-		<td>60.0</td>
-		<td>60.0</td>
-		<td>15.2</td>
-	</tr>
+	{@render phosphate()}
+	{@render phosphate()}
+	{@render phosphate()}
+	{@render phosphate()}
+	{@render phosphate()}
+	{@render phosphate()}
+	{@render phosphate()}
+	{@render phosphate()}
+	{@render phosphate()}
+	{@render phosphate()}
+	{@render phosphate()}
+
+
 </tbody>
 {/snippet}
 
@@ -160,18 +177,22 @@
 	</p>
 
 
-<table class="table">
-	{@render thead()}
-	{@render tbody()}
-</table>
-
-
-{#if selectedSite.site}
-	<h5>Site: {selectedSite.site?.name} ({selectedSite.site?.id})</h5>
+<div class="table-container ">
 	<table class="table">
 		{@render thead()}
 		{@render tbody()}
 	</table>
+</div>
+
+
+{#if selectedSite.site}
+	<h5 class='site-label'>Site: {selectedSite.site?.name} ({selectedSite.site?.id})</h5>
+	<div class="table-container">
+	<table class="table">
+		{@render thead()}
+		{@render tbody()}
+	</table>
+</div>
 {:else}
 	<h5>Click a site marker on the map to select</h5>
 {/if}
@@ -181,21 +202,33 @@
 <style>
 	#panel {
 		/* height: 600px; */
-		/* height: calc(100vh - 120px); */
-		height: 100%;
-		max-height: 100%;
-		border: 1px solid maroon;
-		overflow-y: scroll;
-		position: absolute;
+		height: calc(100vh - 120px);
+		/* height: 100%; */
+		/* max-height: 100%; */
+		/* border: 1px solid maroon; */
+		/* overflow-y: auto; */
+		/* position: absolute; */
+		font-size: 85%;
 	}
 	p {
 		margin-bottom: 0.2rem !important;
 	}
 
+	.table-container {
+		height: 40%;
+		overflow-y: auto;
+		/* margin-bottom: 3rem; */
+
+	}
+
+	h5.site-label {
+		border-top: 1px solid #ccc;
+		padding-top: 0.5rem;
+	}
 	.timespan {
 		b {
 			/* font-weight: 600; */
-			font-size: 90%
+			/* font-size: 70% */
 		}
 	}
 </style>

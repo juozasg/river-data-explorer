@@ -39,7 +39,7 @@
 			<div class="column map-preview-column">
 				<SiteSelectorMap --map-height="calc((100vh - 96px)/2)" />
 				<div id='basin-plot'>
-
+						<h1 style="color:purple">plot goes here</h1>
 				</div>
 			</div>
 			<div class="column dataset-column">
@@ -108,6 +108,7 @@
 		/* font-size: 3rem; */
 		/* text-align: center; */
 		padding: 1rem;
+		padding-right: 0;
 		padding-top: 0;
 
 		/* .placeholder {
