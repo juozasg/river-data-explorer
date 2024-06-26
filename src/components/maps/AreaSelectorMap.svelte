@@ -4,16 +4,11 @@
 
 	import MapLibreMap from './MapLibreMap.svelte';
 	import type { MapLibreMapProps } from '$src/lib/types/components';
-
 	import { addLayers } from '$src/lib/data/map/areasMapData';
-	import {
-		HoveredFeatureState,
-		selectedArea
-	} from '$src/appstate/map/hoveredSelectedFeatures.svelte';
+	import { HoveredFeatureState, selectedArea, selectedSite} from '$src/appstate/map/featureState.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
 	import type { Site } from '$src/lib/types/site';
 	import { addSources } from '$src/lib/data/map/mapData';
-	import { makeSiteMarker } from '$src/lib/utils/maplibre';
 	import Marker from './Marker.svelte';
 
 	type Props = {
@@ -32,34 +27,30 @@
 		console.log('AreaSelectorMap onMount', divElement, mlMap, mlmComponent);
 		const map = mlMap!;
 
-		map.on('mousemove', 'sjriver-huc10', (e) => {
+		map.on('mousemove', (e) => {
 			hoveredArea.mouseMove(e, ['sjriver-huc10']);
 
-			if (hoveredArea.feature) {
+			if(hoveredArea.feature) {
 				mlmComponent.showTooltip(e.point.x, e.point.y);
+			} else {
+				mlmComponent.hideTooltip();
 			}
 		});
 
 		map.on('click', (e) => mapClick(e.point));
 	});
 
-	// setTimeout(() => {
-	// 	try {
-	// 		if(window && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-	// 			console.log('LOCALHOST DEBUGGING');
-	// 			console.log('timeout click');
-	// 			mapClick([379, 207.5546875]);
-	// 		}
-	// 	} catch (e) {
-	// 		console.error('timeout click error', e);
-	// 	}
-	// }, 1000);
-
-	// const siteHovered = (site: Site) => hoveredArea.containsSite(site);
-
-	const makeMarker = (node: HTMLElement, site: Site) => {
-		return makeSiteMarker(node, mlMap!, site);
-	};
+	setTimeout(() => {
+		try {
+			if(window && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+				console.log('LOCALHOST DEBUGGING');
+				console.log('timeout click');
+				mapClick([379, 207.5546875]);
+			}
+		} catch (e) {
+			console.error('timeout click error', e);
+		}
+	}, 1000);
 
 	const markerMouseEnter = (e: MouseEvent, site: Site) => {
 		// console.log('markermouse', site?.id, site);
@@ -73,14 +64,13 @@
 
 	function mapClick(point: ml.PointLike) {
 		const map = mlMap!;
-		console.log(point);
-		const feature = map.queryRenderedFeatures(point, { layers: ['sjriver-huc10'] })[0];
-		const changed = selectedArea.update(map, feature ?? null);
-		// console.log('CLICK', selectedArea.feature, changed)
-		if (changed) {
-			sites.selectInHuc10(selectedArea?.feature?.id as string | undefined);
+		const feature = map.queryRenderedFeatures(point, { layers: ['sjriver-huc10'] })[0] || null;
+		const changed = selectedArea.update(map, feature);
+		if(changed) {
+			sites.selectInHuc10(selectedArea.id);
+			if(hoveredSite) selectedSite.set(hoveredSite);
 			onSelected?.();
-			console.log('SELECTED', selectedArea?.feature?.id, sites.inHuc10(selectedArea?.feature?.id));
+			// console.log('SELECTED', selectedArea?.feature?.id, sites.inHuc10(selectedArea?.feature?.id));
 		}
 	}
 </script>

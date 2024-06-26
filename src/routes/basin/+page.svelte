@@ -4,7 +4,7 @@
 	import RegionDashboard from '$src/components/basin/RegionDashboard.svelte';
 	import AreaSelectorMap from '$src/components/maps/AreaSelectorMap.svelte';
 	import SiteSelectorMap from '$src/components/maps/SiteSelectorMap.svelte';
-	import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
+	import { selectedArea } from '$src/appstate/map/featureState.svelte';
 
 	let selectedDate = $state(2002);
 
@@ -29,12 +29,12 @@
 
 <h4 id="section-select-area-data" class="has-text-centered">Region Data</h4>
 
-<AreaSitesVariableSelects />
+<!-- <AreaSitesVariableSelects /> -->
 
 <div class="details">
 	<div class="columns">
 		<div class="column map-preview-column">
-			<!-- <SiteSelectorMap --map-height="400px" /> -->
+			<SiteSelectorMap --map-height="400px" />
 		</div>
 		<div class="column dataset-column">
 			{#if selectedArea.feature}

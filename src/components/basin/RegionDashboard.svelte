@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { datasets } from '$src/appstate/data/datasets.svelte';
-	import { selectedSite, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
+	import { selectedSite, selectedArea } from '$src/appstate/map/featureState.svelte';
 	import { sites as sitesState } from '$src/appstate/sites.svelte';
 	import type { Site } from '$src/lib/types/site';
 	import { mdiDetails } from '@mdi/js';

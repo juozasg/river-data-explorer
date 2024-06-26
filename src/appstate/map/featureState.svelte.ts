@@ -8,7 +8,7 @@ abstract class FeatureState {
 	feature: ml.MapGeoJSONFeature | null = $state(null);
 
 	get id() {
-		return this.feature?.id || '';
+		return this.feature?.id;
 	};
 
 	get name() {
@@ -26,7 +26,6 @@ abstract class FeatureState {
 }
 
 export class HoveredFeatureState extends FeatureState {
-	feature: ml.MapGeoJSONFeature | null = $state(null);
 	extent: number = 0;
 
 	constructor(extent: number = 0) {
@@ -58,6 +57,8 @@ export class HoveredFeatureState extends FeatureState {
 }
 
 export class SelectedFeature extends FeatureState  {
+	// layer: string = 'sjriver-huc10';
+	// returns true if the feature changed
 	update(map: ml.Map, feature: ml.MapGeoJSONFeature): boolean {
 		// if nothing changed, do nothing
 		if(feature?.id === this.feature?.id) {
@@ -68,7 +69,7 @@ export class SelectedFeature extends FeatureState  {
 		this.feature = feature;
 
 		if(feature) {
-			setFeatureState(map, 'huc10', feature.id, { selected: true });
+			setFeatureState(map, feature.source, feature.id, { selected: true });
 		}
 
 		return true;
@@ -76,21 +77,14 @@ export class SelectedFeature extends FeatureState  {
 
 	clear(map: ml.Map) {
 		if(this.feature?.id) {
-			setFeatureState(map, 'huc10', this.feature.id, { selected: false });
+			setFeatureState(map, this.feature.source, this.feature.id, { selected: false });
 		}
 		this.feature = null;
 	}
-
-	applyFeatureState(map: ml.Map) {
-		if(this.feature?.id) {
-			setFeatureState(map, 'huc10', this.feature.id, { selected: true });
-		}
-	}
 }
 
-// export const hoveredArea = new HoveredFeature();
+// global state for selected and hovered area feature and state
 export const selectedArea = new SelectedFeature();
-
 let _hoveredSite: Site | undefined = $state();
 
 export const hoveredSite = {

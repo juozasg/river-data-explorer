@@ -3,14 +3,15 @@
 	import { onMount } from 'svelte';
 
 	import type { MapLibreMapProps } from '$lib/types/components';
-	import MapLibreMap from './MapLibreMap.svelte';
 	import { addLayers } from '$src/lib/data/map/sitesMapData';
+	import MapLibreMap from './MapLibreMap.svelte';
 
-	import { hoveredSite, selectedSite, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
-	import { fitFeatureBounds, makeSiteMarker, setFeatureState } from '$src/lib/utils/maplibre';
-	import { addSources } from '$src/lib/data/map/mapData';
+	import { hoveredSite, selectedArea, selectedSite } from '$src/appstate/map/featureState.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
+	import { addSources } from '$src/lib/data/map/mapData';
 	import type { Site } from '$src/lib/types/site';
+	import { fitFeatureBounds, makeSiteMarker, setFeatureState } from '$src/lib/utils/maplibre';
+	import Marker from './Marker.svelte';
 
 	// type Props = {
 	// 	onSelected?: () => void;
@@ -22,25 +23,24 @@
 	let divElement: HTMLDivElement | undefined = $state();
 	let mlMap: ml.Map | undefined = $state();
 
-
-
 	onMount(() => {
 		console.log('SiteSelectorMap onMount', divElement, mlMap, mlmComponent);
 		mlMap!.on('click', (e) => mapClick(e.point));
 	});
 
+	// mark
 	$effect(() => {
 		selectedArea.feature;
 		console.log('FX TESTTEST siteselector', mlMap, mlMap?.loaded());
 		if (!mlMap) return;
 		const map = mlMap!;
 
-		map.querySourceFeatures('huc10').forEach((feature) => {
-			setFeatureState(map, 'huc10', feature.id, { selected: false });
+		map.querySourceFeatures('sjriver-sites-huc10').forEach((feature) => {
+			setFeatureState(map, 'sjriver-sites-huc10', feature.id, { selected: false });
 		});
 
-		if (selectedArea.feature) {
-			setFeatureState(map, 'huc10', selectedArea.feature.id, { selected: true });
+		if(selectedArea.feature) {
+			setFeatureState(map, 'sjriver-sites-huc10', selectedArea.feature.id, { selected: true });
 			fitFeatureBounds(map, selectedArea.feature);
 		}
 	});
@@ -49,16 +49,16 @@
 		return makeSiteMarker(node, mlMap!, site);
 	};
 
-	const mouseEnterMarker = (e: MouseEvent, site: Site) => {
+	const markerMouseEnter = (e: MouseEvent, site: Site) => {
 		const rect = divElement?.getClientRects()[0];
 		const [x, y] = [e.clientX - (rect!.left || 0), e.clientY - (rect!.top || 0)];
 
 		// console.log(x, y)
-		mlmComponent.showTooltip(x, y );
+		mlmComponent.showTooltip(x, y);
 		hoveredSite.set(site);
 	};
 
-	const mouseLeaveMarker = (e: MouseEvent, site: Site) => {
+	const markerMouseLeave = (e: MouseEvent, site: Site) => {
 		hoveredSite.set(undefined);
 		mlmComponent.hideTooltip();
 	};
@@ -66,7 +66,7 @@
 	function mapClick(point: ml.PointLike) {
 		console.log(point);
 		if (!mlMap) return;
-		if(hoveredSite.site) {
+		if (hoveredSite.site) {
 			selectedSite.set(hoveredSite.site);
 			console.log('SELECTED SITE', selectedSite);
 		} else {
@@ -75,10 +75,9 @@
 	}
 </script>
 
-
 {#snippet tooltipContent()}
-		<h5>{hoveredSite.site?.name || ''}</h5>
-		<p>{hoveredSite.site?.id || ''}</p>
+	<h5>{hoveredSite.site?.name || ''}</h5>
+	<p>{hoveredSite.site?.id || ''}</p>
 {/snippet}
 
 <MapLibreMap
@@ -91,9 +90,7 @@
 	{...others}
 />
 
-
-{#each sites.all as site (site.id)}
-	<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- {#each sites.all as site (site.id)}
 	<div
 		class="marker"
 		class:is-selected={selectedSite.site?.id === site.id}
@@ -104,11 +101,16 @@
 	>
 		<div class="marker-box"></div>
 	</div>
-{/each}
+{/each} -->
 
+{#if mlMap}
+	{#each sites.all as site}
+		<Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site} />
+	{/each}
+{/if}
 
 <style>
-	.marker {
+	/* .marker {
 		.marker-box {
 			border: 1px solid #5c2f60;
 			border-radius: 3px;
@@ -131,6 +133,5 @@
 		.marker-box {
 			background-color: rgb(138, 138, 138);
 		}
-	}
-
+	} */
 </style>

@@ -1,24 +1,21 @@
 import * as ml from 'maplibre-gl';
 
-import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 import { addRiverLayers } from './mapData';
 
 export async function addLayers(map: ml.Map): Promise<void> {
 	addLayersHuc10(map);
-	selectedArea.applyFeatureState(map);
-
 	addRiverLayers(map);
 }
 
 
 function addLayersHuc10(map: ml.Map): void {
-	if (map.getLayer('sites-huc10-outline')) map.removeLayer('sites-huc10-outline');
-	if (map.getLayer('sites-huc10')) map.removeLayer('sites-huc10');
+	if (map.getLayer('sjriver-sites-huc10-outline')) map.removeLayer('sjriver-sites-huc10-outline');
+	if (map.getLayer('sjriver-sites-huc10')) map.removeLayer('sjriver-sites-huc10');
 
 	map.addLayer({
-		id: 'sites-huc10',
+		id: 'sjriver-sites-huc10',
 		type: 'fill',
-		source: 'huc10',
+		source: 'sjriver-huc10',
 		layout: {},
 		paint: {
 			// 'fill-color': [
@@ -40,13 +37,12 @@ function addLayersHuc10(map: ml.Map): void {
 	map.addLayer({
 		'id': 'sites-huc10-outline',
 		'type': 'line',
-		'source': 'huc10',
+		'source': 'sjriver-huc10',
 		'layout': {},
 		'paint': {
 			'line-color': '#844',
 			'line-width': 1,
 			'line-opacity': 0.8,
-
 		}
 	});
 }

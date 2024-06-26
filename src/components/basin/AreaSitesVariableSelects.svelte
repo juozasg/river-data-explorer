@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
+  import { selectedArea } from '$src/appstate/map/featureState.svelte';
 
   import SiteSelect from './SiteSelect.svelte';
   import VariablesSelect from './VariablesSelect.svelte';

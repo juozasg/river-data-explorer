@@ -21,7 +21,7 @@ export class Sites {
 		return this.sites.filter(s => s.huc10 === huc10);
 	}
 
-	selectInHuc10(huc10: string | undefined) {
+	selectInHuc10(huc10: number | string | undefined) {
 		if(!huc10) {
 			this.selectedSites = [];
 			return;
