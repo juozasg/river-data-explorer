@@ -11,6 +11,8 @@
 	import { addSources } from '$src/lib/data/map/mapData';
 	import { makeSiteMarker } from '$src/lib/utils/maplibre';
 	import type { BBoxLike } from '$src/lib/types/basic';
+	import Marker from './Marker.svelte';
+	import { HoveredFeatureState } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 
 	type Props = {
 		onSelected?: () => void;
@@ -22,8 +24,8 @@
 	let divElement: HTMLDivElement | undefined = $state();
 	let mlMap: ml.Map | undefined = $state();
 
-	let hoveredRiver: ml.MapGeoJSONFeature | null = $state(null);
-	let hoveredArea: ml.MapGeoJSONFeature | null = $state(null);
+	let hoveredRiver = new HoveredFeatureState(10);
+	let hoveredArea = new HoveredFeatureState();
 	let hoveredSite: Site | null = $state(null);
 
 	onMount(() => {
@@ -31,46 +33,16 @@
 		const map = mlMap!;
 
 		map.on('mousemove', (e) => {
-			if (hoveredRiver) {
-				map.setFeatureState({ source: hoveredRiver.source, id: hoveredRiver.id }, { hover: false });
-				hoveredRiver = null;
-			}
+			hoveredRiver.mouseMove(e, ['sjriver-river']);
+			hoveredArea.mouseMove(e, ['sjriver-huc10']);
 
-			if (hoveredArea) {
-				map.setFeatureState({ source: hoveredArea.source, id: hoveredArea.id }, { hover: false });
-				hoveredArea = null;
-			}
-
-			const hucHoverFeatures = map.queryRenderedFeatures(e.point, { layers: ['sjriver-huc10'] })
-			if (hucHoverFeatures.length) {
-				hoveredArea = hucHoverFeatures[0];
-				map.setFeatureState({ source: hoveredArea.source, id: hoveredArea.id }, { hover: true });
-			}
-
-			const bbox: BBoxLike = [
-				[e.point.x - 10, e.point.y - 10],
-				[e.point.x + 10, e.point.y + 10]
-			];
-
-			const riverHoverFeatures = map.queryRenderedFeatures(bbox, { layers: ['sjriver-river'] });
-
-			if (riverHoverFeatures.length) {
-				hoveredRiver = riverHoverFeatures[0];
-
-				map.setFeatureState({ source: hoveredRiver.source, id: hoveredRiver.id }, { hover: true });
-			}
-
-			if (hoveredRiver || hoveredSite || hoveredArea) {
+			if (hoveredRiver || hoveredSite || hoveredArea.feature) {
 				mlmComponent.showTooltip(e.point.x, e.point.y);
 			} else {
 				mlmComponent.hideTooltip();
 			}
 		});
 	});
-
-	const makeMarker = (node: HTMLElement, site: Site) => {
-		return makeSiteMarker(node, mlMap!, site);
-	};
 
 	const markerMouseEnter = (e: MouseEvent, site: Site) => {
 		// console.log('markermouse', site?.id, site);
@@ -81,17 +53,15 @@
 		// console.log('markermouse', site?.id, site);
 		hoveredSite = null;
 	};
-
-	function mapClick(point: ml.PointLike) {}
 </script>
 
 {#snippet tooltipContent()}
 	{#if hoveredArea}
-		<h5>Watershed: {hoveredArea?.properties.name || ''}</h5>
+		<h5>Watershed: {hoveredArea.name}</h5>
 		<i>HUC10: {hoveredArea.id}</i>
 	{/if}
 	{#if hoveredRiver}
-		<h5 class="river">River: {hoveredRiver?.properties.name || ''}</h5>
+		<h5 class="river">River: {hoveredRiver.name}</h5>
 		<!-- <i>ID: {hoveredRiver.id}</i> -->
 	{/if}
 	{#if hoveredSite}
@@ -110,56 +80,21 @@
 	{...others}
 />
 
-<!-- {#each sites.all as site} -->
-{#each sites.all as site}
-	<!-- svelte-ignore a11y-no-static-element-interactions -->
-	<div
-		class="marker"
-		onmouseenter={(e) => markerMouseEnter(e, site)}
-		onmouseleave={(e) => markerMouseLeave(e, site)}
-		use:makeMarker={site}
-	>
-		<div class="marker-box"></div>
-	</div>
-{/each}
+{#if mlMap}
+	{#each sites.all as site}
+		<Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site} />
+	{/each}
+{/if}
 
 <style>
 	h5 {
 		margin-bottom: 2px;
 	}
 
-	h5.site, h5.river {
+	h5.site,
+	h5.river {
 		border-top: 1px solid #ccc;
 		padding-top: 5px;
 		margin-top: 5px;
-	}
-
-	.marker {
-		padding: 3px;
-		.marker-box {
-			border: 1px solid #3b084b;
-			border-radius: 0px;
-			transform: rotateY(0deg) rotate(45deg);
-
-			width: 10px;
-			height: 10px;
-			background-color: #ebc0f8;
-
-			&:hover {
-				background-color: #ebc0f8;
-				width: 20px;
-				height: 20px;
-				border-radius: 10px;
-			}
-		}
-	}
-
-	.marker:hover {
-		.marker-box {
-			background-color: #CDF8C0;
-			width: 20px;
-			height: 20px;
-			border-radius: 10px;
-		}
 	}
 </style>

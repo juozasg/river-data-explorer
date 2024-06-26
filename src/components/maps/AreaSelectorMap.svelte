@@ -6,11 +6,12 @@
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 
 	import { addLayers } from '$src/lib/data/map/areasMapData';
-	import { hoveredArea, selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
+	import { selectedArea } from '$src/appstate/map/hoveredSelectedFeatures.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
 	import type { Site } from '$src/lib/types/site';
 	import { addSources } from '$src/lib/data/map/mapData';
 	import { makeSiteMarker } from '$src/lib/utils/maplibre';
+	import Marker from './Marker.svelte';
 
 	type Props = {
 		onSelected?: () => void;
@@ -53,17 +54,17 @@
 		map.on('click', (e) => mapClick(e.point));
 	});
 
-	setTimeout(() => {
-		try {
-			if(window && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-				console.log('LOCALHOST DEBUGGING');
-				console.log('timeout click');
-				mapClick([379, 207.5546875]);
-			}
-		} catch (e) {
-			console.error('timeout click error', e);
-		}
-	}, 1000);
+	// setTimeout(() => {
+	// 	try {
+	// 		if(window && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+	// 			console.log('LOCALHOST DEBUGGING');
+	// 			console.log('timeout click');
+	// 			mapClick([379, 207.5546875]);
+	// 		}
+	// 	} catch (e) {
+	// 		console.error('timeout click error', e);
+	// 	}
+	// }, 1000);
 
 	const siteHovered = (site: Site) => hoveredArea.containsSite(site);
 
@@ -71,15 +72,19 @@
 		return makeSiteMarker(node, mlMap!, site);
 	};
 
-	const markermouse = (e: MouseEvent, site: Site) => {
-		console.log('markermouse', site?.id, site);
+	const markerMouseEnter = (e: MouseEvent, site: Site) => {
+		console.log('markerMouseEnter', site?.id, site);
+	};
+
+	const markerMouseLeave = (e: MouseEvent, site: Site) => {
+		// console.log('markermouse', site?.id, site);
 	};
 
 	function mapClick(point: ml.PointLike) {
+		const map = mlMap!;
 		console.log(point);
-		if (!mlMap) return;
-		const feature = mlMap!.queryRenderedFeatures(point).filter((f) => f.layer.id === 'huc10')[0];
-		const changed = selectedArea.update(mlMap!, feature ?? null);
+		const feature = map.queryRenderedFeatures(point, {layers: ['sjriver-huc10']})[0];
+		const changed = selectedArea.update(map, feature ?? null);
 		// console.log('CLICK', selectedArea.feature, changed)
 		if( changed) {
 			sites.selectInHuc10(selectedArea?.feature?.id as string | undefined);
@@ -107,27 +112,12 @@
 	{...others}
 />
 
-{#each sites.all as site}
-	<!-- svelte-ignore a11y-no-static-element-interactions -->
-	<div
-		class="marker"
-		onmouseenter={(e) => markermouse(e, site)}
-		use:makeMarker={site}
-		class:area-hovered={siteHovered(site)}
-	></div>
-{/each}
+
+{#if mlMap}
+	{#each sites.all as site}
+		<Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site} />
+	{/each}
+{/if}
 
 <style>
-	.marker {
-		border: 1px solid #222;
-
-		width: 10px;
-		height: 10px;
-		background-color: rgb(226, 120, 255);
-		pointer-events: auto;
-	}
-
-	.marker.area-hovered {
-		background-color: rgb(255, 120, 120);
-	}
 </style>

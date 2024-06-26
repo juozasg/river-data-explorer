@@ -1,12 +1,14 @@
+import * as ml from 'maplibre-gl';
+
 import type { Site } from '$src/lib/types/site';
 import { setFeatureState } from '$src/lib/utils/maplibre';
-import * as ml from 'maplibre-gl';
+import type { BBoxLike } from '$src/lib/types/basic';
 
 abstract class FeatureState {
 	feature: ml.MapGeoJSONFeature | null = $state(null);
 
 	get id() {
-		return this.feature?.id
+		return this.feature?.id || '';
 	};
 
 	get name() {
@@ -23,38 +25,35 @@ abstract class FeatureState {
 	};
 }
 
-export class HoveredFeature extends FeatureState {
+export class HoveredFeatureState extends FeatureState {
 	feature: ml.MapGeoJSONFeature | null = $state(null);
+	extent: number = 0;
 
-	constructor() {
+	constructor(extent: number = 0) {
 		super();
+
+		this.extent = extent;
 	}
 
-	update(map: ml.Map, feature: ml.MapGeoJSONFeature | null) {
-		// if nothing changed, do nothing
-		if(feature?.id === this.feature?.id) {
-			return;
+	mouseMove(e: ml.MapMouseEvent, layers: string[]) {
+		const map = e.target;
+		if(this.feature) {
+			map.setFeatureState({ source: this.feature.source, id: this.feature.id }, { hover: false });
+			this.feature = null;
 		}
 
-		this.clear(map);
-		this.feature = feature;
-
-		if(feature) {
-			setFeatureState(map, 'huc10', feature.id, { hover: true });
+		let queryGeom: ml.PointLike | BBoxLike = e.point;
+		if(this.extent) {
+			queryGeom = [
+				[e.point.x - this.extent, e.point.y - this.extent],
+				[e.point.x + this.extent, e.point.y + this.extent]
+			];
 		}
-	}
-
-	clear(map: ml.Map) {
-		if(this.feature?.id)	 {
-			setFeatureState(map, 'huc10', this.feature.id, { hover: false });
+		const hoveredFeatures = map.queryRenderedFeatures(queryGeom, { layers });
+		if(hoveredFeatures.length) {
+			this.feature = hoveredFeatures[0];
+			map.setFeatureState({ source: hoveredFeatures[0].source, id: hoveredFeatures[0].id }, { hover: true });
 		}
-
-		this.feature = null;
-	}
-
-	containsSite(site: Site) {
-		// return true;
-		return this.feature?.id === site.huc10;
 	}
 }
 
@@ -89,7 +88,7 @@ export class SelectedFeature extends FeatureState  {
 	}
 }
 
-export const hoveredArea = new HoveredFeature();
+// export const hoveredArea = new HoveredFeature();
 export const selectedArea = new SelectedFeature();
 
 let _hoveredSite: Site | undefined = $state();
