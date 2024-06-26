@@ -66,9 +66,10 @@
 		const map = mlMap!;
 		const feature = map.queryRenderedFeatures(point, { layers: ['sjriver-huc10'] })[0] || null;
 		const changed = selectedArea.update(map, feature);
-		if(changed) {
-			sites.selectInHuc10(selectedArea.id);
+		if(changed || hoveredSite) {
 			if(hoveredSite) selectedSite.set(hoveredSite);
+			sites.selectInHuc10(selectedArea.id);
+			console.log('selectedSite', selectedSite.site);
 			if(feature)	onSelected?.();
 			// console.log('SELECTED', selectedArea?.feature?.id, sites.inHuc10(selectedArea?.feature?.id));
 		}
@@ -102,7 +103,7 @@
 
 {#if mlMap}
 	{#each sites.all as site}
-		<Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site} />
+		<Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site}/>
 	{/each}
 {/if}
 

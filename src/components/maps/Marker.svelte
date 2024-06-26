@@ -4,15 +4,17 @@
 	import { sites } from '$src/appstate/sites.svelte';
 	import type { Site } from '$src/lib/types/site';
 	import { makeSiteMarker } from '$src/lib/utils/maplibre';
+	import { selectedSite } from '$src/appstate/map/featureState.svelte';
 
 	type Props = {
 		map: ml.Map;
 		markerMouseEnter: (e: MouseEvent, site: Site) => void;
 		markerMouseLeave: (e: MouseEvent, site: Site) => void;
 		site: Site;
+		highlighted?: boolean;
 	}
 
-	let { map, markerMouseEnter,  markerMouseLeave, site}: Props = $props();
+	let { map, markerMouseEnter,  markerMouseLeave, site, highlighted}: Props = $props();
 
 	const makeMarker = (node: HTMLElement, site: Site) => {
 		return makeSiteMarker(node, map, site);
@@ -27,6 +29,8 @@
 	class="marker"
 	onmouseenter={(e) => markerMouseEnter(e, site)}
 	onmouseleave={(e) => markerMouseLeave(e, site)}
+	class:is-selected={site.id === selectedSite.site?.id}
+	class:highlighted
 	use:makeMarker={site}
 >
 	<div class="marker-box"></div>
@@ -53,6 +57,39 @@
 			width: 20px;
 			height: 20px;
 			border-radius: 10px;
+		}
+	}
+
+
+	.marker.is-selected:hover {
+		.marker-box {
+			border-color: #CDF8C0;
+			border-width: 4px;
+			width: 22px;
+			height: 22px;
+			border-radius: 11px;
+		}
+	}
+
+	.marker.highlighted {
+		.marker-box {
+			/* background-color: #CDF8C0; */
+			width: 15px;
+			height: 15px;
+			/* border-radius: 8px; */
+		}
+	}
+
+	.marker.is-selected {
+		.marker-box {
+			background-color: #7F12A1;
+			width: 22px;
+			height: 22px;
+			border-radius: 11px;
+
+			border-color: #CDF8C0;
+			border-width: 2px;
+
 		}
 	}
 </style>

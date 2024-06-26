@@ -23,6 +23,7 @@
 	let divElement: HTMLDivElement | undefined = $state();
 	let mlMap: ml.Map | undefined = $state();
 
+
 	onMount(() => {
 		console.log('SiteSelectorMap onMount', divElement, mlMap, mlmComponent);
 		mlMap!.on('click', (e) => mapClick(e.point));
@@ -32,20 +33,18 @@
 	$effect(() => {
 		selectedArea.feature;
 		mlmComponent.dataLoaded();
-		console.log('dataLoadeed', mlmComponent.dataLoaded());
-		console.log('FX TESTTEST siteselector', mlMap, mlMap?.loaded());
 		if(!mlMap || !mlmComponent.dataLoaded()) return;
 		const map = mlMap!;
 
 		map.querySourceFeatures('sjriver-huc10').forEach((feature) => {
 			setFeatureState(map, 'sjriver-huc10', feature.id, { selected: false });
-			console.log('FALSE', feature.id);
+			// console.log('FALSE', feature.id);
 		});
 
 		if(selectedArea.feature) {
 			setFeatureState(map, 'sjriver-huc10', selectedArea.feature.id, { selected: true });
 			fitFeatureBounds(map, selectedArea.feature);
-			console.log('---TRUE0---', selectedArea.feature.id);
+			// console.log('---TRUE0---', selectedArea.feature.id);
 		}
 	});
 
@@ -72,6 +71,10 @@
 		} else {
 			selectedSite.set(undefined);
 		}
+	}
+
+	function isHighlighted(site: Site) {
+		return !!(selectedArea.id && selectedArea.id === site.huc10);
 	}
 </script>
 
@@ -105,33 +108,10 @@
 
 {#if mlMap}
 	{#each sites.all as site}
-		<Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site} />
+		<Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site} highlighted={isHighlighted(site)}/>
 	{/each}
 {/if}
 
 <style>
-	/* .marker {
-		.marker-box {
-			border: 1px solid #5c2f60;
-			border-radius: 3px;
-			transform: rotateY(0deg) rotate(45deg);
 
-			width: 16px;
-			height: 16px;
-			background-color: rgba(90, 20, 110, 0.5);
-		}
-	}
-
-	.marker.is-selected {
-		.marker-box {
-			background-color: rgba(90, 20, 110, 1);
-			border: 3px solid #e80f62;
-		}
-	}
-
-	.marker.is-outside-area {
-		.marker-box {
-			background-color: rgb(138, 138, 138);
-		}
-	} */
 </style>
