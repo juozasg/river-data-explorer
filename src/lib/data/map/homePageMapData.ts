@@ -15,7 +15,7 @@ export async function addLayers(map: ml.Map): Promise<void> {
 
 function addLayersHuc8(map: ml.Map): void {
 	map.addLayer({
-		'id': 'sjriver-huc10-fill',
+		'id': 'sjriver-huc10',
 		'type': 'fill',
 		'source': 'sjriver-huc10',
 		'layout': {},
@@ -36,9 +36,8 @@ function addLayersHuc8(map: ml.Map): void {
 		'source': 'sjriver-huc10',
 		'layout': {},
 		'paint': {
-			'line-color': '#d9e1fb',
+			'line-color': '#584070',
 			'line-width': 1,
-			// 	'line-dasharray': [1, 1],
 		}
 	});
 }

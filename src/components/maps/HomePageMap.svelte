@@ -41,9 +41,7 @@
 				hoveredArea = null;
 			}
 
-			const hucHoverFeatures = map
-				.queryRenderedFeatures(e.point)
-				.filter((f) => f.layer.id.match(/sjriver-huc/));
+			const hucHoverFeatures = map.queryRenderedFeatures(e.point, { layers: ['sjriver-huc10'] })
 			if (hucHoverFeatures.length) {
 				hoveredArea = hucHoverFeatures[0];
 				map.setFeatureState({ source: hoveredArea.source, id: hoveredArea.id }, { hover: true });
@@ -121,7 +119,6 @@
 		onmouseleave={(e) => markerMouseLeave(e, site)}
 		use:makeMarker={site}
 	>
-		<!-- class:site-hovered={siteHovered(site)} -->
 		<div class="marker-box"></div>
 	</div>
 {/each}
