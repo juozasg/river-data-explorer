@@ -1,19 +1,16 @@
 <script lang="ts">
-
 	import { toggleHideTooltips } from '$src/appstate/ui/tooltips.svelte';
-	import { flushSync } from 'svelte';
 
 	let {
-		tooltipContent
+		tooltipContent,
 	}: any = $props();
-
 
 	let tooltip: HTMLDivElement | undefined = $state();
 	let lastMouseLocation: { x: number; y: number } | undefined;
 
 	$effect(() => {
 		if (toggleHideTooltips.hide == true) {
-			 hideTooltip();
+			hideTooltip();
 		} else {
 			if(lastMouseLocation) showTooltip(lastMouseLocation.x, lastMouseLocation.y);
 		}
@@ -22,38 +19,31 @@
 	// map div top corner = (0,0)
 	export const showTooltip = (x: number, y: number) => {
 		lastMouseLocation = { x, y };
-		setTimeout(() => {
-			if(tooltip && !toggleHideTooltips.hide) {
-				flushSync(); // get rect
+		if(tooltip && !toggleHideTooltips.hide) {
+			const containerHeight = tooltip.parentElement?.clientHeight || 0;
 
-				const ttHeight = tooltip?.getClientRects()[0]?.height || 0;
-
-				tooltip.style.opacity = '1';
-				tooltip.style.left = x + 'px';
-				tooltip.style.top = y - 12 - ttHeight + 'px';
-
-				// console.log('ttHeight', ttHeight, 'style.top', tooltip.style.top);
-			}
-		}, 0);
+			tooltip.style.opacity = '1';
+			tooltip.style.left = x + 'px';
+			// tooltip.style.top = y - 12 - ttHeight + 'px';
+			tooltip.style.bottom = (containerHeight - y) + 'px';
+		}
 	};
 
 	export const hideTooltip = () => {
-		setTimeout(() => {
-			if (tooltip) {
-				// 	tooltip.style.display = 'none';
-				tooltip.style.opacity = '0';
-				tooltip.style.left = '-9999px'; // hide it offscreen
-			}
-		}, 0);
+		if (tooltip) {
+			// tooltip.style.display = 'none';
+			tooltip.style.opacity = '0';
+			tooltip.style.left = '-9999px'; // hide it offscreen
+		}
 	};
 </script>
 
 
 
-	<div bind:this={tooltip} class="hover-tooltip" style="position: absolute; pointer-events: none;">
-		{@render tooltipContent()}
-		<span class="hint"><i><kbd>T</kbd> to hide</i></span>
-	</div>
+<div bind:this={tooltip} class="hover-tooltip" style="position: absolute; pointer-events: none;">
+	{@render tooltipContent()}
+	<span class="hint"><i><kbd>T</kbd> to hide</i></span>
+</div>
 
 <style>
 
@@ -63,6 +53,8 @@
 		padding: 5px;
 		padding-bottom: 1.5rem;
 		font-size: 80%;
+		min-width: 120px;
+		max-width: 300px;
 
 		opacity: 0;
 		position: absolute;
