@@ -54,16 +54,16 @@
 </script>
 
 {#snippet tooltipContent()}
-	{#if hoveredArea}
+	{#if hoveredArea.feature}
 		<h5>Watershed: {hoveredArea.name}</h5>
 		<i>HUC10: {hoveredArea.id}</i>
 	{/if}
-	{#if hoveredRiver}
-		<h5 class="river">River: {hoveredRiver.name}</h5>
+	{#if hoveredRiver.feature}
+		<h5 class="river tooltip-section">River: {hoveredRiver.name}</h5>
 		<!-- <i>ID: {hoveredRiver.id}</i> -->
 	{/if}
 	{#if hoveredSite}
-		<h5 class="site">Site: {hoveredSite.name || ''}</h5>
+		<h5 class="site tooltip-section">Site: {hoveredSite.name || ''}</h5>
 		<i>Site ID: {hoveredSite.id}</i>
 	{/if}
 {/snippet}
@@ -85,14 +85,4 @@
 {/if}
 
 <style>
-	h5 {
-		margin-bottom: 2px;
-	}
-
-	h5.site,
-	h5.river {
-		border-top: 1px solid #ccc;
-		padding-top: 5px;
-		margin-top: 5px;
-	}
 </style>

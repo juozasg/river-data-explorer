@@ -76,7 +76,6 @@
 			const rect = divElement!.getClientRects()[0];
 			const width = rect.width;
 			const height = rect.height;
-			console.log(rect)
 
 			// mouseout event is fired when mouse hovers a marker inside the map rect
 			if(e.point.x < 0 || e.point.x > width || e.point.y < 0 || e.point.y > height) {

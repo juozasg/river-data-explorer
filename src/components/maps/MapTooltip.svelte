@@ -30,7 +30,6 @@
 
 	export const hideTooltip = () => {
 		if(tooltip) {
-			console.log('HIDE TOOLTIP')
 			tooltip.style.display = 'none';
 		}
 	};
@@ -44,7 +43,6 @@
 </div>
 
 <style>
-
 	.hover-tooltip {
 		background-color: white;
 		border: 1px solid #222;
@@ -70,5 +68,15 @@
 		kbd {
 			font-size: 12px;
 		}
+	}
+
+	:global(.hover-tooltip h5) {
+		margin-bottom: 3px;
+	}
+
+	:global(h5.tooltip-section) {
+		border-top: 1px solid #ccc;
+		padding-top: 5px;
+		margin-top: 5px;
 	}
 </style>
