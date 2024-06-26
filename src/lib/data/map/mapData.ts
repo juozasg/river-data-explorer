@@ -30,30 +30,8 @@ export async function addSources(map: ml.Map): Promise<void> {
 export function addRiverLayers(map: ml.Map): void {
 	if (map.getLayer('sjriver-river')) map.removeLayer('sjriver-river');
 
-	// const mainstemColor = '#AA0000';
-	const mainstemColor = '#17A0D1';
+	const mainstemColor = '#17a0d1';
 	const tributariesColor = '#1db2e7';
-	// const tributariesColor = '#00AA00';
-
-	// map.addLayer({
-	// 	id: 'sjriver-mainstem',
-	// 	type: 'line',
-	// 	source: 'sjriver-mainstem',
-	// 	layout: {
-	// 		'visibility': 'visible',
-	// 	},
-	// 	paint: {
-	// 		'line-color': '#17A0D1',
-	// 		// 'line-width': 3,
-	// 		'line-opacity': 1,
-	// 		'line-width': [
-	// 			'case',
-	// 			['boolean', ['feature-state', 'hover'], false],
-	// 			20,
-	// 			3.5
-	// 		]
-	// 	}
-	// });
 
 	map.addLayer({
 		id: 'sjriver-river',
@@ -79,7 +57,11 @@ export function addRiverLayers(map: ml.Map): void {
 				'case',
 				['boolean', ['feature-state', 'hover'], false],
 				6,
-				2
+				['case',
+					['==', ['get', 'name'], 'Saint Joseph River'],
+					4.5,
+					2
+				]
 			],
 			'line-opacity': 1,
 		}
