@@ -1,66 +1,85 @@
 <script lang="ts">
-  import NavbarBasin from './navbar/Basin.svelte';
-
+	import NavbarBasin from './navbar/Basin.svelte';
 
 	import { page, navigating } from '$app/stores';
 	import type { MarkdownPage } from '$src/lib/types/page';
 	import NavbarSlugLink from './navbar/SlugLink.svelte';
+	import { onMount } from 'svelte';
 
 	interface Props {
-    regionPages: MarkdownPage[]
-    variablePages: MarkdownPage[]
-  }
+		regionPages: MarkdownPage[];
+		variablePages: MarkdownPage[];
+	}
 
 	const { regionPages, variablePages }: Props = $props();
 
-	const isRoute = (routeId: string) => $page.route?.id === routeId
+	const isRoute = (routeId: string) => $page.route?.id === routeId;
 
 	let burgerActive = $state(false);
 
 	$effect(() => {
-		if($navigating) {
+		if ($navigating) {
 			burgerActive = false;
 		}
 	});
-</script>
 
+	// clock dropdowns on click
+	onMount(() => {
+		const links = document.querySelectorAll('.navbar-item');
+		links.forEach((link) => {
+			link.addEventListener('click', toggleMenu);
+		});
+	});
+
+	function toggleMenu(e: any) {
+		let menu = e.currentTarget.querySelector('.navbar-dropdown');
+		if (e.target.parentElement.classList.contains('navbar-dropdown')) menu.style.display = 'none';
+		setTimeout(() => {
+			menu.style.display = '';
+			e.target.blur();
+		}, 100);
+	}
+</script>
 
 <nav class="navbar is-fixed-top is-transparent unselectable" aria-label="main navigation">
 	<div class="navbar-brand">
 		<a class="navbar-item" href="/" draggable="false">
-      <img src="/sjrbc-logo.png" alt="SJRBC Logo">
-    </a>
+			<img src="/sjrbc-logo.png" alt="SJRBC Logo" />
+		</a>
 
-		<a role="button" class="navbar-burger"
-					class:is-active={burgerActive}
-					onclick={() => burgerActive = !burgerActive}
-			 		aria-label="menu" aria-expanded="false" tabindex="0">
+		<a
+			role="button"
+			class="navbar-burger"
+			class:is-active={burgerActive}
+			onclick={(e) => (burgerActive = !burgerActive)}
+			aria-label="menu"
+			aria-expanded="false"
+			tabindex="0"
+		>
 			<span aria-hidden="true"></span>
 			<span aria-hidden="true"></span>
 			<span aria-hidden="true"></span>
 		</a>
 	</div>
 
-	<div class="navbar-menu"
-				class:is-active={burgerActive}>
+	<div class="navbar-menu" class:is-active={burgerActive}>
 		<div class="navbar-start">
-			<a href="/" class="navbar-item" class:navbar-item-selected={isRoute('/')}>
-				Home
-			</a>
+			<a href="/" class="navbar-item" class:navbar-item-selected={isRoute('/')}> Home </a>
 
 			<a href="/about" class="navbar-item" class:navbar-item-selected={isRoute('/about')}>
 				About
 			</a>
 
-			<NavbarBasin/>
+			<NavbarBasin />
 
+			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			<div class="navbar-item has-dropdown is-hoverable">
 				<a class="navbar-link" class:navbar-item-selected={isRoute('/variables/[slug]')}>
 					Variables
 				</a>
 				<div class="navbar-dropdown is-boxed">
 					{#each variablePages as page}
-						<NavbarSlugLink routeId="/variables/[slug]" {page}/>
+						<NavbarSlugLink routeId="/variables/[slug]" {page} />
 					{/each}
 				</div>
 			</div>
@@ -69,9 +88,7 @@
 				Visualize
 			</a>
 
-			<a href="/help" class="navbar-item" class:navbar-item-selected={isRoute('/help')}>
-				Help
-			</a>
+			<a href="/help" class="navbar-item" class:navbar-item-selected={isRoute('/help')}> Help </a>
 		</div>
 
 		<!-- <div class="navbar-end">
