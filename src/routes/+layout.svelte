@@ -26,7 +26,6 @@
 <Notifications/>
 
 <main class="section">
-
 	<div class="container is-fluid">
 		<div class="content">
 			<slot />
@@ -39,6 +38,13 @@
 		<DebugFooter />
 	</footer>
 </main>
+
+<style>
+	main.section {
+		margin-top: 0rem;
+		padding-top: 1rem;
+	}
+</style>
 
 
 

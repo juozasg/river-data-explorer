@@ -31,8 +31,10 @@
 	// mark
 	$effect(() => {
 		selectedArea.feature;
+		mlmComponent.dataLoaded();
+		console.log('dataLoadeed', mlmComponent.dataLoaded());
 		console.log('FX TESTTEST siteselector', mlMap, mlMap?.loaded());
-		if(!mlMap) return;
+		if(!mlMap || !mlmComponent.dataLoaded()) return;
 		const map = mlMap!;
 
 		map.querySourceFeatures('sjriver-huc10').forEach((feature) => {

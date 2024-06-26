@@ -9,8 +9,7 @@
 	let selectedDate = $state(2002);
 
 	const onSelected = () => {
-		const areaDetailsElement = window.document.getElementById('section-select-area-data');
-		console.log('areaDetailsElement', areaDetailsElement);
+		const areaDetailsElement = window.document.getElementById('basin-details');
 		areaDetailsElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 	};
 </script>
@@ -19,33 +18,34 @@
 	<title>Search the Basin</title>
 </svelte:head>
 
-<h4 id="section-select-area" class="has-text-centered">Select watershed region</h4>
+<h3 id="section-select-area" class="has-text-centered">Select watershed region</h3>
 
 <RegionTypeTabs />
 
-<div class="areas">
+<div id="basin-areas">
 	<AreaSelectorMap {onSelected} --map-height="70vh" zoom={8.35} />
 </div>
 
-<h4 id="section-select-area-data" class="has-text-centered">Region Data</h4>
-
 <!-- <AreaSitesVariableSelects /> -->
 
-<div class="details">
-	<div class="columns">
-		<div class="column map-preview-column">
-			<SiteSelectorMap --map-height="400px" />
-		</div>
-		<div class="column dataset-column">
-			{#if selectedArea.feature}
+<div id="basin-details">
+	{#if selectedArea.feature}
+		<h4 class="has-text-centered">Region: {selectedArea.name} (HUC10: {selectedArea.id})<a href="#basin-areas">Change</a></h4>
+
+
+		<div class="columns">
+			<div class="column map-preview-column">
+				<SiteSelectorMap --map-height="400px" />
+			</div>
+			<div class="column dataset-column">
 				<RegionDashboard />
-			{:else}
-				<div class="placeholder">
-					<h2><a href="#section-select-area">Select watershed region</a></h2>
-				</div>
-			{/if}
+			</div>
 		</div>
-	</div>
+		<!-- {:else}
+	<div class="placeholder">
+		<h2><a href="#section-select-area">Select watershed region</a></h2>
+	</div> -->
+	{/if}
 </div>
 
 <!-- <div class="timelapse-container">
@@ -60,17 +60,24 @@
 <!-- <a href="/regions/indiana"></a> -->
 
 <style>
-
-	h4 {
-		margin-bottom: 0.2rem;
+	h3 {
+		margin-bottom: 0.5rem;
 	}
 
-	.areas {
-		margin-bottom: 2.5rem;
+	#basin-areas {
+		margin-bottom: 1.5rem;
 	}
 
-	.details {
+	#basin-details {
 		margin-top: 1rem;
+		/* border: 1px solid aqua; */
+		height: calc(100vh - 80px);
+
+		h4 a {
+			margin-left: 1rem;
+			font-weight: 400;
+		}
+
 	}
 
 	.columns {
@@ -93,11 +100,11 @@
 		padding: 1rem;
 		padding-top: 0;
 
-		.placeholder {
+		/* .placeholder {
 			display: flex;
 			flex-direction: row;
 			justify-content: center;
 			align-items: center;
-		}
+		} */
 	}
 </style>

@@ -39,6 +39,12 @@
 	let showRiverLayer = $state(true);
 	let tooltipComponent: MapTooltip | undefined = $state();
 
+	let _dataLoaded = $state(false);
+
+	export const dataLoaded = () => {
+		return _dataLoaded;
+	}
+
 	$effect(() => {
 		if (!mlMap) return;
 
@@ -63,6 +69,8 @@
 				const style = basemapStyles[baseStyleId];
 				mlMap!.setStyle(style, { transformStyle }); // force transformStyle to reorder layers
 				toggleRiverLayerVisibility(mlMap!, showRiverLayer);
+				mlMap!.once('idle', () => _dataLoaded = true);
+				// _dataLoaded = true;
 			});
 		});
 

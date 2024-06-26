@@ -58,7 +58,6 @@
 	const fmtDate = (date: Date): string => `${shortMon(date)} ${date.getDay()}, ${date.getFullYear()}`
 </script>
 
-<h5>Region: {area.name} (HUC10: {area.id})</h5>
 <p><b>{sites.length}</b> sites</p>
 <p><b>{varsNumber}</b> variables</p>
 <p><b>{recordsNumber}</b> observations
