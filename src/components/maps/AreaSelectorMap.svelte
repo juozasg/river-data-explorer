@@ -62,7 +62,7 @@
 	};
 
 	const markerMouseEnter = (e: MouseEvent, site: Site) => {
-		console.log('markerMouseEnter', site?.id, site);
+		// console.log('markerMouseEnter', site?.id, site);
 	};
 
 	const markerMouseLeave = (e: MouseEvent, site: Site) => {
