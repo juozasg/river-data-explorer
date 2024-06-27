@@ -3,8 +3,8 @@
 	import AreaSelectorMap from '$src/components/maps/AreaSelectorMap.svelte';
 	import SiteSelectorMap from '$src/components/maps/SiteSelectorMap.svelte';
 	import { selectedArea } from '$src/appstate/map/featureState.svelte';
-	import RegionStatsDataTable from '$src/components/basin/RegionStatsDataTable.svelte';
-	import SiteStatsDataTable from '$src/components/basin/SiteStatsDataTable.svelte';
+	import RegionStatsPanel from '$src/components/basin/RegionStatsPanel.svelte';
+	import SiteStatsPanel from '$src/components/basin/SiteStatsPanel.svelte';
 
 	let selectedDate = $state(2002);
 
@@ -54,10 +54,10 @@
 			<div class="column right-column is-half">
 				<div class="details">
 					<div class="details-top">
-						<RegionStatsDataTable />
+						<RegionStatsPanel />
 					</div>
 					<div class="details-bottom">
-						<SiteStatsDataTable />
+						<SiteStatsPanel />
 					</div>
 				</div>
 			</div>
