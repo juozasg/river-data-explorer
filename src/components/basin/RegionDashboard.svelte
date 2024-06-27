@@ -95,8 +95,8 @@
 <tbody>
 	<tr>
 		<td>Temperature</td>
-		<td>2009-01-01</td>
-		<td>2020-09-31</td>
+		<td class="date">2009-01-01</td>
+		<td class="date">2020-09-31</td>
 		<td>53</td>
 		<td>0.2</td>
 		<td>101.6</td>
@@ -171,31 +171,31 @@
 	<p><b>{recordsNumber}</b> observations
 		{#if firstObs && lastObs}
 		<span class='timespan'>
-		 from <b>{fmtDate(firstObs)}</b> to <b>{fmtDate(lastObs)}</b>
+			from <b>{fmtDate(firstObs)}</b> to <b>{fmtDate(lastObs)}</b>
 		</span>
 		{/if}
 	</p>
 
 
-<div class="table-container ">
-	<table class="table">
-		{@render thead()}
-		{@render tbody()}
-	</table>
-</div>
+	<div class="table-container ">
+		<table class="table">
+			{@render thead()}
+			{@render tbody()}
+		</table>
+	</div>
 
 
-{#if selectedSite.site}
+	{#if selectedSite.site}
 	<h5 class='site-label'>Site: {selectedSite.site?.name} ({selectedSite.site?.id})</h5>
 	<div class="table-container">
-	<table class="table">
-		{@render thead()}
-		{@render tbody()}
-	</table>
-</div>
-{:else}
+		<table class="table">
+			{@render thead()}
+			{@render tbody()}
+		</table>
+	</div>
+	{:else}
 	<h5>Click a site marker on the map to select</h5>
-{/if}
+	{/if}
 
 </div>
 
@@ -208,14 +208,19 @@
 		/* border: 1px solid maroon; */
 		/* overflow-y: auto; */
 		/* position: absolute; */
-		font-size: 85%;
+		font-size: 80%;
 	}
 	p {
 		margin-bottom: 0.2rem !important;
 	}
 
+	td.date {
+		/* font-size: 75%; */
+		min-width: 7rem;
+	}
+
 	.table-container {
-		height: 40%;
+		height: 300px;
 		overflow-y: auto;
 		/* margin-bottom: 3rem; */
 

@@ -8,9 +8,14 @@
 
 	let selectedDate = $state(2002);
 
-	const onSelected = () => {
+	const onSelectedArea = () => {
 		const areaDetailsElement = window.document.getElementById('basin-details');
 		areaDetailsElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	};
+
+	const onChangeArea = () => {
+		const areaDetailsElement = window.document.getElementById('basin-areas');
+		areaDetailsElement?.scrollIntoView({ behavior: 'instant', block: 'start' });
 	};
 </script>
 
@@ -18,38 +23,39 @@
 	<title>Search the Basin</title>
 </svelte:head>
 
-<h3 id="section-select-area" class="has-text-centered">Select watershed region</h3>
-
-<RegionTypeTabs />
-
 <div id="basin-areas">
-	<AreaSelectorMap {onSelected} --map-height="70vh" zoom={8.35} />
+	<h3 id="section-select-area" class="has-text-centered">Select watershed region</h3>
+
+	<RegionTypeTabs />
+
+	<AreaSelectorMap onSelected={onSelectedArea} --map-height="70vh" zoom={8.35} />
 </div>
 
 <!-- <AreaSitesVariableSelects /> -->
 
 <div id="basin-details">
 	{#if selectedArea.feature}
-		<h4 class="has-text-centered">Region: {selectedArea.name} (HUC10: {selectedArea.id})<a href="#basin-areas">Change</a></h4>
+		<h4 class="has-text-centered">
+			Region: {selectedArea.name} (HUC10: {selectedArea.id})<a onclick={onChangeArea}>Change</a>
+		</h4>
 
 		<div></div>
 
-
 		<div class="columns">
-			<div class="column map-preview-column">
+			<div class="column map-preview-column is-half">
 				<SiteSelectorMap --map-height="calc((100vh - 96px)/2)" />
-				<div id='basin-plot'>
-						<h1 style="color:purple">plot goes here</h1>
+				<div id="basin-plot">
+					<h1 style="color:purple">plot goes here</h1>
 				</div>
 			</div>
-			<div class="column dataset-column">
+			<div class="column dataset-column is-half">
 				<RegionDashboard />
 			</div>
 		</div>
-		 {:else}
-	<div class="placeholder">
-		<h2><a href="#section-select-area">Select watershed region</a></h2>
-	</div>
+	{:else}
+		<div class="placeholder">
+			<h2><a href="#section-select-area">Select watershed region</a></h2>
+		</div>
 	{/if}
 </div>
 
@@ -81,13 +87,12 @@
 		#basin-plot {
 			margin-top: 1rem;
 			border: 1px solid red;
-			height: calc((100vh - 200px)/2);
+			height: calc((100vh - 200px) / 2);
 		}
 		h4 a {
 			margin-left: 1rem;
 			font-weight: 400;
 		}
-
 	}
 
 	.columns {

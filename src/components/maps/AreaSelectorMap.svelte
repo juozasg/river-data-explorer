@@ -40,17 +40,17 @@
 		map.on('click', (e) => mapClick(e.point));
 	});
 
-	// setTimeout(() => {
-	// 	try {
-	// 		if(window && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-	// 			console.log('LOCALHOST DEBUGGING');
-	// 			console.log('timeout click');
-	// 			mapClick([379, 207.5546875]);
-	// 		}
-	// 	} catch (e) {
-	// 		console.error('timeout click error', e);
-	// 	}
-	// }, 1000);
+	setTimeout(() => {
+		try {
+			if(window && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+				console.log('LOCALHOST DEBUGGING');
+				console.log('timeout click');
+				mapClick([379, 207.5546875]);
+			}
+		} catch (e) {
+			console.error('timeout click error', e);
+		}
+	}, 1000);
 
 	const markerMouseEnter = (e: MouseEvent, site: Site) => {
 		// console.log('markermouse', site?.id, site);

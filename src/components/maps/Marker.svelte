@@ -12,17 +12,14 @@
 		markerMouseLeave: (e: MouseEvent, site: Site) => void;
 		site: Site;
 		highlighted?: boolean;
-	}
+	};
 
-	let { map, markerMouseEnter,  markerMouseLeave, site, highlighted}: Props = $props();
+	let { map, markerMouseEnter, markerMouseLeave, site, highlighted }: Props = $props();
 
 	const makeMarker = (node: HTMLElement, site: Site) => {
 		return makeSiteMarker(node, map, site);
 	};
-
-
 </script>
-
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
@@ -35,7 +32,6 @@
 >
 	<div class="marker-box"></div>
 </div>
-
 
 <style>
 	.marker {
@@ -54,17 +50,16 @@
 
 	.marker:hover {
 		.marker-box {
-			background-color: #CDF8C0;
+			background-color: #cdf8c0;
 			width: 20px;
 			height: 20px;
 			border-radius: 10px;
 		}
 	}
 
-
 	.marker.is-selected:hover {
 		.marker-box {
-			border-color: #CDF8C0;
+			border-color: #cdf8c0;
 			border-width: 4px;
 			width: 22px;
 			height: 22px;
@@ -77,20 +72,22 @@
 			/* background-color: #CDF8C0; */
 			width: 15px;
 			height: 15px;
+			border-width: 2px;
+
 			/* border-radius: 8px; */
 		}
 	}
 
 	.marker.is-selected {
 		.marker-box {
-			background-color: #7F12A1;
-			width: 22px;
-			height: 22px;
-			border-radius: 11px;
+			background-color: #ebc0f8;
+			width: 24px;
+			height: 24px;
+			border-radius: 12px;
 
-			border-color: #CDF8C0;
-			border-width: 2px;
-
+			border-color: #cdf8c0;
+			border-width: 4px;
+			/* border-style: */
 		}
 	}
 </style>
