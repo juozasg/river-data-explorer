@@ -49,6 +49,8 @@
 			<img src="/sjrbc-logo.png" alt="SJRBC Logo" />
 		</a>
 
+		<!-- svelte-ignore a11y_missing_attribute -->
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<a
 			role="button"
 			class="navbar-burger"
@@ -57,6 +59,7 @@
 			aria-label="menu"
 			aria-expanded="false"
 			tabindex="0"
+
 		>
 			<span aria-hidden="true"></span>
 			<span aria-hidden="true"></span>
@@ -74,7 +77,8 @@
 
 			<NavbarBasin />
 
-			<!-- svelte-ignore a11y-no-static-element-interactions -->
+			<!-- svelte-ignore a11y_no_static_element_interactions -->
+			<!-- svelte-ignore a11y_missing_attribute -->
 			<div class="navbar-item has-dropdown is-hoverable">
 				<a class="navbar-link" class:navbar-item-selected={isRoute('/variables/[slug]')}>
 					Variables

@@ -47,9 +47,9 @@
 	</div>
 	<div class="dropdown-menu" id="dropdown-menu3" role="menu">
 		<div class="dropdown-content">
-			<!-- svelte-ignore a11y-no-static-element-interactions -->
+			<!-- svelte-ignore a11y_no_static_element_interactions -->
 			<a class="dropdown-item" onclick={setTopographic}>Topographic</a>
-			<!-- svelte-ignore a11y-no-static-element-interactions -->
+			<!-- svelte-ignore a11y_no_static_element_interactions -->
 			<a class="dropdown-item" onclick={setSatellite}>Satellite</a>
 			<hr class="dropdown-divider" />
 			<div class="dropdown-item">

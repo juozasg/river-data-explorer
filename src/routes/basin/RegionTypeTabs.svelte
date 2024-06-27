@@ -3,6 +3,7 @@
 
 {#snippet item(label, id)}
 <li class:is-active={id === 'huc10'} id="region-tab-{id}">
+  <!-- svelte-ignore a11y_missing_attribute -->
   <a>
     <span>{label}</span>
   </a>

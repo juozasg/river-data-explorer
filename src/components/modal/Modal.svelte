@@ -9,7 +9,7 @@
 <svelte:document onkeydown={closeOnEscape} />
 
 <div class="modal is-active">
-	<!-- svelte-ignore a11y-no-static-element-interactions -->
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div class="modal-background"
 	onclick={closeFn}></div>
 

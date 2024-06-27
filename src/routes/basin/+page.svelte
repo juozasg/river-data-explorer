@@ -20,7 +20,7 @@
 </script>
 
 <svelte:head>
-	<title>Search the Basin</title>
+<title>Search the Basin</title>
 </svelte:head>
 
 <div id="basin-areas">
@@ -35,33 +35,36 @@
 
 <div id="basin-details">
 	{#if selectedArea.feature}
-		<h4 class="has-text-centered">
-			Region: {selectedArea.name} (HUC10: {selectedArea.id})<a onclick={onChangeArea}>Change</a>
-		</h4>
+	<h4 class="has-text-centered">
+		Region: {selectedArea.name} (HUC10: {selectedArea.id})<button
+		class="change-button"
+		onclick={onChangeArea}>Change</button
+		>
+	</h4>
 
-		<div></div>
+	<div></div>
 
-		<div class="columns">
-			<div class="column map-preview-column is-half">
-				<SiteSelectorMap --map-height="calc((100vh - 96px)/2)" />
-				<div id="basin-plot">
-					<h1 style="color:purple">plot goes here</h1>
-				</div>
-			</div>
-			<div class="column dataset-column is-half">
-				<RegionDashboard />
+	<div class="columns">
+		<div class="column map-preview-column is-half">
+			<SiteSelectorMap --map-height="calc((100vh - 96px)/2)" />
+			<div id="basin-plot">
+				<h1 style="color:purple">plot goes here</h1>
 			</div>
 		</div>
+		<div class="column dataset-column is-half">
+			<RegionDashboard />
+		</div>
+	</div>
 	{:else}
-		<div class="placeholder">
-			<h2><a href="#section-select-area">Select watershed region</a></h2>
-		</div>
+	<div class="placeholder">
+		<h2><a href="#section-select-area">Select watershed region</a></h2>
+	</div>
 	{/if}
 </div>
 
 <!-- <div class="timelapse-container">
-	<div id="slider-description"><strong>{selectedDate}</strong></div>
-	<input id="slider" type="range" min="1990" max="2024" step="1" bind:value={selectedDate} />
+<div id="slider-description"><strong>{selectedDate}</strong></div>
+<input id="slider" type="range" min="1990" max="2024" step="1" bind:value={selectedDate} />
 </div>
 
 <h4 id="section-area-data-results" class="has-text-centered">Results</h4>
@@ -89,9 +92,19 @@
 			border: 1px solid red;
 			height: calc((100vh - 200px) / 2);
 		}
-		h4 a {
+		h4 button.change-button {
 			margin-left: 1rem;
 			font-weight: 400;
+
+			background: none !important;
+			border: none;
+			padding: 0 !important;
+
+			font-size: 1.25rem;
+			color: #485fc7;
+			cursor: pointer;
+			text-decoration: dotted underline;
+			cursor: pointer;
 		}
 	}
 
@@ -117,10 +130,10 @@
 		padding-top: 0;
 
 		/* .placeholder {
-			display: flex;
-			flex-direction: row;
-			justify-content: center;
-			align-items: center;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
 		} */
 	}
 </style>

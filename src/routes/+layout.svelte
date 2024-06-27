@@ -9,7 +9,7 @@
   import Notifications from '$src/components/site/Notifications.svelte';
   import { onMount } from 'svelte';
 
-	const { data } = $props();
+	const { data, children } = $props();
 
 	onMount(() => {
 		document.body.addEventListener('keydown', copyLngLat);
@@ -28,7 +28,7 @@
 <main class="section">
 	<div class="container is-fluid">
 		<div class="content">
-			<slot />
+			{@render children()}
 		</div>
 	</div>
 
