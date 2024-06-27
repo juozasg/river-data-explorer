@@ -78,6 +78,17 @@
 		}
 	}
 
+	.marker.highlighted:hover {
+		.marker-box {
+			/* background-color: #CDF8C0; */
+			width: 24px;
+			height: 24px;
+			border-radius: 12px;
+
+			/* border-radius: 8px; */
+		}
+	}
+
 	.marker.is-selected {
 		.marker-box {
 			background-color: #ebc0f8;

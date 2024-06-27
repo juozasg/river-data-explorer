@@ -165,20 +165,24 @@
 {/snippet}
 
 <div id="panel">
+	<div class="fixed-grid">
 
-	<p><b>{sites.length}</b> sites</p>
-	<p><b>{varsNumber}</b> variables</p>
-	<p><b>{recordsNumber}</b> observations
+		<div class="cell"><p><b>{sites.length}</b> sites</p></div>
+		<div class="cell"><p><b>{varsNumber}</b> variables</p></div>
+		<div class="cell"><p><b>{recordsNumber}</b> observations</p></div>
 		{#if firstObs && lastObs}
-		<span class='timespan'>
-			from <b>{fmtDate(firstObs)}</b> to <b>{fmtDate(lastObs)}</b>
-		</span>
+		<div class="cell">
+			<span class='timespan'>
+				from <b>{fmtDate(firstObs)}</b> to <b>{fmtDate(lastObs)}</b>
+			</span>
+		</div>
 		{/if}
-	</p>
+
+	</div>
 
 
 	<div class="table-container ">
-		<table class="table">
+		<table class="table is-striped is-narrow">
 			{@render thead()}
 			{@render tbody()}
 		</table>
@@ -188,7 +192,7 @@
 	{#if selectedSite.site}
 	<h5 class='site-label'>Site: {selectedSite.site?.name} ({selectedSite.site?.id})</h5>
 	<div class="table-container">
-		<table class="table">
+		<table class="table is-striped is-narrow">
 			{@render thead()}
 			{@render tbody()}
 		</table>
@@ -216,13 +220,34 @@
 
 	td.date {
 		/* font-size: 75%; */
-		min-width: 7rem;
+		min-width: 6rem;
+	}
+
+	th {
+		position: sticky;
+		top: 0;
+		background-color: white;
+		border-bottom: 1px solid #555 !important;
+		border-collapse: separate !important;
+	}
+
+
+	table {
+		border-collapse: separate;
+	}
+
+	tr td:first-child, tr th:first-child {
+		border-right: 1px dashed #ccc;
+	}
+	tr td:first-child {
+		font-weight: 500;
 	}
 
 	.table-container {
 		height: 300px;
 		overflow-y: auto;
 		/* margin-bottom: 3rem; */
+
 
 	}
 
