@@ -7,7 +7,7 @@ export async function addDataSourceGeoJSON(map: ml.Map, name: GeometryCollection
 	const data = await loadDataJson(`geojson/${name}.geojson`);
 	geometries.set(name, data);
 
-	if (!map.getSource(`sjriver-${name}`)) {
+	if(!map.getSource(`sjriver-${name}`)) {
 		map.addSource(`sjriver-${name}`, {
 			type: 'geojson',
 			data: data,

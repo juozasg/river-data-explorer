@@ -63,7 +63,7 @@
 		});
 
 		// only fires for the initial style, not for map.setStyle
-		mlMap.once('style.load', () => {
+		mlMap.once('idle', () => {
 			addSources(mlMap!).then(() => {
 				addLayers(mlMap!);
 				const style = basemapStyles[baseStyleId];
