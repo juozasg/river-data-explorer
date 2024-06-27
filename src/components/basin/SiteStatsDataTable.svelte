@@ -62,7 +62,7 @@
 <thead>
 	<tr>
 		<th>Variable</th>
-		<th></th>
+		<th>Last</th>
 		<th>From</th>
 		<th>To</th>
 		<th># obs</th>
