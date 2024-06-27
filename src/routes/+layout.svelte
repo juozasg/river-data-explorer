@@ -44,6 +44,10 @@
 		margin-top: 0rem;
 		padding-top: 1rem;
 	}
+
+	hr {
+		margin-top: 5rem;
+	}
 </style>
 
 

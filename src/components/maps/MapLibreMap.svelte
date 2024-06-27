@@ -110,7 +110,7 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div style="position: relative">
+<div style="position: relative; height: 100%">
 	<LayerSwitcher bind:baseStyleId bind:showRiverLayer />
 	<div class="map" bind:this={divElement}></div>
 	{#if mapMouseLocation.lngLat}
@@ -125,7 +125,7 @@
 		/* position: absolute; */
 		/* top: 0; */
 		/* bottom: 0; */
-		height: var(--map-height, 500px);
+		height: var(--map-height, 100%);
 		width: var(--map-width, 100%);
 		z-index: 1;
 	}

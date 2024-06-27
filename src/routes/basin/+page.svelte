@@ -1,26 +1,26 @@
 <script lang="ts">
 	import RegionTypeTabs from './RegionTypeTabs.svelte';
-	import AreaSitesVariableSelects from '$src/components/basin/AreaSitesVariableSelects.svelte';
-	import RegionDashboard from '$src/components/basin/RegionDashboard.svelte';
 	import AreaSelectorMap from '$src/components/maps/AreaSelectorMap.svelte';
 	import SiteSelectorMap from '$src/components/maps/SiteSelectorMap.svelte';
 	import { selectedArea } from '$src/appstate/map/featureState.svelte';
+	import RegionStatsDataTable from '$src/components/basin/RegionStatsDataTable.svelte';
+	import SiteStatsDataTable from '$src/components/basin/SiteStatsDataTable.svelte';
 
 	let selectedDate = $state(2002);
 
 	const onSelectedArea = () => {
-		const areaDetailsElement = window.document.getElementById('basin-details');
-		areaDetailsElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		const areaDetailsAnchor = window.document.getElementById('area-details');
+		areaDetailsAnchor?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 	};
 
 	const onChangeArea = () => {
-		const areaDetailsElement = window.document.getElementById('basin-areas');
-		areaDetailsElement?.scrollIntoView({ behavior: 'instant', block: 'start' });
+		const areaSelectAnchor = window.document.getElementById('basin-areas');
+		areaSelectAnchor?.scrollIntoView({ behavior: 'instant', block: 'start' });
 	};
 </script>
 
 <svelte:head>
-<title>Search the Basin</title>
+	<title>Search the Basin</title>
 </svelte:head>
 
 <div id="basin-areas">
@@ -31,67 +31,102 @@
 	<AreaSelectorMap onSelected={onSelectedArea} --map-height="70vh" zoom={8.35} />
 </div>
 
-<!-- <AreaSitesVariableSelects /> -->
-
-<div id="basin-details">
+<div id="area-details">
 	{#if selectedArea.feature}
-	<h4 class="has-text-centered">
-		Region: {selectedArea.name} (HUC10: {selectedArea.id})<button
-		class="change-button"
-		onclick={onChangeArea}>Change</button
-		>
-	</h4>
+		<h4 class="has-text-centered">
+			Region: {selectedArea.name} (HUC10: {selectedArea.id})<button
+				class="change-button"
+				onclick={onChangeArea}>Change</button
+			>
+		</h4>
 
-	<div></div>
-
-	<div class="columns">
-		<div class="column map-preview-column is-half">
-			<SiteSelectorMap --map-height="calc((100vh - 96px)/2)" />
-			<div id="basin-plot">
-				<h1 style="color:purple">plot goes here</h1>
+		<div class="columns" style="height: 100%">
+			<div class="column left-column is-half">
+				<div class="details">
+					<div class="details-top">
+						<SiteSelectorMap />
+					</div>
+					<div class="details-bottom">
+						<h1 style="color:purple">plot goes here</h1>
+					</div>
+				</div>
+			</div>
+			<div class="column right-column is-half">
+				<div class="details">
+					<div class="details-top">
+						<RegionStatsDataTable />
+					</div>
+					<div class="details-bottom">
+						<SiteStatsDataTable />
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="column dataset-column is-half">
-			<RegionDashboard />
-		</div>
-	</div>
+
+		<!-- <div class="columns">
+			<div class="column is-half">
+				<div id="details-top">
+					<SiteSelectorMap  />
+				</div>
+				<div id="details-bottom">
+					<h1 style="color:purple">plot goes here</h1>
+				</div>
+			</div>
+			<div class="column is-half">
+				<div id="region-stats-container">
+					<RegionStatsDataTable />
+				</div>
+				<div id="site-stats-container">
+					<SiteStatsDataTable />
+				</div>
+			</div>
+		</div> -->
 	{:else}
-	<div class="placeholder">
-		<h2><a href="#section-select-area">Select watershed region</a></h2>
-	</div>
+		<div class="placeholder">
+			<h2><a href="#section-select-area">Select watershed region</a></h2>
+		</div>
 	{/if}
 </div>
 
-<!-- <div class="timelapse-container">
-<div id="slider-description"><strong>{selectedDate}</strong></div>
-<input id="slider" type="range" min="1990" max="2024" step="1" bind:value={selectedDate} />
-</div>
-
-<h4 id="section-area-data-results" class="has-text-centered">Results</h4>
-
-<div class="results">
-</div> -->
-<!-- <a href="/regions/indiana"></a> -->
-
 <style>
+	.details {
+		height: 100%;
+	}
+
 	h3 {
 		margin-bottom: 0.5rem;
+	}
+
+	.columns {
+		gap: 0 !important;
+	}
+
+	.left-column {
+		padding-right: 0.5rem !important;
+	}
+	.right-column {
+		padding-left: 0.5rem !important;
 	}
 
 	#basin-areas {
 		margin-bottom: 1.5rem;
 	}
 
-	#basin-details {
-		margin-top: 1rem;
-		border: 1px solid aqua;
-		height: calc(100vh - 80px);
+	.details-top {
+		height: 50%;
+	}
 
-		#basin-plot {
-			margin-top: 1rem;
-			border: 1px solid red;
-			height: calc((100vh - 200px) / 2);
-		}
+	.details-bottom {
+		margin-top: 1rem;
+		height: calc(50% - 1rem);
+	}
+
+
+	#area-details {
+		margin-top: 1rem;
+		/* border: 1px solid aqua; */
+		height: calc(100vh - 112px);
+
 		h4 button.change-button {
 			margin-left: 1rem;
 			font-weight: 400;

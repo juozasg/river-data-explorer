@@ -62,6 +62,7 @@
 <thead>
 	<tr>
 		<th>Variable</th>
+		<th></th>
 		<th>From</th>
 		<th>To</th>
 		<th># obs</th>
@@ -78,6 +79,7 @@
 {#snippet phosphate()}
 <tr>
 	<td>Phosphate</td>
+	<td>78</td>
 	<td>2009-01-01</td>
 	<td>2020-09-31</td>
 	<td>53</td>
@@ -93,61 +95,20 @@
 
 {#snippet tbody()}
 <tbody>
-	<tr>
-		<td>Temperature</td>
-		<td class="date">2009-01-01</td>
-		<td class="date">2020-09-31</td>
-		<td>53</td>
-		<td>0.2</td>
-		<td>101.6</td>
-		<td>60.0</td>
-		<td>60.0</td>
-		<td>15.2</td>
-	</tr>
-	<tr>
-		<td>ph</td>
-		<td>2009-01-01</td>
-		<td>2020-09-31</td>
-		<td>53</td>
-		<td>0.2</td>
-		<td>101.6</td>
-		<td>60.0</td>
-		<td>60.0</td>
-		<td>15.2</td>
-	</tr>
-	<tr>
-		<td>Dissolved Oxygen</td>
-		<td>2009-01-01</td>
-		<td>2020-09-31</td>
-		<td>53</td>
-		<td>0.2</td>
-		<td>101.6</td>
-		<td>60.0</td>
-		<td>60.0</td>
-		<td>15.2</td>
-	</tr>
-	<tr>
-		<td>Phosphate</td>
-		<td>2009-01-01</td>
-		<td>2020-09-31</td>
-		<td>53</td>
-		<td>0.2</td>
-		<td>101.6</td>
-		<td>60.0</td>
-		<td>60.0</td>
-		<td>15.2</td>
-	</tr>
-	<tr>
-		<td>Dissolved Oxygen</td>
-		<td>2009-01-01</td>
-		<td>2020-09-31</td>
-		<td>53</td>
-		<td>0.2</td>
-		<td>101.6</td>
-		<td>60.0</td>
-		<td>60.0</td>
-		<td>15.2</td>
-	</tr>
+
+
+	{@render phosphate()}
+	{@render phosphate()}
+	{@render phosphate()}
+	{@render phosphate()}
+	{@render phosphate()}
+	{@render phosphate()}
+	{@render phosphate()}
+	{@render phosphate()}
+	{@render phosphate()}
+	{@render phosphate()}
+	{@render phosphate()}
+
 	{@render phosphate()}
 	{@render phosphate()}
 	{@render phosphate()}
@@ -165,32 +126,8 @@
 {/snippet}
 
 <div id="panel">
-	<div class="fixed-grid">
-
-		<div class="cell"><p><b>{sites.length}</b> sites</p></div>
-		<div class="cell"><p><b>{varsNumber}</b> variables</p></div>
-		<div class="cell"><p><b>{recordsNumber}</b> observations</p></div>
-		{#if firstObs && lastObs}
-		<div class="cell">
-			<span class='timespan'>
-				from <b>{fmtDate(firstObs)}</b> to <b>{fmtDate(lastObs)}</b>
-			</span>
-		</div>
-		{/if}
-
-	</div>
-
-
-	<div class="table-container ">
-		<table class="table is-striped is-narrow">
-			{@render thead()}
-			{@render tbody()}
-		</table>
-	</div>
-
-
 	{#if selectedSite.site}
-	<h5 class='site-label'>Site: {selectedSite.site?.name} ({selectedSite.site?.id})</h5>
+	<h3 class='site-label'>Site: {selectedSite.site?.name} ({selectedSite.site?.id})</h3>
 	<div class="table-container">
 		<table class="table is-striped is-narrow">
 			{@render thead()}
@@ -198,24 +135,23 @@
 		</table>
 	</div>
 	{:else}
-	<h5>Click a site marker on the map to select</h5>
+	<h2>Click a site marker on the map to select</h2>
 	{/if}
 
 </div>
 
 <style>
 	#panel {
-		/* height: 600px; */
-		height: calc(100vh - 120px);
-		/* height: 100%; */
-		/* max-height: 100%; */
-		/* border: 1px solid maroon; */
-		/* overflow-y: auto; */
-		/* position: absolute; */
+		height: 100%;
+
 		font-size: 80%;
+		display: flex;
+		flex-direction: column;
 	}
-	p {
-		margin-bottom: 0.2rem !important;
+
+	h3 {
+		margin-bottom: 3px;
+		margin-top: 0.5rem;
 	}
 
 	td.date {
@@ -236,7 +172,7 @@
 		border-collapse: separate;
 	}
 
-	tr td:first-child, tr th:first-child {
+	tr td:nth-child(2), tr th:nth-child(2) {
 		border-right: 1px dashed #ccc;
 	}
 	tr td:first-child {
@@ -244,21 +180,11 @@
 	}
 
 	.table-container {
-		height: 300px;
+		/* height: 300px; */
+		height: 100%;
 		overflow-y: auto;
 		/* margin-bottom: 3rem; */
-
-
 	}
 
-	h5.site-label {
-		border-top: 1px solid #ccc;
-		padding-top: 0.5rem;
-	}
-	.timespan {
-		b {
-			/* font-weight: 600; */
-			/* font-size: 70% */
-		}
-	}
+
 </style>
