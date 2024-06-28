@@ -19,10 +19,7 @@
 		divElement = $bindable(),
 		mlMap = $bindable(),
 		tooltipContent,
-		...otherProps
 	}: MapLibreMapProps = $props();
-
-	console.log(JSON.stringify(otherProps));
 
 	let baseStyleId: 'TOPO' | 'SATELLITE' = $state('TOPO');
 	const arcgisServicesStyles =

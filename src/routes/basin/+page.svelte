@@ -34,9 +34,6 @@
 <div id="area-details">
 	{#if !selectedArea.feature}
 		<div class="placeholder" class:is-hidden={!!selectedArea.feature}>
-			<!-- svelte-ignore a11y_missing_attribute -->
-			<!-- svelte-ignore a11y_no_static_element_interactions -->
-			<!-- svelte-ignore a11y_click_events_have_key_events -->
 			<h2><a onclick={onChangeArea}>Select watershed region</a></h2>
 		</div>
 	{/if}

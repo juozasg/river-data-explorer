@@ -62,4 +62,9 @@
             "badge": "🏄‍♀️"
         }
     ],
+    "svelte.plugin.svelte.compilerWarnings": {
+        "a11y_missing_attribute": "ignore",
+        "a11y_no_static_element_interactions": "ignore",
+        "a11y_click_events_have_key_events": "ignore",
+    }
 }

@@ -35,8 +35,8 @@ const config = {
 	},
 	onwarn: (warning, handler) => {
     // suppress warnings on `vite dev` and `vite build`; but even without this, things still work
-    if (warning.code === "a11y-missing-attribute") return;
-    if (warning.code === "a11y-click-events-have-key-events") return;
+    if (warning.code === "a11y_missing_attribute") return;
+    if (warning.code === "a11y_click_events_have_key_events") return;
     if (warning.code === "a11y_no_static_element_interactions") return;
     handler(warning);
   },
