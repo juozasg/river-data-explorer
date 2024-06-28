@@ -1,10 +1,11 @@
-import type { SitesDataStats } from "$lib/types/analysis";
+import type { SitesDataStats, VariableStats } from "$lib/types/analysis";
 import type { Site } from "$lib/types/site";
-import { datasets, type DatasetRecord } from "$src/appstate/data/datasets.svelte";
+import { sitesRecords, type DatasetRecord, type Timeseries } from "$src/appstate/data/datasets.svelte";
 import { fmtDate } from "$lib/utils";
+import { variablesMetadata } from "./loaders/loadAppData";
 
-function siteRecords(site: Site): DatasetRecord[] {
-	return datasets.get(site.id) || [];
+export function siteRecords(site: Site): DatasetRecord[] {
+	return sitesRecords.get(site.id) || [];
 }
 
 export function sitesDataStats(sites: Site[]): SitesDataStats {
@@ -40,6 +41,36 @@ export function sitesDataStats(sites: Site[]): SitesDataStats {
 }
 
 
+export function timeseriesToStats(variable: string, ts: Timeseries): VariableStats {
+	const label = variablesMetadata.labels[variable] || variable;
+	const numObservations = ts.length;
+	const lastObservation = ts[numObservations - 1][1];
+	const values = ts.map(p => p[1]);
+	const min = Math.min(...values);
+	const max = Math.max(...values);
+	const mean = values.reduce((acc, v) => acc + v, 0) / numObservations;
+	const sortedValues = values.sort((a, b) => a - b);
+	const median = sortedValues[Math.floor(numObservations / 2)];
+	const sum = values.reduce((acc, v) => acc + Math.pow(v - mean, 2), 0);
+	const stdDev = Math.sqrt(sum / numObservations);
+	const dateFromLabel = fmtDate(ts[0][0]);
+	const dateToLabel = fmtDate(ts[numObservations - 1][0]);
+
+	return {
+		variable,
+		label,
+		lastObservation,
+		numObservations,
+		min,
+		max,
+		mean,
+		median,
+		stdDev,
+		dateFromLabel,
+		dateToLabel,
+	};
+
+}
 // let _varsNumber = 0;
 // let _recordsNumber = 0;
 

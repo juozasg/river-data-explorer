@@ -10,11 +10,12 @@ export const dataManifest: { [key: string]: SHA1Digest } = {};
 
 
 // variables.yaml
-export const dataVariables: { [key: string]: any }  = {};
+export type VariableMetadata = { [key: string]: any } & { 'labels': { [key: string]: string } }
+export const variablesMetadata: VariableMetadata = { 'labels': {} };
 
 export async function loadAppData(manifest: object, variables: object) {
 	Object.assign(dataManifest, manifest);
-	Object.assign(dataVariables, variables);
+	Object.assign(variablesMetadata, variables);
 
 	console.log('Loading app data...');
 

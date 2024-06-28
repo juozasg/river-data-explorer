@@ -1,4 +1,5 @@
 export type VariableStats = {
+	variable: string;
 	label: string;
 	lastObservation?: number;
 	numObservations: number;

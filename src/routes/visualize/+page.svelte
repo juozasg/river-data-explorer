@@ -1,64 +1,71 @@
 <script lang="ts">
+	import { recordsToTimeseries } from '$src/appstate/data/datasets.svelte';
+	import { sites } from '$src/appstate/sites.svelte';
 	import StatsDataTable from '$src/components/site/StatsDataTable.svelte';
+	import { siteRecords, timeseriesToStats } from '$src/lib/data/stats';
+	import type { VariableStats } from '$src/lib/types/analysis';
 
-	type Fruit = {
-		name: string;
-		qty: number;
-		price: number;
-	};
-	const fruits: Fruit[] = [
-	{ name: '1apples', qty: 5, price: 2 },
-	{ name: '2bananas', qty: 10, price: 1 },
-	{ name: '3cherries', qty: 20, price: 0.5 },
-	{ name: '4apples', qty: 5, price: 2 },
-	{ name: '5bananas', qty: 10, price: 1 },
-	{ name: '6cherries', qty: 20, price: 0.5 },
-	{ name: '7apples', qty: 5, price: 2 },
-	{ name: '8bananas', qty: 10, price: 1 },
-	{ name: '9cherries', qty: 20, price: 0.5 },
-	{ name: '...1apples', qty: 5, price: 2 },
-	{ name: '2bananas', qty: 10, price: 1 },
-	{ name: '3cherries', qty: 20, price: 0.5 },
-	{ name: '4apples', qty: 5, price: 2 },
-	{ name: '5bananas', qty: 10, price: 1 },
-	{ name: '6cherries', qty: 20, price: 0.5 },
-	{ name: '7apples', qty: 5, price: 2 },
-	{ name: '8bananas', qty: 10, price: 1 },
-	{ name: '9cherries', qty: 20, price: 0.5 },
-	{ name: '......1apples', qty: 5, price: 2 },
-	{ name: '2bananas', qty: 10, price: 1 },
-	{ name: '3cherries', qty: 20, price: 0.5 },
-	{ name: '4apples', qty: 5, price: 2 },
-	{ name: '5bananas', qty: 10, price: 1 },
-	{ name: '6cherries', qty: 20, price: 0.5 },
-	{ name: '7apples', qty: 5, price: 2 },
-	{ name: '8bananas', qty: 10, price: 1 },
-	{ name: '9cherries', qty: 20, price: 0.5 },
-	];
+	const site = $derived(sites.findById('sjrbc-1'));
+	const records = $derived(site && siteRecords(site));
+	const siteTimeseries = $derived(records && recordsToTimeseries(records));
+	const rows: VariableStats[] = $derived.by(() => {
+		const rs: VariableStats[] = [];
+		console.log(siteTimeseries)
+		for (const variable in siteTimeseries) {
+			const ts = siteTimeseries[variable];
+			const stats = timeseriesToStats(variable, ts);
+			rs.push(stats);
+		}
+		return rs;
+	});
+
+
+
 </script>
 
 <svelte:head>
-<title>Visualize</title>
+	<title>Visualize</title>
 </svelte:head>
 
 <div>
 	<h2>Visualize</h2>
 
-	<div id="example-stats">
-		<StatsDataTable data={fruits}>
-			<th>Name</th>
-			<th>Quantity</th>
-			<th>Price</th>
+	{#if site}
 
-			{#snippet row(d)}
-			<td>{d.name}</td>
-			<td>{d.qty}</td>
-			<td>{d.price}</td>
+
+
+
+	<div id="example-stats">
+		<h3 class="site-label">Site: {site.name} ({site.id})</h3>
+		<StatsDataTable data={rows}>
+			<th>Variable</th>
+			<th>Last</th>
+			<th>#obs</th>
+			<th>Min</th>
+			<th>Max</th>
+			<th>Mean</th>
+			<th>Median</th>
+			<th>Sd</th>
+			<th>From</th>
+			<th>To</th>
+
+			{#snippet row(r: VariableStats)}
+				<td>{r.label}</td>
+				<td>{r.lastObservation}</td>
+				<td>{r.numObservations}</td>
+				<td>{r.min}</td>
+				<td>{r.max}</td>
+				<td>{r.mean}</td>
+				<td>{r.median}</td>
+				<td>{r.stdDev}</td>
+				<td class="date">{r.dateFromLabel}</td>
+				<td class="date">{r.dateToLabel}</td>
 			{/snippet}
 		</StatsDataTable>
 	</div>
-</div>
 
+	{/if}
+</div>
 
 <style>
 	h2 {
@@ -67,7 +74,7 @@
 
 	#example-stats {
 		margin-top: 2rem;
-		width: 300px;
+		width: 800px;
 		height: 400px;
 	}
 </style>

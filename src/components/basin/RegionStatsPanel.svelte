@@ -1,12 +1,9 @@
 <script lang="ts">
-	import { datasets } from '$src/appstate/data/datasets.svelte';
-	import { selectedSite, selectedArea } from '$src/appstate/map/featureState.svelte';
+	import { selectedArea } from '$src/appstate/map/featureState.svelte';
 	import { sites as appstateSites } from '$src/appstate/sites.svelte';
-	import type { Site } from '$src/lib/types/site';
-	import { mdiDetails } from '@mdi/js';
-	import StatsDataTable from '../site/StatsDataTable.svelte';
-	import type { VariableStats } from '$src/lib/types/analysis';
 	import { sitesDataStats } from '$src/lib/data/stats';
+	import type { VariableStats } from '$src/lib/types/analysis';
+	import StatsDataTable from '../site/StatsDataTable.svelte';
 
 	const area = $derived(selectedArea);
 	const sites = $derived(appstateSites.all.filter((s) => s.huc10 === area.id));

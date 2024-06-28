@@ -1,26 +1,39 @@
 <script lang="ts">
-	import { datasets } from '$src/appstate/data/datasets.svelte';
-	import { selectedSite, selectedArea } from '$src/appstate/map/featureState.svelte';
+	import { recordsToTimeseries } from '$src/appstate/data/datasets.svelte';
+	import { selectedSite } from '$src/appstate/map/featureState.svelte';
+	import { siteRecords, timeseriesToStats } from '$src/lib/data/stats';
 	import type { VariableStats } from '$src/lib/types/analysis';
 	import StatsDataTable from '../site/StatsDataTable.svelte';
 
-	const rows: any[] = [];
-	const r: VariableStats = {
-		label: 'Temperature',
-		lastObservation: 79.2,
-		numObservations: 54,
-		min: 0.2,
-		max: 101.6,
-		mean: 60.0,
-		median: 62.0,
-		stdDev: 15.2,
-		dateFromLabel: '2009-01-01',
-		dateToLabel: '2020-09-31',
-	}
+	// const rows: any[] = [];
+	// const r: VariableStats = {
+	// 	variable: 'temp',
+	// 	label: 'Temperature',
+	// 	lastObservation: 79.2,
+	// 	numObservations: 54,
+	// 	min: 0.2,
+	// 	max: 101.6,
+	// 	mean: 60.0,
+	// 	median: 62.0,
+	// 	stdDev: 15.2,
+	// 	dateFromLabel: '2009-01-01',
+	// 	dateToLabel: '2020-09-31',
+	// }
 
-	for (let i = 0; i < 20; i++) {
-		rows.push(r);
-	}
+	const records = $derived(selectedSite.site && siteRecords(selectedSite.site));
+	const siteTimeseries = $derived(records && recordsToTimeseries(records));
+	const rows: VariableStats[] = $derived.by(() => {
+		const rs: VariableStats[] = [];
+		console.log(siteTimeseries)
+		for (const variable in siteTimeseries) {
+			const ts = siteTimeseries[variable];
+			const stats = timeseriesToStats(variable, ts);
+			rs.push(stats);
+		}
+		return rs;
+	});
+
+
 </script>
 
 
@@ -44,11 +57,11 @@
 			<td>{r.label}</td>
 			<td>{r.lastObservation}</td>
 			<td>{r.numObservations}</td>
-			<td>{r.min}</td>
-			<td>{r.max}</td>
-			<td>{r.mean}</td>
-			<td>{r.median}</td>
-			<td>{r.stdDev}</td>
+			<td class="stat">{r.min}</td>
+			<td class="stat">{r.max}</td>
+			<td class="stat">{r.mean}</td>
+			<td class="stat">{r.median}</td>
+			<td class="stat">{r.stdDev}</td>
 			<td class="date">{r.dateFromLabel}</td>
 			<td class="date">{r.dateToLabel}</td>
 		{/snippet}
@@ -76,6 +89,12 @@
 	td.date {
 		/* font-size: 75%; */
 		min-width: 6rem;
+	}
+
+	td.stat {
+		max-width: 3rem;
+		overflow-x: hidden;
+		padding-right: 0.5rem;
 	}
 
 	th {
