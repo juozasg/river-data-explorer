@@ -32,41 +32,43 @@
 </div>
 
 <div id="area-details">
-	{#if selectedArea.feature}
-		<h4 class="has-text-centered">
-			Region: {selectedArea.name} (HUC10: {selectedArea.id})<button
-				class="change-button"
-				onclick={onChangeArea}>Change</button
-			>
-		</h4>
-
-		<div class="columns" style="height: 100%">
-			<div class="column left-column is-half">
-				<div class="details">
-					<div class="details-top">
-						<SiteSelectorMap />
-					</div>
-					<div class="details-bottom">
-						<h1 style="color:purple">plot goes here</h1>
-					</div>
-				</div>
-			</div>
-			<div class="column right-column is-half">
-				<div class="details">
-					<div class="details-top">
-						<RegionStatsPanel />
-					</div>
-					<div class="details-bottom">
-						<SiteStatsPanel />
-					</div>
-				</div>
-			</div>
-		</div>
-	{:else}
-		<div class="placeholder">
-			<h2><a href="#section-select-area">Select watershed region</a></h2>
+	{#if !selectedArea.feature}
+		<div class="placeholder" class:is-hidden={!!selectedArea.feature}>
+			<!-- svelte-ignore a11y_missing_attribute -->
+			<!-- svelte-ignore a11y_no_static_element_interactions -->
+			<!-- svelte-ignore a11y_click_events_have_key_events -->
+			<h2><a onclick={onChangeArea}>Select watershed region</a></h2>
 		</div>
 	{/if}
+	<h4 class="has-text-centered">
+		Region: {selectedArea.name} (HUC10: {selectedArea.id})<button
+			class="change-button"
+			onclick={onChangeArea}>Change</button
+		>
+	</h4>
+
+	<div class="columns" style="height: 100%" class:is-hidden={!selectedArea.feature}>
+		<div class="column left-column is-half">
+			<div class="details">
+				<div class="details-top">
+					<SiteSelectorMap />
+				</div>
+				<div class="details-bottom">
+					<h1 style="color:purple">plot goes here</h1>
+				</div>
+			</div>
+		</div>
+		<div class="column right-column is-half">
+			<div class="details">
+				<div class="details-top">
+					<RegionStatsPanel />
+				</div>
+				<div class="details-bottom">
+					<SiteStatsPanel />
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <style>
@@ -102,7 +104,6 @@
 		height: calc(50% - 1rem);
 	}
 
-
 	#area-details {
 		margin-top: 1rem;
 		/* border: 1px solid aqua; */
@@ -132,24 +133,5 @@
 	.column {
 		padding: 0;
 		margin-bottom: 1rem;
-	}
-
-	.dataset-column {
-		min-height: 400px;
-
-		/* margin-left: 1rem; */
-		/* background-color: #f0f0f0; */
-		/* font-size: 3rem; */
-		/* text-align: center; */
-		padding: 1rem;
-		padding-right: 0;
-		padding-top: 0;
-
-		/* .placeholder {
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		align-items: center;
-		} */
 	}
 </style>
