@@ -68,10 +68,8 @@
 		const changed = selectedArea.update(map, feature);
 		if(changed || hoveredSite) {
 			if(hoveredSite) selectedSite.set(hoveredSite);
-			sites.selectInHuc10(selectedArea.id);
 			console.log('selectedSite', selectedSite.site);
 			if(feature)	onSelected?.();
-			// console.log('SELECTED', selectedArea?.feature?.id, sites.inHuc10(selectedArea?.feature?.id));
 		}
 	}
 </script>

@@ -40,6 +40,10 @@
 		border-collapse: separate !important;
 	}
 
+	table thead {
+		box-shadow:#ccc 2px 2px 5px;
+	}
+
 	table :global(td.date) {
 		width: 6rem;
 	}
@@ -77,7 +81,7 @@
 		pointer-events: none;
 		background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
 		width: 100%;
-		height: 2em;
+		height: 2.5em;
 	}
 
 	.table-container :global(.table.is-narrow td), .table-container  :global(.table.is-narrow th) {
@@ -86,6 +90,10 @@
 
 	/* hide the fade */
 	table :global(tr:last-child) {
+		z-index: 200;
+		position: relative;
+	}
+	table :global(tr:nth-last-child(2)) {
 		z-index: 200;
 		position: relative;
 	}

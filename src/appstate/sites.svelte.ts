@@ -3,7 +3,6 @@ import { sitesGeoindex } from "./data/geoindexes.svelte";
 
 export class Sites {
 	private sites: Site[] = $state([]);
-	private selectedSites: Site[] = $state([]);
 
 	add(site: Site) {
 		this.sites.push(site);
@@ -13,20 +12,8 @@ export class Sites {
 		return this.sites;
 	}
 
-	get selected() {
-		return this.selectedSites;
-	}
-
 	inHuc10(huc10: string | undefined | number) {
 		return this.sites.filter(s => s.huc10 === huc10);
-	}
-
-	selectInHuc10(huc10: number | string | undefined) {
-		if(!huc10) {
-			this.selectedSites = [];
-			return;
-		}
-		this.selectedSites = this.inHuc10(huc10);
 	}
 
 	findById(siteId: string) {
