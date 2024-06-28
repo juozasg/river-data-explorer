@@ -20,7 +20,7 @@ export const notify = (message: string, level: NotificationLevel = 'info', fadeo
 	const id = nextId++;
 
 	_notifications.push({ id, level, message });
-	if (fadeout !== 0) {
+	if(fadeout !== 0) {
 		setTimeout(() => {
 			closeNotification(id);
 		}, fadeout);

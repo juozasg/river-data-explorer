@@ -44,7 +44,7 @@ async function fetchDataWithCache(path: string) {
 	const manifestSha1 = dataManifest[path];
 
 	const cachedResponse = await cache.match(url);
-	if (cachedResponse && await sha1Matches(cachedResponse, manifestSha1)) {
+	if(cachedResponse && await sha1Matches(cachedResponse, manifestSha1)) {
 		console.log('data cache hit', path, manifestSha1);
 		return cachedResponse;
 	}
@@ -52,7 +52,7 @@ async function fetchDataWithCache(path: string) {
 	const response = await fetch(url);
 	console.log('data fetch ', url);
 
-	if (!response.ok) throw new Error('Request failed.');
+	if(!response.ok) throw new Error('Request failed.');
 
 	cache.put(url, response.clone());
 
@@ -60,7 +60,7 @@ async function fetchDataWithCache(path: string) {
 }
 
 async function sha1Matches(response: Response | undefined, expectedSha1: string | undefined) {
-	if (!response || !expectedSha1) return false;
+	if(!response || !expectedSha1) return false;
 	const text = await response.clone().text();
 	return expectedSha1 === await sha1(text);
 }

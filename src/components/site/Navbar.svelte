@@ -18,7 +18,7 @@
 	let burgerActive = $state(false);
 
 	$effect(() => {
-		if ($navigating) {
+		if($navigating) {
 			burgerActive = false;
 		}
 	});
@@ -33,8 +33,8 @@
 
 	function toggleMenu(e: any) {
 		let menu = e.currentTarget.querySelector('.navbar-dropdown');
-		if (menu) {
-			if (e.target.parentElement.classList.contains('navbar-dropdown')) menu.style.display = 'none';
+		if(menu) {
+			if(e.target.parentElement.classList.contains('navbar-dropdown')) menu.style.display = 'none';
 			setTimeout(() => {
 				menu.style.display = '';
 				e.target.blur();

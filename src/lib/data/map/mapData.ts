@@ -28,7 +28,7 @@ export async function addSources(map: ml.Map): Promise<void> {
 }
 
 export function addRiverLayers(map: ml.Map): void {
-	if (map.getLayer('sjriver-river')) map.removeLayer('sjriver-river');
+	if(map.getLayer('sjriver-river')) map.removeLayer('sjriver-river');
 
 	const mainstemColor = '#17a0d1';
 	const tributariesColor = '#1db2e7';
@@ -69,5 +69,5 @@ export function addRiverLayers(map: ml.Map): void {
 }
 
 export async function toggleRiverLayerVisibility(map: ml.Map, visible: boolean) {
-	if (map.getLayer('sjriver-river')) map.setLayoutProperty('sjriver-river', 'visibility', visible ? 'visible' : 'none');
+	if(map.getLayer('sjriver-river')) map.setLayoutProperty('sjriver-river', 'visibility', visible ? 'visible' : 'none');
 }

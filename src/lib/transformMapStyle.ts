@@ -8,7 +8,7 @@ export const transformStyle = (previousStyle: ml.StyleSpecification | any, nextS
 	const keepSources: any = {};
 
 	for(const source in previousStyle.sources) {
-		if (source.match(/^sjriver-/)) {
+		if(source.match(/^sjriver-/)) {
 			keepSources[source] = previousStyle.sources[source];
 		}
 	}

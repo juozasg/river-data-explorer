@@ -33,7 +33,7 @@ function timeseriesToSites(timeSeries: any) {
 		const siteCode = ts.sourceInfo.siteCode[0].value;
 		const siteId = `usgs-${siteCode}`;
 
-		if (sites.findById(siteId)) continue;
+		if(sites.findById(siteId)) continue;
 
 		const loc = ts.sourceInfo.geoLocation.geogLocation;
 		const site: Site = {

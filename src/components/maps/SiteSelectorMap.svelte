@@ -64,8 +64,8 @@
 
 	function mapClick(point: ml.PointLike) {
 		console.log(point);
-		if (!mlMap) return;
-		if (hoveredSite.site) {
+		if(!mlMap) return;
+		if(hoveredSite.site) {
 			selectedSite.set(hoveredSite.site);
 			console.log('SELECTED SITE', selectedSite);
 		} else {

@@ -9,7 +9,7 @@
 	let lastMouseLocation: { x: number; y: number } | undefined;
 
 	$effect(() => {
-		if (toggleHideTooltips.hide == true) {
+		if(toggleHideTooltips.hide == true) {
 			hideTooltip();
 		} else {
 			if(lastMouseLocation) showTooltip(lastMouseLocation.x, lastMouseLocation.y);

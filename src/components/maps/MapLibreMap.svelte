@@ -43,7 +43,7 @@
 	}
 
 	$effect(() => {
-		if (!mlMap) return;
+		if(!mlMap) return;
 
 		const style = basemapStyles[baseStyleId];
 		mlMap.setStyle(style, { transformStyle });
@@ -93,7 +93,7 @@
 	});
 
 	$effect(() => {
-		if (!mlMap) return;
+		if(!mlMap) return;
 		toggleRiverLayerVisibility(mlMap, showRiverLayer);
 	});
 

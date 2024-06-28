@@ -11,11 +11,11 @@ export const formatLngLat = (lngLat: LngLat, fractionDigits?: number) => {
 
 export const copyLngLat = (e: KeyboardEvent) => {
 	// console.log("key", e);
-	if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+	if(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
 		return;
 	}
 
-	if (e.key === 'c') {
+	if(e.key === 'c') {
 		if(mapMouseLocation.lngLat) {
 			navigator.clipboard.writeText(formatLngLat(mapMouseLocation.lngLat));
 			console.log("copied", mapMouseLocation.lngLat);

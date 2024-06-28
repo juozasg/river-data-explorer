@@ -9,8 +9,8 @@ export async function addLayers(map: ml.Map): Promise<void> {
 
 
 function addLayersHuc10(map: ml.Map): void {
-	if (map.getLayer('sjriver-sites-huc10-outline')) map.removeLayer('sjriver-sites-huc10-outline');
-	if (map.getLayer('sjriver-sites-huc10')) map.removeLayer('sjriver-sites-huc10');
+	if(map.getLayer('sjriver-sites-huc10-outline')) map.removeLayer('sjriver-sites-huc10-outline');
+	if(map.getLayer('sjriver-sites-huc10')) map.removeLayer('sjriver-sites-huc10');
 
 	map.addLayer({
 		id: 'sjriver-sites-huc10',

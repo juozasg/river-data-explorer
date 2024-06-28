@@ -34,18 +34,18 @@
 			const firstDate = firstRecord.date;
 			const lastDate = firstRecord.date;
 
-			if (firstDate) {
-				if (!firstObs) firstObs = firstDate;
+			if(firstDate) {
+				if(!firstObs) firstObs = firstDate;
 
-				if (firstDate < firstObs!) {
+				if(firstDate < firstObs!) {
 					firstObs = firstDate;
 				}
 			}
 
-			if (lastDate) {
-				if (!lastObs) lastObs = lastDate;
+			if(lastDate) {
+				if(!lastObs) lastObs = lastDate;
 
-				if (lastDate > lastObs!) {
+				if(lastDate > lastObs!) {
 					lastObs = lastDate;
 				}
 			}
