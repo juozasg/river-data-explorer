@@ -62,25 +62,6 @@
 				</div>
 			</div>
 		</div>
-
-		<!-- <div class="columns">
-			<div class="column is-half">
-				<div id="details-top">
-					<SiteSelectorMap  />
-				</div>
-				<div id="details-bottom">
-					<h1 style="color:purple">plot goes here</h1>
-				</div>
-			</div>
-			<div class="column is-half">
-				<div id="region-stats-container">
-					<RegionStatsDataTable />
-				</div>
-				<div id="site-stats-container">
-					<SiteStatsDataTable />
-				</div>
-			</div>
-		</div> -->
 	{:else}
 		<div class="placeholder">
 			<h2><a href="#section-select-area">Select watershed region</a></h2>
@@ -102,10 +83,10 @@
 	}
 
 	.left-column {
-		padding-right: 0.5rem !important;
+		padding-right: 1rem !important;
 	}
 	.right-column {
-		padding-left: 0.5rem !important;
+		padding-left: 1rem !important;
 	}
 
 	#basin-areas {

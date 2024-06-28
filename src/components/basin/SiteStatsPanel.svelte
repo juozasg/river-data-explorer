@@ -1,139 +1,57 @@
 <script lang="ts">
 	import { datasets } from '$src/appstate/data/datasets.svelte';
 	import { selectedSite, selectedArea } from '$src/appstate/map/featureState.svelte';
-	import { sites as sitesState } from '$src/appstate/sites.svelte';
-	import type { Site } from '$src/lib/types/site';
-	import { mdiDetails } from '@mdi/js';
+	import StatsDataTable from '../site/StatsDataTable.svelte';
 
-	const area = $derived(selectedArea);
-	const sites = $derived(sitesState.selected);
-	let varsNumber = $state(0);
-	let recordsNumber = $state(0);
+	const rows: any[] = [];
+	const r = {
+		label: 'Temperature',
+		lastObservation: 79.2,
+		numObservations: 54,
+		min: 0.2,
+		max: 101.6,
+		mean: 60.0,
+		median: 62.0,
+		stdDev: 15.2,
+		dateFromLabel: '2009-01-01',
+		dateToLabel: '2020-09-31',
+	}
 
-	// const firstObservations: Record<string, Date> = $state({});
-	// const lastObservations: Record<string, Date> = $state({});
-
-	let firstObs: Date | undefined = $state();
-	let lastObs: Date | undefined = $state();
-
-	$effect(() => {
-		let _varsNumber = 0;
-		let _recordsNumber = 0;
-
-		for (const s of sites) {
-			const records = datasets.get(s.id);
-			_recordsNumber += records?.length || 0;
-
-			const firstRecord = records?.[0] || {};
-			_varsNumber = Math.max(_varsNumber, Object.keys(firstRecord).length);
-
-			const lastRecord = records?.[records.length - 1] || {};
-
-			const firstDate = firstRecord.date;
-			const lastDate = firstRecord.date;
-
-			if (firstDate) {
-				if (!firstObs) firstObs = firstDate;
-
-				if (firstDate < firstObs!) {
-					firstObs = firstDate;
-				}
-			}
-
-			if (lastDate) {
-				if (!lastObs) lastObs = lastDate;
-
-				if (lastDate > lastObs!) {
-					lastObs = lastDate;
-				}
-			}
-		}
-
-		varsNumber = _varsNumber > 0 ? _varsNumber - 1 : 0; // remove 'date' column
-		recordsNumber = _recordsNumber;
-	});
-
-	const shortMon = (date: Date): string => date.toLocaleString('default', { month: 'short' });
-	// const short = (date: Date): string => date.toLocaleString('default', { month: 'short' });
-	const fmtDate = (date: Date): string => `${shortMon(date)} ${date.getDay()}, ${date.getFullYear()}`
+	for (let i = 0; i < 20; i++) {
+		rows.push(r);
+	}
 </script>
 
-{#snippet thead()}
-<thead>
-	<tr>
-		<th>Variable</th>
-		<th>Last</th>
-		<th>From</th>
-		<th>To</th>
-		<th># obs</th>
-		<th>Min</th>
-		<th>Max</th>
-		<th>Mean</th>
-		<th>Median</th>
-		<th>Std Dev</th>
-	</tr>
-</thead>
-{/snippet}
 
-
-{#snippet phosphate()}
-<tr>
-	<td>Phosphate</td>
-	<td>78</td>
-	<td>2009-01-01</td>
-	<td>2020-09-31</td>
-	<td>53</td>
-	<td>0.2</td>
-	<td>101.6</td>
-	<td>60.0</td>
-	<td>60.0</td>
-	<td>15.2</td>
-</tr>
-{/snippet}
-
-
-
-{#snippet tbody()}
-<tbody>
-
-
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-
-
-</tbody>
-{/snippet}
 
 <div id="panel">
 	{#if selectedSite.site}
 	<h3 class='site-label'>Site: {selectedSite.site?.name} ({selectedSite.site?.id})</h3>
-	<div class="table-container">
-		<table class="table is-striped is-narrow">
-			{@render thead()}
-			{@render tbody()}
-		</table>
-	</div>
+	<StatsDataTable data={rows}>
+		<th>Variable</th>
+		<th>Last</th>
+		<th>#obs</th>
+		<th>Min</th>
+		<th>Max</th>
+		<th>Mean</th>
+		<th>Median</th>
+		<th>Sd</th>
+		<th>From</th>
+		<th>To</th>
+
+		{#snippet row(d)}
+			<td>Temperature</td>
+			<td>79.2</td>
+			<td>53</td>
+			<td>0.2</td>
+			<td>101.6</td>
+			<td>60.0</td>
+			<td>60.0</td>
+			<td>15.2</td>
+			<td class="date">2009-01-01</td>
+			<td class="date">2020-09-31</td>
+		{/snippet}
+	</StatsDataTable>
 	{:else}
 	<h2>Click a site marker on the map to select</h2>
 	{/if}
@@ -166,25 +84,5 @@
 		border-bottom: 1px solid #555 !important;
 		border-collapse: separate !important;
 	}
-
-
-	table {
-		border-collapse: separate;
-	}
-
-	tr td:nth-child(2), tr th:nth-child(2) {
-		border-right: 1px dashed #ccc;
-	}
-	tr td:first-child {
-		font-weight: 500;
-	}
-
-	.table-container {
-		/* height: 300px; */
-		height: 100%;
-		overflow-y: auto;
-		/* margin-bottom: 3rem; */
-	}
-
 
 </style>

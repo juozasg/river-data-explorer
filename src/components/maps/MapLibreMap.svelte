@@ -133,7 +133,7 @@
 	pre {
 		position: absolute;
 		bottom: -22px;
-		left: 110px;
+		left: 0px;
 		z-index: 2;
 		background: none;
 		padding: 0.5rem;
