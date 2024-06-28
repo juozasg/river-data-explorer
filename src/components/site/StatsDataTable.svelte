@@ -12,18 +12,18 @@
 
 
 <div class="fade-container">
-<div class="table-container">
-	<table class="table is-striped is-narrow">
-		<thead>
-			<tr>{@render children()}</tr>
-		</thead>
-		<tbody>
-			{#each data as d}
-			<tr>{@render row(d)}</tr>
-			{/each}
-		</tbody>
-	</table>
-</div>
+	<div class="table-container">
+		<table class="table is-striped is-narrow">
+			<thead>
+				<tr>{@render children()}</tr>
+			</thead>
+			<tbody>
+				{#each data as d}
+				<tr>{@render row(d)}</tr>
+				{/each}
+			</tbody>
+		</table>
+	</div>
 </div>
 
 <style>
@@ -78,6 +78,10 @@
 		background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
 		width: 100%;
 		height: 2em;
+	}
+
+	.table-container :global(.table.is-narrow td), .table-container  :global(.table.is-narrow th) {
+		padding: 0.125em 0.4em !important;
 	}
 
 	/* hide the fade */

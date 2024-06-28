@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { datasets } from '$src/appstate/data/datasets.svelte';
 	import { selectedSite, selectedArea } from '$src/appstate/map/featureState.svelte';
+	import type { VariableStats } from '$src/lib/types/analysis';
 	import StatsDataTable from '../site/StatsDataTable.svelte';
 
 	const rows: any[] = [];
-	const r = {
+	const r: VariableStats = {
 		label: 'Temperature',
 		lastObservation: 79.2,
 		numObservations: 54,
@@ -39,17 +40,17 @@
 		<th>From</th>
 		<th>To</th>
 
-		{#snippet row(d)}
-			<td>Temperature</td>
-			<td>79.2</td>
-			<td>53</td>
-			<td>0.2</td>
-			<td>101.6</td>
-			<td>60.0</td>
-			<td>60.0</td>
-			<td>15.2</td>
-			<td class="date">2009-01-01</td>
-			<td class="date">2020-09-31</td>
+		{#snippet row(r: VariableStats)}
+			<td>{r.label}</td>
+			<td>{r.lastObservation}</td>
+			<td>{r.numObservations}</td>
+			<td>{r.min}</td>
+			<td>{r.max}</td>
+			<td>{r.mean}</td>
+			<td>{r.median}</td>
+			<td>{r.stdDev}</td>
+			<td class="date">{r.dateFromLabel}</td>
+			<td class="date">{r.dateToLabel}</td>
 		{/snippet}
 	</StatsDataTable>
 	{:else}

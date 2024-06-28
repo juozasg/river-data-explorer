@@ -5,6 +5,7 @@
 	import type { Site } from '$src/lib/types/site';
 	import { mdiDetails } from '@mdi/js';
 	import StatsDataTable from '../site/StatsDataTable.svelte';
+	import type { VariableStats } from '$src/lib/types/analysis';
 
 	const area = $derived(selectedArea);
 	const sites = $derived(sitesState.selected);
@@ -60,7 +61,7 @@
 		`${shortMon(date)} ${date.getDay()}, ${date.getFullYear()}`;
 
 	const rows: any[] = [];
-	const r = {
+	const r: VariableStats = {
 		label: 'Temperature',
 		numObservations: 54,
 		min: 0.2,
@@ -97,21 +98,21 @@
 		<th>Min</th>
 		<th>Max</th>
 		<th>Mean</th>
-		<th>Median</th>
+		<th>Med</th>
 		<th>Sd</th>
 		<th>From</th>
 		<th>To</th>
 
-		{#snippet row(d)}
-			<td>Temperature</td>
-			<td>53</td>
-			<td>0.2</td>
-			<td>101.6</td>
-			<td>60.0</td>
-			<td>60.0</td>
-			<td>15.2</td>
-			<td class="date">2009-01-01</td>
-			<td class="date">2020-09-31</td>
+		{#snippet row(d: VariableStats)}
+		<td>{r.label}</td>
+		<td>{r.numObservations}</td>
+		<td>{r.min}</td>
+		<td>{r.max}</td>
+		<td>{r.mean}</td>
+		<td>{r.median}</td>
+		<td>{r.stdDev}</td>
+		<td class="date">{r.dateFromLabel}</td>
+		<td class="date">{r.dateToLabel}</td>
 		{/snippet}
 	</StatsDataTable>
 </div>
