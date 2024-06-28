@@ -4,7 +4,10 @@ import { loadDataCsv } from "$lib/data/cachedDataLoad";
 import { startedLoading } from '../ui/loadingItem.svelte';
 import { dataPathsStartingWith } from '$src/lib/data/loaders/loadAppData';
 
-export const datasets: Map<string, Record<string, any>[]> = new sr.Map();
+// siteId -> timeseries records
+export type SiteId = string;
+export type DatasetRecord = Record<string, any> & { date: Date } & { siteId: SiteId };
+export const datasets: Map<SiteId, DatasetRecord[]> = new sr.Map();
 
 export async function loadDatasets() {
 	const finishedLoading = startedLoading("Datasets");

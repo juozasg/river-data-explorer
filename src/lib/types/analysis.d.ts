@@ -10,3 +10,12 @@ export type VariableStats = {
 	dateFromLabel: string;
 	dateToLabel: string;
 };
+
+
+export type SitesDataStats = {
+	numSites: number;
+	numVariables: number;
+	numRecords: number;
+	dateFromLabel?: string;
+	dateToLabel?: string;
+};

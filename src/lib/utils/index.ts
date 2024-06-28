@@ -27,3 +27,10 @@ export function partition(array: any[], filter: (e: any, i: number, arr: any[]) 
   array.forEach((e, idx, arr) => (filter(e, idx, arr) ? pass : fail).push(e));
   return [pass, fail];
 }
+
+
+
+const shortMon = (date: Date): string => date.toLocaleString('default', { month: 'short' });
+// const short = (date: Date): string => date.toLocaleString('default', { month: 'short' });
+export const fmtDate = (date: Date): string =>
+	`${shortMon(date)} ${date.getDay()}, ${date.getFullYear()}`;

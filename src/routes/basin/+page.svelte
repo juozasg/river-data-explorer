@@ -6,8 +6,6 @@
 	import RegionStatsPanel from '$src/components/basin/RegionStatsPanel.svelte';
 	import SiteStatsPanel from '$src/components/basin/SiteStatsPanel.svelte';
 
-	let selectedDate = $state(2002);
-
 	const onSelectedArea = () => {
 		const areaDetailsAnchor = window.document.getElementById('area-details');
 		areaDetailsAnchor?.scrollIntoView({ behavior: 'smooth', block: 'start' });

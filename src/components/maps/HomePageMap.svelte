@@ -11,6 +11,8 @@
 	import { addSources } from '$src/lib/data/map/mapData';
 	import type { Site } from '$src/lib/types/site';
 	import Marker from './Marker.svelte';
+	import { sitesDataStats } from '$src/lib/data/stats';
+	import TooltipSiteStats from '../site/TooltipSiteStats.svelte';
 
 	type Props = {
 		onSelected?: () => void;
@@ -26,6 +28,15 @@
 	const hoveredArea = new HoveredFeatureState();
 	let hoveredSite: Site | null = $state(null);
 
+	const hoveredSiteStats = $derived(hoveredSite ? sitesDataStats([hoveredSite]) : undefined);
+
+	const hoveredAreaSites = $derived(
+		sites.all.filter((s) => hoveredArea.id && s.huc10 === hoveredArea.id)
+	);
+	const hoveredAreaStats = $derived(
+		hoveredAreaSites.length > 0 ? sitesDataStats(hoveredAreaSites) : undefined
+	);
+
 	onMount(() => {
 		console.log('HomePageMap onMount', divElement, mlMap, mlmComponent);
 		const map = mlMap!;
@@ -34,7 +45,7 @@
 			hoveredRiver.mouseMove(e, ['sjriver-river']);
 			hoveredArea.mouseMove(e, ['sjriver-huc10']);
 
-			if(hoveredRiver.feature || hoveredSite || hoveredArea.feature) {
+			if (hoveredRiver.feature || hoveredSite || hoveredArea.feature) {
 				mlmComponent.showTooltip(e.point.x, e.point.y);
 			} else {
 				mlmComponent.hideTooltip();
@@ -57,6 +68,12 @@
 	{#if hoveredArea.feature}
 		<h5>Watershed: {hoveredArea.name}</h5>
 		<i>HUC10: {hoveredArea.id}</i>
+		{#if hoveredArea.feature}
+			<p><b>{sites.inHuc10(hoveredArea.feature.id).length}</b> sites</p>
+		{/if}
+		{#if hoveredAreaStats}
+			<TooltipSiteStats stats={hoveredAreaStats} />
+		{/if}
 	{/if}
 	{#if hoveredRiver.feature}
 		<h5 class="river tooltip-section">River: {hoveredRiver.name}</h5>
@@ -65,6 +82,9 @@
 	{#if hoveredSite}
 		<h5 class="site tooltip-section">Site: {hoveredSite.name || ''}</h5>
 		<i>Site ID: {hoveredSite.id}</i>
+		{#if hoveredSiteStats}
+			<TooltipSiteStats stats={hoveredSiteStats} />
+		{/if}
 	{/if}
 {/snippet}
 

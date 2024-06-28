@@ -12,6 +12,8 @@
 	import type { Site } from '$src/lib/types/site';
 	import { fitFeatureBounds, makeSiteMarker, setFeatureState } from '$src/lib/utils/maplibre';
 	import Marker from './Marker.svelte';
+	import { sitesDataStats } from '$src/lib/data/stats';
+	import TooltipSiteStats from '../site/TooltipSiteStats.svelte';
 
 	// type Props = {
 	// 	onSelected?: () => void;
@@ -23,6 +25,9 @@
 	let divElement: HTMLDivElement | undefined = $state();
 	let mlMap: ml.Map | undefined = $state();
 
+	const hoveredSiteStats = $derived(
+		hoveredSite.site ? sitesDataStats([hoveredSite.site]) : undefined
+	);
 
 	onMount(() => {
 		console.log('SiteSelectorMap onMount', divElement, mlMap, mlmComponent);
@@ -33,7 +38,7 @@
 	$effect(() => {
 		selectedArea.feature;
 		mlmComponent.dataLoaded();
-		if(!mlMap || !mlmComponent.dataLoaded()) return;
+		if (!mlMap || !mlmComponent.dataLoaded()) return;
 		const map = mlMap!;
 
 		map.querySourceFeatures('sjriver-huc10').forEach((feature) => {
@@ -41,7 +46,7 @@
 			// console.log('FALSE', feature.id);
 		});
 
-		if(selectedArea.feature) {
+		if (selectedArea.feature) {
 			setFeatureState(map, 'sjriver-huc10', selectedArea.feature.id, { selected: true });
 			fitFeatureBounds(map, selectedArea.feature);
 			// console.log('---TRUE0---', selectedArea.feature.id);
@@ -64,8 +69,8 @@
 
 	function mapClick(point: ml.PointLike) {
 		console.log(point);
-		if(!mlMap) return;
-		if(hoveredSite.site) {
+		if (!mlMap) return;
+		if (hoveredSite.site) {
 			selectedSite.set(hoveredSite.site);
 			console.log('SELECTED SITE', selectedSite);
 		} else {
@@ -81,6 +86,9 @@
 {#snippet tooltipContent()}
 	<h5>{hoveredSite.site?.name || ''}</h5>
 	<p>{hoveredSite.site?.id || ''}</p>
+	{#if hoveredSiteStats}
+		<TooltipSiteStats stats={hoveredSiteStats} />
+	{/if}
 {/snippet}
 
 <MapLibreMap
@@ -108,10 +116,15 @@
 
 {#if mlMap}
 	{#each sites.all as site}
-		<Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site} highlighted={isHighlighted(site)}/>
+		<Marker
+			map={mlMap}
+			{markerMouseEnter}
+			{markerMouseLeave}
+			{site}
+			highlighted={isHighlighted(site)}
+		/>
 	{/each}
 {/if}
 
 <style>
-
 </style>

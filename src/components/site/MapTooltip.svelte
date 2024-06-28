@@ -74,6 +74,11 @@
 		margin-bottom: 3px;
 	}
 
+	:global(.hover-tooltip p) {
+		margin-top: 0px !important;
+		margin-bottom: 0px !important;
+	}
+
 	:global(h5.tooltip-section) {
 		border-top: 1px solid #ccc;
 		padding-top: 5px;

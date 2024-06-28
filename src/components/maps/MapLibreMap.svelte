@@ -8,7 +8,7 @@
 	import { toggleoffAttribution } from '$src/lib/utils/maplibre';
 	import { onMount } from 'svelte';
 	import LayerSwitcher from './LayerSwitcher.svelte';
-	import MapTooltip from './MapTooltip.svelte';
+	import MapTooltip from '../site/MapTooltip.svelte';
 	import { toggleRiverLayerVisibility } from '$src/lib/data/map/mapData';
 
 	let {

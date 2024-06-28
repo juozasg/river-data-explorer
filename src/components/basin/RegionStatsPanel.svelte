@@ -6,6 +6,7 @@
 	import { mdiDetails } from '@mdi/js';
 	import StatsDataTable from '../site/StatsDataTable.svelte';
 	import type { VariableStats } from '$src/lib/types/analysis';
+	import { sitesDataStats } from '$src/lib/data/stats';
 
 	const area = $derived(selectedArea);
 	const sites = $derived(appstateSites.all.filter((s) => s.huc10 === area.id));
@@ -18,47 +19,7 @@
 	let firstObs: Date | undefined = $state();
 	let lastObs: Date | undefined = $state();
 
-	$effect(() => {
-		let _varsNumber = 0;
-		let _recordsNumber = 0;
-
-		for (const s of sites) {
-			const records = datasets.get(s.id);
-			_recordsNumber += records?.length || 0;
-
-			const firstRecord = records?.[0] || {};
-			_varsNumber = Math.max(_varsNumber, Object.keys(firstRecord).length);
-
-			const lastRecord = records?.[records.length - 1] || {};
-
-			const firstDate = firstRecord.date;
-			const lastDate = firstRecord.date;
-
-			if(firstDate) {
-				if(!firstObs) firstObs = firstDate;
-
-				if(firstDate < firstObs!) {
-					firstObs = firstDate;
-				}
-			}
-
-			if(lastDate) {
-				if(!lastObs) lastObs = lastDate;
-
-				if(lastDate > lastObs!) {
-					lastObs = lastDate;
-				}
-			}
-		}
-
-		varsNumber = _varsNumber > 0 ? _varsNumber - 1 : 0; // remove 'date' column
-		recordsNumber = _recordsNumber;
-	});
-
-	const shortMon = (date: Date): string => date.toLocaleString('default', { month: 'short' });
-	// const short = (date: Date): string => date.toLocaleString('default', { month: 'short' });
-	const fmtDate = (date: Date): string =>
-		`${shortMon(date)} ${date.getDay()}, ${date.getFullYear()}`;
+	const sitesStats = $derived(sitesDataStats(sites));
 
 	const rows: any[] = [];
 	const r: VariableStats = {
@@ -80,13 +41,13 @@
 
 <div id="panel">
 	<div class="flex">
-		<div class="cell"><p><b>{sites.length}</b> sites</p></div>
-		<div class="cell"><p><b>{varsNumber}</b> variables</p></div>
-		<div class="cell"><p><b>{recordsNumber}</b> observations</p></div>
-		{#if firstObs && lastObs}
+		<div class="cell"><p><b>{sitesStats.numSites}</b> sites</p></div>
+		<div class="cell"><p><b>{sitesStats.numVariables}</b> variables</p></div>
+		<div class="cell"><p><b>{sitesStats.numRecords}</b> records</p></div>
+		{#if sitesStats.dateFromLabel && sitesStats.dateToLabel}
 			<div class="cell">
 				<span class="timespan">
-					from <b>{fmtDate(firstObs)}</b> to <b>{fmtDate(lastObs)}</b>
+					from <b>{sitesStats.dateFromLabel}</b> to <b>{sitesStats.dateToLabel}</b>
 				</span>
 			</div>
 		{/if}
