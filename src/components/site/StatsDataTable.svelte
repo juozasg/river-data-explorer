@@ -11,7 +11,7 @@
 
 
 
-
+<div class="fade-container">
 <div class="table-container">
 	<table class="table is-striped is-narrow">
 		<thead>
@@ -24,7 +24,7 @@
 		</tbody>
 	</table>
 </div>
-
+</div>
 
 <style>
 
@@ -38,6 +38,10 @@
 		background-color: white;
 		border-bottom: 1px solid #555 !important;
 		border-collapse: separate !important;
+	}
+
+	table :global(td.date) {
+		width: 6rem;
 	}
 
 	table {
@@ -54,20 +58,29 @@
 	.table-container {
 		height: 100%;
 		overflow-y: auto;
+		position: relative;
 	}
 
-	table:after {
-		content: "";
+	.fade-container {
+		position: relative;
+		height: 100%;
+		overflow: hidden;
+	}
+
+	.fade-container:after {
+		content: '';
 		position: absolute;
 		z-index: 1;
 		bottom: 0;
 		left: 0;
+		/* background-color: green; */
 		pointer-events: none;
-		background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 100%);
+		background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
 		width: 100%;
-		height: 3em;
+		height: 2em;
 	}
 
+	/* hide the fade */
 	table :global(tr:last-child) {
 		z-index: 200;
 		position: relative;

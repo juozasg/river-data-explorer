@@ -4,6 +4,7 @@
 	import { sites as sitesState } from '$src/appstate/sites.svelte';
 	import type { Site } from '$src/lib/types/site';
 	import { mdiDetails } from '@mdi/js';
+	import StatsDataTable from '../site/StatsDataTable.svelte';
 
 	const area = $derived(selectedArea);
 	const sites = $derived(sitesState.selected);
@@ -55,141 +56,64 @@
 
 	const shortMon = (date: Date): string => date.toLocaleString('default', { month: 'short' });
 	// const short = (date: Date): string => date.toLocaleString('default', { month: 'short' });
-	const fmtDate = (date: Date): string => `${shortMon(date)} ${date.getDay()}, ${date.getFullYear()}`
+	const fmtDate = (date: Date): string =>
+		`${shortMon(date)} ${date.getDay()}, ${date.getFullYear()}`;
+
+	const rows: any[] = [];
+	const r = {
+		label: 'Temperature',
+		numObservations: 54,
+		min: 0.2,
+		max: 101.6,
+		mean: 60.0,
+		median: 62.0,
+		stdDev: 15.2,
+		dateFromLabel: '2009-01-01',
+		dateToLabel: '2020-09-31',
+	}
+
+	for (let i = 0; i < 20; i++) {
+		rows.push(r);
+	}
 </script>
-
-{#snippet thead()}
-<thead>
-	<tr>
-		<th>Variable</th>
-		<th>From</th>
-		<th>To</th>
-		<th># obs</th>
-		<th>Min</th>
-		<th>Max</th>
-		<th>Mean</th>
-		<th>Median</th>
-		<th>Std Dev</th>
-	</tr>
-</thead>
-{/snippet}
-
-
-{#snippet phosphate()}
-<tr>
-	<td>Phosphate</td>
-	<td>2009-01-01</td>
-	<td>2020-09-31</td>
-	<td>53</td>
-	<td>0.2</td>
-	<td>101.6</td>
-	<td>60.0</td>
-	<td>60.0</td>
-	<td>15.2</td>
-</tr>
-{/snippet}
-
-
-
-{#snippet tbody()}
-<tbody>
-	<tr>
-		<td>Temperature</td>
-		<td class="date">2009-01-01</td>
-		<td class="date">2020-09-31</td>
-		<td>53</td>
-		<td>0.2</td>
-		<td>101.6</td>
-		<td>60.0</td>
-		<td>60.0</td>
-		<td>15.2</td>
-	</tr>
-	<tr>
-		<td>ph</td>
-		<td>2009-01-01</td>
-		<td>2020-09-31</td>
-		<td>53</td>
-		<td>0.2</td>
-		<td>101.6</td>
-		<td>60.0</td>
-		<td>60.0</td>
-		<td>15.2</td>
-	</tr>
-	<tr>
-		<td>Dissolved Oxygen</td>
-		<td>2009-01-01</td>
-		<td>2020-09-31</td>
-		<td>53</td>
-		<td>0.2</td>
-		<td>101.6</td>
-		<td>60.0</td>
-		<td>60.0</td>
-		<td>15.2</td>
-	</tr>
-	<tr>
-		<td>Phosphate</td>
-		<td>2009-01-01</td>
-		<td>2020-09-31</td>
-		<td>53</td>
-		<td>0.2</td>
-		<td>101.6</td>
-		<td>60.0</td>
-		<td>60.0</td>
-		<td>15.2</td>
-	</tr>
-	<tr>
-		<td>Dissolved Oxygen</td>
-		<td>2009-01-01</td>
-		<td>2020-09-31</td>
-		<td>53</td>
-		<td>0.2</td>
-		<td>101.6</td>
-		<td>60.0</td>
-		<td>60.0</td>
-		<td>15.2</td>
-	</tr>
-
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-	{@render phosphate()}
-
-
-</tbody>
-{/snippet}
 
 <div id="panel">
 	<div class="flex">
-
 		<div class="cell"><p><b>{sites.length}</b> sites</p></div>
 		<div class="cell"><p><b>{varsNumber}</b> variables</p></div>
 		<div class="cell"><p><b>{recordsNumber}</b> observations</p></div>
 		{#if firstObs && lastObs}
-		<div class="cell">
-			<span class='timespan'>
-				from <b>{fmtDate(firstObs)}</b> to <b>{fmtDate(lastObs)}</b>
-			</span>
-		</div>
+			<div class="cell">
+				<span class="timespan">
+					from <b>{fmtDate(firstObs)}</b> to <b>{fmtDate(lastObs)}</b>
+				</span>
+			</div>
 		{/if}
-
 	</div>
 
+	<StatsDataTable data={rows}>
+		<th>Variable</th>
+		<th>#obs</th>
+		<th>Min</th>
+		<th>Max</th>
+		<th>Mean</th>
+		<th>Median</th>
+		<th>Sd</th>
+		<th>From</th>
+		<th>To</th>
 
-	<div class="table-container">
-		<table class="table is-striped is-narrow">
-			{@render thead()}
-			{@render tbody()}
-		</table>
-	</div>
-
-
+		{#snippet row(d)}
+			<td>Temperature</td>
+			<td>53</td>
+			<td>0.2</td>
+			<td>101.6</td>
+			<td>60.0</td>
+			<td>60.0</td>
+			<td>15.2</td>
+			<td class="date">2009-01-01</td>
+			<td class="date">2020-09-31</td>
+		{/snippet}
+	</StatsDataTable>
 </div>
 
 <style>
@@ -200,41 +124,11 @@
 		display: flex;
 		flex-direction: column;
 	}
+
 	p {
 		margin-bottom: 0.2rem !important;
 	}
 
-	td.date {
-		/* font-size: 75%; */
-		min-width: 6rem;
-	}
-
-	th {
-		position: sticky;
-		top: 0;
-		background-color: white;
-		border-bottom: 1px solid #555 !important;
-		border-collapse: separate !important;
-	}
-
-
-	table {
-		border-collapse: separate;
-	}
-
-	tr td:first-child, tr th:first-child {
-		border-right: 1px dashed #ccc;
-	}
-	tr td:first-child {
-		font-weight: 500;
-	}
-
-	.table-container {
-		/* height: 300px; */
-		height: 100%;
-		overflow-y: auto;
-		/* margin-bottom: 3rem; */
-	}
 
 	.flex {
 		font-size: 1rem;
@@ -245,5 +139,4 @@
 		margin-bottom: 0.5rem;
 		/* padding-right: 1rem; */
 	}
-
 </style>

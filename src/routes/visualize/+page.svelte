@@ -1,6 +1,5 @@
 <script lang="ts">
-	import StatsDataTable from '$src/components/basin/StatsDataTable.svelte';
-	import type { F } from 'vitest/dist/reporters-yx5ZTtEV.js';
+	import StatsDataTable from '$src/components/site/StatsDataTable.svelte';
 
 	type Fruit = {
 		name: string;
