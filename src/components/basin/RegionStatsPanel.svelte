@@ -18,6 +18,26 @@
 
 	const sitesStats = $derived(sitesDataStats(sites));
 
+
+	// const combinedTimeseries = (sites) => {
+	// 	const
+	// }
+
+	// const records = $derived( && siteRecords(selectedSite.site));
+	// const siteTimeseries = $derived(records && recordsToTimeseries(records));
+	// const rows: VariableStats[] = $derived.by(() => {
+	// 	const rs: VariableStats[] = [];
+	// 	console.log(siteTimeseries)
+	// 	for (const variable in siteTimeseries) {
+	// 		const ts = siteTimeseries[variable];
+	// 		const stats = timeseriesToStats(variable, ts);
+	// 		rs.push(stats);
+	// 	}
+	// 	return rs;
+	// });
+
+
+
 	const rows: any[] = [];
 	const r: VariableStats = {
 		label: 'Temperature',

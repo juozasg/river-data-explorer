@@ -1,4 +1,7 @@
 <script lang="ts">
+	import Icon from '@iconify/svelte';
+	import { fade } from 'svelte/transition';
+
 	import RegionTypeTabs from './RegionTypeTabs.svelte';
 	import AreaSelectorMap from '$src/components/maps/AreaSelectorMap.svelte';
 	import SiteSelectorMap from '$src/components/maps/SiteSelectorMap.svelte';
@@ -35,12 +38,16 @@
 			<h2><a onclick={onChangeArea}>Select watershed region</a></h2>
 		</div>
 	{/if}
-	<h4 class="has-text-centered">
-		Region: {selectedArea.name} (HUC10: {selectedArea.id})<button
-			class="change-button"
-			onclick={onChangeArea}>Change</button
-		>
-	</h4>
+	{#if selectedArea.feature}
+		<h4 class="has-text-centered">
+			Region: {selectedArea.name} (HUC10: {selectedArea.id})<button
+				class="change-button"
+				onclick={onChangeArea}
+				class:blink={selectedArea.feature}
+				>Change region <Icon inline={true} class="icon" icon="lets-icons:up" />
+			</button>
+		</h4>
+	{/if}
 
 	<div class="columns" style="height: 100%" class:is-hidden={!selectedArea.feature}>
 		<div class="column left-column is-half">
@@ -129,4 +136,18 @@
 		padding: 0;
 		margin-bottom: 1rem;
 	}
+
+	h4 :global(.icon) {
+		height: 24px;
+		vertical-align: -6px !important;
+	}
+
+	h4 :global(.blink) {
+    animation: blink 1s linear 2;
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
 </style>

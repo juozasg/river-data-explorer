@@ -63,7 +63,7 @@
 			) {
 				console.log('LOCALHOST DEBUGGING');
 				console.log('timeout click');
-				mapClick([379, 207.5546875]);
+				// mapClick([379, 207.5546875]);
 			}
 		} catch (e) {
 			console.error('timeout click error', e);

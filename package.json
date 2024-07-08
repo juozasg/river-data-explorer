@@ -41,6 +41,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@iconify/svelte": "^4.0.2",
 		"@maptiler/sdk": "^1.2.1",
 		"@mdi/js": "^7.4.47",
 		"@mdi/light-js": "^0.2.63",
