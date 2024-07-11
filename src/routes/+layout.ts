@@ -6,6 +6,8 @@ export const trailingSlash = 'always';
 
 
 export const load = async ({ fetch }) => {
+	console.log('LOADIng load.ts');
+
 	let response = await fetch(`/api/variables`);
 	const variablePages = await response.json();
 
@@ -13,11 +15,10 @@ export const load = async ({ fetch }) => {
 	const regionPages = await response.json();
 
 	const { dataManifest, dataVariables } = await loadManifests(fetch);
-	// const dataVariabes = await load
-	// loadAppData();
 
-	console.log('DATA MANIFEST', dataManifest)
-	console.log('VARIABLES.YAML', dataVariables)
+
+	// console.log('DATA MANIFEST', dataManifest)
+	// console.log('VARIABLES.YAML', dataVariables)
 
 	return {
 		variablePages,

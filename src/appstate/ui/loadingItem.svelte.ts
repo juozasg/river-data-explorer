@@ -1,13 +1,13 @@
-import { notify } from "./notifications.svelte";
+// import { notify } from "./notifications.svelte";
 
 
 export const startedLoading = (label: string) => {
 	// return close() function
 	// console.log('startedLoading', label);
-	const closeNotification = notify(`Loading ${label}...`, 'info', 0);
+	// const closeNotification = notify(`Loading ${label}...`, 'info', 0);
 
 	return () => {
-		closeNotification();
+		// closeNotification();
 		// console.log('finishedLoading', label);
 	};
 

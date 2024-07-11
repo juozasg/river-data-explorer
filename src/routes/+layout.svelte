@@ -4,17 +4,19 @@
 
   import { copyLngLat } from '$lib/copyLngLat.js';
   import { toggleHideTooltipsKeydown } from "$src/appstate/ui/tooltips.svelte.js";
-  import DebugFooter from '$src/components/site/DebugFooter.svelte';
+  import DebugFooter from '$src/components/site/debug/DebugFooter.svelte';
   import Navbar from '$src/components/site/Navbar.svelte';
   import Notifications from '$src/components/site/Notifications.svelte';
   import { onMount } from 'svelte';
 
 	const { data, children } = $props();
+	console.log('LAYOUT SCRIPT');
 
 	onMount(() => {
 		document.body.addEventListener('keydown', copyLngLat);
 		document.body.addEventListener('keydown', toggleHideTooltipsKeydown);
 
+		console.log('LAYOUT ONMOUNT');
 		loadAppData(data.dataManifest, data.dataVariables);
 	});
 </script>

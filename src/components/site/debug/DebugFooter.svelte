@@ -10,7 +10,8 @@
 	</button>
 	{#if visible }
 		<pre>{JSON.stringify($page, null, 2)}</pre>
-		{/if}
+		<a href="/test">Test Page</a>
+	{/if}
 
 		<a style="display:none" href="/regions/indiana">Indiana</a>
 </div>
