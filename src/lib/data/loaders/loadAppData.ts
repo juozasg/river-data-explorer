@@ -1,6 +1,7 @@
 import { loadBasinFipsData } from "$src/appstate/data/basinFipsAreas.svelte";
 import { loadDatasets } from "$src/appstate/data/datasets.svelte";
 import { loadGeoindexData } from "$src/appstate/data/geoindexes.svelte";
+import { loadDatasetsUsgsWS } from "./loadDataUsgsWS";
 import { loadSitesCsv } from "./loadSitesCsv";
 import { loadSitesUsgsWS } from "./loadSitesUsgsWS";
 
@@ -11,11 +12,11 @@ export const dataManifest: { [key: string]: SHA1Digest } = {};
 
 // variables.yaml
 export type VariableMetadata = { [key: string]: any } & { 'labels': { [key: string]: string } }
-export const variablesMetadata: VariableMetadata = { 'labels': {} };
+export const dataVariables: VariableMetadata = { 'labels': {} };
 
 export async function loadAppData(manifest: object, variables: object) {
 	Object.assign(dataManifest, manifest);
-	Object.assign(variablesMetadata, variables);
+	Object.assign(dataVariables, variables);
 
 	console.log('Loading app data...');
 
@@ -23,6 +24,7 @@ export async function loadAppData(manifest: object, variables: object) {
 	loadBasinFipsData();
 	loadSitesCsv();
 	loadSitesUsgsWS();
+	loadDatasetsUsgsWS();
 	loadGeoindexData();
 	loadDatasets();
 }

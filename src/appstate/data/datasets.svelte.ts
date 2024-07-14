@@ -50,9 +50,9 @@ export async function loadDatasets() {
 	// sitesTables.get('sjrbc-1')!.print();
 
 	(window as any)['aq'] = aq;
-	(window as any)['tables'] = new Map(sitesTables.entries());
+	(window as any)['tables'] = sitesTables;
 	console.log('window.aq', aq);
-	console.log('window.tables', new Map(sitesTables.entries()));
+	console.log('window.tables', sitesTables);
 
 	// multi site stats same as this but s1tbl.concat(s2tbl).orderby('date') -- for all sites using reduce
 	finishedLoading();

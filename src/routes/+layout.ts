@@ -6,7 +6,6 @@ export const trailingSlash = 'always';
 
 
 export const load = async ({ fetch }) => {
-	console.log('LOADIng load.ts');
 
 	let response = await fetch(`/api/variables`);
 	const variablePages = await response.json();

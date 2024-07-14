@@ -10,13 +10,11 @@
   import { onMount } from 'svelte';
 
 	const { data, children } = $props();
-	console.log('LAYOUT SCRIPT');
 
 	onMount(() => {
 		document.body.addEventListener('keydown', copyLngLat);
 		document.body.addEventListener('keydown', toggleHideTooltipsKeydown);
 
-		console.log('LAYOUT ONMOUNT');
 		loadAppData(data.dataManifest, data.dataVariables);
 	});
 </script>
