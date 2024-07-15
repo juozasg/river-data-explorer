@@ -7,6 +7,9 @@ url = "https://waterservices.usgs.gov/nwis/dv/?format=json&sites=\
 &endDT=#{today}"
 
 
+`wget '#{url}' -O usgs-dailies.json`
+
+
 puts url
 
 # TODO: get data from url.
