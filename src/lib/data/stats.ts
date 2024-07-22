@@ -27,7 +27,7 @@ export function sitesDataStats(sites: Site[]): SitesDataStats {
 
 	const tables: ColumnTable[] = sites.map(site => sitesTables.get(site.id)).filter(t => t !== undefined) as ColumnTable[];
 	const table = concatTablesAllColumns(tables).orderby('date').reify();
-	console.log('STATS DEBuG', sites[0], table.columnNames(), table)
+	// console.log('STATS DEBuG', sites[0], table.columnNames(), table)
 
 	const numVariables = table.columnNames().length - 1; // remove 'date'
 	const numRecords = table.numRows();

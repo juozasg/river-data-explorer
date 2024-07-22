@@ -18,12 +18,6 @@
 
 	const usgs = $derived(site.dataset === 'usgs');
 
-	onMount(() => {
-		if (usgs) {
-			console.log('usgs', site);
-		}
-	});
-
 	const makeMarker = (node: HTMLElement, site: Site) => {
 		return makeSiteMarker(node, map, site);
 	};
