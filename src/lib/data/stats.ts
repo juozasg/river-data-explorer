@@ -1,13 +1,14 @@
 import  * as aq from 'arquero';
-import type { SitesDataStats, VariableStats } from "$lib/types/analysis";
+import type ColumnTable from 'arquero/dist/types/table/column-table';
+
+import type { SitesDataStats } from "$lib/types/analysis";
 import type { Site } from "$lib/types/site";
 // import { sitesRecords, type DatasetRecord, type Timeseries } from "$src/appstate/data/datasets.svelte";
 import { fmtDate } from "$lib/utils";
-import { dataVariables } from "./loaders/loadAppData";
+import { sitesTables } from '$src/appstate/data/datasets.svelte';
+import { concatTablesAllColumns } from './tableHelpers';
 
 
-
-import type ColumnTable from 'arquero/dist/types/table/column-table';
 
 
 export function columnMeans(table: ColumnTable): any {
@@ -20,41 +21,29 @@ export function columnMeans(table: ColumnTable): any {
 	return means;
 }
 
-// export function siteRecords(site: Site): DatasetRecord[] {
-// 	return sitesRecords.get(site.id) || [];
-// }
 
-// export function sitesDataStats(sites: Site[]): SitesDataStats {
-// 	const numSites = sites.length;
-// 	const numVariables = sites.reduce((acc, site) => {
-// 		const records = siteRecords(site)
-// 		const numVars = Object.keys(records[0] || {}).length - 1; // remove 'date'
-// 		return Math.max(acc, numVars);
-// 	}, 0);
-// 	const numRecords = sites.reduce((acc, site) => acc + siteRecords(site).length, 0);
-// 	const dates = sites.flatMap(site => siteRecords(site).map(r => r.date));
+export function sitesDataStats(sites: Site[]): SitesDataStats {
+	const numSites = sites.length;
 
-// 	// sites.forEach(site => {
-// 	// 	console.log(site, siteRecords(site));
-// 	// });
+	const tables: ColumnTable[] = sites.map(site => sitesTables.get(site.id)).filter(t => t !== undefined) as ColumnTable[];
+	const table = concatTablesAllColumns(tables).orderby('date').reify();
+	console.log('STATS DEBuG', sites[0], table.columnNames(), table)
 
-// 	let dateFromLabel;
-// 	let dateToLabel;
-// 	if(dates.length > 0) {
-// 		const dateFrom = new Date(Math.min(...dates.map(d => d.getTime())));
-// 		const dateTo = new Date(Math.max(...dates.map(d => d.getTime())));
-// 		dateFromLabel = fmtDate(dateFrom);
-// 		dateToLabel = fmtDate(dateTo);
-// 	}
+	const numVariables = table.columnNames().length - 1; // remove 'date'
+	const numRecords = table.numRows();
 
-// 	return {
-// 		numSites,
-// 		numVariables,
-// 		numRecords,
-// 		dateFromLabel,
-// 		dateToLabel,
-// 	};
-// }
+	const dateFromLabel = fmtDate(table.get('date'));
+	const dateToLabel = fmtDate(table.get('date', numRecords - 1));
+
+
+	return {
+		numSites,
+		numVariables,
+		numRecords,
+		dateFromLabel,
+		dateToLabel,
+	};
+}
 
 
 // export function timeseriesToStats(variable: string, ts: Timeseries): VariableStats {

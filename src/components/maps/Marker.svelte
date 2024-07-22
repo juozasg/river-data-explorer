@@ -1,10 +1,10 @@
 <script lang="ts">
 	import * as ml from 'maplibre-gl';
 
-	import { sites } from '$src/appstate/sites.svelte';
 	import type { Site } from '$src/lib/types/site';
 	import { makeSiteMarker } from '$src/lib/utils/maplibre';
 	import { selectedSite } from '$src/appstate/map/featureState.svelte';
+	import { onMount } from 'svelte';
 
 	type Props = {
 		map: ml.Map;
@@ -15,6 +15,14 @@
 	};
 
 	let { map, markerMouseEnter, markerMouseLeave, site, highlighted }: Props = $props();
+
+	const usgs = $derived(site.dataset === 'usgs');
+
+	onMount(() => {
+		if (usgs) {
+			console.log('usgs', site);
+		}
+	});
 
 	const makeMarker = (node: HTMLElement, site: Site) => {
 		return makeSiteMarker(node, map, site);
@@ -28,6 +36,7 @@
 	onmouseleave={(e) => markerMouseLeave(e, site)}
 	class:is-selected={site.id === selectedSite.site?.id}
 	class:highlighted
+	class:usgs
 	use:makeMarker={site}
 >
 	<div class="marker-box"></div>
@@ -73,6 +82,18 @@
 			width: 15px;
 			height: 15px;
 			border-width: 2px;
+
+			/* border-radius: 8px; */
+		}
+	}
+
+	.marker.usgs {
+		.marker-box {
+			/* background-color: #CDF8C0; */
+			width: 15px;
+			height: 15px;
+			border-width: 2px;
+			background-color: red;
 
 			/* border-radius: 8px; */
 		}

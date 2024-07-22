@@ -33,6 +33,7 @@
 	const hoveredAreaSites = $derived(
 		sites.all.filter((s) => hoveredArea.id && s.huc10 === hoveredArea.id)
 	);
+
 	const hoveredAreaStats = $derived(
 		hoveredAreaSites.length > 0 ? sitesDataStats(hoveredAreaSites) : undefined
 	);

@@ -11,10 +11,8 @@
 
 	const invertTables = $derived([...sitesTables].filter(([k, v]) => k.includes('invert')).map(([k, v]) => v));
 	const inverts = $derived(invertTables.length > 0 ? invertTables.reduce((acc, t) => acc.concat(t)) : undefined);
-	console.log('TEST SCRIPT', );
 
 	onMount(() => {
-		console.log('TEST MOUNT');
 	});
 	// $inspect('reduced invs', inverts);
 </script>
