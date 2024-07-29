@@ -23,7 +23,7 @@ export async function loadAppData(manifest: object, variables: object) {
 	// async go brr
 	loadBasinFipsData();
 	loadSitesCsv();
-	loadSitesUsgsWS();
+	// loadSitesUsgsWS();
 	loadDatasetsUsgsWS();
 	loadGeoindexData();
 	loadDatasets();

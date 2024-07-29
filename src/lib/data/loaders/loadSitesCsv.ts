@@ -29,6 +29,7 @@ export async function loadSitesCsv() {
 			// calculated when everything is loaded
 			state: StateFips.UnknownState,
 			county: StateCountyFips.UnknownCounty,
+			huc8: '',
 			huc10: '',
 			huc12: '',
 		};

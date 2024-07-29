@@ -8,21 +8,21 @@ export const usgsStationIds = '04096405,04096515,04097500,040975299,04097540,040
 
 
 export async function loadSitesUsgsWS() {
-	const finishedLoading = startedLoading("USGS Sites");
-	const url = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${usgsStationIds}&siteStatus=all`;
+	// const finishedLoading = startedLoading("USGS Sites");
+	// const url = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${usgsStationIds}&siteStatus=all`;
 
-	try {
-		const response = await fetch(url);
-		const usgsSites = await response.json();
-		// console.log('USGS sites', usgsSites);
-		usgsTimeseriesToSites(usgsSites.value.timeSeries);
-	} catch (error) {
-		console.error('Error loading USGS sites', error);
-		notify(`Error loading USGS sites ${url}`, 'error', 6000);
-	} finally {
-		finishedLoading();
-		sites.reindexGeometries();
-	}
+	// try {
+	// 	const response = await fetch(url);
+	// 	const usgsSites = await response.json();
+	// 	// console.log('USGS sites', usgsSites);
+	// 	usgsTimeseriesToSites(usgsSites.value.timeSeries);
+	// } catch (error) {
+	// 	console.error('Error loading USGS sites', error);
+	// 	notify(`Error loading USGS sites ${url}`, 'error', 6000);
+	// } finally {
+	// 	finishedLoading();
+	// 	sites.reindexGeometries();
+	// }
 }
 
 

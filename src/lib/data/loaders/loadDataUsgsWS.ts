@@ -18,6 +18,7 @@ export async function loadDatasetsUsgsWS() {
 
 	const dailiesUrl = `https://waterservices.usgs.gov/nwis/dv/?format=json&sites=${usgsStationIds}&statCd=00003&siteStatus=all&startDT=${startDate}&endDT=${nowDate}`;
 
+	// const dailiesUrl = 'https://water.teamhephy.info/data';
 	try {
 		const usgsDailies = await fetch(dailiesUrl);
 		const dailies = await usgsDailies.json();
