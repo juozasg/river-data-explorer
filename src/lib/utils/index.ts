@@ -32,8 +32,10 @@ export function partition(array: any[], filter: (e: any, i: number, arr: any[]) 
 
 const shortMon = (date: Date): string => date.toLocaleString('default', { month: 'short' });
 // const short = (date: Date): string => date.toLocaleString('default', { month: 'short' });
-export const fmtDate = (date: Date): string =>
-	`${shortMon(date)} ${date.getDate()}, ${date.getFullYear()}`;
+export function fmtDate(date: Date | undefined): string {
+	if (!date) return 'N/A';
+	return `${shortMon(date)} ${date.getDate()}, ${date.getFullYear()}`;
+}
 
 export function oneMonthAgo() {
   const oneDay = 1000 * 60 * 60 * 24;

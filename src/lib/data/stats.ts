@@ -1,19 +1,17 @@
-import  * as aq from 'arquero';
+import * as aq from 'arquero';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
 
-import type { SitesDataStats } from "$lib/types/analysis";
+import type { SitesDataStats, VariableStats } from "$lib/types/analysis";
 import type { Site } from "$lib/types/site";
-// import { sitesRecords, type DatasetRecord, type Timeseries } from "$src/appstate/data/datasets.svelte";
 import { fmtDate } from "$lib/utils";
 import { sitesTables } from '$src/appstate/data/datasets.svelte';
 import { concatTablesAllColumns } from './tableHelpers';
-
-
+import type { VariableMetadata } from '../types/variableMetadata';
 
 
 export function columnMeans(table: ColumnTable): any {
 	const cols = table.columnNames() || [];
-	const colMeanOps = cols.reduce((a:any, v: any) => {a[v] = aq.op.mean(v); return a}	, {});
+	const colMeanOps = cols.reduce((a: any, v: any) => { a[v] = aq.op.mean(v); return a }, {});
 	console.log('colMeanOps', colMeanOps)
 	const means = table.rollup(colMeanOps).object();
 	console.log('means', means)
@@ -42,6 +40,45 @@ export function sitesDataStats(sites: Site[]): SitesDataStats {
 		numRecords,
 		dateFromLabel,
 		dateToLabel,
+	};
+}
+
+export function variableStats(variable: string, table: ColumnTable, variablesMetadata: VariableMetadata): VariableStats {
+	const label = variablesMetadata[variable]?.label || variable;
+
+	const tsTable = table
+		.select('date', variable).rename({ [variable]: 'var' })
+		.filter(d => aq.op.is_nan(d!.var) == false).reify();
+
+	// const tsTable = table.select({date: 'date', variable: 'var'}).reify();
+	// const tsTable = table.filter(d => aq.op.is_nan(d?.[variable] === false));
+
+	console.log('table before after', table, tsTable);
+
+
+	const numObservations = tsTable.numRows();
+	const dateFromLabel = fmtDate(tsTable.get('date'));
+	const dateToLabel = fmtDate(tsTable.get('date', numObservations - 1));
+	const lastObservation = tsTable.get('var', numObservations - 1);
+
+	const stats: any = tsTable.rollup({
+		min: aq.op.min('var'),
+		max: aq.op.max('var'),
+		mean: aq.op.mean('var'),
+		median: aq.op.median('var'),
+		stdDev: aq.op.stdev('var'),
+	}).object();
+
+	console.log('stats', stats)
+
+	return {
+		variable,
+		label,
+		lastObservation,
+		numObservations,
+		dateFromLabel,
+		dateToLabel,
+		...stats,
 	};
 }
 
