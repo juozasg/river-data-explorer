@@ -6,6 +6,8 @@ mkdir -p tmp
 cd tmp
 if [ $1 = "--local" ]; then
 	cp -r ../../SJRBC-web-map-data data
+	cd data
+	rm -rf .git
 else
 	curl -L https://github.com/juozasg/SJRBC-web-map-data/archive/refs/heads/webapp.zip -o data.zip
 	unzip data.zip
