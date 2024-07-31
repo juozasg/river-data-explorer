@@ -4,10 +4,14 @@ set -e
 rm -rf tmp
 mkdir -p tmp
 cd tmp
-curl -L https://github.com/juozasg/SJRBC-web-map-data/archive/refs/heads/webapp.zip -o data.zip
-unzip data.zip
-mv SJRBC-web-map-data-webapp data
-cd data
+if [ $1 = "--local" ]; then
+	cp -r ../../SJRBC-web-map-data data
+else
+	curl -L https://github.com/juozasg/SJRBC-web-map-data/archive/refs/heads/webapp.zip -o data.zip
+	unzip data.zip
+	mv SJRBC-web-map-data-webapp data
+	cd data
+fi
 
 
 find * -type f -exec sha1sum {} \; > sha1.txt
