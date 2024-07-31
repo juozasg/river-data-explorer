@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { recordsToTimeseries } from '$src/appstate/data/datasets.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
 	import StatsDataTable from '$src/components/site/StatsDataTable.svelte';
-	import { siteRecords, timeseriesToStats } from '$src/lib/data/stats';
 	import type { VariableStats } from '$src/lib/types/analysis';
 
 	const site = $derived(sites.findById('sjrbc-1'));

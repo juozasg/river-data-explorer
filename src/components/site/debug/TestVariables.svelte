@@ -1,0 +1,41 @@
+<script lang="ts">
+	import  * as aq from 'arquero';
+
+	import { sitesTables } from '$src/appstate/data/datasets.svelte';
+	import { columnMeans } from '$src/lib/data/stats';
+	import type ColumnTable from 'arquero/dist/types/table/column-table';
+	import { onMount } from 'svelte';
+
+	const { variableMetadata } = $props();
+	const sjrbcSites = $derived([...sitesTables.keys()].filter(k => k.startsWith('usgs')));
+	const sjrbcCols = $derived(sjrbcSites.map(k => sitesTables.get(k)?.columnNames()));
+	onMount(() => {
+		console.log('variableMetadata', variableMetadata)
+	});
+</script>
+
+<div id="test">
+	<h2>Hello test</h2>
+
+	<h3>sjrbcols</h3>
+	<pre>
+	{JSON.stringify(sjrbcCols, null, 2)}
+	</pre>
+
+
+	<h3>varsmetadata</h3>
+	<pre>
+	{JSON.stringify(variableMetadata, null, 2)}
+	</pre>
+</div>
+
+<style>
+	#test {
+		width: 100%;
+		overflow: auto !important;
+	}
+	#test :global(table) {
+		width: 100%;
+		font-size: 0.8rem;
+	}
+</style>

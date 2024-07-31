@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { recordsToTimeseries } from '$src/appstate/data/datasets.svelte';
 	import { selectedSite } from '$src/appstate/map/featureState.svelte';
-	import { siteRecords, timeseriesToStats } from '$src/lib/data/stats';
 	import type { VariableStats } from '$src/lib/types/analysis';
 	import StatsDataTable from '../site/StatsDataTable.svelte';
 

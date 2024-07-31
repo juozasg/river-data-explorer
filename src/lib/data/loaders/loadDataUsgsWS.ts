@@ -6,12 +6,14 @@ import { strftime } from "$lib/utils/strftime";
 // import { oneMonthAgo } from "$lib/utils";
 import { usgsStationIds } from "./loadSitesUsgsWS";
 import { sitesTables, type SiteId } from "$src/appstate/data/datasets.svelte";
+import type { VariableMetadata } from '$src/lib/types/variableMetadata';
 
-export async function loadDatasetsUsgsWS() {
+export async function loadDatasetsUsgsWS(variableMetadata: VariableMetadata) {
 	const finishedLoading = startedLoading("USGS Datasets");
 	// TODO: import realtime data as separate variable
 	// const monthAgoDate = strftime('%F', new Date(oneMonthAgo()));
 	// const ivUrl = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${usgsStationIds}&parameterCd=00060,00065&siteStatus=all&startDT=${monthAgoDate}&endDT=${nowDate}`;
+	// https://waterservices.usgs.gov/nwis/iv/?format=json&sites=04096405&parameterCd=00060,00065&siteStatus=all&startDT=2024-07-30&endDT=2024-07-31
 
 	const startDate = '2000-01-01';
 	const nowDate = strftime('%F', new Date(Date.now()));
@@ -25,7 +27,7 @@ export async function loadDatasetsUsgsWS() {
 		const usgsSiteTimeseries = dailies.value.timeSeries;
 
 		console.log('usgsSiteTimeseries', usgsSiteTimeseries);
-		usgsTimeseriesToSiteTables(usgsSiteTimeseries);
+		usgsTimeseriesToSiteTables(usgsSiteTimeseries, variableMetadata);
 	} catch (error) {
 		console.error('Error loading USGS sites', error);
 		notify(`Error loading USGS sites ${dailiesUrl}`, 'error', 6000);
@@ -35,7 +37,8 @@ export async function loadDatasetsUsgsWS() {
 }
 
 
-function usgsTimeseriesToSiteTables(timeSeries: any) {
+function usgsTimeseriesToSiteTables(timeSeries: any, variableMetadata: VariableMetadata) {
+	console.log('usgsTimeseriesToSiteTables', variableMetadata, variableMetadata['flow']);
 	type DateTimeString = string;
 	const siteDateValues: Record<SiteId, Record<DateTimeString, any>> = {};
 
@@ -43,20 +46,15 @@ function usgsTimeseriesToSiteTables(timeSeries: any) {
 		const siteCode = ts.sourceInfo.siteCode[0].value;
 		const siteId = `usgs-${siteCode}`;
 		const usgsVarname: string = ts.variable.variableName || '';
-		let sjriverVarname;
-
-		if(usgsVarname.indexOf('Streamflow') == 0) {
-			sjriverVarname = 'flow';
-		} else if(usgsVarname.indexOf('Temperature') == 0) {
-			sjriverVarname = 'temp';
-		} else if(usgsVarname.indexOf('Specific conductance') == 0) {
-			sjriverVarname = 'spc';
-		} else if(usgsVarname.indexOf('Dissolved oxygen') == 0) {
-			sjriverVarname = 'do';
-		}
+		const sjriverVarname = usgsVarnameToSjriverVarname(usgsVarname);
 
 		if(!sjriverVarname) {
 			console.log('Unknown USGS variable', usgsVarname);
+			continue;
+		}
+
+		if(!variableMetadata[sjriverVarname]) {
+			console.log('Unsupported variable. Add to variables.yaml', sjriverVarname);
 			continue;
 		}
 
@@ -79,5 +77,18 @@ function usgsTimeseriesToSiteTables(timeSeries: any) {
 		const table = aq.from(records).orderby('date').reify();
 		sitesTables.set(siteId, table);
 		// console.log('usg site table sample', siteId, table.sample(5).objects());
+	}
+}
+
+
+function usgsVarnameToSjriverVarname(usgsVarname: string) {
+	if(usgsVarname.indexOf('Streamflow') == 0) {
+		return 'flow';
+	} else if(usgsVarname.indexOf('Temperature') == 0) {
+		return 'temp';
+	} else if(usgsVarname.indexOf('Specific conductance') == 0) {
+		return 'spc';
+	} else if(usgsVarname.indexOf('Dissolved oxygen') == 0) {
+		return 'do';
 	}
 }

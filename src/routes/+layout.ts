@@ -4,6 +4,7 @@ export const prerender = true;
 export const trailingSlash = 'always';
 // export const ssr = false;
 
+export type VariableName = string;
 
 export const load = async ({ fetch }) => {
 
@@ -13,17 +14,17 @@ export const load = async ({ fetch }) => {
 	response = await fetch(`/api/regions`);
 	const regionPages = await response.json();
 
-	const { dataManifest, dataVariables } = await loadManifests(fetch);
+	const { dataManifest, variableMetadata } = await loadManifests(fetch);
 
 
 	// console.log('DATA MANIFEST', dataManifest)
-	// console.log('VARIABLES.YAML', dataVariables)
+	// console.log('VARIABLES.YAML', variableMetadata)
 
 	return {
 		variablePages,
 		regionPages,
 		dataManifest,
-		dataVariables
+		variableMetadata
 	};
 };
 
@@ -31,6 +32,6 @@ const loadManifests = async (fetch: (arg0: string) => Promise<any>) => {
 	const [r1, r2] = await Promise.all([fetch('/data/data-manifest.json'), fetch('/data/variables.yaml')]);
 
 	const dataManifest = await r1.json();
-	const dataVariables = yaml.load(await r2.text());
-	return { dataManifest, dataVariables };
+	const variableMetadata = yaml.load(await r2.text());
+	return { dataManifest, variableMetadata };
 }

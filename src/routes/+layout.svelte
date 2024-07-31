@@ -15,7 +15,7 @@
 		document.body.addEventListener('keydown', copyLngLat);
 		document.body.addEventListener('keydown', toggleHideTooltipsKeydown);
 
-		loadAppData(data.dataManifest, data.dataVariables);
+		loadAppData(data.dataManifest, data.variableMetadata);
 	});
 </script>
 
