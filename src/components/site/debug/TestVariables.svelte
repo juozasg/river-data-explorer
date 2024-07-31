@@ -7,8 +7,8 @@
 	import { onMount } from 'svelte';
 
 	const { variableMetadata } = $props();
-	const sjrbcSites = $derived([...sitesTables.keys()].filter(k => k.startsWith('usgs')));
-	const sjrbcCols = $derived(sjrbcSites.map(k => sitesTables.get(k)?.columnNames()));
+	const sjrbcSites = $derived([...sitesTables.keys()].filter(k => k.startsWith('')));
+	const sjrbcCols = $derived([...new Set(sjrbcSites.map(k => sitesTables.get(k)?.columnNames()).flat())]);
 	onMount(() => {
 		console.log('variableMetadata', variableMetadata)
 	});

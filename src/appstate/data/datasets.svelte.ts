@@ -1,5 +1,5 @@
 import * as sr from 'svelte/reactivity';
-import  * as aq from 'arquero';
+import * as aq from 'arquero';
 
 import { loadDataCsv } from "$lib/data/cachedDataLoad";
 import { startedLoading } from '../ui/loadingItem.svelte';
@@ -24,14 +24,18 @@ export async function loadDatasets(variableMetadata: VariableMetadata) {
 	const records = filesRecords.flat();
 	console.log('sitesRecords loaded. records.length = ', records.length, 'record[0] = ', records[0])
 
+	const validKeys = Object.keys(variableMetadata);
+	console.log('validKeys', validKeys);
 	for (const r of records) {
 		const record: Record<string, any> = {};
-		for(const key in r) {
-			if(key == 'siteId') {
+		for (const key in r) {
+			if (key == 'siteId') {
 				continue;
 			}
 
-			record[key] = parseValue(key, r[key] as string);
+			if (validKeys.includes(key) || key == 'date') {
+				record[key] = parseValue(key, r[key] as string, variableMetadata);
+			}
 		}
 
 		const siteRecords = sitesRecords.get(r.siteId) || [];
@@ -40,8 +44,7 @@ export async function loadDatasets(variableMetadata: VariableMetadata) {
 	}
 
 	sitesRecords.forEach((records, siteId) => {
-		// records.sort((a, b) => a.date.getTime() - b.date.getTime());
-		// sitesRecords.set(siteId, records);
+
 		const tbl = aq.from(records).orderby('date').reify();
 		sitesTables.set(siteId, tbl);
 	});
@@ -60,64 +63,22 @@ export async function loadDatasets(variableMetadata: VariableMetadata) {
 }
 
 
-function parseValue(key: string, value: string): number | Date | string  {
-	if(key == 'date') {
+function parseValue(key: string, value: string, variableMetadata: VariableMetadata): number | Date | string | undefined {
+	if (key == 'date') {
 		return new Date(value);
-	} else if(key == 'invertNarrative') {
-		return value;
-	} else {
-		return parseFloat(value);
 	}
-	// TODO: don't parse floats for variables which have 'categories'
+
+	const isCategorical = !!(variableMetadata[key]?.categories);
+	if (isCategorical) {
+		return value;
+	}
+
+	const num = parseFloat(value);
+	if (isNaN(num)) {
+		return undefined;
+	} else {
+		return num;
+	}
 }
 
 
-
-// export type VariableName = string;
-// export type TimeseriesPoint = [Date, number];
-// export type Timeseries = [TimeseriesPoint]
-// export type TimeseriesMap = Record<VariableName, Timeseries>;
-
-// export const sitesTimeseries: Map<SiteId, TimeseriesMap> = new sr.Map();
-
-// export function recordsToTimeseries(records: DatasetRecord[]): TimeseriesMap {
-// 	const timeseries: {[key: VariableName]: Timeseries} = {};
-// 	records.forEach(r => {
-// 		for(const key in r) {
-// 			if(key == 'date' || key == 'siteId') {
-// 				continue;
-// 			}
-// 			const series = timeseries[key] || [];
-// 			if(!isNaN(r[key])) series.push([r.date, r[key]]); // NaN is baad
-// 			timeseries[key] = series;
-// 		}
-// 	});
-
-// 	// sort by date
-// 	Object.keys(timeseries).forEach(key => {
-// 		const series = timeseries[key];
-// 		series.sort((a, b) => a[0].getTime() - b[0].getTime());
-// 		if(series.length > 0) {
-// 			timeseries[key] = series;
-// 		} else {
-// 			delete timeseries[key];
-// 		}
-// 	});
-
-// 	console.log(timeseries)
-// 	return timeseries;
-
-
-	// const dates = records.map(r => r.date);
-	// const values = records.map(r => {
-	// 	const values = [];
-	// 	for(const key in r) {
-	// 		if(key == 'date' || key == 'siteId') {
-	// 			continue;
-	// 		}
-	// 		values.push(r[key]);
-	// 	}
-	// 	return values;
-	// });
-	// return [dates, values];
-// }

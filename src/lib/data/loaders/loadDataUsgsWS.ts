@@ -26,7 +26,7 @@ export async function loadDatasetsUsgsWS(variableMetadata: VariableMetadata) {
 		const dailies = await usgsDailies.json();
 		const usgsSiteTimeseries = dailies.value.timeSeries;
 
-		console.log('usgsSiteTimeseries', usgsSiteTimeseries);
+		// console.log('usgsSiteTimeseries', usgsSiteTimeseries);
 		usgsTimeseriesToSiteTables(usgsSiteTimeseries, variableMetadata);
 	} catch (error) {
 		console.error('Error loading USGS sites', error);
@@ -38,7 +38,6 @@ export async function loadDatasetsUsgsWS(variableMetadata: VariableMetadata) {
 
 
 function usgsTimeseriesToSiteTables(timeSeries: any, variableMetadata: VariableMetadata) {
-	console.log('usgsTimeseriesToSiteTables', variableMetadata, variableMetadata['flow']);
 	type DateTimeString = string;
 	const siteDateValues: Record<SiteId, Record<DateTimeString, any>> = {};
 
@@ -71,7 +70,6 @@ function usgsTimeseriesToSiteTables(timeSeries: any, variableMetadata: VariableM
 
 		}
 	}
-	console.log('siteDateValues', siteDateValues);
 	for(const [siteId, dateValues] of Object.entries(siteDateValues)) {
 		const records = Object.entries(dateValues).map(([, v]) => v);
 		const table = aq.from(records).orderby('date').reify();
