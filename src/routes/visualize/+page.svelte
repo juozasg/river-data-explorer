@@ -4,43 +4,22 @@
 	import StatsDataTable from '$src/components/site/StatsDataTable.svelte';
 	import { variableStats } from '$src/lib/data/stats.js';
 	import type { VariableStats } from '$src/lib/types/analysis';
-
-	import pkg from 'sprintf';
-	const {sprintf} = pkg;
+	import { fmtVarNum } from '$src/lib/utils';
 
 	const site = $derived(sites.findById('sjrbc-1'));
 	const table = $derived(site && sitesTables.get(site.id));
 
-	const { data } = $props();
-
-	// $inspect('visualize', table?.columnNames())
-
-
 	const rows: VariableStats[] = $derived.by(() => {
 		const rs: VariableStats[] = [];
-		// console.log(siteTimeseries)
-		// for (const variable in siteTimeseries) {
-		// 	const ts = siteTimeseries[variable];
-		// 	const stats = timeseriesToStats(variable, ts);
-		// 	rs.push(stats);
-		// }
-		if (table) {
-			for (const variable of table.columnNames()) {
+		if(table) {
+			for(const variable of table.columnNames()) {
 				if(variable === 'date') continue;
-				const vs = variableStats(variable, table, data.variableMetadata);
+				const vs = variableStats(variable, table);
 				rs.push(vs);
 			}
 		}
 		return rs;
 	});
-
-	const fmtVarNum = (varname: string, n: number | undefined) => {
-		if (n === undefined) return '';
-		const fmt = data.variableMetadata[varname]?.format || data.variableMetadata['default']?.format || '%.2f';
-		return sprintf(fmt, n);
-	};
-
-
 
 </script>
 
@@ -52,9 +31,6 @@
 	<h2>Visualize</h2>
 
 	{#if site}
-
-
-
 	<div id="example-stats">
 		<h3 class="site-label">Site: {site.name} ({site.id})</h3>
 		<StatsDataTable data={rows}>

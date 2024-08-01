@@ -63,12 +63,12 @@
 			) {
 				console.log('LOCALHOST DEBUGGING');
 				console.log('timeout click');
-				// mapClick([379, 207.5546875]);
+				mapClick([500, 307.5546875]);
 			}
 		} catch (e) {
 			console.error('timeout click error', e);
 		}
-	}, 1000);
+	}, 2000);
 
 	const markerMouseEnter = (e: MouseEvent, site: Site) => {
 		// console.log('markermouse', site?.id, site);

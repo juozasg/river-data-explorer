@@ -5,12 +5,12 @@ import { loadDataCsv } from "$lib/data/cachedDataLoad";
 import { startedLoading } from '../ui/loadingItem.svelte';
 import { dataPathsStartingWith } from '$src/lib/data/loaders/loadAppData';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
-import type { VariableMetadata } from '$src/lib/types/variableMetadata';
+import { variableMetadata } from '$src/appstate/variableMetadata';
 
 export type SiteId = string;
 export const sitesTables: Map<SiteId, ColumnTable> = new sr.Map();
 
-export async function loadDatasets(variableMetadata: VariableMetadata) {
+export async function loadDatasets() {
 	type DatasetRecord = Record<string, any> & { date: Date } & { siteId: SiteId };
 	const sitesRecords: Map<SiteId, DatasetRecord[]> = new Map();
 
@@ -34,7 +34,7 @@ export async function loadDatasets(variableMetadata: VariableMetadata) {
 			}
 
 			if (validKeys.includes(key) || key == 'date') {
-				record[key] = parseValue(key, r[key] as string, variableMetadata);
+				record[key] = parseValue(key, r[key] as string);
 			}
 		}
 
@@ -63,7 +63,7 @@ export async function loadDatasets(variableMetadata: VariableMetadata) {
 }
 
 
-function parseValue(key: string, value: string, variableMetadata: VariableMetadata): number | Date | string | undefined {
+function parseValue(key: string, value: string): number | Date | string | undefined {
 	if (key == 'date') {
 		return new Date(value);
 	}

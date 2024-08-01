@@ -1,3 +1,4 @@
+import { variableMetadata } from '$src/appstate/variableMetadata.js';
 import * as yaml from 'js-yaml';
 
 export const prerender = true;
@@ -14,17 +15,17 @@ export const load = async ({ fetch }) => {
 	response = await fetch(`/api/regions`);
 	const regionPages = await response.json();
 
-	const { dataManifest, variableMetadata } = await loadManifests(fetch);
+	const { dataManifest, variableMetadata: vmd } = await loadManifests(fetch);
 
+	Object.assign(variableMetadata, vmd)
 
-	// console.log('DATA MANIFEST', dataManifest)
-	// console.log('VARIABLES.YAML', variableMetadata)
+	console.log('Data manifest', dataManifest);
+	console.log('variableMetadata', variableMetadata);
 
 	return {
 		variablePages,
 		regionPages,
-		dataManifest,
-		variableMetadata
+		dataManifest
 	};
 };
 

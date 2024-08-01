@@ -1,7 +1,6 @@
 import { loadBasinFipsData } from "$src/appstate/data/basinFipsAreas.svelte";
 import { loadDatasets } from "$src/appstate/data/datasets.svelte";
 import { loadGeoindexData } from "$src/appstate/data/geoindexes.svelte";
-import type { VariableMetadata } from "$src/lib/types/variableMetadata";
 import { loadDatasetsUsgsWS } from "./loadDataUsgsWS";
 import { loadSitesCsv } from "./loadSitesCsv";
 // import { dataVariables } from "$src/appstate/dataVariables.svelte";
@@ -16,7 +15,7 @@ export const dataManifest: DataManifest = {};
 // variables.yaml
 
 
-export async function loadAppData(manifest: DataManifest, variableMetadata: VariableMetadata) {
+export async function loadAppData(manifest: DataManifest) {
 	Object.assign(dataManifest, manifest);
 
 	console.log('Loading app data...');
@@ -26,8 +25,8 @@ export async function loadAppData(manifest: DataManifest, variableMetadata: Vari
 	loadSitesCsv();
 	loadGeoindexData();
 	// loadSitesUsgsWS();
-	loadDatasetsUsgsWS(variableMetadata);
-	loadDatasets(variableMetadata);
+	loadDatasetsUsgsWS();
+	loadDatasets();
 }
 
 

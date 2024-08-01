@@ -2,25 +2,25 @@ import  * as aq from 'arquero';
 
 import { startedLoading } from "$src/appstate/ui/loadingItem.svelte";
 import { notify } from "$src/appstate/ui/notifications.svelte";
-import { strftime } from "$lib/utils/strftime";
+// import { strftime } from "$lib/utils/strftime";
 // import { oneMonthAgo } from "$lib/utils";
-import { usgsStationIds } from "./loadSitesUsgsWS";
+// import { usgsStationIds } from "./loadSitesUsgsWS";
 import { sitesTables, type SiteId } from "$src/appstate/data/datasets.svelte";
-import type { VariableMetadata } from '$src/lib/types/variableMetadata';
+import { variableMetadata, type VariableMetadata } from '$src/appstate/variableMetadata';
 
-export async function loadDatasetsUsgsWS(variableMetadata: VariableMetadata) {
+export async function loadDatasetsUsgsWS() {
 	const finishedLoading = startedLoading("USGS Datasets");
 	// TODO: import realtime data as separate variable
 	// const monthAgoDate = strftime('%F', new Date(oneMonthAgo()));
 	// const ivUrl = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${usgsStationIds}&parameterCd=00060,00065&siteStatus=all&startDT=${monthAgoDate}&endDT=${nowDate}`;
 	// https://waterservices.usgs.gov/nwis/iv/?format=json&sites=04096405&parameterCd=00060,00065&siteStatus=all&startDT=2024-07-30&endDT=2024-07-31
 
-	const startDate = '2000-01-01';
-	const nowDate = strftime('%F', new Date(Date.now()));
+	// const startDate = '2000-01-01';
+	// const nowDate = strftime('%F', new Date(Date.now()));
 
-	const dailiesUrl = `https://waterservices.usgs.gov/nwis/dv/?format=json&sites=${usgsStationIds}&statCd=00003&siteStatus=all&startDT=${startDate}&endDT=${nowDate}`;
+	// const dailiesUrl = `https://waterservices.usgs.gov/nwis/dv/?format=json&sites=${usgsStationIds}&statCd=00003&siteStatus=all&startDT=${startDate}&endDT=${nowDate}`;
 
-	// const dailiesUrl = 'https://water.teamhephy.info/data';
+	const dailiesUrl = 'https://water.teamhephy.info/data';
 	try {
 		const usgsDailies = await fetch(dailiesUrl);
 		const dailies = await usgsDailies.json();

@@ -1,6 +1,14 @@
 export type VariableName = string;
 export type VariableMetadata = Record<VariableName, {[key: string]: any}>;
 
+// not reactive - instead set by load() in layout.ts to be globally available
+// its loaded in during static site build
+export const variableMetadata: VariableMetadata = {};
+
+
+export function isCategoricalVar(varname: VariableName): boolean {
+  return !!variableMetadata[varname]?.categories;
+}
 
 // from variables.yaml example
 /*

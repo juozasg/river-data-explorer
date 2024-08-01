@@ -6,7 +6,7 @@ import type { Site } from "$lib/types/site";
 import { fmtDate } from "$lib/utils";
 import { sitesTables } from '$src/appstate/data/datasets.svelte';
 import { concatTablesAllColumns } from './tableHelpers';
-import type { VariableMetadata } from '../types/variableMetadata';
+import { isCategoricalVar, variableMetadata } from '$src/appstate/variableMetadata';
 
 
 export function columnMeans(table: ColumnTable): any {
@@ -21,66 +21,117 @@ export function columnMeans(table: ColumnTable): any {
 
 
 export function sitesDataStats(sites: Site[]): SitesDataStats {
-	const numSites = sites.length;
+	try {
+		if (sites.length === 0) {
+			return noSitesStats;
+		}
 
-	const tables: ColumnTable[] = sites.map(site => sitesTables.get(site.id)).filter(t => t !== undefined) as ColumnTable[];
-	const table = concatTablesAllColumns(tables).orderby('date').reify();
-	// console.log('STATS DEBuG', sites[0], table.columnNames(), table)
+		const numSites = sites.length;
+		const tables: ColumnTable[] = sites.map(site => sitesTables.get(site.id)).filter(t => t !== undefined) as ColumnTable[];
+		const table = concatTablesAllColumns(tables).orderby('date').reify();
+		// console.log('STATS DEBuG', sites[0], table.columnNames(), table)
 
-	const numVariables = table.columnNames().length - 1; // remove 'date'
-	const numRecords = table.numRows();
+		const numVariables = table.columnNames().length - 1; // remove 'date'
+		const numRecords = table.numRows();
 
-	const dateFromLabel = fmtDate(table.get('date'));
-	const dateToLabel = fmtDate(table.get('date', numRecords - 1));
+		const dateFromLabel = fmtDate(table.get('date'));
+		const dateToLabel = fmtDate(table.get('date', numRecords - 1));
 
 
-	return {
-		numSites,
-		numVariables,
-		numRecords,
-		dateFromLabel,
-		dateToLabel,
-	};
+		return {
+			numSites,
+			numVariables,
+			numRecords,
+			dateFromLabel,
+			dateToLabel,
+		};
+	} catch (e) {
+		console.error('sitesDataStats error', e)
+		return noSitesStats;
+	}
 }
 
-export function variableStats(variable: string, table: ColumnTable, variablesMetadata: VariableMetadata): VariableStats {
-	const label = variablesMetadata[variable]?.label || variable;
-
-	const tsTable = table
-		.select('date', variable).rename({ [variable]: 'var' })
-		.filter(d => aq.op.is_nan(d!.var) == false).reify();
-
-	// const tsTable = table.select({date: 'date', variable: 'var'}).reify();
-	// const tsTable = table.filter(d => aq.op.is_nan(d?.[variable] === false));
-
-	console.log('table before after', table, tsTable);
+const noSitesStats = {
+	numSites: 0,
+	numVariables: 0,
+	numRecords: 0,
+	dateFromLabel: 'N/A',
+	dateToLabel: 'N/A',
+}
 
 
-	const numObservations = tsTable.numRows();
-	const dateFromLabel = fmtDate(tsTable.get('date'));
-	const dateToLabel = fmtDate(tsTable.get('date', numObservations - 1));
-	const lastObservation = tsTable.get('var', numObservations - 1);
+export function allVariableStats(table: ColumnTable): VariableStats[] {
+	const variables = table.columnNames().filter(c => c !== 'date');
+	return variables.map(v => variableStats(v, table));
+}
 
-	const stats: any = tsTable.rollup({
+
+export function variableStats(variable: string, table: ColumnTable): VariableStats {
+	try {
+		const label = variableMetadata[variable]?.label || variable;
+
+		const tsTable = table
+			.select('date', variable).rename({ [variable]: 'var' })
+			.filter(d => aq.op.is_nan(d!.var) == false)
+			.filter(aq.escape((d: any) => d!.var !== undefined && d!.var !== null && d!.var !== ''))
+			.reify();
+		console.log(tsTable);
+
+		if(tsTable.numRows() === 0) {
+			return emptyVariableStats(variable);
+		}
+
+		const numObservations = tsTable.numRows();
+		const dateFromLabel = fmtDate(tsTable.get('date'));
+		const dateToLabel = fmtDate(tsTable.get('date', numObservations - 1));
+		const lastObservation = tsTable.get('var', numObservations - 1);
+
+		const stats: any = isCategoricalVar(variable) ? emptyStringStats : calculateVarStats(tsTable)
+
+		return {
+			variable,
+			label,
+			lastObservation,
+			numObservations,
+			dateFromLabel,
+			dateToLabel,
+			...stats,
+		};
+	} catch (e) {
+		return emptyVariableStats(variable);
+	}
+}
+
+function emptyVariableStats(variable: string): VariableStats {
+	return {
+		variable,
+		label: variable,
+		lastObservation: '',
+		numObservations: 0,
+		dateFromLabel: 'N/A',
+		dateToLabel: 'N/A',
+		...emptyStringStats,
+	} as any;
+}
+
+function calculateVarStats(table: ColumnTable) {
+	return table.rollup({
 		min: aq.op.min('var'),
 		max: aq.op.max('var'),
 		mean: aq.op.mean('var'),
 		median: aq.op.median('var'),
 		stdDev: aq.op.stdev('var'),
 	}).object();
-
-	console.log('stats', stats)
-
-	return {
-		variable,
-		label,
-		lastObservation,
-		numObservations,
-		dateFromLabel,
-		dateToLabel,
-		...stats,
-	};
 }
+
+
+const emptyStringStats = {
+	min: '',
+	max: '',
+	mean: '',
+	median: '',
+	stdDev: '',
+};
 
 
 // export function timeseriesToStats(variable: string, ts: Timeseries): VariableStats {

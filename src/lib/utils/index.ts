@@ -1,4 +1,8 @@
-import type { MarkdownComponent, ImportGlobRecord, MarkdownPage } from '$src/types/page';
+import sprintfpkg from 'sprintf';
+const {sprintf} = sprintfpkg;
+
+import { variableMetadata } from '$src/appstate/variableMetadata';
+import type { ImportGlobRecord, MarkdownPage, MarkdownComponent } from '../types/page';
 
 export const getMarkdownPages = async (allMdPages: ImportGlobRecord): Promise<MarkdownPage[]> => {
 	const allPages = await Promise.all(
@@ -29,13 +33,28 @@ export function partition(array: any[], filter: (e: any, i: number, arr: any[]) 
 }
 
 
+export const fmtVarNum = (varname: string, n: number | undefined | string, units = false) => {
+	if(n === undefined) return '';
+	if(typeof n !== 'number') return n;
+	const fmt = variableMetadata[varname]?.format || variableMetadata['default']?.format || '%.2f';
+	const unit = (units && variableMetadata[varname]?.unit) || '';
+	return sprintf(fmt, n) + ' ' + unit;
+};
+
+
+export function varunits(varname: string, parens = true) {
+	const unit = variableMetadata[varname]?.unit;
+	if (!unit) return '';
+	return parens ? `(${unit})` : unit;
+}
+
 
 const shortMon = (date: Date): string => date.toLocaleString('default', { month: 'short' });
-// const short = (date: Date): string => date.toLocaleString('default', { month: 'short' });
 export function fmtDate(date: Date | undefined): string {
 	if (!date) return 'N/A';
 	return `${shortMon(date)} ${date.getDate()}, ${date.getFullYear()}`;
 }
+
 
 export function oneMonthAgo() {
   const oneDay = 1000 * 60 * 60 * 24;

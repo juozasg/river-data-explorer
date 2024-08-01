@@ -45,7 +45,7 @@ async function fetchDataWithCache(path: string) {
 
 	const cachedResponse = await cache.match(url);
 	if(cachedResponse && await sha1Matches(cachedResponse, manifestSha1)) {
-		console.log('data cache hit', path, manifestSha1);
+		// console.log('data cache hit', path, manifestSha1);
 		return cachedResponse;
 	}
 

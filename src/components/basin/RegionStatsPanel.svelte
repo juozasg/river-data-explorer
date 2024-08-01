@@ -1,12 +1,17 @@
 <script lang="ts">
+	import { sitesTables } from '$src/appstate/data/datasets.svelte';
 	import { selectedArea } from '$src/appstate/map/featureState.svelte';
-	import { sites as appstateSites } from '$src/appstate/sites.svelte';
-	import { sitesDataStats } from '$src/lib/data/stats';
+	import { sites } from '$src/appstate/sites.svelte';
+	import { allVariableStats, sitesDataStats, variableStats } from '$src/lib/data/stats';
 	import type { VariableStats } from '$src/lib/types/analysis';
+	import { fmtVarNum, varunits } from '$src/lib/utils';
+	import type Column from 'arquero/dist/types/table/column';
 	import StatsDataTable from '../site/StatsDataTable.svelte';
+	import type ColumnTable from 'arquero/dist/types/table/column-table';
+	import { concatTablesAllColumns } from '$src/lib/data/tableHelpers';
 
 	const area = $derived(selectedArea);
-	const sites = $derived(appstateSites.all.filter((s) => s.huc10 === area.id));
+	const sitesInArea = $derived(sites.all.filter((s) => s.huc10 === area.id));
 	let varsNumber = $state(0);
 	let recordsNumber = $state(0);
 
@@ -16,45 +21,19 @@
 	let firstObs: Date | undefined = $state();
 	let lastObs: Date | undefined = $state();
 
-	const sitesStats = $derived(sitesDataStats(sites));
+	const sitesStats = $derived(sitesDataStats(sitesInArea));
+	const sitesInAreaTables = $derived(sitesInArea.map((s) => sitesTables.get(s.id)).filter(t => t)) as ColumnTable[];
 
+	const rows: VariableStats[] = $derived.by(() => {
+		const combinedTable = concatTablesAllColumns(sitesInAreaTables);
 
-	// const combinedTimeseries = (sites) => {
-	// 	const
-	// }
-
-	// const records = $derived( && siteRecords(selectedSite.site));
-	// const siteTimeseries = $derived(records && recordsToTimeseries(records));
-	// const rows: VariableStats[] = $derived.by(() => {
-	// 	const rs: VariableStats[] = [];
-	// 	console.log(siteTimeseries)
-	// 	for (const variable in siteTimeseries) {
-	// 		const ts = siteTimeseries[variable];
-	// 		const stats = timeseriesToStats(variable, ts);
-	// 		rs.push(stats);
-	// 	}
-	// 	return rs;
-	// });
-
-
-
-	const rows: any[] = [];
-	const r: VariableStats = {
-		label: 'Temperature',
-		numObservations: 54,
-		min: 0.2,
-		max: 101.6,
-		mean: 60.0,
-		median: 62.0,
-		stdDev: 15.2,
-		dateFromLabel: '2009-01-01',
-		dateToLabel: '2020-09-31',
-	}
-
-	for (let i = 0; i < 20; i++) {
-		rows.push(r);
-	}
+		if(combinedTable.numRows() == 0) return [];
+		// dont order empty tables because column date won't exist
+		const orderedTable = combinedTable.orderby('date').reify();
+		return allVariableStats(orderedTable);
+	});
 </script>
+
 
 <div id="panel">
 	<div class="flex">
@@ -81,14 +60,14 @@
 		<th>From</th>
 		<th>To</th>
 
-		{#snippet row(d: VariableStats)}
-		<td>{r.label}</td>
+		{#snippet row(r: VariableStats)}
+		<td>{r.label} {varunits(r.variable)}</td>
 		<td>{r.numObservations}</td>
-		<td>{r.min}</td>
-		<td>{r.max}</td>
-		<td>{r.mean}</td>
-		<td>{r.median}</td>
-		<td>{r.stdDev}</td>
+		<td class="stat">{fmtVarNum(r.variable, r.min)}</td>
+		<td class="stat">{fmtVarNum(r.variable, r.max)}</td>
+		<td class="stat">{fmtVarNum(r.variable, r.mean)}</td>
+		<td class="stat">{fmtVarNum(r.variable, r.median)}</td>
+		<td class="stat">{fmtVarNum(r.variable, r.stdDev)}</td>
 		<td class="date">{r.dateFromLabel}</td>
 		<td class="date">{r.dateToLabel}</td>
 		{/snippet}

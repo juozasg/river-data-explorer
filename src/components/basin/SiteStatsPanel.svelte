@@ -1,36 +1,19 @@
 <script lang="ts">
+	import { sitesTables } from '$src/appstate/data/datasets.svelte';
 	import { selectedSite } from '$src/appstate/map/featureState.svelte';
+	import { variableMetadata } from '$src/appstate/variableMetadata';
+	import { allVariableStats } from '$src/lib/data/stats';
 	import type { VariableStats } from '$src/lib/types/analysis';
+	import { fmtVarNum, varunits } from '$src/lib/utils';
 	import StatsDataTable from '../site/StatsDataTable.svelte';
 
-	// const rows: any[] = [];
-	// const r: VariableStats = {
-	// 	variable: 'temp',
-	// 	label: 'Temperature',
-	// 	lastObservation: 79.2,
-	// 	numObservations: 54,
-	// 	min: 0.2,
-	// 	max: 101.6,
-	// 	mean: 60.0,
-	// 	median: 62.0,
-	// 	stdDev: 15.2,
-	// 	dateFromLabel: '2009-01-01',
-	// 	dateToLabel: '2020-09-31',
-	// }
+	const table = $derived(selectedSite.site && sitesTables.get(selectedSite.site.id));
 
-	const records = $derived(selectedSite.site && siteRecords(selectedSite.site));
-	const siteTimeseries = $derived(records && recordsToTimeseries(records));
 	const rows: VariableStats[] = $derived.by(() => {
-		const rs: VariableStats[] = [];
-		console.log(siteTimeseries)
-		for (const variable in siteTimeseries) {
-			const ts = siteTimeseries[variable];
-			const stats = timeseriesToStats(variable, ts);
-			rs.push(stats);
-		}
-		return rs;
+		if(!table || table.numRows() == 0) return [];
+		// dont order empty tables because column date won't exist
+		return allVariableStats(table);
 	});
-
 
 </script>
 
@@ -52,14 +35,14 @@
 		<th>To</th>
 
 		{#snippet row(r: VariableStats)}
-			<td>{r.label}</td>
-			<td>{r.lastObservation}</td>
+			<td>{r.label} {varunits(r.variable)}</td>
+			<td>{fmtVarNum(r.variable, r.lastObservation)}</td>
 			<td>{r.numObservations}</td>
-			<td class="stat">{r.min}</td>
-			<td class="stat">{r.max}</td>
-			<td class="stat">{r.mean}</td>
-			<td class="stat">{r.median}</td>
-			<td class="stat">{r.stdDev}</td>
+			<td class="stat">{fmtVarNum(r.variable, r.min)}</td>
+			<td class="stat">{fmtVarNum(r.variable, r.max)}</td>
+			<td class="stat">{fmtVarNum(r.variable, r.mean)}</td>
+			<td class="stat">{fmtVarNum(r.variable, r.median)}</td>
+			<td class="stat">{fmtVarNum(r.variable, r.stdDev)}</td>
 			<td class="date">{r.dateFromLabel}</td>
 			<td class="date">{r.dateToLabel}</td>
 		{/snippet}
