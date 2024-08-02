@@ -54,7 +54,7 @@
 		/* opacity: 1; */
 		position: absolute;
 		display: none;
-		z-index: 1001;
+		z-index: 1005;
 	}
 
 	.hint {
