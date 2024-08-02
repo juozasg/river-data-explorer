@@ -11,10 +11,6 @@ export type SHA1Digest = string;
 export type DataManifest = { [key: string]: SHA1Digest };
 export const dataManifest: DataManifest = {};
 
-
-// variables.yaml
-
-
 export async function loadAppData(manifest: DataManifest) {
 	Object.assign(dataManifest, manifest);
 
@@ -25,7 +21,7 @@ export async function loadAppData(manifest: DataManifest) {
 	loadSitesCsv();
 	loadGeoindexData();
 	// loadSitesUsgsWS();
-	loadDatasetsUsgsWS();
+	// loadDatasetsUsgsWS();
 	loadDatasets();
 }
 

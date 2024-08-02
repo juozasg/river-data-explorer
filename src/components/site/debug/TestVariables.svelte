@@ -5,8 +5,8 @@
 	import { columnMeans } from '$src/lib/data/stats';
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
 	import { onMount } from 'svelte';
+	import { variableMetadata } from '$src/appstate/variableMetadata';
 
-	const { variableMetadata } = $props();
 	const sjrbcSites = $derived([...sitesTables.keys()].filter(k => k.startsWith('')));
 	const sjrbcCols = $derived([...new Set(sjrbcSites.map(k => sitesTables.get(k)?.columnNames()).flat())]);
 	onMount(() => {

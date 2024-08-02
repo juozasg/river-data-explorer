@@ -1,7 +1,7 @@
 <script lang="ts">
 	const { data } = $props();
-	import TestVariables from "$src/components/site/debug/TestVariables.svelte";
+	import TestCharts from "$src/components/site/debug/TestCharts.svelte";
 
 </script>
 
-<TestVariables variableMetadata={data.variableMetadata}/>
+<TestCharts />

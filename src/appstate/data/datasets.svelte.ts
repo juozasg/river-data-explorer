@@ -25,7 +25,7 @@ export async function loadDatasets() {
 	console.log('sitesRecords loaded. records.length = ', records.length, 'record[0] = ', records[0])
 
 	const validKeys = Object.keys(variableMetadata);
-	console.log('validKeys', validKeys);
+	console.log('known variables', validKeys);
 	for (const r of records) {
 		const record: Record<string, any> = {};
 		for (const key in r) {
@@ -48,10 +48,6 @@ export async function loadDatasets() {
 		const tbl = aq.from(records).orderby('date').reify();
 		sitesTables.set(siteId, tbl);
 	});
-
-	console.log('completed records. sjrbc-1 = ', sitesRecords.get('sjrbc-1'));
-	console.log('sjrbc-1 row 0 =', sitesTables.get('sjrbc-1')?.object(0));
-	// sitesTables.get('sjrbc-1')!.print();
 
 	(window as any)['aq'] = aq;
 	(window as any)['tables'] = sitesTables;
