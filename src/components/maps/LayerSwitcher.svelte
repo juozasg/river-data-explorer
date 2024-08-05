@@ -68,7 +68,6 @@
 		top: 10px;
 		left: 10px;
 		z-index: 1000;
-
 	}
 
 	div.dropdown-item:hover {

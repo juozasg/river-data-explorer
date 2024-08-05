@@ -51,6 +51,7 @@
 		"bulma": "^0.9.4",
 		"csv-simple-parser": "^1.0.3",
 		"js-yaml": "^4.1.0",
+		"layercake": "^8.3.4",
 		"maplibre-gl": "^3.6.2",
 		"sprintf": "^0.1.5"
 	}
