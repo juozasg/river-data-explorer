@@ -1,7 +1,1 @@
-<script lang="ts">
-	const { data } = $props();
-	import TestCharts from "$src/components/site/debug/TestLayerCharts.svelte";
-
-</script>
-
-<TestCharts />
+<a href="/test/charts">Test charts</a>
