@@ -50,6 +50,7 @@
 		"arquero": "^5.4.1",
 		"bulma": "^0.9.4",
 		"csv-simple-parser": "^1.0.3",
+		"d3-quadtree": "^3.0.1",
 		"js-yaml": "^4.1.0",
 		"layercake": "^8.3.4",
 		"maplibre-gl": "^3.6.2",
