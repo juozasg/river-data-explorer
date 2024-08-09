@@ -12,7 +12,7 @@
 	import { fmtDate } from '$src/lib/utils';
 	import SharedTooltip from '$src/components/chart/layercake/SharedTooltip.svelte';
 	import Scatter from '$src/components/chart/layercake/Scatter.svelte';
-	import AxisYRight from '$src/components/chart/layercake/AxisYRight.svelte';
+	import AxisYRight from '$src/components/chart/layercake/AxisYZRight.svelte';
 
 	const table: ColumnTable | undefined = $derived(sitesTables.get('sjrbc-1')?.select('date', 'temp', 'ph'));
 	const points = $derived(table?.objects() || [])

@@ -1,24 +1,35 @@
 <script lang="ts">
 	import * as aq from 'arquero';
+	const op = aq.op;
 	import { LayerCake, Svg, Canvas, Html } from 'layercake';
 	import { scaleLinear } from 'd3-scale';
 
+	import { variableMetadata } from '$src/appstate/variableMetadata';
+
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
-	import { onMount } from 'svelte';
-	import ScatterCanvas from '$src/components/chart/layercake/Scatter.svelte';
 	import AxisX from '$src/components/chart/layercake/AxisX.svelte';
 	import AxisY from '$src/components/chart/layercake/AxisY.svelte';
 	import Line from '$src/components/chart/layercake/Line.svelte';
 	import { fmtDate } from '$src/lib/utils';
 	import SharedTooltip from '$src/components/chart/layercake/SharedTooltip.svelte';
 	import Scatter from '$src/components/chart/layercake/Scatter.svelte';
-	import AxisYRight from '$src/components/chart/layercake/AxisYRight.svelte';
+	import AxisYZRight from '$src/components/chart/layercake/AxisYZRight.svelte';
+
+	const yVar: string = $state('temp');
+	const zVar: string = $state('ph');
 
 	const table: ColumnTable | undefined = $derived(
-		sitesTables.get('sjrbc-1')?.select('date', 'temp', 'ph', 'chlorides')
+		// sitesTables.get('sjrbc-1')?.select('date', 'temp', 'ph', 'chlorides')
+		sitesTables.get('elkhart-1')?.filter(aq.escape((d: any) => d[yVar] || d[zVar] ))
 	);
+
 	const points = $derived(table?.objects() || []);
+
+
+	const tooltipPoints = $derived(
+		table?.select('date', yVar, zVar).objects() || []
+	);
 
 	// // Define some data
 	// const points = [
@@ -47,34 +58,48 @@
 
 	const color = '#ab00d6';
 	const color2 = '#00d6ab';
+
+	// const yMin = 0;
+	// const zMin = 5.5;
+
+	const yDomain: [number, number | null] = $derived([variableMetadata[yVar]?.scale?.min || 0, yVar === 'ph' ? variableMetadata[yVar]?.scale?.max || null : null]);
+	// const yDomain: any[] = [0, null];
+	const zDomain: [number, number | null] = $derived([variableMetadata[zVar]?.scale?.min || 0, zVar === 'ph' ? variableMetadata[zVar]?.scale?.max || null : null]);
+	$inspect(zDomain);
+	// const zDomain = [0, 6];
 </script>
 
 <div id="box">BOX</div>
 
 <div id="test">
 	<h2>Hello TestCharts</h2>
-
 	<div class="chart-container">
 		{#if table}
 			<LayerCake
 				data={points}
 				x="date"
-				y="ph"
-				z="chlorides"
+				y={yVar}
+				yDomain={yDomain}
+				yNice={4}
+				z={zVar}
+				zNice={4}
+				zDomain={zDomain}
 				zScale={scaleLinear()}
 				zRange={({ height }: any) => [height, 0]}
-				debug
-			>
+				>
+				<!-- debug -->
 				<!-- Components go here -->
 				<Svg>
 					<AxisX tickMarks={true} snapLabels={false} ticks={5} format={formatDate} />
 					<AxisY gridlines={false} tickMarks={true} />
-					<AxisYRight gridlines={false} tickMarks={true} />
+					<AxisYZRight gridlines={false} tickMarks={true} />
 					<Line stroke={color} />
+					<Line stroke={color2} dataSource="z" />
 					<Scatter r={3} fill={color} />
+					<Scatter r={3} fill={color2} dataSource="z" />
 				</Svg>
 				<Html>
-					<SharedTooltip formatTitle={formatDate} />
+					<SharedTooltip formatTitle={formatDate} dataset={tooltipPoints} />
 				</Html>
 			</LayerCake>
 		{/if}

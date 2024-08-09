@@ -3,29 +3,35 @@
   Generates an SVG line shape.
  -->
 <script>
-  import { getContext } from 'svelte';
+// @ts-nocheck
 
-  const { data, xGet, yGet } = getContext('LayerCake');
+	import { getContext } from 'svelte';
 
-  /** @type {String} [stroke='#ab00d6'] - The shape's fill color. This is technically optional because it comes with a default value but you'll likely want to replace it with your own color. */
-  export let stroke = '#ab00d6';
+	const { data, xGet, yGet, zGet } = getContext('LayerCake');
 
-  $: path =
-    'M' +
-    $data
-      .map(d => {
-        return $xGet(d) + ',' + $yGet(d);
-      })
-      .join('L');
+	/** @type {String} [ySource="y"] - "y" or "z" for data values */
+	export let dataSource = 'y';
+  $: dataGet = dataSource === 'y' ? $yGet : $zGet;
+
+	/** @type {String} [stroke='#ab00d6'] - The shape's fill color. This is technically optional because it comes with a default value but you'll likely want to replace it with your own color. */
+	export let stroke = '#ab00d6';
+	$: path =
+		'M' +
+		$data
+			.map((d) => {
+        const val = dataGet(d);
+				return val ? $xGet(d) + ',' + val : null;
+			}).filter(coords => coords !== null)
+			.join('L');
 </script>
 
 <path class="path-line" d={path} {stroke}></path>
 
 <style>
-  .path-line {
-    fill: none;
-    stroke-linejoin: round;
-    stroke-linecap: round;
-    stroke-width: 2;
-  }
+	.path-line {
+		fill: none;
+		stroke-linejoin: round;
+		stroke-linecap: round;
+		stroke-width: 2;
+	}
 </style>

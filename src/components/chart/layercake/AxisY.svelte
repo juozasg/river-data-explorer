@@ -3,15 +3,20 @@
   Generates an SVG y-axis. This component is also configured to detect if your y-scale is an ordinal scale. If so, it will place the tickMarks in the middle of the bandwidth.
  -->
 <script>
+// @ts-nocheck
+
   import { getContext } from 'svelte';
+	import { derived } from 'svelte/store';
 
   const { xRange, yScale, width } = getContext('LayerCake');
+  // const { xRange, yScale: ys, width } = getContext('LayerCake');
+  // const yScale = derived(ys, ($ys) => $ys.nice());
 
   /** @type {Boolean} [tickMarks=false] - Show marks next to the tick label. */
   export let tickMarks = false;
 
   /** @type {String} [labelPosition='even'] - Whether the label sits even with its value ('even') or sits on top ('above') the tick mark. Default is 'even'. */
-  export let labelPosition = 'even';
+  export let labelPosition = 'above';
 
   /** @type {Boolean} [snapBaselineLabel=false] - When labelPosition='even', adjust the lowest label so that it sits above the tick mark. */
   export let snapBaselineLabel = false;
@@ -32,7 +37,7 @@
   export let tickGutter = 0;
 
   /** @type {Number} [dx=0] - Any optional value passed to the `dx` attribute on the text label. */
-  export let dx = 0;
+  export let dx = -2;
 
   /** @type {Number} [dy=0] - Any optional value passed to the `dy` attribute on the text label. */
   export let dy = 0;
