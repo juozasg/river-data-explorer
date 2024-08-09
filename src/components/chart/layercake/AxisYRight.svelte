@@ -5,13 +5,13 @@
 <script>
   import { getContext } from 'svelte';
 
-  const { xRange, yScale, width } = getContext('LayerCake');
+  const { xRange, zScale, yScale, width } = getContext('LayerCake');
 
   /** @type {Boolean} [tickMarks=false] - Show marks next to the tick label. */
   export let tickMarks = false;
 
   /** @type {String} [labelPosition='above'] - Whether the label sits even with its value ('even') or sits on top ('above') the tick mark. */
-  export let labelPosition = 'above';
+  export let labelPosition = 'even';
 
   /** @type {Boolean} [snapBaselineLabel=false] - When labelPosition='even', adjust the lowest label so that it sits above the tick mark. */
   export let snapBaselineLabel = false;
@@ -29,7 +29,7 @@
   export let ticks = 4;
 
   /** @type {Number} [tickGutter=5] - The amount of whitespace between the start of the tick and the chart drawing area (the xRange min). */
-  export let tickGutter = 5;
+  export let tickGutter = 0;
 
   /** @type {Number} [dx=0] - Any optional value passed to the `dx` attribute on the text label. */
   export let dx = 0;
@@ -40,20 +40,29 @@
   /** @type {Number} [charPixelWidth=7.25] - Used to calculate the widest label length to offset labels. Adjust if the automatic tick length doesn't look right because you have a bigger font (or just set `tickMarkLength` to a pixel value). */
   export let charPixelWidth = 7.25;
 
-  $: isBandwidth = typeof $yScale.bandwidth === 'function';
+  $: isBandwidth = typeof $zScale.bandwidth === 'function';
 
   $: tickVals = Array.isArray(ticks)
     ? ticks
     : isBandwidth
-      ? $yScale.domain()
+      ? $zScale.domain()
       : typeof ticks === 'function'
-        ? ticks($yScale.ticks())
-        : $yScale.ticks(ticks);
+        ? ticks($zScale.ticks())
+        : $zScale.ticks(ticks);
 
   function calcStringLength(sum, val) {
     if (val === ',' || val === '.') return sum + charPixelWidth * 0.5;
     return sum + charPixelWidth;
   }
+
+
+  $: {
+    console.log('zscale', $zScale);
+    console.log('xrange', $xRange);
+    console.log('yscale', $yScale);
+    console.log('tickvals', tickVals);
+  }
+
 
   $: tickLen =
     tickMarks === true
@@ -68,14 +77,14 @@
   );
 
   $: x2 = $width + tickGutter + (labelPosition === 'above' ? widestTickLen : tickLen);
-  $: y = isBandwidth ? $yScale.bandwidth() / 2 : 0;
+  $: y = isBandwidth ? $zScale.bandwidth() / 2 : 0;
 
-  $: maxTickValPx = Math.max(...tickVals.map($yScale));
+  $: maxTickValPx = Math.max(...tickVals.map($zScale));
 </script>
 
-<g class="axis y-axis">
+<g class="axis z-axis">
   {#each tickVals as tick (tick)}
-    {@const tickValPx = $yScale(tick)}
+    {@const tickValPx = $zScale(tick)}
     <g class="tick tick-{tick}" transform="translate({$xRange[0]}, {tickValPx})">
       {#if gridlines === true}
         <line class="gridline" x1="0" {x2} y1={y} y2={y}></line>

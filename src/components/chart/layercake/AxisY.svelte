@@ -42,6 +42,8 @@
 
   $: isBandwidth = typeof $yScale.bandwidth === 'function';
 
+  console.log('yScale', $yScale.ticks())
+
   $: tickVals = Array.isArray(ticks)
     ? ticks
     : isBandwidth

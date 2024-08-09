@@ -82,9 +82,8 @@
     background: rgba(255, 255, 255, 0.85);
     transform: translate(-50%, -100%);
     padding: 5px;
-    z-index: 100015;
+    z-index: 15;
     pointer-events: none;
-    /* overflow: visible; */
   }
   .line {
     position: absolute;

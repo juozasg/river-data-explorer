@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as aq from 'arquero';
 	import { LayerCake, Svg, Canvas, Html } from 'layercake';
+	import { scaleLinear } from 'd3-scale';
 
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
@@ -14,8 +15,10 @@
 	import Scatter from '$src/components/chart/layercake/Scatter.svelte';
 	import AxisYRight from '$src/components/chart/layercake/AxisYRight.svelte';
 
-	const table: ColumnTable | undefined = $derived(sitesTables.get('sjrbc-1')?.select('date', 'temp', 'ph'));
-	const points = $derived(table?.objects() || [])
+	const table: ColumnTable | undefined = $derived(
+		sitesTables.get('sjrbc-1')?.select('date', 'temp', 'ph', 'chlorides')
+	);
+	const points = $derived(table?.objects() || []);
 
 	// // Define some data
 	// const points = [
@@ -26,15 +29,10 @@
 	// 	{ x: 20, y: 220 }
 	// ];
 
-
-
 	$effect(() => {
 		console.log('TestCharts', table);
-		console.log('date 0', table?.object(0))
+		console.log('date 0', table?.object(0));
 	});
-
-
-
 
 	// onMount(() => {
 	// 	console.log('TestCharts', table)
@@ -49,77 +47,73 @@
 
 	const color = '#ab00d6';
 	const color2 = '#00d6ab';
-
 </script>
 
-
-<div id="box">
-	BOX
-</div>
+<div id="box">BOX</div>
 
 <div id="test">
 	<h2>Hello TestCharts</h2>
 
 	<div class="chart-container">
 		{#if table}
-		<LayerCake data={points} x="date" y="temp" >
-			<!-- Components go here -->
-			<Svg>
-				<AxisX tickMarks={true} snapLabels={false} ticks={5} format={formatDate} />
-				<AxisY />
-				<Line stroke={color}/>
-				<Scatter r={3} fill={color}/>
-			</Svg>
-			<!-- <Html>
-				<SharedTooltip formatTitle={formatDate}/>
-			</Html> -->
-		</LayerCake>
-
-		<LayerCake data={points} x="date" y="ph" >
-			<!-- Components go here -->
-			<Svg>
-				<!-- <AxisX tickMarks={true} snapLabels={false} ticks={5} format={formatDate} /> -->
-				<AxisYRight />
-				<Line stroke={color2}/>
-				<Scatter r={3} fill={color2}/>
-			</Svg>
-			<Html>
-				<SharedTooltip formatTitle={formatDate}/>
-			</Html>
-		</LayerCake>
-
+			<LayerCake
+				data={points}
+				x="date"
+				y="ph"
+				z="chlorides"
+				zScale={scaleLinear()}
+				zRange={({ height }: any) => [height, 0]}
+				debug
+			>
+				<!-- Components go here -->
+				<Svg>
+					<AxisX tickMarks={true} snapLabels={false} ticks={5} format={formatDate} />
+					<AxisY gridlines={false} tickMarks={true} />
+					<AxisYRight gridlines={false} tickMarks={true} />
+					<Line stroke={color} />
+					<Scatter r={3} fill={color} />
+				</Svg>
+				<Html>
+					<SharedTooltip formatTitle={formatDate} />
+				</Html>
+			</LayerCake>
 		{/if}
 	</div>
 </div>
 
 <style>
 	#test :global(.x-axis .tick text) {
-    fill: #410db9;
+		fill: #410db9;
 		/* transform-origin: 0 0px; */
 		/* translate: 20px 10px; */
 		/* transform: rotate(20deg); */
-  }
+	}
 	#test :global(.x-axis .tick:nth-child(even) text) {
-    fill: #410db9;
+		fill: #410db9;
 		/* transform-origin: 0 0px; */
 		translate: 0px 14px;
 		/* transform: rotate(20deg); */
-  }
+	}
 	#box {
 		width: 100px;
 		height: 200px;
 		background-color: purple;
 	}
 
-	#test :global(.layercake-container) {
+	/* #test :global(.layercake-container) {
 		position: absolute !important;
 		top: 0;
 		left: 0;
+	} */
+	#test :global(.layercake-container .tooltip) {
+		/* position: absolute !important; */
+		top: 100px !important;
+		/* left: 0; */
 	}
 	.chart-container {
 		width: 400px;
 		height: 300px;
-		border:  1px solid red;
+		border: 1px solid red;
 		margin-left: 2rem;
 		position: absolute;
 		/* background-color: blueviolet; */
