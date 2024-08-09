@@ -42,6 +42,7 @@
 	function formatDate(d: number): any {
 		const date = new Date(d);
 		// console.log(d);
+		// return date.getFullYear();
 		return fmtDate(date);
 	}
 
@@ -55,14 +56,12 @@
 <div id="test">
 	<h2>Hello TestCharts</h2>
 
-
-
 	<div class="chart-container">
 		{#if table}
 		<LayerCake data={points} x="date" y="ph" >
 			<!-- Components go here -->
 			<Svg>
-				<AxisX tickMarks={true} snapLabels={true} ticks={5} format={formatDate} />
+				<AxisX tickMarks={true} snapLabels={false} ticks={5} format={formatDate} />
 				<AxisY />
 				<Line stroke={color}/>
 				<Scatter r={3} fill={color}/>
@@ -76,6 +75,18 @@
 </div>
 
 <style>
+	#test :global(.x-axis .tick text) {
+    fill: #410db9;
+		/* transform-origin: 0 0px; */
+		/* translate: 20px 10px; */
+		/* transform: rotate(20deg); */
+  }
+	#test :global(.x-axis .tick:nth-child(even) text) {
+    fill: #410db9;
+		/* transform-origin: 0 0px; */
+		translate: 0px 14px;
+		/* transform: rotate(20deg); */
+  }
 	#box {
 		width: 100px;
 		height: 200px;
