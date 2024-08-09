@@ -35,14 +35,6 @@
 		table?.select('date', yVar, zVar).objects() || []
 	);
 
-	// // Define some data
-	// const points = [
-	// 	{ x: 0, y: 0 },
-	// 	{ x: 5, y: 10 },
-	// 	{ x: 10, y: 20 },
-	// 	{ x: 15, y: 30 },
-	// 	{ x: 20, y: 220 }
-	// ];
 
 	$effect(() => {
 		console.log('TestCharts', table);
