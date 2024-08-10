@@ -58,20 +58,16 @@ export class HoveredFeatureState extends FeatureState {
 		}
 
 		const hoveredFeature = hoveredFeatures[0];
-		console.log('HoveredFeatureState hoveredFeature exist', e.point, hoveredFeature.id, hoveredFeature.source);
 
 		// both current and new hovered features are null. nothing to do
 		if (!this.feature && !hoveredFeature) {
-			console.log('null to null feature change');
 			return;
 		}
 
 		// hovered feature didnt change
 		if (this.feature && this.feature.id === hoveredFeature.id && this.feature.source === hoveredFeature.source) {
-			console.log('hovered feature didnt change')
 			return;
 		}
-
 
 		// hovered feature changed, triggers reactivity and slow stats recalculations
 		this.clearCurrentFeatureState(map);

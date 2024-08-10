@@ -9,3 +9,4 @@ test('index page has expected h1', async ({ page }) => {
 	// await expect(page.getByText('A sees counter count: 1')).toBeVisible();
 	// await expect(page.getByText('B sees counter count: 1')).toBeVisible();
 });
+

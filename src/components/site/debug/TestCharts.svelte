@@ -32,6 +32,7 @@
 			.reify()
 	);
 	const availableVars = $derived(table?.columnNames() || []);
+	const s = scaleLinear();
 
 	$effect(() => {
 		console.log('tableName', tableName);

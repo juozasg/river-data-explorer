@@ -10,47 +10,43 @@
 	const table = $derived(selectedSite.site && sitesTables.get(selectedSite.site.id));
 
 	const rows: VariableStats[] = $derived.by(() => {
-		if(!table || table.numRows() == 0) return [];
+		if (!table || table.numRows() == 0) return [];
 		// dont order empty tables because column date won't exist
 		return allVariableStats(table);
 	});
-
 </script>
-
-
 
 <div id="panel">
 	{#if selectedSite.site}
-	<h3 class='site-label'>Site: {selectedSite.site?.name} ({selectedSite.site?.id})</h3>
-	<StatsDataTable data={rows}>
-		<th>Variable</th>
-		<th>Last</th>
-		<th>#obs</th>
-		<th>Min</th>
-		<th>Max</th>
-		<th>Mean</th>
-		<th>Median</th>
-		<th>Sd</th>
-		<th>From</th>
-		<th>To</th>
+		<h3 class="site-label">Site: {selectedSite.site?.name} ({selectedSite.site?.id})</h3>
+		<StatsDataTable data={rows}>
+			<th>Variable</th>
+			<th>Last</th>
+			<th>#obs</th>
+			<th>Min</th>
+			<th>Max</th>
+			<th>Mean</th>
+			<th>Median</th>
+			<th>Sd</th>
+			<th>From</th>
+			<th>To</th>
 
-		{#snippet row(r: VariableStats)}
-			<td>{r.label} {varunits(r.variable)}</td>
-			<td>{fmtVarNum(r.variable, r.lastObservation)}</td>
-			<td>{r.numObservations}</td>
-			<td class="stat">{fmtVarNum(r.variable, r.min)}</td>
-			<td class="stat">{fmtVarNum(r.variable, r.max)}</td>
-			<td class="stat">{fmtVarNum(r.variable, r.mean)}</td>
-			<td class="stat">{fmtVarNum(r.variable, r.median)}</td>
-			<td class="stat">{fmtVarNum(r.variable, r.stdDev)}</td>
-			<td class="date">{r.dateFromLabel}</td>
-			<td class="date">{r.dateToLabel}</td>
-		{/snippet}
-	</StatsDataTable>
+			{#snippet row(r: VariableStats)}
+				<td>{r.label} {varunits(r.variable)}</td>
+				<td>{fmtVarNum(r.variable, r.lastObservation)}</td>
+				<td>{r.numObservations}</td>
+				<td class="stat">{fmtVarNum(r.variable, r.min)}</td>
+				<td class="stat">{fmtVarNum(r.variable, r.max)}</td>
+				<td class="stat">{fmtVarNum(r.variable, r.mean)}</td>
+				<td class="stat">{fmtVarNum(r.variable, r.median)}</td>
+				<td class="stat">{fmtVarNum(r.variable, r.stdDev)}</td>
+				<td class="date">{r.dateFromLabel}</td>
+				<td class="date">{r.dateToLabel}</td>
+			{/snippet}
+		</StatsDataTable>
 	{:else}
-	<h2>Click a site marker on the map to select</h2>
+		<h2>Click a site marker on the map to select</h2>
 	{/if}
-
 </div>
 
 <style>
@@ -85,5 +81,4 @@
 		border-bottom: 1px solid #555 !important;
 		border-collapse: separate !important;
 	}
-
 </style>
