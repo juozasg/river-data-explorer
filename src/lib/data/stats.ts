@@ -125,6 +125,35 @@ function calculateVarStats(table: ColumnTable) {
 }
 
 
+export function simpleStats(varname: string, table?: ColumnTable): any {
+	if(!table || !table.numRows() || !table.columnNames().includes(varname)) {
+		return {count: 0};
+	}
+
+	const tsTable = table
+		.select('date', varname).rename({ [varname]: 'var' })
+		.filter(d => aq.op.is_nan(d!.var) == false)
+		.filter(aq.escape((d: any) => d!.var !== undefined && d!.var !== null && d!.var !== ''))
+		.reify();
+
+	if(tsTable.numRows() === 0) {
+		return {count: 0};
+	}
+
+	const stats = tsTable.rollup({
+		min: aq.op.min('var'),
+		max: aq.op.max('var'),
+		count: aq.op.count(),
+	});
+
+	return {
+		min: stats.get('min'),
+		max: stats.get('max'),
+		count: stats.get('count'),
+		range: stats.get('max') - stats.get('min'),
+	};
+}
+
 const emptyStringStats = {
 	min: '',
 	max: '',

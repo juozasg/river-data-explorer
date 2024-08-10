@@ -20,7 +20,8 @@
 		$data
 			.map((d) => {
         const val = dataGet(d);
-				return val ? $xGet(d) + ',' + val : null;
+				if(typeof val === 'number') return $xGet(d) + ',' + val;
+				return null;
 			}).filter(coords => coords !== null)
 			.join('L');
 </script>

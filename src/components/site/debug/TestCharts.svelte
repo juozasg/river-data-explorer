@@ -11,58 +11,113 @@
 	import AxisX from '$src/components/chart/layercake/AxisX.svelte';
 	import AxisY from '$src/components/chart/layercake/AxisY.svelte';
 	import Line from '$src/components/chart/layercake/Line.svelte';
-	import { fmtDate } from '$src/lib/utils';
+	import { fmtDate, niceTickNumber } from '$src/lib/utils';
 	import SharedTooltip from '$src/components/chart/layercake/SharedTooltip.svelte';
 	import Scatter from '$src/components/chart/layercake/Scatter.svelte';
 	import AxisYZRight from '$src/components/chart/layercake/AxisYZRight.svelte';
+	import { simpleStats } from '$src/lib/data/stats';
 
-	let yVar: string = $state('ecoli');
-	let zVar: string = $state('temp');
-
-	let tableName = $state('ecoli-1');
+	let tableName = $state('sjrbc-1');
+	let yVar: string = $state('phosphorus');
+	let zVar: string = $state('do');
+	// let tableName = $state('invert-107');
+	// let yVar: string = $state('invertMacro');
+	// let zVar: string = $state('invertIndiana');
 
 	const table: ColumnTable | undefined = $derived(
 		// sitesTables.get('sjrbc-1')?.select('date', 'temp', 'ph', 'chlorides')
-		sitesTables.get(tableName)?.filter(aq.escape((d: any) => d[yVar] || d[zVar] ))
+		sitesTables
+			.get(tableName)
+			?.filter(aq.escape((d: any) => d[yVar] || d[zVar]))
+			.reify()
 	);
-
 	const availableVars = $derived(table?.columnNames() || []);
+
+	$effect(() => {
+		console.log('tableName', tableName);
+		console.log('yVar', yVar);
+		console.log('zVar', zVar);
+	});
+
+	$effect(() => {
+		if (availableVars.includes(yVar)) console.log('Y DATA', table?.select('date', yVar).objects());
+		if (availableVars.includes(zVar)) console.log('Z DATA', table?.select('date', zVar).objects());
+
+		console.log('yStats', yStats);
+		console.log('zStats', zStats);
+		console.log('yDomain', yDomain);
+		console.log('zDomain', zDomain);
+	});
+
+	const yStats = $derived(simpleStats(yVar, table));
+	const zStats = $derived(simpleStats(zVar, table));
 
 	const points = $derived(table?.objects() || []);
 
-
-	const tooltipPoints = $derived(
-		table?.select('date', yVar, zVar).objects() || []
-	);
-
+	const tooltipPoints = $derived(table?.select('date', yVar, zVar).objects() || []);
 
 	$effect(() => {
-		console.log('TestCharts', table);
-		console.log('date 0', table?.object(0));
+		console.log('TestCharts table', table);
+		console.log('table.object(0)', table?.object(0));
 	});
-
-	// onMount(() => {
-	// 	console.log('TestCharts', table)
-	// });
 
 	function formatDate(d: number): any {
 		const date = new Date(d);
-		// console.log(d);
-		// return date.getFullYear();
 		return fmtDate(date);
 	}
 
 	const color = '#ab00d6';
 	const color2 = '#00d6ab';
 
-	// const yMin = 0;
-	// const zMin = 5.5;
+	const yMetadataMin = $derived(variableMetadata[yVar]?.scale?.min ?? 0);
+	const yDomainMin = $derived(
+		typeof yMetadataMin === 'number' && typeof yStats.min === 'number'
+			? Math.min(yMetadataMin, yStats.min)
+			: yMetadataMin ?? yStats.min ?? 0
+	);
+	const yDomainMax = $derived(
+		(yStats.count < 2 ? variableMetadata[yVar]?.scale?.max : niceTickNumber(yStats.max + yStats.range * 0.1, yStats.range * 10)) ?? 111
+	);
 
-	const yDomain: [number, number | null] = $derived([variableMetadata[yVar]?.scale?.min || 0, yVar === 'ph' ? variableMetadata[yVar]?.scale?.max || null : null]);
-	// const yDomain: any[] = [0, null];
-	const zDomain: [number, number | null] = $derived([variableMetadata[zVar]?.scale?.min || 0, zVar === 'ph' ? variableMetadata[zVar]?.scale?.max || null : null]);
-	$inspect(zDomain);
-	// const zDomain = [0, 6];
+	const zMetadataMin = $derived(variableMetadata[zVar]?.scale?.min ?? 0);
+	const zDomainMin = $derived(
+		typeof zMetadataMin === 'number' && typeof zStats.min === 'number'
+			? Math.min(zMetadataMin, zStats.min)
+			: zMetadataMin ?? zStats.min ?? 0
+	);
+	const zDomainMax = $derived(
+		(zStats.count < 2 ? variableMetadata[zVar]?.scale?.max : niceTickNumber(zStats.max + zStats.range * 0.1, zStats.range * 10)) ?? 111
+	);
+
+	const yDomain: [number, number] = $derived([yDomainMin, yDomainMax]);
+	const zDomain: [number, number] = $derived([zDomainMin, zDomainMax]);
+
+	function genTicks(domainMin: number, domainMax: number, ts: number[]): number[] {
+		const min = domainMin || ts[0];
+		const max = domainMax || ts[ts.length - 1];
+		const range = max - min;
+		const q = range / 4;
+		// console.log('yTicks', ts, 'min', min, 'max', max);
+		const ticks = [min, min + q, min + 2 * q, min + 3 * q, max];
+		const numTicks = ts.length;
+		// return [0, 1, 2]
+		return ticks.map((n) => niceTickNumber(n, range, n == max || n == min));
+		// return ts;
+	}
+
+	function dateTicks(ts: number[]): number[] {
+		// console.log('dateTicks', ts);
+		if (ts.length < 3) return ts;
+		const numRows = table!.numRows();
+
+		const first = table!.get('date', 0)?.valueOf() || ts[0];
+		const last = table!.get('date', numRows - 1)?.valueOf() || ts[ts.length - 1];
+		const range = last - first;
+		const q = range / 4;
+		return [first, first + q, first + 2 * q, first + 3 * q, last];
+
+		// return ts;
+	}
 </script>
 
 <!-- <div id="box">BOX</div> -->
@@ -81,7 +136,6 @@
 	{/each}
 </select>
 
-
 <h4>Z var: {zVar}</h4>
 <select bind:value={zVar}>
 	{#each availableVars as varname}
@@ -96,20 +150,27 @@
 				data={points}
 				x="date"
 				y={yVar}
-				yDomain={yDomain}
-				yNice={4}
+				{yDomain}
 				z={zVar}
-				zNice={4}
-				zDomain={zDomain}
+				{zDomain}
 				zScale={scaleLinear()}
 				zRange={({ height }: any) => [height, 0]}
-				>
-				<!-- debug -->
+				debug
+			>
 				<!-- Components go here -->
 				<Svg>
-					<AxisX tickMarks={true} snapLabels={false} ticks={5} format={formatDate} />
-					<AxisY gridlines={false} tickMarks={true} />
-					<AxisYZRight gridlines={false} tickMarks={true} />
+					<AxisX tickMarks={true} snapLabels={false} format={formatDate} ticks={dateTicks} />
+					<AxisY
+						gridlines={false}
+						tickMarks={true}
+						tickStroke={color}
+						ticks={(ts: number[]) => genTicks(yDomain[0], yDomain[1], ts)}
+					/>
+					<AxisYZRight
+						gridlines={false}
+						tickMarks={true}
+						ticks={(ts: number[]) => genTicks(zDomain[0], zDomain[1], ts)}
+					/>
 					<Line stroke={color} />
 					<Line stroke={color2} dataSource="z" />
 					<Scatter r={4} fill={color} />
@@ -134,6 +195,20 @@
 		/* fill: #410db9; */
 		/* transform-origin: 0 0px; */
 		translate: 0px 14px;
+		/* transform: rotate(20deg); */
+	}
+
+	#test :global(.x-axis .tick:first-child text) {
+		/* fill: #ff0db9; */
+		/* transform-origin: 0 0px; */
+		translate: 12px 0px;
+		/* transform: rotate(20deg); */
+	}
+
+	#test :global(.x-axis .tick:last-child text) {
+		/* fill: #ff0db9; */
+		/* transform-origin: 0 0px; */
+		translate: -10px 0px;
 		/* transform: rotate(20deg); */
 	}
 	#box {

@@ -65,7 +65,7 @@
 </script>
 
 <g class="axis x-axis" class:snapLabels>
-  {#each tickVals as tick, i (tick)}
+  {#each tickVals as tick, i}
     {#if baseline === true}
       <line class="baseline" y1={$height} y2={$height} x1="0" x2={$width} />
     {/if}

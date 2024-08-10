@@ -15,6 +15,10 @@
   /** @type {Boolean} [tickMarks=false] - Show marks next to the tick label. */
   export let tickMarks = false;
 
+
+  /** @type {String} [tickMarks='#aaa'] - Color for ticks. */
+  export let tickStroke = '#aaa';
+
   /** @type {String} [labelPosition='even'] - Whether the label sits even with its value ('even') or sits on top ('above') the tick mark. Default is 'even'. */
   export let labelPosition = 'above';
 
@@ -31,13 +35,13 @@
   export let format = d => d;
 
   /** @type {Number|Array|Function} [ticks=4] - If this is a number, it passes that along to the [d3Scale.ticks](https://github.com/d3/d3-scale) function. If this is an array, hardcodes the ticks to those values. If it's a function, passes along the default tick values and expects an array of tick values in return. */
-  export let ticks = 4;
+  export let ticks = 5;
 
   /** @type {Number} [tickGutter=0] - The amount of whitespace between the start of the tick and the chart drawing area (the xRange min). */
   export let tickGutter = 0;
 
   /** @type {Number} [dx=0] - Any optional value passed to the `dx` attribute on the text label. */
-  export let dx = -2;
+  export let dx = -1;
 
   /** @type {Number} [dy=0] - Any optional value passed to the `dy` attribute on the text label. */
   export let dy = 0;
@@ -47,7 +51,10 @@
 
   $: isBandwidth = typeof $yScale.bandwidth === 'function';
 
-  console.log('yScale', $yScale.ticks())
+  // $: {
+  //   console.log('AxisY updated $yScale.ticks()', $yScale.ticks())
+  //   console.log('tickVals', tickVals)
+  // }
 
   $: tickVals = Array.isArray(ticks)
     ? ticks
@@ -81,11 +88,11 @@
 </script>
 
 <g class="axis y-axis">
-  {#each tickVals as tick (tick)}
+  {#each tickVals as tick}
     {@const tickValPx = $yScale(tick)}
     <g class="tick tick-{tick}" transform="translate({$xRange[0]}, {tickValPx})">
       {#if gridlines === true}
-        <line class="gridline" {x1} x2={$width} y1={y} y2={y}></line>
+        <line class="gridline" {x1} x2={$width} y1={y} y2={y} stroke={tickStroke}></line>
       {/if}
       {#if tickMarks === true}
         <line class="tick-mark" {x1} x2={x1 + tickLen} y1={y} y2={y}></line>
@@ -109,9 +116,9 @@
     font-size: 11px;
   }
 
-  .tick line {
+  /* .tick line {
     stroke: #aaa;
-  }
+  } */
   .tick .gridline {
     stroke-dasharray: 2;
   }

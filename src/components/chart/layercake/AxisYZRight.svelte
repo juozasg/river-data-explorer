@@ -62,12 +62,12 @@
   }
 
 
-  $: {
-    console.log('zscale', $zScale);
-    console.log('xrange', $xRange);
-    console.log('yscale', $yScale);
-    console.log('tickvals', tickVals);
-  }
+  // $: {
+  //   console.log('zscale', $zScale);
+  //   console.log('xrange', $xRange);
+  //   console.log('yscale', $yScale);
+  //   console.log('tickvals', tickVals);
+  // }
 
 
   $: tickLen =
@@ -89,7 +89,7 @@
 </script>
 
 <g class="axis z-axis">
-  {#each tickVals as tick (tick)}
+  {#each tickVals as tick}
     {@const tickValPx = $zScale(tick)}
     <g class="tick tick-{tick}" transform="translate({$xRange[0]}, {tickValPx})">
       {#if gridlines === true}
