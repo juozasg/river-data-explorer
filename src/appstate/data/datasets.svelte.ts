@@ -27,6 +27,9 @@ export async function loadDatasets() {
 	const validKeys = Object.keys(variableMetadata);
 	console.log('known variables', validKeys);
 	for (const r of records) {
+		if (!r.siteId || !r.date) {
+			continue;
+		}
 		const record: Record<string, any> = {};
 		for (const key in r) {
 			if (key == 'siteId') {

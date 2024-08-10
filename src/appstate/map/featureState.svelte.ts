@@ -16,7 +16,7 @@ abstract class FeatureState {
 	}
 
 	get description() {
-		if(this.feature) {
+		if (this.feature) {
 			const name = this.feature.properties?.name;
 			return `${this.feature.id} (${name})`;
 		} else {
@@ -34,41 +34,66 @@ export class HoveredFeatureState extends FeatureState {
 		this.extent = extent;
 	}
 
-	mouseMove(e: ml.MapMouseEvent, layers: string[]) {
-		const map = e.target;
-		if(this.feature) {
+	clearCurrentFeatureState(map: ml.Map) {
+		if (this.feature) {
 			map.setFeatureState({ source: this.feature.source, id: this.feature.id }, { hover: false });
 			this.feature = null;
 		}
+	}
+
+	mouseMove(e: ml.MapMouseEvent, layers: string[]) {
+		const map = e.target;
 
 		let queryGeom: ml.PointLike | BBoxLike = e.point;
-		if(this.extent) {
+		if (this.extent) {
 			queryGeom = [
 				[e.point.x - this.extent, e.point.y - this.extent],
 				[e.point.x + this.extent, e.point.y + this.extent]
 			];
 		}
 		const hoveredFeatures = map.queryRenderedFeatures(queryGeom, { layers });
-		if(hoveredFeatures.length) {
-			this.feature = hoveredFeatures[0];
-			map.setFeatureState({ source: hoveredFeatures[0].source, id: hoveredFeatures[0].id }, { hover: true });
+		if (hoveredFeatures.length < 1) {
+			this.clearCurrentFeatureState(map);
+			return;
 		}
+
+		const hoveredFeature = hoveredFeatures[0];
+		console.log('HoveredFeatureState hoveredFeature exist', e.point, hoveredFeature.id, hoveredFeature.source);
+
+		// both current and new hovered features are null. nothing to do
+		if (!this.feature && !hoveredFeature) {
+			console.log('null to null feature change');
+			return;
+		}
+
+		// hovered feature didnt change
+		if (this.feature && this.feature.id === hoveredFeature.id && this.feature.source === hoveredFeature.source) {
+			console.log('hovered feature didnt change')
+			return;
+		}
+
+
+		// hovered feature changed, triggers reactivity and slow stats recalculations
+		this.clearCurrentFeatureState(map);
+		this.feature = hoveredFeature;
+		map.setFeatureState({ source: hoveredFeature.source, id: hoveredFeature.id }, { hover: true });
 	}
 }
 
-export class SelectedFeature extends FeatureState  {
+
+export class SelectedFeature extends FeatureState {
 	// layer: string = 'sjriver-huc10';
 	// returns true if the feature changed
 	update(map: ml.Map, feature: ml.MapGeoJSONFeature): boolean {
 		// if nothing changed, do nothing
-		if(feature?.id === this.feature?.id) {
+		if (feature?.id === this.feature?.id) {
 			return false;
 		}
 
 		this.clear(map);
 		this.feature = feature;
 
-		if(feature) {
+		if (feature) {
 			setFeatureState(map, feature.source, feature.id, { selected: true });
 		}
 
@@ -76,7 +101,7 @@ export class SelectedFeature extends FeatureState  {
 	}
 
 	clear(map: ml.Map) {
-		if(this.feature?.id) {
+		if (this.feature?.id) {
 			setFeatureState(map, this.feature.source, this.feature.id, { selected: false });
 		}
 		this.feature = null;
@@ -92,7 +117,7 @@ export const hoveredSite = {
 		return _hoveredSite;
 	},
 
-	set(site: Site | undefined)  {
+	set(site: Site | undefined) {
 		_hoveredSite = site;
 	}
 }
@@ -105,7 +130,7 @@ export const selectedSite = {
 		return _selectedSite;
 	},
 
-	set(site: Site | undefined)  {
+	set(site: Site | undefined) {
 		_selectedSite = site;
 	}
 }

@@ -12,28 +12,24 @@
 
 	const area = $derived(selectedArea);
 	const sitesInArea = $derived(sites.all.filter((s) => s.huc10 === area.id));
-	let varsNumber = $state(0);
-	let recordsNumber = $state(0);
-
-	// const firstObservations: Record<string, Date> = $state({});
-	// const lastObservations: Record<string, Date> = $state({});
 
 	let firstObs: Date | undefined = $state();
 	let lastObs: Date | undefined = $state();
 
 	const sitesStats = $derived(sitesDataStats(sitesInArea));
-	const sitesInAreaTables = $derived(sitesInArea.map((s) => sitesTables.get(s.id)).filter(t => t)) as ColumnTable[];
+	const sitesInAreaTables = $derived(
+		sitesInArea.map((s) => sitesTables.get(s.id)).filter((t) => t)
+	) as ColumnTable[];
 
 	const rows: VariableStats[] = $derived.by(() => {
 		const combinedTable = concatTablesAllColumns(sitesInAreaTables);
 
-		if(combinedTable.numRows() == 0) return [];
+		if (combinedTable.numRows() == 0) return [];
 		// dont order empty tables because column date won't exist
 		const orderedTable = combinedTable.orderby('date').reify();
-		return allVariableStats(orderedTable);
+		return allVariableStats(orderedTable, { errorLabel:  sitesInArea.map(s => s.id).join(', ') });
 	});
 </script>
-
 
 <div id="panel">
 	<div class="flex">
@@ -61,15 +57,15 @@
 		<th>To</th>
 
 		{#snippet row(r: VariableStats)}
-		<td>{r.label} {varunits(r.variable)}</td>
-		<td>{r.numObservations}</td>
-		<td class="stat">{fmtVarNum(r.variable, r.min)}</td>
-		<td class="stat">{fmtVarNum(r.variable, r.max)}</td>
-		<td class="stat">{fmtVarNum(r.variable, r.mean)}</td>
-		<td class="stat">{fmtVarNum(r.variable, r.median)}</td>
-		<td class="stat">{fmtVarNum(r.variable, r.stdDev)}</td>
-		<td class="date">{r.dateFromLabel}</td>
-		<td class="date">{r.dateToLabel}</td>
+			<td>{r.label} {varunits(r.variable)}</td>
+			<td>{r.numObservations}</td>
+			<td class="stat">{fmtVarNum(r.variable, r.min)}</td>
+			<td class="stat">{fmtVarNum(r.variable, r.max)}</td>
+			<td class="stat">{fmtVarNum(r.variable, r.mean)}</td>
+			<td class="stat">{fmtVarNum(r.variable, r.median)}</td>
+			<td class="stat">{fmtVarNum(r.variable, r.stdDev)}</td>
+			<td class="date">{r.dateFromLabel}</td>
+			<td class="date">{r.dateToLabel}</td>
 		{/snippet}
 	</StatsDataTable>
 </div>
@@ -86,7 +82,6 @@
 	p {
 		margin-bottom: 0.2rem !important;
 	}
-
 
 	.flex {
 		font-size: 1rem;
