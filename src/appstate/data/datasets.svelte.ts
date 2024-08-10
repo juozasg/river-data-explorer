@@ -10,6 +10,7 @@ import { variableMetadata } from '$src/appstate/variableMetadata';
 export type SiteId = string;
 export const sitesTables: Map<SiteId, ColumnTable> = new sr.Map();
 
+
 export async function loadDatasets() {
 	type DatasetRecord = Record<string, any> & { date: Date } & { siteId: SiteId };
 	const sitesRecords: Map<SiteId, DatasetRecord[]> = new Map();
@@ -27,6 +28,9 @@ export async function loadDatasets() {
 	const validKeys = Object.keys(variableMetadata);
 	console.log('known variables', validKeys);
 	for (const r of records) {
+		r.siteId = r.siteId.trim();
+		r.date = r.date.trim();
+		// no siteTables with empty basic data will be produced
 		if (!r.siteId || !r.date) {
 			continue;
 		}
@@ -47,7 +51,6 @@ export async function loadDatasets() {
 	}
 
 	sitesRecords.forEach((records, siteId) => {
-
 		const tbl = aq.from(records).orderby('date').reify();
 		sitesTables.set(siteId, tbl);
 	});
@@ -63,6 +66,7 @@ export async function loadDatasets() {
 
 
 function parseValue(key: string, value: string): number | Date | string | undefined {
+	value = value.trim();
 	if (key == 'date') {
 		return new Date(value);
 	}

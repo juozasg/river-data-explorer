@@ -3,6 +3,7 @@ import { StateFips } from "./fips";
 export type Site = {
 	id: string; // 'elkhart-123'
 	dataset: string; // 'elkhart'
+	num: number; // 123
 	name: string; // 'New Miller Stutsman - CR 28'
 	lat: number;
 	lon: number;

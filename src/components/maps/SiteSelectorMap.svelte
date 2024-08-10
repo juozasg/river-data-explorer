@@ -115,7 +115,7 @@
 {/each} -->
 
 {#if mlMap}
-	{#each sites.all as site}
+	{#each sites.allEnabled as site}
 		<Marker
 			map={mlMap}
 			{markerMouseEnter}

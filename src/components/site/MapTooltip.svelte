@@ -56,6 +56,10 @@
 		display: none;
 		z-index: 1005;
 		background: rgba(255, 255, 255, 0.85);
+
+		/* transition:
+			top 10ms ease normal,
+			bottom 10ms ease normal; */
 	}
 
 	.hint {

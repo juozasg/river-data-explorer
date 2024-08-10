@@ -1,8 +1,29 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import * as sr from 'svelte/reactivity';
+
+	import { sites, Sites } from '$src/appstate/sites.svelte';
 	import { onMount } from 'svelte';
+	import { data } from '@maptiler/sdk';
+	import { setEnabledDatasets } from '$src/appstate/ui/layers.svelte';
 
 	let showLayersDropdown = $state(false);
+	const datasets = $derived(sites.allDatasets);
+	const datasetsEnabled: {[key:string]: boolean} = $state({});
+
+	$effect(() => {
+		setEnabledDatasets(Object.keys(datasetsEnabled).filter(ds => datasetsEnabled[ds]));
+	});
+
+
+	$effect(() => {
+		for (const ds of datasets) {
+			datasetsEnabled[ds] = false;
+			// datasetsEnabled[ds] = true;
+		}
+
+		datasetsEnabled['sjrbc'] = true;
+	});
 
 	interface Props {
 		baseStyleId: string;
@@ -47,6 +68,16 @@
 	</div>
 	<div class="dropdown-menu" id="dropdown-menu3" role="menu">
 		<div class="dropdown-content">
+			{#each Object.entries(datasetsEnabled) as [ds]}
+				<div class="dropdown-item">
+					<label class="checkbox">
+						<input type="checkbox" bind:checked={datasetsEnabled[ds]} />
+						<tt>{ds}</tt> Sites
+					</label>
+				</div>
+			{/each}
+
+			<hr class="dropdown-divider" />
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
 			<a class="dropdown-item" onclick={setTopographic}>Topographic</a>
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -73,5 +104,11 @@
 	div.dropdown-item:hover {
 		background-color: hsl(0, 0%, 96%);
 		color: hsl(0, 0%, 4%);
+	}
+
+	input[type='checkbox'] {
+		margin-right: 4px;
+		position: relative;
+		bottom: -1px;
 	}
 </style>

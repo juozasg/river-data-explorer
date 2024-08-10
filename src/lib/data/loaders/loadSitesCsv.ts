@@ -20,8 +20,9 @@ export async function loadSitesCsv() {
 	for (const r of records) {
 		// console.log('site', r);
 		const site: Site = {
-			id: r.siteId,
+			id: r.siteId.trim(),
 			dataset: splitSiteId(r.siteId).dataset,
+			num: splitSiteId(r.siteId).num,
 			name: r.name,
 			lat: parseFloat(r.lat),
 			lon: parseFloat(r.lon),

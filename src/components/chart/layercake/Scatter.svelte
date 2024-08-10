@@ -23,12 +23,12 @@
 
 	/** @type {Number} [strokeWidth=0] – The circle's stroke width. */
 	export let strokeWidth = 0;
-	$: {
-		console.log('Scatter updated', $data);
+	// $: {
+	// 	console.log('Scatter updated', $data);
 
-		const allData = $data.map(d => [d, $xGet(d), dataGet(d)]);
-		console.log('Scatter allData', allData);
-	}
+	// 	const allData = $data.map(d => [d, $xGet(d), dataGet(d)]);
+	// 	console.log('Scatter allData', allData);
+	// }
 </script>
 
 <g class="scatter-group">

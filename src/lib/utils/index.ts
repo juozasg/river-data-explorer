@@ -74,3 +74,14 @@ export function niceTickNumber(n: number, range: number, preserve = false) {
 	// console.log('niceTickNumber', n, rounded, range, preserve, digits, n.toFixed(digits), 'log10', -Math.log10(range / scale))
 	return rounded;
 }
+
+export function aremove(arr: any[] | undefined, ...elements: any[]): any[] {
+	if (!arr || arr.length == 0) return [];
+
+	for (const e of elements) {
+		const i = arr.indexOf(e);
+		if (i !== -1) arr.splice(i, 1);
+	}
+
+	return arr;
+}

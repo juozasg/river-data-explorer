@@ -11,28 +11,87 @@
 	import AxisX from '$src/components/chart/layercake/AxisX.svelte';
 	import AxisY from '$src/components/chart/layercake/AxisY.svelte';
 	import Line from '$src/components/chart/layercake/Line.svelte';
-	import { fmtDate, niceTickNumber } from '$src/lib/utils';
+	import { aremove, fmtDate, niceTickNumber } from '$src/lib/utils';
 	import SharedTooltip from '$src/components/chart/layercake/SharedTooltip.svelte';
 	import Scatter from '$src/components/chart/layercake/Scatter.svelte';
 	import AxisYZRight from '$src/components/chart/layercake/AxisYZRight.svelte';
 	import { simpleStats } from '$src/lib/data/stats';
+	import { sites, Sites } from '$src/appstate/sites.svelte';
+	import type { Site } from '$lib/types/site';
 
-	let tableName = $state('sjrbc-1');
-	let yVar: string = $state('phosphorus');
-	let zVar: string = $state('do');
 	// let tableName = $state('invert-107');
 	// let yVar: string = $state('invertMacro');
 	// let zVar: string = $state('invertIndiana');
 
-	const table: ColumnTable | undefined = $derived(
-		// sitesTables.get('sjrbc-1')?.select('date', 'temp', 'ph', 'chlorides')
+	let tableDataset: string = $state('sjrbc');
+	let tableNum: number = $state(1);
+
+	const tableName = $derived(`${tableDataset}-${tableNum}`);
+	let yVar: string = $state('fishIbi');
+	let zVar: string = $state('fishIbi');
+
+	$effect(() => {
+		if (!availableVars.includes(yVar)) yVar = availableVars[0];
+		if (!availableVars.includes(zVar)) zVar = availableVars[1] || availableVars[0];
+		if (!availableTableNums.includes(tableNum)) tableNum = availableTableNums[0];
+	});
+
+	const fullTable: ColumnTable | undefined = $derived(
 		sitesTables
 			.get(tableName)
 			?.filter(aq.escape((d: any) => d[yVar] || d[zVar]))
 			.reify()
 	);
-	const availableVars = $derived(table?.columnNames() || []);
-	const s = scaleLinear();
+
+	let tableSliceFrom: number = $state(0);
+	let tableSliceTo: number | undefined = $state(40);
+
+	$effect(() => {
+		// changing table will change the range
+		tableSliceFrom = 0;
+		tableSliceTo = fullTable?.numRows();
+	});
+
+	$effect(() => {
+
+		// if(tableSliceTo && tableSliceFrom >= (tableSliceTo + 1)) {
+			if(typeof tableSliceTo == 'number' && tableSliceFrom >= (tableSliceTo - 1) ) {
+			console.log("tableSliceFrom > tableSliceTo", tableSliceFrom, tableSliceTo)
+			tableSliceFrom = tableSliceTo - 1;
+			// tableSliceTo = tableSliceFrom + 1;
+			if(tableSliceFrom < 0) {
+				tableSliceFrom = 0;
+				tableSliceTo = 1;
+			}
+
+			// if(tableSliceTo >= fullTable!.numRows()) {
+			// 	tableSliceTo = fullTable!.numRows() - 1;
+			// }
+		}
+	});
+
+	const table = $derived.by(() => {
+		if (!fullTable) return;
+		// return fullTable;
+		let endIndex: undefined | number = tableSliceTo
+		if(typeof endIndex == 'number' && endIndex >= fullTable.numRows()) endIndex = undefined;
+
+		return fullTable?.slice(tableSliceFrom, endIndex);
+	});
+
+	const availableVars = $derived(aremove(table?.columnNames(), 'invertNarrative', 'date') || []);
+	const availableDatasetSites = $derived(Sites.groupedBy(sites.withDataTables(), 'dataset'));
+	const availableDatasetNames = $derived([...availableDatasetSites.keys()]);
+	const availableTableNums = $derived(
+		availableDatasetSites.get(tableDataset)?.map((s: Site) => s.num) || []
+	);
+
+	$effect(() => {
+		console.log('availableDatasetSites', availableDatasetSites);
+		console.log('availableDatasetNames', availableDatasetNames);
+		console.log('availableTableNums', availableTableNums);
+	});
+	// const available
 
 	$effect(() => {
 		console.log('tableName', tableName);
@@ -50,17 +109,26 @@
 		console.log('zDomain', zDomain);
 	});
 
-	const yStats = $derived(simpleStats(yVar, table));
-	const zStats = $derived(simpleStats(zVar, table));
+	const yStats = $derived(simpleStats(yVar, fullTable));
+	const zStats = $derived(simpleStats(zVar, fullTable));
+
+	const yRadius = $derived(yStats.count > 2 ? 4 : 7);
+	const zRadius = $derived(zStats.count > 2 ? 4 : 7);
 
 	const points = $derived(table?.objects() || []);
 
-	const tooltipPoints = $derived(table?.select('date', yVar, zVar).objects() || []);
+	const tooltipPoints = $derived.by(() => {
+		const tooltipCols = ['date'];
+		if (yStats.count > 0) tooltipCols.push(yVar);
+		if (zStats.count > 0) tooltipCols.push(zVar);
 
-	$effect(() => {
-		console.log('TestCharts table', table);
-		console.log('table.object(0)', table?.object(0));
+		return table?.select(tooltipCols).objects() || [];
 	});
+
+	// $effect(() => {
+	// 	console.log('TestCharts table', table);
+	// 	console.log('table.object(0)', table?.object(0));
+	// });
 
 	function formatDate(d: number): any {
 		const date = new Date(d);
@@ -77,7 +145,9 @@
 			: yMetadataMin ?? yStats.min ?? 0
 	);
 	const yDomainMax = $derived(
-		(yStats.count < 2 ? variableMetadata[yVar]?.scale?.max : niceTickNumber(yStats.max + yStats.range * 0.1, yStats.range * 10)) ?? 111
+		(yStats.count < 2
+			? variableMetadata[yVar]?.scale?.max
+			: niceTickNumber(yStats.max + yStats.range * 0.1, yStats.range * 10)) ?? 111
 	);
 
 	const zMetadataMin = $derived(variableMetadata[zVar]?.scale?.min ?? 0);
@@ -87,7 +157,9 @@
 			: zMetadataMin ?? zStats.min ?? 0
 	);
 	const zDomainMax = $derived(
-		(zStats.count < 2 ? variableMetadata[zVar]?.scale?.max : niceTickNumber(zStats.max + zStats.range * 0.1, zStats.range * 10)) ?? 111
+		(zStats.count < 2
+			? variableMetadata[zVar]?.scale?.max
+			: niceTickNumber(zStats.max + zStats.range * 0.1, zStats.range * 10)) ?? 111
 	);
 
 	const yDomain: [number, number] = $derived([yDomainMin, yDomainMax]);
@@ -106,13 +178,14 @@
 		// return ts;
 	}
 
-	function dateTicks(ts: number[]): number[] {
+	function dateTicks(table: ColumnTable, suggestedTicks: number[]): number[] {
 		// console.log('dateTicks', ts);
-		if (ts.length < 3) return ts;
+		if (suggestedTicks.length < 3) return suggestedTicks;
 		const numRows = table!.numRows();
 
-		const first = table!.get('date', 0)?.valueOf() || ts[0];
-		const last = table!.get('date', numRows - 1)?.valueOf() || ts[ts.length - 1];
+		const first = table.get('date', 0)?.valueOf() || suggestedTicks[0];
+		const last =
+			table.get('date', numRows - 1)?.valueOf() || suggestedTicks[suggestedTicks.length - 1];
 		const range = last - first;
 		const q = range / 4;
 		return [first, first + q, first + 2 * q, first + 3 * q, last];
@@ -123,30 +196,63 @@
 
 <!-- <div id="box">BOX</div> -->
 
-<h4>Datatable: {tableName}</h4>
-<select bind:value={tableName}>
-	{#each sitesTables.keys() as name}
-		<option value={name}>{name}</option>
-	{/each}
-</select>
+<h4>Dataset: {tableDataset} Num: {tableNum}</h4>
+<div style="display: flex">
+	<select bind:value={tableDataset} style="margin-right: 1rem;">
+		{#each availableDatasetNames as name}
+			<option value={name}>{name}</option>
+		{/each}
+	</select>
+	<select bind:value={tableNum}>
+		{#each availableTableNums as num}
+			<option value={num}>{num}</option>
+		{/each}
+	</select>
+</div>
 
-<h4>Y var: {yVar}</h4>
-<select bind:value={yVar}>
-	{#each availableVars as varname}
-		<option value={varname}>{varname}</option>
-	{/each}
-</select>
+{#if fullTable}
+	<div style="display: flex">
+		<input
+			type="range"
+			min="0"
+			max={fullTable.numRows() - 2}
+			bind:value={tableSliceFrom}
+			step="1"
+			id="slider-from"
+			style="margin-right: 2rem"
+		/>
+		<input
+			type="range"
+			min="1"
+			max={fullTable.numRows() - 1}
+			bind:value={tableSliceTo}
+			step="1"
+			id="slider-to"
+			style="margin-right: 2rem"
+		/>
+		<p>{tableSliceFrom} - {tableSliceTo}</p>
+	</div>
+{/if}
 
-<h4>Z var: {zVar}</h4>
-<select bind:value={zVar}>
-	{#each availableVars as varname}
-		<option value={varname}>{varname}</option>
-	{/each}
-</select>
+<div style="display: flex">
+	<h4 style="color: {color}">Y var: {yVar}</h4>
+	<select bind:value={yVar} style="margin-right: 2rem; margin-left: 1rem;">
+		{#each availableVars as varname}
+			<option value={varname}>{varname}</option>
+		{/each}
+	</select>
+
+	<h4 style="color: {color2}">Z var: {zVar}</h4>
+	<select bind:value={zVar} style="margin-left: 1rem;">
+		{#each availableVars as varname}
+			<option value={varname}>{varname}</option>
+		{/each}
+	</select>
+</div>
 <div id="test">
-	<h2>Hello TestCharts</h2>
+	<h2>TestCharts</h2>
 	<div class="chart-container">
-		{#if table && table.columnNames().includes(yVar) && table.columnNames().includes(zVar)}
+		{#if table && points.length > 0}
 			<LayerCake
 				data={points}
 				x="date"
@@ -156,26 +262,35 @@
 				{zDomain}
 				zScale={scaleLinear()}
 				zRange={({ height }: any) => [height, 0]}
-				debug
 			>
 				<!-- Components go here -->
 				<Svg>
-					<AxisX tickMarks={true} snapLabels={false} format={formatDate} ticks={dateTicks} />
-					<AxisY
-						gridlines={false}
+					<AxisX
 						tickMarks={true}
-						ticks={(ts: number[]) => genTicks(yDomain[0], yDomain[1], ts)}
-						color={color}
-						/>
-					<AxisYZRight
-						gridlines={false}
-						tickMarks={true}
-						ticks={(ts: number[]) => genTicks(zDomain[0], zDomain[1], ts)}
+						snapLabels={false}
+						format={formatDate}
+						ticks={(ts: number[]) => dateTicks(table, ts)}
 					/>
-					<Line stroke={color} />
-					<Line stroke={color2} dataSource="z" />
-					<Scatter r={4} fill={color} />
-					<Scatter r={4} fill={color2} dataSource="z" />
+					{#if yStats.count > 0}
+						<AxisY
+							gridlines={false}
+							tickMarks={true}
+							ticks={(ts: number[]) => genTicks(yDomain[0], yDomain[1], ts)}
+							{color}
+						/>
+
+						<Line stroke={color} />
+						<Scatter r={yRadius} fill={color} />
+					{/if}
+					{#if zStats.count > 0}
+						<AxisYZRight
+							gridlines={false}
+							tickMarks={true}
+							ticks={(ts: number[]) => genTicks(zDomain[0], zDomain[1], ts)}
+						/>
+						<Line stroke={color2} dataSource="z" />
+						<Scatter r={zRadius} fill={color2} dataSource="z" />
+					{/if}
 				</Svg>
 				<Html>
 					<SharedTooltip formatTitle={formatDate} dataset={tooltipPoints} />
@@ -235,6 +350,15 @@
 		margin-left: 2rem;
 		position: absolute;
 		/* background-color: blueviolet; */
+	}
+
+	h4 {
+		margin-bottom: 2px;
+	}
+
+	select {
+		margin-bottom: 1rem;
+		font-size: 110%;
 	}
 
 	#test {

@@ -11,7 +11,7 @@
 	import { concatTablesAllColumns } from '$src/lib/data/tableHelpers';
 
 	const area = $derived(selectedArea);
-	const sitesInArea = $derived(sites.all.filter((s) => s.huc10 === area.id));
+	const sitesInArea = $derived(sites.allEnabled.filter((s) => s.huc10 === area.id));
 
 	let firstObs: Date | undefined = $state();
 	let lastObs: Date | undefined = $state();

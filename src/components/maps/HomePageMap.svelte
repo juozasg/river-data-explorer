@@ -31,7 +31,7 @@
 	const hoveredSiteStats = $derived(hoveredSite ? sitesDataStats([hoveredSite]) : undefined);
 
 	const hoveredAreaSites = $derived(
-		sites.all.filter((s) => hoveredArea.id && s.huc10 === hoveredArea.id)
+		sites.allEnabled.filter((s) => hoveredArea.id && s.huc10 === hoveredArea.id)
 	);
 
 	const hoveredAreaStats = $derived(
@@ -100,7 +100,7 @@
 />
 
 {#if mlMap}
-	{#each sites.all as site}
+	{#each sites.allEnabled as site}
 		<Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site} />
 	{/each}
 {/if}
