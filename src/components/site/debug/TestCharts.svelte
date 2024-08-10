@@ -163,9 +163,9 @@
 					<AxisY
 						gridlines={false}
 						tickMarks={true}
-						tickStroke={color}
 						ticks={(ts: number[]) => genTicks(yDomain[0], yDomain[1], ts)}
-					/>
+						color={color}
+						/>
 					<AxisYZRight
 						gridlines={false}
 						tickMarks={true}
@@ -230,7 +230,7 @@
 	.chart-container {
 		width: 400px;
 		height: 300px;
-		border: 1px solid red;
+		/* border: 1px solid red; */
 		margin-left: 2rem;
 		position: absolute;
 		/* background-color: blueviolet; */
@@ -239,7 +239,7 @@
 	#test {
 		width: 100%;
 		height: 800px;
-		border: 1px solid blue;
+		/* border: 1px solid blue; */
 		overflow: visible;
 		/* position: absolute; */
 		top: 50px;

@@ -16,8 +16,8 @@
   export let tickMarks = false;
 
 
-  /** @type {String} [tickMarks='#aaa'] - Color for ticks. */
-  export let tickStroke = '#aaa';
+  /** @type {String} [color='#aaa'] - Color for ticks. */
+  export let color = '#ccc';
 
   /** @type {String} [labelPosition='even'] - Whether the label sits even with its value ('even') or sits on top ('above') the tick mark. Default is 'even'. */
   export let labelPosition = 'above';
@@ -92,16 +92,17 @@
     {@const tickValPx = $yScale(tick)}
     <g class="tick tick-{tick}" transform="translate({$xRange[0]}, {tickValPx})">
       {#if gridlines === true}
-        <line class="gridline" {x1} x2={$width} y1={y} y2={y} stroke={tickStroke}></line>
+        <line class="gridline" {x1} x2={$width} y1={y} y2={y}></line>
       {/if}
       {#if tickMarks === true}
-        <line class="tick-mark" {x1} x2={x1 + tickLen} y1={y} y2={y}></line>
+        <line class="tick-mark" {x1} x2={x1 + tickLen} y1={y} y2={y} stroke={color}></line>
       {/if}
       <text
         x={x1}
         {y}
         dx={dx + (labelPosition === 'even' ? -3 : 0)}
         text-anchor={labelPosition === 'above' ? 'start' : 'end'}
+        fill={color}
         dy={dy +
           (labelPosition === 'above' || (snapBaselineLabel === true && tickValPx === maxTickValPx)
             ? -3
@@ -122,12 +123,15 @@
   .tick .gridline {
     stroke-dasharray: 2;
   }
-
+/*
   .tick text {
     fill: #666;
-  }
+  } */
 
   .tick.tick-0 line {
     stroke-dasharray: 0;
   }
+  /* .tick line {
+    stroke-width: 2px;
+  } */
 </style>
