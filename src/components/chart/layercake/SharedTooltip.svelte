@@ -3,7 +3,7 @@
   Generates a tooltip that works on multiseries datasets, like multiline charts. It creates a tooltip showing the name of the series and the current value. It finds the nearest data point using the [QuadTree.html.svelte](https://layercake.graphics/components/QuadTree.html.svelte) component.
  -->
 <script>
-// @ts-nocheck
+	// @ts-nocheck
 
 	import { getContext } from 'svelte';
 	import { format } from 'd3-format';
@@ -30,8 +30,10 @@
 	/** @type {Array<Object>|undefined} [dataset] - The dataset to work off of—defaults to $data if left unset. You can pass something custom in here in case you don't want to use the main data or it's in a strange format. */
 	export let dataset = undefined;
 
-	const w = 150;
+	const w = 160;
 	const w2 = w / 2;
+
+	let found = {};
 
 	/* --------------------------------------------
 	 * Sort the keys by the highest value
@@ -41,6 +43,10 @@
 	 */
 	function sortResult(result) {
 		if (Object.keys(result).length === 0) return [];
+		// return {
+		// 	key,
+		// 	result: result[key]
+		// };
 		const rows = Object.keys(result)
 			.filter((d) => d !== $config.x)
 			.map((key) => {
@@ -49,9 +55,19 @@
 					value: result[key]
 				};
 			})
-			.sort((a, b) => b.value - a.value);
+			.sort((a, b) => (a.key === config.y ? -1 : 1));
 
+		console.log('sortedRows', rows[0], rows[1]);
 		return rows;
+	}
+
+	function getTopPosition({ key, value }) {
+		let top = $yScale(value);
+		console.log('top before ', top, value);
+		if (top < 100) top = 110 + top;
+		console.log('top', top);
+
+		return top;
 	}
 </script>
 
@@ -59,12 +75,17 @@
 	{@const foundSorted = sortResult(found)}
 	{#if visible === true}
 		<div style="left:{x}px;" class="line"></div>
+		{#if (() => {
+			console.log(foundSorted[0], $yScale(foundSorted[0].value));
+			return 0;
+		})()}{/if}
+		<!-- {@debug foundSorted, ys} -->
 		<div
 			class="tooltip"
 			style="
         width:{w}px;
         display: {visible ? 'block' : 'none'};
-        top:{$yScale(foundSorted[0].value) + offset}px;
+        top:{getTopPosition(foundSorted[0]) + offset}px;
         left:{Math.min(Math.max(w2, x), $width - w2)}px;"
 		>
 			<div class="title">{formatTitle(found[$config.x])}</div>
@@ -107,7 +128,12 @@
 	.title {
 		font-weight: bold;
 		font-size: 10px;
+		margin-bottom: 4px;
 	}
+	.row {
+		line-height: 1.1;
+	}
+
 	.key {
 		color: #999;
 	}

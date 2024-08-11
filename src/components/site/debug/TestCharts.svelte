@@ -144,6 +144,7 @@
 		if (yStats.count > 0) tooltipCols.push(yVar);
 		if (zStats.count > 0) tooltipCols.push(zVar);
 
+		// return table?.objects() || [];
 		return table?.select(tooltipCols).objects() || [];
 	});
 
@@ -155,7 +156,7 @@
 	function  formatTTKey(key: string): string {
 		const keycolor = key == yVar ? color : (key == zVar ? color2Darker : '#444');
 		const label = variableMetadata[key]?.label || key;
-		console.log(key, label, keycolor)
+		// console.log(key, label, keycolor)
 		// const keycolor = '#444';
 		return `<span style="color: ${keycolor}">${label}</bold>`;
 	}
@@ -281,7 +282,7 @@
 						<Line stroke={color} />
 						<Scatter r={yRadius} fill={color} />
 					{/if}
-					{#if zStats.count > 0}
+					{#if zStats.count > 0 && zVar !== yVar}
 						<AxisYZRight
 							gridlines={false}
 							tickMarks={true}
@@ -330,7 +331,7 @@
 							filterIndexRange={[brushMinIndex, brushMaxIndex]}
 						/>
 					{/if}
-					{#if zStats.count > 0}
+					{#if zStats.count > 0 && zVar !== yVar}
 						<Line stroke={color2} dataSource="z" ’ />
 						<Scatter
 							r={zRadius - 1}
@@ -393,7 +394,7 @@
 	} */
 	#test :global(.layercake-container .tooltip) {
 		/* position: absolute !important; */
-		top: 100px !important;
+		/* top: 100px !important; */
 		/* left: 0; */
 	}
 	.chart-container {
