@@ -102,7 +102,9 @@
   }
 
   .tick text {
-    fill: #666;
+    fill: #333333;
+    font-size: 0.70rem;
+    font-weight: 600;
   }
 
   .tick .tick-mark,

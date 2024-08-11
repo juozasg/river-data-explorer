@@ -70,7 +70,7 @@
 			<div class="title">{formatTitle(found[$config.x])}</div>
 			{#each foundSorted as row}
 				<div class="row">
-					<span class="key">{formatKey(row.key)}:</span>
+					<span class="key">{@html formatKey(row.key)}:</span>
 					{formatValue(row.value)}
 				</div>
 			{/each}

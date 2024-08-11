@@ -94,7 +94,7 @@
 					? undefined
 					: brushMaxIndex + 1;
 
-		console.log('slicing fullTable', brushMinIndex, sliceIndex)
+		console.log('slicing fullTable', brushMinIndex, sliceIndex);
 		return fullTable?.slice(brushMinIndex || 0, sliceIndex);
 	});
 
@@ -152,8 +152,17 @@
 		return fmtDate(date);
 	}
 
+	function  formatTTKey(key: string): string {
+		const keycolor = key == yVar ? color : (key == zVar ? color2Darker : '#444');
+		const label = variableMetadata[key]?.label || key;
+		console.log(key, label, keycolor)
+		// const keycolor = '#444';
+		return `<span style="color: ${keycolor}">${label}</bold>`;
+	}
+
 	const color = '#ab00d6';
 	const color2 = '#00d6ab';
+	const color2Darker = '#00af8c';
 
 	const yMetadataMin = $derived(variableMetadata[yVar]?.scale?.min ?? 0);
 	const yDomainMin = $derived(
@@ -181,6 +190,31 @@
 
 	const yDomain: [number, number] = $derived([yDomainMin, yDomainMax]);
 	const zDomain: [number, number] = $derived([zDomainMin, zDomainMax]);
+
+	let testElement: HTMLElement | null = $state(null);
+	let brushContainer: HTMLElement | null = $state(null);
+
+	const tickTextElements = () => testElement?.querySelectorAll('.x-axis .tick text') as NodeListOf<HTMLElement> || [] as HTMLElement[];
+
+	const brushOn = (e) => {
+		console.log('brushOn', e);
+		// console.log(brushContainer, brushContainer instanceof HTMLElement)
+		brushContainer!.style.opacity = '1';
+
+		// const tickTextElements = testElement!.querySelectorAll('.x-axis .tick text');
+		const ticks = tickTextElements().forEach(t => {
+			t.style.opacity = '0';
+		});
+	};
+
+	const brushOff = (e) => {
+		console.log('brushOff', e);
+		// console.log(brushContainer, brushContainer instanceof HTMLElement)
+		brushContainer!.style.opacity = '0.1';
+		const ticks = tickTextElements().forEach(t => {
+			t.style.opacity = '1';
+		});
+	};
 </script>
 
 <!-- <div id="box">BOX</div> -->
@@ -214,7 +248,7 @@
 		{/each}
 	</select>
 </div>
-<div id="test">
+<div id="test" bind:this={testElement}>
 	<h2>TestCharts</h2>
 	<div class="chart-container">
 		{#if table && points.length > 0}
@@ -252,20 +286,29 @@
 							gridlines={false}
 							tickMarks={true}
 							ticks={(ts: number[]) => genYTicks(zDomain[0], zDomain[1], ts)}
+							color={color2Darker}
 						/>
 						<Line stroke={color2} dataSource="z" />
 						<Scatter r={zRadius} fill={color2} dataSource="z" />
 					{/if}
 				</Svg>
 				<Html>
-					<SharedTooltip formatTitle={formatDate} dataset={tooltipPoints} />
+					<SharedTooltip formatTitle={formatDate} dataset={tooltipPoints} formatKey={formatTTKey} />
 				</Html>
 			</LayerCake>
 		{/if}
 	</div>
 	<!-- </div> -->
 
-	<div class="brush-container">
+	<div
+		class="brush-container"
+		style="opacity:0.1"
+		onmouseenter={brushOn}
+		onmouseleave={brushOff}
+		ontouchmove={brushOn}
+		ontouchmovecapture={brushOn}
+		bind:this={brushContainer}
+	>
 		{#if table && fullPoints.length > 0}
 			<!-- padding={{ top: 5 }} -->
 			<LayerCake
@@ -356,18 +399,19 @@
 	.chart-container {
 		width: 400px;
 		height: 300px;
-		border: 1px solid red;
+		/* border: 1px solid red; */
 		margin-left: 2rem;
 		position: absolute;
 		/* background-color: blueviolet; */
 	}
 
 	.brush-container {
-		height: 30px;
-		width: 400px;
-		margin-left: 2rem;
+		height: 22px;
+		bottom: 50px;
+		width: 396px;
+		margin-left: 34px;
 		position: absolute;
-		bottom: 0;
+		/* background-color: white; */
 	}
 
 	h4 {

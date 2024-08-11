@@ -33,7 +33,9 @@
 				);
 
 				snappedMinIndex = snapPoints.indexOf(minSnapPoint);
-			}
+			} else {
+        snappedMinIndex = 0;
+      }
 			if (max !== null) {
 				const maxX = max * width;
 				const maxSnapPoint = snapPoints.reduce((prev, curr) =>
@@ -139,6 +141,7 @@
 
 	$: left = 100 * min;
 	$: right = 100 * (1 - max);
+
 </script>
 
 <div
@@ -201,8 +204,8 @@
 		position: absolute;
 		height: 100%;
 		cursor: move;
-		/* mix-blend-mode: difference; */
-		background-color: #cccccc90;
+		mix-blend-mode: multiply;
+		background-color: #857aff90;
 		/* border: 1px solid #000; */
 	}
 
