@@ -1,23 +1,24 @@
 <script lang="ts">
 	import * as aq from 'arquero';
-	const op = aq.op;
-	import { LayerCake, Svg, Canvas, Html } from 'layercake';
 	import { scaleLinear } from 'd3-scale';
+	import { Html, LayerCake, Svg } from 'layercake';
 
 	import { variableMetadata } from '$src/appstate/variableMetadata';
 
+	import type { Site } from '$lib/types/site';
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
-	import type ColumnTable from 'arquero/dist/types/table/column-table';
+	import { sites, Sites } from '$src/appstate/sites.svelte';
 	import AxisX from '$src/components/chart/layercake/AxisX.svelte';
 	import AxisY from '$src/components/chart/layercake/AxisY.svelte';
-	import Line from '$src/components/chart/layercake/Line.svelte';
-	import { aremove, fmtDate, niceTickNumber } from '$src/lib/utils';
-	import SharedTooltip from '$src/components/chart/layercake/SharedTooltip.svelte';
-	import Scatter from '$src/components/chart/layercake/Scatter.svelte';
 	import AxisYZRight from '$src/components/chart/layercake/AxisYZRight.svelte';
+	import Brush from '$src/components/chart/layercake/Brush.html.svelte';
+	import Line from '$src/components/chart/layercake/Line.svelte';
+	import Scatter from '$src/components/chart/layercake/Scatter.svelte';
+	import SharedTooltip from '$src/components/chart/layercake/SharedTooltip.svelte';
 	import { simpleStats } from '$src/lib/data/stats';
-	import { sites, Sites } from '$src/appstate/sites.svelte';
-	import type { Site } from '$lib/types/site';
+	import { aremove, fmtDate, niceTickNumber } from '$src/lib/utils';
+	import type ColumnTable from 'arquero/dist/types/table/column-table';
+	import { genXDateTicks, genYTicks } from '$src/lib/chartTicks';
 
 	// let tableName = $state('invert-107');
 	// let yVar: string = $state('invertMacro');
@@ -43,40 +44,58 @@
 			.reify()
 	);
 
-	let tableSliceFrom: number = $state(0);
-	let tableSliceTo: number | undefined = $state(40);
+	let brushMin: number | null = $state(null);
+	let brushMax: number | null = $state(null);
+
+	let brushMinIndex: number | null = $state(null);
+	let brushMaxIndex: number | null = $state(null);
 
 	$effect(() => {
-		// changing table will change the range
-		tableSliceFrom = 0;
-		tableSliceTo = fullTable?.numRows();
+		console.log('brushMinIndex', brushMinIndex);
+		console.log('brushMaxIndex', brushMaxIndex);
 	});
-
 	$effect(() => {
-
-		// if(tableSliceTo && tableSliceFrom >= (tableSliceTo + 1)) {
-			if(typeof tableSliceTo == 'number' && tableSliceFrom >= (tableSliceTo - 1) ) {
-			console.log("tableSliceFrom > tableSliceTo", tableSliceFrom, tableSliceTo)
-			tableSliceFrom = tableSliceTo - 1;
-			// tableSliceTo = tableSliceFrom + 1;
-			if(tableSliceFrom < 0) {
-				tableSliceFrom = 0;
-				tableSliceTo = 1;
-			}
-
-			// if(tableSliceTo >= fullTable!.numRows()) {
-			// 	tableSliceTo = fullTable!.numRows() - 1;
-			// }
-		}
+		console.log('brushExtents', brushMin, brushMax);
+		// console.log('tableSlice', tableSliceFrom, tableSliceLength);
 	});
+
+	// let tableSliceFrom: number = $state(0);
+	// let tableSliceLength: number | undefined = $state(undefined);
+
+	// $effect(() => {
+	// 	const numRows = fullTable?.numRows() || 0;
+
+	// 	if (brushMax === 0) {
+	// 		brushMax = 0.00000001;
+	// 	}
+
+	// 	let fromIndex = Math.round((brushMin || 0) * numRows);
+	// 	let sliceLength = Math.round((brushMax || 1) * (numRows || 1));
+
+	// 	if (fromIndex >= sliceLength) {
+	// 		if (fromIndex > 0) {
+	// 			fromIndex = sliceLength - 1;
+	// 		} else {
+	// 			sliceLength = sliceLength + 1;
+	// 		}
+	// 	}
+
+	// 	tableSliceFrom = fromIndex;
+	// 	tableSliceLength = sliceLength >= numRows ? undefined : sliceLength;
+	// });
 
 	const table = $derived.by(() => {
 		if (!fullTable) return;
-		// return fullTable;
-		let endIndex: undefined | number = tableSliceTo
-		if(typeof endIndex == 'number' && endIndex >= fullTable.numRows()) endIndex = undefined;
 
-		return fullTable?.slice(tableSliceFrom, endIndex);
+		const sliceIndex =
+			brushMaxIndex == null
+				? undefined
+				: brushMaxIndex >= fullTable.numRows() - 1
+					? undefined
+					: brushMaxIndex + 1;
+
+		console.log('slicing fullTable', brushMinIndex, sliceIndex)
+		return fullTable?.slice(brushMinIndex || 0, sliceIndex);
 	});
 
 	const availableVars = $derived(aremove(table?.columnNames(), 'invertNarrative', 'date') || []);
@@ -86,11 +105,12 @@
 		availableDatasetSites.get(tableDataset)?.map((s: Site) => s.num) || []
 	);
 
-	$effect(() => {
-		console.log('availableDatasetSites', availableDatasetSites);
-		console.log('availableDatasetNames', availableDatasetNames);
-		console.log('availableTableNums', availableTableNums);
-	});
+	// $effect(() => {
+	// 	console.log('availableDatasetSites', availableDatasetSites);
+	// 	console.log('availableDatasetNames', availableDatasetNames);
+	// 	console.log('availableTableNums', availableTableNums);
+	// 	console.log('sites.withDataTables()', sites.withDataTables());
+	// });
 	// const available
 
 	$effect(() => {
@@ -105,8 +125,8 @@
 
 		console.log('yStats', yStats);
 		console.log('zStats', zStats);
-		console.log('yDomain', yDomain);
-		console.log('zDomain', zDomain);
+		// console.log('yDomain', yDomain);
+		// console.log('zDomain', zDomain);
 	});
 
 	const yStats = $derived(simpleStats(yVar, fullTable));
@@ -117,6 +137,8 @@
 
 	const points = $derived(table?.objects() || []);
 
+	const fullPoints = $derived(fullTable?.objects() || []);
+
 	const tooltipPoints = $derived.by(() => {
 		const tooltipCols = ['date'];
 		if (yStats.count > 0) tooltipCols.push(yVar);
@@ -124,11 +146,6 @@
 
 		return table?.select(tooltipCols).objects() || [];
 	});
-
-	// $effect(() => {
-	// 	console.log('TestCharts table', table);
-	// 	console.log('table.object(0)', table?.object(0));
-	// });
 
 	function formatDate(d: number): any {
 		const date = new Date(d);
@@ -164,34 +181,6 @@
 
 	const yDomain: [number, number] = $derived([yDomainMin, yDomainMax]);
 	const zDomain: [number, number] = $derived([zDomainMin, zDomainMax]);
-
-	function genTicks(domainMin: number, domainMax: number, ts: number[]): number[] {
-		const min = domainMin || ts[0];
-		const max = domainMax || ts[ts.length - 1];
-		const range = max - min;
-		const q = range / 4;
-		// console.log('yTicks', ts, 'min', min, 'max', max);
-		const ticks = [min, min + q, min + 2 * q, min + 3 * q, max];
-		const numTicks = ts.length;
-		// return [0, 1, 2]
-		return ticks.map((n) => niceTickNumber(n, range, n == max || n == min));
-		// return ts;
-	}
-
-	function dateTicks(table: ColumnTable, suggestedTicks: number[]): number[] {
-		// console.log('dateTicks', ts);
-		if (suggestedTicks.length < 3) return suggestedTicks;
-		const numRows = table!.numRows();
-
-		const first = table.get('date', 0)?.valueOf() || suggestedTicks[0];
-		const last =
-			table.get('date', numRows - 1)?.valueOf() || suggestedTicks[suggestedTicks.length - 1];
-		const range = last - first;
-		const q = range / 4;
-		return [first, first + q, first + 2 * q, first + 3 * q, last];
-
-		// return ts;
-	}
 </script>
 
 <!-- <div id="box">BOX</div> -->
@@ -209,30 +198,6 @@
 		{/each}
 	</select>
 </div>
-
-{#if fullTable}
-	<div style="display: flex">
-		<input
-			type="range"
-			min="0"
-			max={fullTable.numRows() - 2}
-			bind:value={tableSliceFrom}
-			step="1"
-			id="slider-from"
-			style="margin-right: 2rem"
-		/>
-		<input
-			type="range"
-			min="1"
-			max={fullTable.numRows() - 1}
-			bind:value={tableSliceTo}
-			step="1"
-			id="slider-to"
-			style="margin-right: 2rem"
-		/>
-		<p>{tableSliceFrom} - {tableSliceTo}</p>
-	</div>
-{/if}
 
 <div style="display: flex">
 	<h4 style="color: {color}">Y var: {yVar}</h4>
@@ -269,13 +234,13 @@
 						tickMarks={true}
 						snapLabels={false}
 						format={formatDate}
-						ticks={(ts: number[]) => dateTicks(table, ts)}
+						ticks={(ts: number[]) => genXDateTicks(table, ts)}
 					/>
 					{#if yStats.count > 0}
 						<AxisY
 							gridlines={false}
 							tickMarks={true}
-							ticks={(ts: number[]) => genTicks(yDomain[0], yDomain[1], ts)}
+							ticks={(ts: number[]) => genYTicks(yDomain[0], yDomain[1], ts)}
 							{color}
 						/>
 
@@ -286,7 +251,7 @@
 						<AxisYZRight
 							gridlines={false}
 							tickMarks={true}
-							ticks={(ts: number[]) => genTicks(zDomain[0], zDomain[1], ts)}
+							ticks={(ts: number[]) => genYTicks(zDomain[0], zDomain[1], ts)}
 						/>
 						<Line stroke={color2} dataSource="z" />
 						<Scatter r={zRadius} fill={color2} dataSource="z" />
@@ -294,6 +259,51 @@
 				</Svg>
 				<Html>
 					<SharedTooltip formatTitle={formatDate} dataset={tooltipPoints} />
+				</Html>
+			</LayerCake>
+		{/if}
+	</div>
+	<!-- </div> -->
+
+	<div class="brush-container">
+		{#if table && fullPoints.length > 0}
+			<!-- padding={{ top: 5 }} -->
+			<LayerCake
+				data={fullPoints}
+				x="date"
+				y={yVar}
+				{yDomain}
+				z={zVar}
+				{zDomain}
+				zScale={scaleLinear()}
+				zRange={({ height }: any) => [height, 0]}
+			>
+				<Svg>
+					{#if yStats.count > 0}
+						<Line stroke={color} />
+						<Scatter
+							r={yRadius - 1}
+							fill={color}
+							filterIndexRange={[brushMinIndex, brushMaxIndex]}
+						/>
+					{/if}
+					{#if zStats.count > 0}
+						<Line stroke={color2} dataSource="z" ’ />
+						<Scatter
+							r={zRadius - 1}
+							fill={color2}
+							dataSource="z"
+							filterIndexRange={[brushMinIndex, brushMaxIndex]}
+						/>
+					{/if}
+				</Svg>
+				<Html>
+					<Brush
+						bind:min={brushMin}
+						bind:max={brushMax}
+						bind:snappedMinIndex={brushMinIndex}
+						bind:snappedMaxIndex={brushMaxIndex}
+					/>
 				</Html>
 			</LayerCake>
 		{/if}
@@ -346,10 +356,18 @@
 	.chart-container {
 		width: 400px;
 		height: 300px;
-		/* border: 1px solid red; */
+		border: 1px solid red;
 		margin-left: 2rem;
 		position: absolute;
 		/* background-color: blueviolet; */
+	}
+
+	.brush-container {
+		height: 30px;
+		width: 400px;
+		margin-left: 2rem;
+		position: absolute;
+		bottom: 0;
 	}
 
 	h4 {
@@ -363,7 +381,7 @@
 
 	#test {
 		width: 100%;
-		height: 800px;
+		height: 440px;
 		/* border: 1px solid blue; */
 		overflow: visible;
 		/* position: absolute; */

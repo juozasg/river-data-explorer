@@ -23,6 +23,12 @@
 
 	/** @type {Number} [strokeWidth=0] – The circle's stroke width. */
 	export let strokeWidth = 0;
+
+	/** @type {Array<number|null>} [filterIndexes=[null,null]] – Skip points outside [min, max] index range */
+	export let filterIndexRange = [null, null];
+
+	$: filterMinIndex = filterIndexRange[0];
+	$: filterMaxIndex = filterIndexRange[1];
 	// $: {
 	// 	console.log('Scatter updated', $data);
 
@@ -32,16 +38,18 @@
 </script>
 
 <g class="scatter-group">
-	{#each $data as d}
-		{#if typeof dataGet(d) == 'number'}
-			<circle
-				cx={$xGet(d) + ($xScale.bandwidth ? $xScale.bandwidth() / 2 : 0)}
-				cy={dataGet(d) + (dataBandwidth ? dataBandwidth() / 2 : 0)}
-				{r}
-				{fill}
-				{stroke}
-				stroke-width={strokeWidth}
-			/>
+	{#each $data as d, i}
+		{#if (filterMinIndex == null || i >= filterMinIndex) && (filterMaxIndex == null || i <= filterMaxIndex)}
+			{#if typeof dataGet(d) == 'number'}
+				<circle
+					cx={$xGet(d) + ($xScale.bandwidth ? $xScale.bandwidth() / 2 : 0)}
+					cy={dataGet(d) + (dataBandwidth ? dataBandwidth() / 2 : 0)}
+					{r}
+					{fill}
+					{stroke}
+					stroke-width={strokeWidth}
+				/>
+			{/if}
 		{/if}
 	{/each}
 </g>

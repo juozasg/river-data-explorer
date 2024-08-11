@@ -12,10 +12,11 @@ export class Sites {
 		this.sites.push(site);
 	}
 
-	withDataTables() {
+	withDataTables(onlyEnabled = false) {
 		console.log('with data tables', sitesTables.size, this.sites.length)
 		const keys = Array.from(sitesTables.keys());
-		return sites.allEnabled.filter(s => keys.includes(s.id));
+		const sts = onlyEnabled ? this.allEnabled : this.all;
+		return sts.filter(s => keys.includes(s.id));
 	}
 
 	static groupedBy(_sites: Site[], key: string, orderby: string = 'num') {
@@ -31,9 +32,6 @@ export class Sites {
 	get all() {
 		return this.sites;
 	}
-
-
-
 
 	get allDatasets(): string[] {
 		return [...Sites.groupedBy(this.sites, 'dataset').keys()];
