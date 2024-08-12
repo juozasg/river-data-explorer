@@ -8,6 +8,7 @@
 	const { data, xGet } = getContext('LayerCake');
 
 	import { clamp } from '$src/lib/utils';
+	import { closestPointIndex } from '$src/lib/utils/chartBrush';
 
 	/** @type {Number|null} min - The brush's min value. Useful to bind to. */
 	export let min;
@@ -21,6 +22,8 @@
 	/** @type {Number|null} max - The brush's max value snapped to data index. Useful to bind to. */
 	export let snappedMaxIndex = null;
 
+
+
 	$: snapPoints = $data.map((d) => $xGet(d));
 	$: {
 		if (brush) {
@@ -28,21 +31,22 @@
 			const width = right - left;
 			if (min !== null) {
 				const minX = min * width;
-				const minSnapPoint = snapPoints.reduce((prev, curr) =>
-					Math.abs(curr - minX) < Math.abs(prev - minX) ? curr : prev
-				);
+				// const minSnapPoint = snapPoints.reduce((prev, curr) =>
+				// 	Math.abs(curr - minX) < Math.abs(prev - minX) ? curr : prev
+				// );
 
-				snappedMinIndex = snapPoints.indexOf(minSnapPoint);
+				// snappedMinIndex = snapPoints.indexOf(minSnapPoint);
+				snappedMinIndex = closestPointIndex(snapPoints, minX);
 			} else {
         snappedMinIndex = 0;
       }
 			if (max !== null) {
 				const maxX = max * width;
-				const maxSnapPoint = snapPoints.reduce((prev, curr) =>
-					Math.abs(curr - maxX) < Math.abs(prev - maxX) ? curr : prev
-				);
+				// const maxSnapPoint = snapPoints.reduce((prev, curr) =>
+				// 	Math.abs(curr - maxX) < Math.abs(prev - maxX) ? curr : prev
+				// );
 
-				snappedMaxIndex = snapPoints.indexOf(maxSnapPoint);
+				snappedMaxIndex = closestPointIndex(snapPoints, maxX, false);
 			} else {
 				snappedMaxIndex = snapPoints.length - 1;
 			}
