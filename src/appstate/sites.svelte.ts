@@ -13,7 +13,7 @@ export class Sites {
 	}
 
 	withDataTables(onlyEnabled = false) {
-		console.log('with data tables', sitesTables.size, this.sites.length)
+		// console.log('with data tables', sitesTables.size, this.sites.length)
 		const keys = Array.from(sitesTables.keys());
 		const sts = onlyEnabled ? this.allEnabled : this.all;
 		return sts.filter(s => keys.includes(s.id));

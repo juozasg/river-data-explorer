@@ -89,3 +89,9 @@ export function aremove(arr: any[] | undefined, ...elements: any[]): any[] {
 export function clamp(num: number, min: number, max: number) {
 	return num < min ? min : num > max ? max : num;
 }
+
+export function findAncestor(el: HTMLElement | null, cls: any) {
+	if (!el) return null;
+	while ((el = el.parentElement) && !el.classList.contains(cls));
+	return el;
+}

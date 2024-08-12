@@ -28,8 +28,8 @@
 	let tableNum: number = $state(1);
 
 	const tableName = $derived(`${tableDataset}-${tableNum}`);
-	let yVar: string = $state('fishIbi');
-	let zVar: string = $state('fishIbi');
+	let yVar: string = $state('bod');
+	let zVar: string = $state('bodPercent');
 
 	$effect(() => {
 		if (!availableVars.includes(yVar)) yVar = availableVars[0];
@@ -50,14 +50,14 @@
 	let brushMinIndex: number | null = $state(null);
 	let brushMaxIndex: number | null = $state(null);
 
-	$effect(() => {
-		console.log('brushMinIndex', brushMinIndex);
-		console.log('brushMaxIndex', brushMaxIndex);
-	});
-	$effect(() => {
-		console.log('brushExtents', brushMin, brushMax);
-		// console.log('tableSlice', tableSliceFrom, tableSliceLength);
-	});
+	// $effect(() => {
+	// 	console.log('brushMinIndex', brushMinIndex);
+	// 	console.log('brushMaxIndex', brushMaxIndex);
+	// });
+	// $effect(() => {
+	// console.log('brushExtents', brushMin, brushMax);
+	// console.log('tableSlice', tableSliceFrom, tableSliceLength);
+	// });
 
 	// let tableSliceFrom: number = $state(0);
 	// let tableSliceLength: number | undefined = $state(undefined);
@@ -94,7 +94,7 @@
 					? undefined
 					: brushMaxIndex + 1;
 
-		console.log('slicing fullTable', brushMinIndex, sliceIndex);
+		// console.log('slicing fullTable', brushMinIndex, sliceIndex);
 		return fullTable?.slice(brushMinIndex || 0, sliceIndex);
 	});
 
@@ -119,12 +119,19 @@
 		console.log('zVar', zVar);
 	});
 
-	$effect(() => {
-		if (availableVars.includes(yVar)) console.log('Y DATA', table?.select('date', yVar).objects());
-		if (availableVars.includes(zVar)) console.log('Z DATA', table?.select('date', zVar).objects());
+	// $effect(() => {
+	// 	console.log('availableVars',availableVars);
+	// });
 
-		console.log('yStats', yStats);
-		console.log('zStats', zStats);
+	// $effect(() => {
+	// 	console.log('yStats', yStats);
+	// });
+
+	$effect(() => {
+		// if (availableVars.includes(yVar)) console.log('Y DATA', table?.select('date', yVar).objects());
+		// if (availableVars.includes(zVar)) console.log('Z DATA', table?.select('date', zVar).objects());
+		// console.log('yStats', yStats);
+		// console.log('zStats', zStats);
 		// console.log('yDomain', yDomain);
 		// console.log('zDomain', zDomain);
 	});
@@ -153,12 +160,18 @@
 		return fmtDate(date);
 	}
 
-	function  formatTTKey(key: string): string {
-		const keycolor = key == yVar ? color : (key == zVar ? color2Darker : '#444');
+	function formatTTKey(key: string): string {
+		const keycolor = key == yVar ? color : key == zVar ? color2Darker : '#444';
 		const label = variableMetadata[key]?.label || key;
+		const unit = variableMetadata[key]?.unit || '';
 		// console.log(key, label, keycolor)
 		// const keycolor = '#444';
 		return `<span style="color: ${keycolor}">${label}</bold>`;
+	}
+
+	function formatTTValue(key: string, value: any): string {
+		const unit = variableMetadata[key]?.unit || '';
+		return `${value} ${unit}`;
 	}
 
 	const color = '#ab00d6';
@@ -195,24 +208,21 @@
 	let testElement: HTMLElement | null = $state(null);
 	let brushContainer: HTMLElement | null = $state(null);
 
-	const tickTextElements = () => testElement?.querySelectorAll('.x-axis .tick text') as NodeListOf<HTMLElement> || [] as HTMLElement[];
+	const tickTextElements = () =>
+		(testElement?.querySelectorAll('.x-axis .tick text') as NodeListOf<HTMLElement>) ||
+		([] as HTMLElement[]);
 
 	const brushOn = (e) => {
-		console.log('brushOn', e);
-		// console.log(brushContainer, brushContainer instanceof HTMLElement)
 		brushContainer!.style.opacity = '1';
 
-		// const tickTextElements = testElement!.querySelectorAll('.x-axis .tick text');
-		const ticks = tickTextElements().forEach(t => {
+		const ticks = tickTextElements().forEach((t) => {
 			t.style.opacity = '0';
 		});
 	};
 
 	const brushOff = (e) => {
-		console.log('brushOff', e);
-		// console.log(brushContainer, brushContainer instanceof HTMLElement)
 		brushContainer!.style.opacity = '0.1';
-		const ticks = tickTextElements().forEach(t => {
+		const ticks = tickTextElements().forEach((t) => {
 			t.style.opacity = '1';
 		});
 	};
@@ -294,7 +304,12 @@
 					{/if}
 				</Svg>
 				<Html>
-					<SharedTooltip formatTitle={formatDate} dataset={tooltipPoints} formatKey={formatTTKey} />
+					<SharedTooltip
+						formatTitle={formatDate}
+						dataset={tooltipPoints}
+						formatKey={formatTTKey}
+						formatValue={formatTTValue}
+					/>
 				</Html>
 			</LayerCake>
 		{/if}

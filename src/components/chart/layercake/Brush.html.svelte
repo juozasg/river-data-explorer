@@ -5,7 +5,7 @@
 <script>
 	import { getContext } from 'svelte';
 
-	const { data, xGet, xScale, xDomain, x } = getContext('LayerCake');
+	const { data, xGet } = getContext('LayerCake');
 
 	import { clamp } from '$src/lib/utils';
 

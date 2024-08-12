@@ -5,12 +5,32 @@
 <script>
 	// @ts-nocheck
 
-	import { getContext } from 'svelte';
+	import { getContext, onMount } from 'svelte';
 	import { format } from 'd3-format';
 
+	import { findAncestor } from '$src/lib/utils';
 	import QuadTree from './QuadTree.html.svelte';
+	import { on } from 'svelte/events';
 
-	const { data, width, yScale, config } = getContext('LayerCake');
+	const { data, width, yScale, zScale, config } = getContext('LayerCake');
+
+	let tooltipElement;
+	let layercakeContainer;
+
+	let mouseX, mouseY;
+
+	$: {
+		if (tooltipElement && !layercakeContainer) {
+			layercakeContainer = findAncestor(tooltipElement, 'layercake-container');
+			layercakeContainer.addEventListener('mousemove', mousemove);
+		}
+	}
+
+	function mousemove(event) {
+		var rect = layercakeContainer.getBoundingClientRect();
+		mouseX = event.clientX - rect.left;
+		mouseY = event.clientY - rect.top;
+	}
 
 	const commas = format(',');
 	const titleCase = (d) => d.replace(/^\w/, (w) => w.toUpperCase());
@@ -18,8 +38,8 @@
 	/** @type {Function} [formatTitle=d => d] - A function to format the tooltip title, which is `$config.x`. */
 	export let formatTitle = (d) => d;
 
-	/** @type {Function} [formatValue=d => isNaN(+d) ? d : commas(d)] - A function to format the value. */
-	export let formatValue = (d) => (isNaN(+d) ? d : commas(d));
+	/** @type {Function} [formatValue=(key, d) => isNaN(+d) ? d : commas(d)] - A function to format the value. */
+	export let formatValue = (key, v) => (isNaN(+v) ? v : commas(v));
 
 	/** @type {Function} [formatKey=d => titleCase(d)] - A function to format the series name. */
 	export let formatKey = (d) => titleCase(d);
@@ -30,7 +50,7 @@
 	/** @type {Array<Object>|undefined} [dataset] - The dataset to work off of—defaults to $data if left unset. You can pass something custom in here in case you don't want to use the main data or it's in a strange format. */
 	export let dataset = undefined;
 
-	const w = 160;
+	const w = 195;
 	const w2 = w / 2;
 
 	let found = {};
@@ -43,56 +63,53 @@
 	 */
 	function sortResult(result) {
 		if (Object.keys(result).length === 0) return [];
-		// return {
-		// 	key,
-		// 	result: result[key]
-		// };
+
 		const rows = Object.keys(result)
 			.filter((d) => d !== $config.x)
 			.map((key) => {
+				const isY = key === $config.y;
+				const isZ = key === $config.z;
+				let top = isY ? $yScale(result[key]) : isZ ? $zScale(result[key]) : 100;
+				const fromMouse = Math.abs((mouseY || 0) - top);
+				if (top < 100) top = 120 + top;
 				return {
 					key,
-					value: result[key]
+					value: result[key],
+					top,
+					fromMouse
 				};
 			})
-			.sort((a, b) => (a.key === config.y ? -1 : 1));
+			.sort((a, b) => a.fromMouse - b.fromMouse);
 
-		console.log('sortedRows', rows[0], rows[1]);
 		return rows;
 	}
 
-	function getTopPosition({ key, value }) {
-		let top = $yScale(value);
-		console.log('top before ', top, value);
-		if (top < 100) top = 110 + top;
-		console.log('top', top);
+	// function getTopPosition({ key, value }) {
+	// 	let top = $yScale(value);
+	// 	if (top < 100) top = 110 + top;
 
-		return top;
-	}
+	// 	return top;
+	// }
 </script>
 
 <QuadTree dataset={dataset || $data} y="x" let:x let:y let:visible let:found let:e>
 	{@const foundSorted = sortResult(found)}
 	{#if visible === true}
 		<div style="left:{x}px;" class="line"></div>
-		{#if (() => {
-			console.log(foundSorted[0], $yScale(foundSorted[0].value));
-			return 0;
-		})()}{/if}
-		<!-- {@debug foundSorted, ys} -->
 		<div
 			class="tooltip"
+			bind:this={tooltipElement}
 			style="
         width:{w}px;
         display: {visible ? 'block' : 'none'};
-        top:{getTopPosition(foundSorted[0]) + offset}px;
+        top:{foundSorted[0].top + offset}px;
         left:{Math.min(Math.max(w2, x), $width - w2)}px;"
 		>
 			<div class="title">{formatTitle(found[$config.x])}</div>
 			{#each foundSorted as row}
 				<div class="row">
 					<span class="key">{@html formatKey(row.key)}:</span>
-					{formatValue(row.value)}
+					{formatValue(row.key, row.value)}
 				</div>
 			{/each}
 		</div>
