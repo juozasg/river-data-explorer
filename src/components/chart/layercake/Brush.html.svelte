@@ -8,7 +8,7 @@
 	const { data, xGet } = getContext('LayerCake');
 
 	import { clamp } from '$src/lib/utils';
-	import { closestPointIndex } from '$src/lib/utils/chartBrush';
+	import { closestPointIndex } from '$src/lib/utils/chart';
 
 	/** @type {Number|null} min - The brush's min value. Useful to bind to. */
 	export let min;

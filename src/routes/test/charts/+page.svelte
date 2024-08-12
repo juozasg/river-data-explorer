@@ -1,6 +1,8 @@
 <script lang="ts">
-	import TestCharts from "$src/components/site/debug/TestCharts.svelte";
+	import ChartDataSelector from "$src/components/chart/ChartDataSelector.svelte";
+	import TestCharts from "$src/components/chart/YZBrushedChart.svelte";
 </script>
 
 
-<TestCharts />
+<ChartDataSelector />
+<!-- <TestCharts /> -->
