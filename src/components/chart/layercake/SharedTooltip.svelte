@@ -30,6 +30,8 @@
 		var rect = layercakeContainer.getBoundingClientRect();
 		mouseX = event.clientX - rect.left;
 		mouseY = event.clientY - rect.top;
+		console.log('tt width', tooltipElement?.getBoundingClientRect()?.width);
+		console.log('mousemove', mouseX, mouseY);
 	}
 
 	const commas = format(',');
@@ -50,8 +52,8 @@
 	/** @type {Array<Object>|undefined} [dataset] - The dataset to work off of—defaults to $data if left unset. You can pass something custom in here in case you don't want to use the main data or it's in a strange format. */
 	export let dataset = undefined;
 
-	const w = 195;
-	const w2 = w / 2;
+	const w = 220;
+	// const w2 = w / 2;
 
 	let found = {};
 
@@ -61,7 +63,7 @@
 	/**
 	 * @param {{ [x: string]: any; }} result
 	 */
-	function sortResult(result) {
+	function calcPositionsForData(result) {
 		if (Object.keys(result).length === 0) return [];
 
 		const rows = Object.keys(result)
@@ -79,34 +81,32 @@
 					fromMouse
 				};
 			})
-			.sort((a, b) => a.fromMouse - b.fromMouse);
+			// .sort((a, b) => a.fromMouse - b.fromMouse);
 
 		return rows;
 	}
 
-	// function getTopPosition({ key, value }) {
-	// 	let top = $yScale(value);
-	// 	if (top < 100) top = 110 + top;
-
-	// 	return top;
-	// }
+	function getClosestToMouse(rows) {
+		return [...rows].sort((a, b) => a.fromMouse - b.fromMouse)[0];
+	}
 </script>
 
 <QuadTree dataset={dataset || $data} y="x" let:x let:y let:visible let:found let:e>
-	{@const foundSorted = sortResult(found)}
+	{@const dataWithPositions = calcPositionsForData(found)}
 	{#if visible === true}
 		<div style="left:{x}px;" class="line"></div>
 		<div
 			class="tooltip"
 			bind:this={tooltipElement}
 			style="
-        width:{w}px;
+        width:auto;
+				min-width:100px;
         display: {visible ? 'block' : 'none'};
-        top:{foundSorted[0].top + offset}px;
-        left:{Math.min(Math.max(w2, x), $width - w2)}px;"
+        top:{getClosestToMouse(dataWithPositions).top + offset}px;
+        left:{mouseX}px;"
 		>
 			<div class="title">{formatTitle(found[$config.x])}</div>
-			{#each foundSorted as row}
+			{#each dataWithPositions as row}
 				<div class="row">
 					<span class="key">{@html formatKey(row.key)}:</span>
 					{formatValue(row.key, row.value)}

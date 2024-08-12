@@ -20,18 +20,26 @@
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
 	import { genXDateTicks, genYTicks } from '$src/lib/chartTicks';
 
-	// let tableName = $state('invert-107');
-	// let yVar: string = $state('invertMacro');
-	// let zVar: string = $state('invertIndiana');
 
 	let tableDataset: string = $state('sjrbc');
 	let tableNum: number = $state(1);
 
 	const tableName = $derived(`${tableDataset}-${tableNum}`);
+	// let yVar: string = $state('ph');
+	// let zVar: string = $state('ecoli');
 	let yVar: string = $state('bod');
 	let zVar: string = $state('bodPercent');
 
+	const yVarUnit = $derived(variableMetadata[yVar]?.unit || '');
+	const zVarUnit = $derived(variableMetadata[zVar]?.unit || '');
+
+	const parensForunit = (unit: string) => (unit ? ` (${unit})` : '');
+
+	const yVarlabel = $derived(variableMetadata[yVar]?.label + ` ${parensForunit(yVarUnit)}` || yVar);
+	const zVarlabel = $derived(variableMetadata[zVar]?.label + ` ${parensForunit(zVarUnit)}` || zVar);
+
 	$effect(() => {
+		if (!availableVars.length) return;
 		if (!availableVars.includes(yVar)) yVar = availableVars[0];
 		if (!availableVars.includes(zVar)) zVar = availableVars[1] || availableVars[0];
 		if (!availableTableNums.includes(tableNum)) tableNum = availableTableNums[0];
@@ -44,45 +52,8 @@
 			.reify()
 	);
 
-	let brushMin: number | null = $state(null);
-	let brushMax: number | null = $state(null);
-
 	let brushMinIndex: number | null = $state(null);
 	let brushMaxIndex: number | null = $state(null);
-
-	// $effect(() => {
-	// 	console.log('brushMinIndex', brushMinIndex);
-	// 	console.log('brushMaxIndex', brushMaxIndex);
-	// });
-	// $effect(() => {
-	// console.log('brushExtents', brushMin, brushMax);
-	// console.log('tableSlice', tableSliceFrom, tableSliceLength);
-	// });
-
-	// let tableSliceFrom: number = $state(0);
-	// let tableSliceLength: number | undefined = $state(undefined);
-
-	// $effect(() => {
-	// 	const numRows = fullTable?.numRows() || 0;
-
-	// 	if (brushMax === 0) {
-	// 		brushMax = 0.00000001;
-	// 	}
-
-	// 	let fromIndex = Math.round((brushMin || 0) * numRows);
-	// 	let sliceLength = Math.round((brushMax || 1) * (numRows || 1));
-
-	// 	if (fromIndex >= sliceLength) {
-	// 		if (fromIndex > 0) {
-	// 			fromIndex = sliceLength - 1;
-	// 		} else {
-	// 			sliceLength = sliceLength + 1;
-	// 		}
-	// 	}
-
-	// 	tableSliceFrom = fromIndex;
-	// 	tableSliceLength = sliceLength >= numRows ? undefined : sliceLength;
-	// });
 
 	const table = $derived.by(() => {
 		if (!fullTable) return;
@@ -104,37 +75,12 @@
 	const availableTableNums = $derived(
 		availableDatasetSites.get(tableDataset)?.map((s: Site) => s.num) || []
 	);
-
-	// $effect(() => {
-	// 	console.log('availableDatasetSites', availableDatasetSites);
-	// 	console.log('availableDatasetNames', availableDatasetNames);
-	// 	console.log('availableTableNums', availableTableNums);
-	// 	console.log('sites.withDataTables()', sites.withDataTables());
-	// });
-	// const available
-
 	$effect(() => {
 		console.log('tableName', tableName);
 		console.log('yVar', yVar);
 		console.log('zVar', zVar);
 	});
 
-	// $effect(() => {
-	// 	console.log('availableVars',availableVars);
-	// });
-
-	// $effect(() => {
-	// 	console.log('yStats', yStats);
-	// });
-
-	$effect(() => {
-		// if (availableVars.includes(yVar)) console.log('Y DATA', table?.select('date', yVar).objects());
-		// if (availableVars.includes(zVar)) console.log('Z DATA', table?.select('date', zVar).objects());
-		// console.log('yStats', yStats);
-		// console.log('zStats', zStats);
-		// console.log('yDomain', yDomain);
-		// console.log('zDomain', zDomain);
-	});
 
 	const yStats = $derived(simpleStats(yVar, fullTable));
 	const zStats = $derived(simpleStats(zVar, fullTable));
@@ -166,7 +112,7 @@
 		const unit = variableMetadata[key]?.unit || '';
 		// console.log(key, label, keycolor)
 		// const keycolor = '#444';
-		return `<span style="color: ${keycolor}">${label}</bold>`;
+		return `<span style="font-weight: 600; color: ${keycolor}">${label}</bold>`;
 	}
 
 	function formatTTValue(key: string, value: any): string {
@@ -189,7 +135,6 @@
 			? variableMetadata[yVar]?.scale?.max
 			: niceTickNumber(yStats.max + yStats.range * 0.1, yStats.range * 10)) ?? 111
 	);
-
 	const zMetadataMin = $derived(variableMetadata[zVar]?.scale?.min ?? 0);
 	const zDomainMin = $derived(
 		typeof zMetadataMin === 'number' && typeof zStats.min === 'number'
@@ -261,6 +206,7 @@
 </div>
 <div id="test" bind:this={testElement}>
 	<h2>TestCharts</h2>
+
 	<div class="chart-container">
 		{#if table && points.length > 0}
 			<LayerCake
@@ -310,6 +256,14 @@
 						formatKey={formatTTKey}
 						formatValue={formatTTValue}
 					/>
+					<div class="y-labels" style="font-weight: bold; font-size: 0.9rem; display:flex; justify-content: space-between">
+						<div class="y-axis-label y-label" style="color:{color};margin-left: 0.2rem">
+							{yVarlabel}
+						</div>
+						<div class="z-axis-label y-label" style="color:{color2Darker}; margin-right: 0.1rem; text-align: right">
+							{zVarlabel}
+						</div>
+					</div>
 				</Html>
 			</LayerCake>
 		{/if}
@@ -358,8 +312,8 @@
 				</Svg>
 				<Html>
 					<Brush
-						bind:min={brushMin}
-						bind:max={brushMax}
+						min={null}
+						max={null}
 						bind:snappedMinIndex={brushMinIndex}
 						bind:snappedMaxIndex={brushMaxIndex}
 					/>
@@ -370,12 +324,42 @@
 </div>
 
 <style>
+
+	.y-labels {
+		width: 100%;
+		overflow: hidden;
+		position: absolute;
+		top: -19px;
+
+		.y-label {
+			height: 1.4rem;
+			background-color: white;
+		}
+	}
+
+	.y-labels:hover {
+		overflow: visible;
+	}
+
 	#test :global(.x-axis .tick text) {
 		/* fill: #410db9; */
 		/* transform-origin: 0 0px; */
 		/* translate: 20px 10px; */
 		/* transform: rotate(20deg); */
+		/* font-weight: 700 !important; */
+
+
 	}
+
+	#test :global(.y-axis .tick text) {
+		stroke: #ab00d6;
+		stroke-width: 0.5;
+	}
+	#test :global(.z-axis .tick text) {
+		stroke: #00af8c;
+		stroke-width: 0.5;
+	}
+
 	#test :global(.x-axis .tick:nth-child(even) text) {
 		/* fill: #410db9; */
 		/* transform-origin: 0 0px; */
@@ -440,9 +424,9 @@
 	}
 
 	#test {
-		width: 100%;
+		width: 480px;
 		height: 440px;
-		/* border: 1px solid blue; */
+		border: 1px solid blue;
 		overflow: visible;
 		/* position: absolute; */
 		top: 50px;

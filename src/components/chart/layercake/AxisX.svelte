@@ -97,14 +97,12 @@
 
   line,
   .tick line {
-    stroke: #aaa;
+    stroke: #5d5d5d;
     stroke-dasharray: 2;
   }
 
   .tick text {
     fill: #333333;
-    font-size: 0.70rem;
-    font-weight: 600;
   }
 
   .tick .tick-mark,
