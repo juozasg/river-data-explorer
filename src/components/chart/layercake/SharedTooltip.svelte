@@ -30,8 +30,6 @@
 		var rect = layercakeContainer.getBoundingClientRect();
 		mouseX = event.clientX - rect.left;
 		mouseY = event.clientY - rect.top;
-		console.log('tt width', tooltipElement?.getBoundingClientRect()?.width);
-		console.log('mousemove', mouseX, mouseY);
 	}
 
 	const commas = format(',');
@@ -53,7 +51,7 @@
 	export let dataset = undefined;
 
 	const w = 220;
-	// const w2 = w / 2;
+	const w2 = w / 2;
 
 	let found = {};
 
@@ -99,11 +97,10 @@
 			class="tooltip"
 			bind:this={tooltipElement}
 			style="
-        width:auto;
-				min-width:100px;
+        width:{w}px;
         display: {visible ? 'block' : 'none'};
         top:{getClosestToMouse(dataWithPositions).top + offset}px;
-        left:{mouseX}px;"
+        left:{Math.min(Math.max(w2, x), $width - w2)}px;"
 		>
 			<div class="title">{formatTitle(found[$config.x])}</div>
 			{#each dataWithPositions as row}
