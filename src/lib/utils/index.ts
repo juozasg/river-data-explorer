@@ -62,18 +62,7 @@ export function oneMonthAgo() {
   return (Date.now() - oneMonth);
 }
 
-export function niceTickNumber(n: number, range: number, preserve = false) {
-	const scale = preserve ? 100 : 10;
-	const digits = Math.max(0, Math.ceil(-Math.log10(range / scale)));
 
-	// const factor = Math.pow(10, digits);
-	const rounded = parseFloat(n.toFixed(digits));
-	// if(roundUp && rounded < n) {
-	// 	return Math.ceil(n *factor / factor);
-	// }
-	// console.log('niceTickNumber', n, rounded, range, preserve, digits, n.toFixed(digits), 'log10', -Math.log10(range / scale))
-	return rounded;
-}
 
 export function aremove(arr: any[] | undefined, ...elements: any[]): any[] {
 	if (!arr || arr.length == 0) return [];
@@ -94,4 +83,8 @@ export function findAncestor(el: HTMLElement | null, cls: any) {
 	if (!el) return null;
 	while ((el = el.parentElement) && !el.classList.contains(cls));
 	return el;
+}
+
+export function isNumber(n: any) {
+	return typeof n === 'number' && !isNaN(n);
 }

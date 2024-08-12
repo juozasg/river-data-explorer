@@ -136,7 +136,7 @@ function calculateVarStats(table: ColumnTable) {
 }
 
 
-export function simpleStats(varname: string, table?: ColumnTable): any {
+export function simpleStats(varname: string, table?: ColumnTable): SimpleStats {
 	if (!table || !table.numRows() || !table.columnNames().includes(varname)) {
 		return { count: 0 };
 	}
@@ -164,6 +164,13 @@ export function simpleStats(varname: string, table?: ColumnTable): any {
 		range: stats.get('max') - stats.get('min'),
 	};
 }
+
+export type SimpleStats = {
+	count: number,
+	min?: number,
+	max?: number,
+	range?: number,
+};
 
 const emptyStringStats = {
 	min: '',

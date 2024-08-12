@@ -16,26 +16,85 @@
 	import Scatter from '$src/components/chart/layercake/Scatter.svelte';
 	import SharedTooltip from '$src/components/chart/layercake/SharedTooltip.svelte';
 	import { simpleStats } from '$src/lib/data/stats';
-	import { aremove, fmtDate, niceTickNumber } from '$src/lib/utils';
+	import { aremove, fmtDate } from '$src/lib/utils';
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
-	import { genXDateTicks, genYTicks } from '$src/lib/utils/chart';
+	import { chartYColor, chartZDarker, genXDateTicks, genYTicks, YZChartParams } from '$src/lib/utils/chart';
 
-	let tableDataset: string = $state('sjrbc');
-	let tableNum: number = $state(1);
+	let dataset: string = $state('sjrbc');
+	let datasetNum: number = $state(1);
 
-	const tableName = $derived(`${tableDataset}-${tableNum}`);
-	let yVar: string = $state('bod');
-	let zVar: string = $state('bodPercent');
+	$effect(() => {
+		tableName = `${dataset}-${datasetNum}`;
+		// console.log(tableName)
+	});
 
-	const yVarUnit = $derived(variableMetadata[yVar]?.unit || '');
-	const zVarUnit = $derived(variableMetadata[zVar]?.unit || '');
+	// let yVar: string = $state('bod');
+	// let zVar: string = $state('bodPercent');
 
-	const unitLabelParens = (unit: string) => (unit ? ` (${unit})` : '');
+	// const { table, yParams, zParams }: {table: ColumnTable, yParams: YZChartParams, zParams: YZChartParams}  = $props()
+	let { table,
+		yVar = $bindable('bod'),
+		zVar = $bindable('bodPercent'),
+		tableName = $bindable(),
+			// datasetNum = $bindable(1),
+	 }: any  = $props()
 
-	const yVarlabel = $derived(
-		variableMetadata[yVar]?.label + ` ${unitLabelParens(yVarUnit)}` || yVar
+
+
+	const availableVars = $derived(aremove(table?.columnNames(), 'invertNarrative', 'date') || []);
+	const availableDatasetSites = $derived(Sites.groupedBy(sites.withDataTables(), 'dataset'));
+	const availableDatasetNames = $derived([...availableDatasetSites.keys()]);
+	const availableTableNums = $derived(
+		availableDatasetSites.get(dataset)?.map((s: Site) => s.num) || []
 	);
-	const zVarlabel = $derived(
-		variableMetadata[zVar]?.label + ` ${unitLabelParens(zVarUnit)}` || zVar
-	);
+
+	$effect(() => {
+		if (!availableVars.length) return;
+		if (!availableVars.includes(yVar)) yVar = availableVars[0];
+		if (!availableVars.includes(zVar)) zVar = availableVars[1] || availableVars[0];
+		if (!availableTableNums.includes(datasetNum)) datasetNum = availableTableNums[0];
+	});
 </script>
+
+
+
+<h4>Dataset: {dataset} Num: {datasetNum}</h4>
+<div style="display: flex">
+	<select bind:value={dataset} style="margin-right: 1rem;">
+		{#each availableDatasetNames as name}
+			<option value={name}>{name}</option>
+		{/each}
+	</select>
+	<select bind:value={datasetNum}>
+		{#each availableTableNums as num}
+			<option value={num}>{num}</option>
+		{/each}
+	</select>
+</div>
+
+<div style="display: flex">
+	<h4 style="color: {chartYColor}">Y var: {yVar}</h4>
+	<select bind:value={yVar} style="margin-right: 2rem; margin-left: 1rem;">
+		{#each availableVars as varname}
+			<option value={varname}>{varname}</option>
+		{/each}
+	</select>
+
+	<h4 style="color: {chartZDarker}">Z var: {zVar}</h4>
+	<select bind:value={zVar} style="margin-left: 1rem;">
+		{#each availableVars as varname}
+			<option value={varname}>{varname}</option>
+		{/each}
+	</select>
+</div>
+
+<style>
+	h4 {
+		margin-bottom: 2px;
+	}
+
+	select {
+		margin-bottom: 1rem;
+		font-size: 110%;
+	}
+</style>

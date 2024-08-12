@@ -65,7 +65,8 @@
 		if (Object.keys(result).length === 0) return [];
 
 		const rows = Object.keys(result)
-			.filter((d) => d !== $config.x)
+			.filter((k) => k !== $config.x)
+			.filter((k) => result[k] !== null && result[k] !== undefined)
 			.map((key) => {
 				const isY = key === $config.y;
 				const isZ = key === $config.z;

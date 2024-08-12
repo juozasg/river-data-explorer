@@ -16,119 +16,70 @@
 	import Scatter from '$src/components/chart/layercake/Scatter.svelte';
 	import SharedTooltip from '$src/components/chart/layercake/SharedTooltip.svelte';
 	import { simpleStats } from '$src/lib/data/stats';
-	import { aremove, fmtDate, niceTickNumber } from '$src/lib/utils';
+	import { aremove, fmtDate } from '$src/lib/utils';
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
-	import { genXDateTicks, genYTicks } from '$src/lib/utils/chart';
+	import { chartYColor, chartZColor, chartZDarker, formatChartDate, formatChartTTKey, formatChatTTValue, genXDateTicks, genYTicks, YZChartParams } from '$src/lib/utils/chart';
+	import ChartDataSelector from './ChartDataSelector.svelte';
 
+	let tableName = $state('sjrbc-1');
 
-	let tableDataset: string = $state('sjrbc');
-	let tableNum: number = $state(1);
-
-	const tableName = $derived(`${tableDataset}-${tableNum}`);
 	let yVar: string = $state('bod');
 	let zVar: string = $state('bodPercent');
 
-	const yVarUnit = $derived(variableMetadata[yVar]?.unit || '');
-	const zVarUnit = $derived(variableMetadata[zVar]?.unit || '');
-
-	const unitLabelParens = (unit: string) => (unit ? ` (${unit})` : '');
-
-	const yVarlabel = $derived(variableMetadata[yVar]?.label + ` ${unitLabelParens(yVarUnit)}` || yVar);
-	const zVarlabel = $derived(variableMetadata[zVar]?.label + ` ${unitLabelParens(zVarUnit)}` || zVar);
-
-
-	const availableVars = $derived(aremove(table?.columnNames(), 'invertNarrative', 'date') || []);
-	const availableDatasetSites = $derived(Sites.groupedBy(sites.withDataTables(), 'dataset'));
-	const availableDatasetNames = $derived([...availableDatasetSites.keys()]);
-	const availableTableNums = $derived(
-		availableDatasetSites.get(tableDataset)?.map((s: Site) => s.num) || []
+	const table: ColumnTable | undefined = $derived(
+		sitesTables
+			.get(tableName)
+			?.reify()
 	);
-	$effect(() => {
-		console.log('tableName', tableName);
-		console.log('yVar', yVar);
-		console.log('zVar', zVar);
-	});
 
-
-	$effect(() => {
-		if (!availableVars.length) return;
-		if (!availableVars.includes(yVar)) yVar = availableVars[0];
-		if (!availableVars.includes(zVar)) zVar = availableVars[1] || availableVars[0];
-		if (!availableTableNums.includes(tableNum)) tableNum = availableTableNums[0];
-	});
+	const yParams = $derived(table && yVar && new YZChartParams('y', yVar, table));
+	const zParams = $derived(table && zVar && new YZChartParams('z', zVar, table));
 
 
 	let brushMinIndex: number | null = $state(null);
 	let brushMaxIndex: number | null = $state(null);
 
-	const fullTable: ColumnTable | undefined = $derived(
-		sitesTables
-			.get(tableName)
-			// ?.filter(aq.escape((d: any) => d[yVar] || d[zVar]))
-			?.reify()
-	);
 
-
-	const table = $derived.by(() => {
-		if (!fullTable) return;
+	const brushedTable = $derived.by(() => {
+		if (!table) return;
 
 		const sliceIndex =
 			brushMaxIndex == null
 				? undefined
-				: brushMaxIndex >= fullTable.numRows() - 1
+				: brushMaxIndex >= table.numRows() - 1
 					? undefined
 					: brushMaxIndex + 1;
 
 		// console.log('slicing fullTable', brushMinIndex, sliceIndex);
-		return fullTable?.slice(brushMinIndex || 0, sliceIndex);
+		return table?.slice(brushMinIndex || 0, sliceIndex);
 	});
 
 
 
-	const yStats = $derived(simpleStats(yVar, fullTable));
-	const zStats = $derived(simpleStats(zVar, fullTable));
+	$effect(() => {
+		console.log('tableName', tableName);
+		console.log('yVar', yVar);
+		console.log('zVar', zVar);
+		console.log('yParams', yParams);
+		console.log('zParams', zParams);
+	});
 
-	const yRadius = $derived(yStats.count > 2 ? 4 : 7);
-	const zRadius = $derived(zStats.count > 2 ? 4 : 7);
 
-	const points = $derived(table?.objects() || []);
 
-	const fullPoints = $derived(fullTable?.objects() || []);
+
+
+	const points = $derived(brushedTable?.objects() || []);
+
+	const fullPoints = $derived(table?.objects() || []);
 
 	const tooltipPoints = $derived.by(() => {
 		const tooltipCols = ['date'];
-		if (yStats.count > 0) tooltipCols.push(yVar);
-		if (zStats.count > 0) tooltipCols.push(zVar);
+		if (yParams && yParams.stats.count > 0) tooltipCols.push(yVar);
+		if (zParams && zParams.stats.count > 0) tooltipCols.push(zVar);
 
-		return table?.select(tooltipCols).objects() || [];
+		return brushedTable?.select(tooltipCols).objects() || [];
 	});
 
-
-	const yMetadataMin = $derived(variableMetadata[yVar]?.scale?.min ?? 0);
-	const yDomainMin = $derived(
-		typeof yMetadataMin === 'number' && typeof yStats.min === 'number'
-			? Math.min(yMetadataMin, yStats.min)
-			: yMetadataMin ?? yStats.min ?? 0
-	);
-	const yDomainMax = $derived(
-		(yStats.count < 2
-			? variableMetadata[yVar]?.scale?.max
-			: niceTickNumber(yStats.max + yStats.range * 0.1, yStats.range * 10)) ?? 111
-	);
-	const zMetadataMin = $derived(variableMetadata[zVar]?.scale?.min ?? 0);
-	const zDomainMin = $derived(
-		typeof zMetadataMin === 'number' && typeof zStats.min === 'number'
-			? Math.min(zMetadataMin, zStats.min)
-			: zMetadataMin ?? zStats.min ?? 0
-	);
-	const zDomainMax = $derived(
-		(zStats.count < 2
-			? variableMetadata[zVar]?.scale?.max
-			: niceTickNumber(zStats.max + zStats.range * 0.1, zStats.range * 10)) ?? 111
-	);
-
-	const yDomain: [number, number] = $derived([yDomainMin, yDomainMax]);
-	const zDomain: [number, number] = $derived([zDomainMin, zDomainMax]);
 
 	let testElement: HTMLElement | null = $state(null);
 	let brushContainer: HTMLElement | null = $state(null);
@@ -153,41 +104,26 @@
 	};
 </script>
 
+<div>
+aaa
+<ChartDataSelector
+	{table}
+	{yVar}
+	{zVar}
+	bind:tableName
+	/>
 
-<h4>Dataset: {tableDataset} Num: {tableNum}</h4>
-<div style="display: flex">
-	<select bind:value={tableDataset} style="margin-right: 1rem;">
-		{#each availableDatasetNames as name}
-			<option value={name}>{name}</option>
-		{/each}
-	</select>
-	<select bind:value={tableNum}>
-		{#each availableTableNums as num}
-			<option value={num}>{num}</option>
-		{/each}
-	</select>
+	TABLENAME:
+	{tableName}
+
 </div>
+<!--
 
-<div style="display: flex">
-	<h4 style="color: {chartYColor}">Y var: {yVar}</h4>
-	<select bind:value={yVar} style="margin-right: 2rem; margin-left: 1rem;">
-		{#each availableVars as varname}
-			<option value={varname}>{varname}</option>
-		{/each}
-	</select>
-
-	<h4 style="color: {chartZColor}">Z var: {zVar}</h4>
-	<select bind:value={zVar} style="margin-left: 1rem;">
-		{#each availableVars as varname}
-			<option value={varname}>{varname}</option>
-		{/each}
-	</select>
-</div>
 <div id="test" bind:this={testElement}>
 	<h2>TestCharts</h2>
 
 	<div class="chart-container">
-		{#if table && points.length > 0}
+		{#if brushedTable && points.length > 0}
 			<LayerCake
 				data={points}
 				x="date"
@@ -203,7 +139,7 @@
 						tickMarks={true}
 						snapLabels={false}
 						format={formatChartDate}
-						ticks={(ts: number[]) => genXDateTicks(table, ts)}
+						ticks={(ts: number[]) => genXDateTicks(brushedTable, ts)}
 					/>
 					{#if yStats.count > 0}
 						<AxisY
@@ -231,7 +167,7 @@
 					<SharedTooltip
 						formatTitle={formatChartDate}
 						dataset={tooltipPoints}
-						formatKey={formatChartTTKey}
+						formatKey={(k: string) => formatChartTTKey(k, yVar, zVar)}
 						formatValue={formatChatTTValue}
 					/>
 					<div class="y-labels" style="font-weight: bold; font-size: 0.9rem; display:flex; justify-content: space-between">
@@ -256,8 +192,7 @@
 		ontouchmovecapture={brushOn}
 		bind:this={brushContainer}
 	>
-		{#if table && fullPoints.length > 0}
-			<!-- padding={{ top: 5 }} -->
+		{#if brushedTable && fullPoints.length > 0}
 			<LayerCake
 				data={fullPoints}
 				x="date"
@@ -299,7 +234,7 @@
 		{/if}
 	</div>
 </div>
-
+-->
 <style>
 
 	.y-labels {
@@ -369,14 +304,7 @@
 		/* background-color: white; */
 	}
 
-	h4 {
-		margin-bottom: 2px;
-	}
 
-	select {
-		margin-bottom: 1rem;
-		font-size: 110%;
-	}
 
 	#test {
 		width: 480px;
