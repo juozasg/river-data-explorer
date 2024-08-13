@@ -7,6 +7,7 @@ import { notify } from "$src/appstate/ui/notifications.svelte";
 // import { usgsStationIds } from "./loadSitesUsgsWS";
 import { sitesTables, type SiteId } from "$src/appstate/data/datasets.svelte";
 import { variableMetadata, type VariableMetadata } from '$src/appstate/variableMetadata';
+import { retryingFetch } from '$src/lib/utils/retryingFetch';
 
 export async function loadDatasetsUsgsWS() {
 	const finishedLoading = startedLoading("USGS Datasets");
@@ -22,7 +23,7 @@ export async function loadDatasetsUsgsWS() {
 
 	const dailiesUrl = 'https://water.teamhephy.info/data';
 	try {
-		const usgsDailies = await fetch(dailiesUrl);
+		const usgsDailies = await retryingFetch(dailiesUrl);
 		const dailies = await usgsDailies.json();
 		const usgsSiteTimeseries = dailies.value.timeSeries;
 

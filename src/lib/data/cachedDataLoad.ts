@@ -3,6 +3,7 @@ import parse from 'csv-simple-parser';
 import { notify } from '$src/appstate/ui/notifications.svelte';
 import { sha1 } from '../utils/digest';
 import { dataManifest } from './loaders/loadAppData';
+import { retryingFetch } from '../utils/retryingFetch';
 
 // https://raw.githubusercontent.com/juozasg/SJRBC-web-map-data/webapp/features/counties.csv
 export async function loadDataCsv(path: string): Promise<Record<string, any>[]> {
@@ -44,23 +45,24 @@ async function fetchDataWithCache(path: string) {
 	const manifestSha1 = dataManifest[path];
 
 	const cachedResponse = await cache.match(url);
-	if(cachedResponse && await sha1Matches(cachedResponse, manifestSha1)) {
+	if (cachedResponse && await sha1Matches(cachedResponse, manifestSha1)) {
 		// console.log('data cache hit', path, manifestSha1);
 		return cachedResponse;
 	}
 
-	const response = await fetch(url);
+	const response = await retryingFetch(url);
 	console.log('data fetch ', url);
 
-	if(!response.ok) throw new Error('Request failed.');
+	if (!response.ok) throw new Error('Request failed.');
 
 	cache.put(url, response.clone());
 
 	return response;
 }
 
+
 async function sha1Matches(response: Response | undefined, expectedSha1: string | undefined) {
-	if(!response || !expectedSha1) return false;
+	if (!response || !expectedSha1) return false;
 	const text = await response.clone().text();
 	return expectedSha1 === await sha1(text);
 }
