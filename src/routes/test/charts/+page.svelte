@@ -1,8 +1,8 @@
 <script lang="ts">
 	// import ChartDataSelector from "$src/components/chart/ChartDataSelector.svelte";
-	import YZBrushedChart from "$src/components/chart/YZBrushedChart.svelte";
+	import BrushedYZChart from "$src/components/chart/BrushedYZChart.svelte";
 </script>
 
 
 <!-- <ChartDataSelector /> -->
-<YZBrushedChart />
+<BrushedYZChart />

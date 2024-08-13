@@ -30,6 +30,7 @@
 	import ChartDataSelector from './ChartDataSelector.svelte';
 
 	let tableName = $state('sjrbc-1');
+	$effect(() => console.log('tableName2', tableName) );
 
 	let yVar: string = $state('bod');
 	let zVar: string = $state('bodPercent');
@@ -162,6 +163,7 @@
 			<LayerCake
 				data={table.objects()}
 				x="date"
+				y={yVar}
 				yDomain={yParams.domain}
 				z={zVar}
 				zDomain={zParams.domain}

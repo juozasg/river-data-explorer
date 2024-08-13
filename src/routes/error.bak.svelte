@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { page } from '$app/stores';
 	import { error } from '@sveltejs/kit';
 	const err = $page.error as any;
@@ -12,4 +12,4 @@
 </pre>
 <pre>
 	{JSON.stringify($page.error, null, 2)}
-</pre>
+</pre> -->

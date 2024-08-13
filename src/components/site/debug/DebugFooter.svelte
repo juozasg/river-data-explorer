@@ -14,6 +14,7 @@
 	{/if}
 
 		<a style="display:none" href="/regions/indiana">Indiana</a>
+		<a style="display:none" href="/test">Indiana</a>
 </div>
 
 <style>
