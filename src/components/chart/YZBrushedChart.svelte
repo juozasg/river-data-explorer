@@ -1,15 +1,11 @@
 <script lang="ts">
-  import YZAxisLabels from './YZAxisLabels.svelte';
+	import YZAxisLabels from './YZAxisLabels.svelte';
 
-	import * as aq from 'arquero';
 	import { scaleLinear } from 'd3-scale';
 	import { Html, LayerCake, Svg } from 'layercake';
 
-	import { variableMetadata } from '$src/appstate/variableMetadata';
 
-	import type { Site } from '$lib/types/site';
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
-	import { sites, Sites } from '$src/appstate/sites.svelte';
 	import AxisX from '$src/components/chart/layercake/AxisX.svelte';
 	import AxisY from '$src/components/chart/layercake/AxisY.svelte';
 	import AxisYZRight from '$src/components/chart/layercake/AxisYZRight.svelte';
@@ -17,9 +13,7 @@
 	import Line from '$src/components/chart/layercake/Line.svelte';
 	import Scatter from '$src/components/chart/layercake/Scatter.svelte';
 	import SharedTooltip from '$src/components/chart/layercake/SharedTooltip.svelte';
-	import { simpleStats } from '$src/lib/data/stats';
-	import { aremove, fmtDate, isNumber } from '$src/lib/utils';
-	import type ColumnTable from 'arquero/dist/types/table/column-table';
+	import { isNumber } from '$src/lib/utils';
 	import {
 		chartYColor,
 		chartZColor,
@@ -30,6 +24,7 @@
 		genXDateTicks,
 		genYTicks
 	} from '$src/lib/utils/chart';
+	import type ColumnTable from 'arquero/dist/types/table/column-table';
 
 	import { YZChartParams } from '$src/lib/utils/YZChartParams';
 	import ChartDataSelector from './ChartDataSelector.svelte';
@@ -47,6 +42,7 @@
 	let brushMinIndex: number | null = $state(null);
 	let brushMaxIndex: number | null = $state(null);
 
+	// brushedTable is full table sliced with min,max from the Brush component
 	const brushedTable = $derived.by(() => {
 		if (!table) return;
 		const sliceIndex = isNumber(brushMaxIndex) ? brushMaxIndex! + 1 : undefined;
@@ -70,36 +66,33 @@
 		console.log('zParams', zParams);
 	});
 
-	const points = $derived(table?.objects() || []);
-	const brushedPoints = $derived(brushedTable?.objects() || []);
-
-	let brushedChartContainer: HTMLElement | null = $state(null);
+	let brushedChartContainer = $state<HTMLElement>();
 	let brushContainer: HTMLElement | null = $state(null);
+	const xTickTextElements: NodeListOf<HTMLElement> | undefined = $derived(
+		brushedChartContainer?.querySelectorAll('.x-axis .tick text')
+	);
 
-	const xTickTextElements = () =>
-		(brushedChartContainer?.querySelectorAll('.x-axis .tick text') as NodeListOf<HTMLElement>) ||
-		([] as HTMLElement[]);
 
 	const brushHoverOn = () => {
 		brushContainer!.style.opacity = '1';
-
-		xTickTextElements().forEach((t) => (t.style.opacity = '0'));
+		xTickTextElements?.forEach((t) => (t.style.opacity = '0'));
 	};
 
 	const brushHoverOff = () => {
 		brushContainer!.style.opacity = '0.1';
-		xTickTextElements().forEach((t) => (t.style.opacity = '0'));
+		xTickTextElements?.forEach((t) => (t.style.opacity = '0'));
 	};
 </script>
 
 <ChartDataSelector {table} {yVar} {zVar} bind:tableName />
 
-<div id="test" bind:this={brushedChartContainer}>
+<div class="yz-chart-container" bind:this={brushedChartContainer as HTMLElement}>
 	<h2>TestCharts</h2>
 
 	<div class="chart-container">
 		<!-- MAIN CHART -->
-		{#if brushedTable && brushedPoints.length > 0}
+		<!-- brushedTable is full table sliced with min,max from the Brush component -->
+		{#if brushedTable && brushedTable.numRows() > 0}
 			<LayerCake
 				data={brushedTable.objects()}
 				x="date"
@@ -146,7 +139,7 @@
 						formatValue={formatChatTTValue}
 						filterKeys={[yVar, zVar]}
 					/>
-					<YZAxisLabels yLabel={yParams.varLabel} zLabel={zParams.varLabel}/>
+					<YZAxisLabels yLabel={yParams.varLabel} zLabel={zParams.varLabel} />
 				</Html>
 			</LayerCake>
 		{/if}
@@ -162,30 +155,29 @@
 		ontouchmovecapture={brushHoverOn}
 		bind:this={brushContainer}
 	>
-		{#if brushedTable && points.length > 0}
+		{#if table && table.numRows() > 0}
 			<LayerCake
-				data={points}
+				data={table.objects()}
 				x="date"
-				y={yVar}
-				{yDomain}
+				yDomain={yParams.domain}
 				z={zVar}
-				{zDomain}
+				zDomain={zParams.domain}
 				zScale={scaleLinear()}
 				zRange={({ height }: any) => [height, 0]}
 			>
 				<Svg>
-					{#if yStats.count > 0}
+					{#if yParams.stats.count > 0}
 						<Line stroke={chartYColor} />
 						<Scatter
-							r={yRadius - 1}
+							r={yParams.radius - 1}
 							fill={chartYColor}
 							filterIndexRange={[brushMinIndex, brushMaxIndex]}
 						/>
 					{/if}
-					{#if zStats.count > 0 && zVar !== yVar}
-						<Line stroke={chartZColor} dataSource="z" ’ />
+					{#if zParams.stats.count > 0 && zVar !== yVar}
+						<Line stroke={chartZColor} dataSource="z" />
 						<Scatter
-							r={zRadius - 1}
+							r={zParams.radius - 1}
 							fill={chartZColor}
 							dataSource="z"
 							filterIndexRange={[brushMinIndex, brushMaxIndex]}
@@ -206,71 +198,7 @@
 </div>
 
 <style>
-	.y-labels {
-		width: 100%;
-		overflow: hidden;
-		position: absolute;
-		top: -19px;
-
-		.y-label {
-			height: 1.4rem;
-			background-color: white;
-		}
-	}
-
-	.y-labels:hover {
-		overflow: visible;
-	}
-
-	#test :global(.y-axis .tick text) {
-		stroke: #ab00d6;
-		stroke-width: 0.5;
-	}
-	#test :global(.z-axis .tick text) {
-		stroke: #00af8c;
-		stroke-width: 0.5;
-	}
-
-	#test :global(.x-axis .tick:nth-child(even) text) {
-		/* fill: #410db9; */
-		/* transform-origin: 0 0px; */
-		translate: 0px 14px;
-		/* transform: rotate(20deg); */
-	}
-
-	#test :global(.x-axis .tick:first-child text) {
-		/* fill: #ff0db9; */
-		/* transform-origin: 0 0px; */
-		translate: 12px 0px;
-		/* transform: rotate(20deg); */
-	}
-
-	#test :global(.x-axis .tick:last-child text) {
-		/* fill: #ff0db9; */
-		/* transform-origin: 0 0px; */
-		translate: -10px 0px;
-		/* transform: rotate(20deg); */
-	}
-
-	.chart-container {
-		width: 400px;
-		height: 300px;
-		/* border: 1px solid red; */
-		margin-left: 2rem;
-		position: absolute;
-		/* background-color: blueviolet; */
-	}
-
-	.brush-container {
-		height: 22px;
-		bottom: 50px;
-		width: 396px;
-		margin-left: 34px;
-		position: absolute;
-		/* background-color: white; */
-	}
-
-	#test {
+	.yz-chart-container {
 		width: 480px;
 		height: 440px;
 		border: 1px solid blue;
@@ -278,9 +206,48 @@
 		/* position: absolute; */
 		top: 50px;
 		left: 50px;
-	}
-	#test :global(table) {
-		width: 100%;
-		font-size: 0.8rem;
+
+		.chart-container {
+			width: 400px;
+			height: 300px;
+			/* border: 1px solid red; */
+			margin-left: 2rem;
+			position: absolute;
+			/* background-color: blueviolet; */
+
+			:global(.y-axis .tick text) {
+				stroke: #ab00d6;
+				stroke-width: 0.5;
+			}
+
+			:global(.z-axis .tick text) {
+				stroke: #00af8c;
+				stroke-width: 0.5;
+			}
+
+			:global(.x-axis .tick:nth-child(even) text) {
+				translate: 0px 14px;
+			}
+
+			:global(.x-axis .tick:first-child text) {
+				/* fill: #ff0db9; */
+				/* transform-origin: 0 0px; */
+				translate: 12px 0px;
+				/* transform: rotate(20deg); */
+			}
+
+			:global(.x-axis .tick:last-child text) {
+				translate: -10px 0px;
+			}
+		}
+
+		.brush-container {
+			height: 22px;
+			bottom: 50px;
+			width: 396px;
+			margin-left: 34px;
+			position: absolute;
+			/* background-color: white; */
+		}
 	}
 </style>

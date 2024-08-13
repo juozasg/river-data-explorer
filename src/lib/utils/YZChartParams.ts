@@ -15,7 +15,7 @@ export class YZChartParams {
 	stats: SimpleStats;
 	unit?: string;
 	varLabel: string;
-	radius?: number;
+	radius: number = 4;
 	domain: [number, number];
 
 
