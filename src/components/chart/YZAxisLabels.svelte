@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { chartYColor, chartZDarker } from '$src/lib/utils/chart';
 
-	const { yLabel, zLabel }: { yLabel: string; zLabel: string } = $props();
+	let { yLabel, zLabel }: { yLabel: string; zLabel: string } = $props();
 </script>
 
 <div class="y-labels">

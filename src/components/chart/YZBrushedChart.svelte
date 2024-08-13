@@ -72,6 +72,9 @@
 		brushedChartContainer?.querySelectorAll('.x-axis .tick text')
 	);
 
+	// const xTickTextElements = () =>
+	// 	(brushedChartContainer?.querySelectorAll('.x-axis .tick text') as NodeListOf<HTMLElement>) ||
+	// 	([] as HTMLElement[]);
 
 	const brushHoverOn = () => {
 		brushContainer!.style.opacity = '1';
@@ -215,28 +218,28 @@
 			position: absolute;
 			/* background-color: blueviolet; */
 
-			:global(.y-axis .tick text) {
+			& :global(.y-axis .tick text) {
 				stroke: #ab00d6;
 				stroke-width: 0.5;
 			}
 
-			:global(.z-axis .tick text) {
+			& :global(.z-axis .tick text) {
 				stroke: #00af8c;
 				stroke-width: 0.5;
 			}
 
-			:global(.x-axis .tick:nth-child(even) text) {
+			& :global(.x-axis .tick:nth-child(even) text) {
 				translate: 0px 14px;
 			}
 
-			:global(.x-axis .tick:first-child text) {
+			& :global(.x-axis .tick:first-child text) {
 				/* fill: #ff0db9; */
 				/* transform-origin: 0 0px; */
 				translate: 12px 0px;
 				/* transform: rotate(20deg); */
 			}
 
-			:global(.x-axis .tick:last-child text) {
+			& :global(.x-axis .tick:last-child text) {
 				translate: -10px 0px;
 			}
 		}
