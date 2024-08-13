@@ -49,7 +49,7 @@
 		sitesTables
 			.get(tableName)
 			// ?.filter(aq.escape((d: any) => d[yVar] || d[zVar]))
-			.reify()
+			?.reify()
 	);
 
 	let brushMinIndex: number | null = $state(null);
