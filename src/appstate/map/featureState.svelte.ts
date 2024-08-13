@@ -1,10 +1,10 @@
 import * as ml from 'maplibre-gl';
 
 import type { Site } from '$src/lib/types/site';
-import { setFeatureState } from '$src/lib/utils/maplibre';
+import { safeQueryRenderedFeatures, setFeatureState } from '$src/lib/utils/maplibre';
 import type { BBoxLike } from '$src/lib/types/basic';
 
-abstract class FeatureState {
+abstract class MLMFeatureState {
 	feature: ml.MapGeoJSONFeature | null = $state(null);
 
 	get id() {
@@ -25,7 +25,7 @@ abstract class FeatureState {
 	};
 }
 
-export class HoveredFeatureState extends FeatureState {
+export class MLMHoveredFeatureState extends MLMFeatureState {
 	extent: number = 0;
 
 	constructor(extent: number = 0) {
@@ -41,6 +41,7 @@ export class HoveredFeatureState extends FeatureState {
 		}
 	}
 
+
 	mouseMove(e: ml.MapMouseEvent, layers: string[]) {
 		const map = e.target;
 
@@ -51,7 +52,7 @@ export class HoveredFeatureState extends FeatureState {
 				[e.point.x + this.extent, e.point.y + this.extent]
 			];
 		}
-		const hoveredFeatures = map.queryRenderedFeatures(queryGeom, { layers });
+		const hoveredFeatures = safeQueryRenderedFeatures(map, queryGeom, layers);
 		if (hoveredFeatures.length < 1) {
 			this.clearCurrentFeatureState(map);
 			return;
@@ -77,7 +78,7 @@ export class HoveredFeatureState extends FeatureState {
 }
 
 
-export class SelectedFeature extends FeatureState {
+export class SelectedFeature extends MLMFeatureState {
 	// layer: string = 'sjriver-huc10';
 	// returns true if the feature changed
 	update(map: ml.Map, feature: ml.MapGeoJSONFeature): boolean {

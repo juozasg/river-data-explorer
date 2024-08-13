@@ -5,7 +5,7 @@
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 	import MapLibreMap from './MapLibreMap.svelte';
 
-	import { HoveredFeatureState } from '$src/appstate/map/featureState.svelte';
+	import { MLMHoveredFeatureState } from '$src/appstate/map/featureState.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
 	import { addLayers } from '$src/lib/data/map/homePageMapData';
 	import { addSources } from '$src/lib/data/map/mapData';
@@ -24,8 +24,8 @@
 	let divElement: HTMLDivElement | undefined = $state();
 	let mlMap: ml.Map | undefined = $state();
 
-	const hoveredRiver = new HoveredFeatureState(10);
-	const hoveredArea = new HoveredFeatureState();
+	const hoveredRiver = new MLMHoveredFeatureState(10);
+	const hoveredArea = new MLMHoveredFeatureState();
 	let hoveredSite: Site | null = $state(null);
 
 	const hoveredSiteStats = $derived(hoveredSite ? sitesDataStats([hoveredSite]) : undefined);

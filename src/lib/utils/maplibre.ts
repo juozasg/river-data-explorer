@@ -1,6 +1,7 @@
 import * as ml from 'maplibre-gl';
 import { bounds } from './geoutils';
 import type { Site } from '../types/site';
+import type { BBoxLike } from '../types/basic';
 
 export function onceIdle(map: ml.Map) {
 	if(map.loaded()) return Promise.resolve();
@@ -51,3 +52,14 @@ export function makeSiteMarker(node: HTMLElement, map: ml.Map,site: Site) {
 		}
 	};
 };
+
+// sometimes layers dont exist
+export function safeQueryRenderedFeatures(map: ml.Map, queryGeom: ml.PointLike | BBoxLike, layers: string[]) {
+	try {
+		const availableLayers = map.getLayersOrder();
+		const layersToQuery = layers.filter((l) => availableLayers.includes(l));
+		return map.queryRenderedFeatures(queryGeom, { layers: layersToQuery });
+	} catch (e) {
+		return [];
+	}
+}

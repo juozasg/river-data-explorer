@@ -6,7 +6,7 @@
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 	import { addLayers } from '$src/lib/data/map/areasMapData';
 	import {
-		HoveredFeatureState,
+		MLMHoveredFeatureState,
 		selectedArea,
 		selectedSite
 	} from '$src/appstate/map/featureState.svelte';
@@ -26,7 +26,7 @@
 	let mlmComponent: MapLibreMap;
 	let divElement: HTMLDivElement | undefined = $state();
 	let mlMap: ml.Map | undefined = $state();
-	const hoveredArea = new HoveredFeatureState();
+	const hoveredArea = new MLMHoveredFeatureState();
 	let hoveredSite: Site | null = $state(null);
 
 	const hoveredAreaSites = $derived(
@@ -37,12 +37,20 @@
 		hoveredAreaSites.length > 0 ? sitesDataStats(hoveredAreaSites) : undefined
 	);
 
-	$effect(() => {
-		console.log('sites.all updated', sites.allEnabled);
-	});
+	// $effect(() => {
+	// 	console.log('sites.all updated', sites.allEnabled);
+	// });
+
+	// $effect(() => {
+	// 	console.log(' hoveredArea.id updated',  hoveredArea.id);
+	// });
+
+	// selectedArea =
 
 	$effect(() => {
-		console.log(' hoveredArea.id updated',  hoveredArea.id);
+		if(mlMap && mlMap.getLayersOrder().includes('sjriver-huc10')) {
+			mlMap.moveLayer('sjriver-huc10', 'waterway-label');
+		}
 	});
 
 	const hoveredSiteStats = $derived(hoveredSite ? sitesDataStats([hoveredSite]) : undefined);
@@ -71,8 +79,7 @@
 				(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
 			) {
 				console.log('LOCALHOST DEBUGGING');
-				console.log('timeout click');
-				mapClick([500, 307.5546875]);
+				// mapClick([500, 307.5546875]);
 			}
 		} catch (e) {
 			console.error('timeout click error', e);
@@ -80,12 +87,10 @@
 	}, 2000);
 
 	const markerMouseEnter = (e: MouseEvent, site: Site) => {
-		// console.log('markermouse', site?.id, site);
 		hoveredSite = site;
 	};
 
 	const markerMouseLeave = (e: MouseEvent, site: Site) => {
-		// console.log('markermouse', site?.id, site);
 		hoveredSite = null;
 	};
 
