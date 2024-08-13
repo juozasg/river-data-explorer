@@ -48,7 +48,7 @@
 	const fullTable: ColumnTable | undefined = $derived(
 		sitesTables
 			.get(tableName)
-			?.filter(aq.escape((d: any) => d[yVar] || d[zVar]))
+			// ?.filter(aq.escape((d: any) => d[yVar] || d[zVar]))
 			.reify()
 	);
 
