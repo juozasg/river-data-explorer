@@ -1,28 +1,13 @@
 <script lang="ts">
-	import * as aq from 'arquero';
-	import { scaleLinear } from 'd3-scale';
-	import { Html, LayerCake, Svg } from 'layercake';
 
-	import { variableMetadata } from '$src/appstate/variableMetadata';
 
 	import type { Site } from '$lib/types/site';
-	import { sitesTables } from '$src/appstate/data/datasets.svelte';
 	import { sites, Sites } from '$src/appstate/sites.svelte';
-	import AxisX from '$src/components/chart/layercake/AxisX.svelte';
-	import AxisY from '$src/components/chart/layercake/AxisY.svelte';
-	import AxisYZRight from '$src/components/chart/layercake/AxisYZRight.svelte';
-	import Brush from '$src/components/chart/layercake/Brush.html.svelte';
-	import Line from '$src/components/chart/layercake/Line.svelte';
-	import Scatter from '$src/components/chart/layercake/Scatter.svelte';
-	import SharedTooltip from '$src/components/chart/layercake/SharedTooltip.svelte';
-	import { simpleStats } from '$src/lib/data/stats';
-	import { aremove, fmtDate } from '$src/lib/utils';
-	import type ColumnTable from 'arquero/dist/types/table/column-table';
-	import { chartYColor, chartZDarker, genXDateTicks, genYTicks } from '$src/lib/utils/chart';
+	import { aremove } from '$src/lib/utils';
+	import { chartYColor, chartZDarker } from '$src/lib/utils/chart';
 
-	import { YZChartParams } from "$src/lib/utils/YZChartParams";
-	let dataset: string = $state('sjrbc');
-	let datasetNum: number = $state(1);
+		let dataset: string = $state('steuben');
+	let datasetNum: number = $state(8);
 
 	$effect(() => {
 		tableName = `${dataset}-${datasetNum}`;

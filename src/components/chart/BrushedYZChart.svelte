@@ -4,7 +4,6 @@
 	import { scaleLinear } from 'd3-scale';
 	import { Html, LayerCake, Svg } from 'layercake';
 
-
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
 	import AxisX from '$src/components/chart/layercake/AxisX.svelte';
 	import AxisY from '$src/components/chart/layercake/AxisY.svelte';
@@ -29,11 +28,10 @@
 	import { YZChartParams } from '$src/lib/utils/YZChartParams';
 	import ChartDataSelector from './ChartDataSelector.svelte';
 
-	let tableName = $state('sjrbc-1');
-	$effect(() => console.log('tableName2', tableName) );
+	let tableName = $state('steuben-8');
 
-	let yVar: string = $state('bod');
-	let zVar: string = $state('bodPercent');
+	let yVar: string = $state('temp');
+	let zVar: string = $state('do');
 
 	const table: ColumnTable | undefined = $derived(sitesTables.get(tableName)?.reify());
 
@@ -84,11 +82,13 @@
 
 	const brushHoverOff = () => {
 		brushContainer!.style.opacity = '0.1';
-		xTickTextElements?.forEach((t) => (t.style.opacity = '0'));
+		xTickTextElements?.forEach((t) => (t.style.opacity = '1'));
 	};
 </script>
 
-<ChartDataSelector {table} {yVar} {zVar} bind:tableName />
+<div style="margin-left: 2rem">
+	<ChartDataSelector {table} bind:yVar bind:zVar bind:tableName />
+</div>
 
 <div class="yz-chart-container" bind:this={brushedChartContainer as HTMLElement}>
 	<h2>TestCharts</h2>
@@ -218,32 +218,24 @@
 			/* border: 1px solid red; */
 			margin-left: 2rem;
 			position: absolute;
-			/* background-color: blueviolet; */
 
-			& :global(.y-axis .tick text) {
-				stroke: #ab00d6;
-				stroke-width: 0.5;
-			}
+			& :global {
+				.x-axis .tick:nth-child(even) text {
+					translate: 0px 18px;
+				}
 
-			& :global(.z-axis .tick text) {
-				stroke: #00af8c;
-				stroke-width: 0.5;
-			}
+				.x-axis .tick:first-child text {
+					translate: 12px 4px;
+				}
 
-			& :global(.x-axis .tick:nth-child(even) text) {
-				translate: 0px 14px;
+				.x-axis .tick:last-child text {
+					translate: -18px 0px;
+				}
 			}
-
-			& :global(.x-axis .tick:first-child text) {
-				/* fill: #ff0db9; */
-				/* transform-origin: 0 0px; */
-				translate: 12px 0px;
-				/* transform: rotate(20deg); */
-			}
-
-			& :global(.x-axis .tick:last-child text) {
-				translate: -10px 0px;
-			}
+			/*
+		.chart-container :global(.x-axis .tick:nth-child(even) text) {
+			translate: 0px 14px;
+		} */
 		}
 
 		.brush-container {
@@ -254,5 +246,9 @@
 			position: absolute;
 			/* background-color: white; */
 		}
+	}
+
+	.yz-chart-container {
+		margin-left: 2rem;
 	}
 </style>

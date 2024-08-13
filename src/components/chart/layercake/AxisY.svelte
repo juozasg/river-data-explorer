@@ -103,6 +103,7 @@
         dx={dx + (labelPosition === 'even' ? -3 : 0)}
         text-anchor={labelPosition === 'above' ? 'start' : 'end'}
         fill={color}
+        stroke={color}
         dy={dy +
           (labelPosition === 'above' || (snapBaselineLabel === true && tickValPx === maxTickValPx)
             ? -3
@@ -117,21 +118,17 @@
     font-size: 11px;
   }
 
-  /* .tick line {
-    stroke: #aaa;
-  } */
+
   .tick .gridline {
     stroke-dasharray: 2;
   }
-/*
+
   .tick text {
-    fill: #666;
-  } */
+    stroke-width: 0.5;
+  }
 
   .tick.tick-0 line {
     stroke-dasharray: 0;
   }
-  /* .tick line {
-    stroke-width: 2px;
-  } */
+
 </style>

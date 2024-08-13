@@ -98,23 +98,25 @@
 	{@const dataWithPositions = calcPositionsForData(found)}
 	{#if visible === true}
 		<div style="left:{x}px;" class="line"></div>
-		<div
-			class="tooltip"
-			bind:this={tooltipElement}
-			style="
+		{#if dataWithPositions.length > 0}
+			<div
+				class="tooltip"
+				bind:this={tooltipElement}
+				style="
         width:{w}px;
         display: {visible ? 'block' : 'none'};
         top:{getClosestToMouse(dataWithPositions).top + offset}px;
         left:{Math.min(Math.max(w2, x), $width - w2)}px;"
-		>
-			<div class="title">{formatTitle(found[$config.x])}</div>
-			{#each dataWithPositions as row}
-				<div class="row">
-					<span class="key">{@html formatKey(row.key)}:</span>
-					{formatValue(row.key, row.value)}
-				</div>
-			{/each}
-		</div>
+			>
+				<div class="title">{formatTitle(found[$config.x])}</div>
+				{#each dataWithPositions as row}
+					<div class="row">
+						<span class="key">{@html formatKey(row.key)}:</span>
+						{formatValue(row.key, row.value)}
+					</div>
+				{/each}
+			</div>
+		{/if}
 	{/if}
 </QuadTree>
 

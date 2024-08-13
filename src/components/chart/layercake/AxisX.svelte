@@ -92,7 +92,7 @@
 
 <style>
   .tick {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   line,
@@ -103,6 +103,8 @@
 
   .tick text {
     fill: #333333;
+    stroke: #333333;
+    stroke-width: 0.1;
   }
 
   .tick .tick-mark,

@@ -41,9 +41,8 @@ export class YZChartParams {
 			const metadataMin: number = variableMetadata[varname]?.scale?.min ?? 0;
 			const metadataMax: number = variableMetadata[varname]?.scale?.max ?? 100;
 
-
 			const domainMin = isNumber(this.stats.min) ? Math.min(metadataMin, this.stats.min!) : metadataMin;
-			const domainMax = this.stats.count < 2 ? metadataMax : roundTickValue(this.stats.max! + (this.stats.range! * 0.1), this.stats.range! * 10);
+			const domainMax = this.stats.count < 2 ? metadataMax : roundTickValue(this.stats.max! + (this.stats.range! * 0.25), this.stats.range! * 10);
 
 			this.domain = [domainMin, domainMax];
 		} else {
@@ -52,5 +51,9 @@ export class YZChartParams {
 			this.varLabel = '';
 
 		}
+
+		if (this.varname === 'do') {
+			console.log(this)
+		};
 	}
 }

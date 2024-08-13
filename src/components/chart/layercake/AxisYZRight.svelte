@@ -109,6 +109,7 @@
 
 			<text
 				fill={color}
+				stroke={color}
 				x={$width + tickGutter + (labelPosition === 'even' ? tickLen : 0)}
 				{y}
 				dx={dx + (labelPosition === 'even' ? 3 : 0)}
@@ -126,16 +127,13 @@
 		font-size: 11px;
 	}
 
-	/* .tick line {
-		stroke: #aaa;
-	} */
 	.tick .gridline {
 		stroke-dasharray: 2;
 	}
 
-	/* .tick text {
-		fill: #666;
-	} */
+	.tick text {
+		stroke-width: 0.5;
+	}
 
 	.tick.tick-0 line {
 		stroke-dasharray: 0;
