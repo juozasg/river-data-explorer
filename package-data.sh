@@ -9,9 +9,9 @@ if [ $1 = "--local" ]; then
 	cd data
 	rm -rf .git
 else
-	curl -L https://github.com/juozasg/SJRBC-web-map-data/archive/refs/heads/webapp.zip -o data.zip
+	curl -L https://github.com/juozasg/SJRBC-web-map-data/archive/refs/heads/main.zip -o data.zip
 	unzip data.zip
-	mv SJRBC-web-map-data-webapp data
+	mv SJRBC-web-map-data-main data
 	cd data
 fi
 
