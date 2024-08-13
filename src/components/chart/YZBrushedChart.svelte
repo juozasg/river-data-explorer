@@ -1,4 +1,6 @@
 <script lang="ts">
+  import YZAxisLabels from './YZAxisLabels.svelte';
+
 	import * as aq from 'arquero';
 	import { scaleLinear } from 'd3-scale';
 	import { Html, LayerCake, Svg } from 'layercake';
@@ -16,9 +18,20 @@
 	import Scatter from '$src/components/chart/layercake/Scatter.svelte';
 	import SharedTooltip from '$src/components/chart/layercake/SharedTooltip.svelte';
 	import { simpleStats } from '$src/lib/data/stats';
-	import { aremove, fmtDate } from '$src/lib/utils';
+	import { aremove, fmtDate, isNumber } from '$src/lib/utils';
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
-	import { chartYColor, chartZColor, chartZDarker, formatChartDate, formatChartTTKey, formatChatTTValue, genXDateTicks, genYTicks, YZChartParams } from '$src/lib/utils/chart';
+	import {
+		chartYColor,
+		chartZColor,
+		chartZDarker,
+		formatChartDate,
+		formatChartTTKey,
+		formatChatTTValue,
+		genXDateTicks,
+		genYTicks
+	} from '$src/lib/utils/chart';
+
+	import { YZChartParams } from '$src/lib/utils/YZChartParams';
 	import ChartDataSelector from './ChartDataSelector.svelte';
 
 	let tableName = $state('sjrbc-1');
@@ -26,35 +39,28 @@
 	let yVar: string = $state('bod');
 	let zVar: string = $state('bodPercent');
 
-	const table: ColumnTable | undefined = $derived(
-		sitesTables
-			.get(tableName)
-			?.reify()
-	);
+	const table: ColumnTable | undefined = $derived(sitesTables.get(tableName)?.reify());
 
-	const yParams = $derived(table && yVar && new YZChartParams('y', yVar, table));
-	const zParams = $derived(table && zVar && new YZChartParams('z', zVar, table));
-
+	const yParams = $derived(new YZChartParams('y', yVar, table));
+	const zParams = $derived(new YZChartParams('z', zVar, table));
 
 	let brushMinIndex: number | null = $state(null);
 	let brushMaxIndex: number | null = $state(null);
 
-
 	const brushedTable = $derived.by(() => {
 		if (!table) return;
+		const sliceIndex = isNumber(brushMaxIndex) ? brushMaxIndex! + 1 : undefined;
 
-		const sliceIndex =
-			brushMaxIndex == null
-				? undefined
-				: brushMaxIndex >= table.numRows() - 1
-					? undefined
-					: brushMaxIndex + 1;
+		// const sliceIndex =
+		// 	brushMaxIndex == null
+		// 		? undefined
+		// 		: brushMaxIndex >= table.numRows() - 1
+		// 			? undefined
+		// 			: brushMaxIndex + 1;
 
 		// console.log('slicing fullTable', brushMinIndex, sliceIndex);
 		return table?.slice(brushMinIndex || 0, sliceIndex);
 	});
-
-
 
 	$effect(() => {
 		console.log('tableName', tableName);
@@ -64,73 +70,43 @@
 		console.log('zParams', zParams);
 	});
 
+	const points = $derived(table?.objects() || []);
+	const brushedPoints = $derived(brushedTable?.objects() || []);
 
-
-
-
-	const points = $derived(brushedTable?.objects() || []);
-
-	const fullPoints = $derived(table?.objects() || []);
-
-	const tooltipPoints = $derived.by(() => {
-		const tooltipCols = ['date'];
-		if (yParams && yParams.stats.count > 0) tooltipCols.push(yVar);
-		if (zParams && zParams.stats.count > 0) tooltipCols.push(zVar);
-
-		return brushedTable?.select(tooltipCols).objects() || [];
-	});
-
-
-	let testElement: HTMLElement | null = $state(null);
+	let brushedChartContainer: HTMLElement | null = $state(null);
 	let brushContainer: HTMLElement | null = $state(null);
 
-	const tickTextElements = () =>
-		(testElement?.querySelectorAll('.x-axis .tick text') as NodeListOf<HTMLElement>) ||
+	const xTickTextElements = () =>
+		(brushedChartContainer?.querySelectorAll('.x-axis .tick text') as NodeListOf<HTMLElement>) ||
 		([] as HTMLElement[]);
 
-	const brushOn = (e) => {
+	const brushHoverOn = () => {
 		brushContainer!.style.opacity = '1';
 
-		const ticks = tickTextElements().forEach((t) => {
-			t.style.opacity = '0';
-		});
+		xTickTextElements().forEach((t) => (t.style.opacity = '0'));
 	};
 
-	const brushOff = (e) => {
+	const brushHoverOff = () => {
 		brushContainer!.style.opacity = '0.1';
-		const ticks = tickTextElements().forEach((t) => {
-			t.style.opacity = '1';
-		});
+		xTickTextElements().forEach((t) => (t.style.opacity = '0'));
 	};
 </script>
 
-<div>
-aaa
-<ChartDataSelector
-	{table}
-	{yVar}
-	{zVar}
-	bind:tableName
-	/>
+<ChartDataSelector {table} {yVar} {zVar} bind:tableName />
 
-	TABLENAME:
-	{tableName}
-
-</div>
-<!--
-
-<div id="test" bind:this={testElement}>
+<div id="test" bind:this={brushedChartContainer}>
 	<h2>TestCharts</h2>
 
 	<div class="chart-container">
-		{#if brushedTable && points.length > 0}
+		<!-- MAIN CHART -->
+		{#if brushedTable && brushedPoints.length > 0}
 			<LayerCake
-				data={points}
+				data={brushedTable.objects()}
 				x="date"
 				y={yVar}
-				{yDomain}
+				yDomain={yParams.domain}
 				z={zVar}
-				{zDomain}
+				zDomain={zParams.domain}
 				zScale={scaleLinear()}
 				zRange={({ height }: any) => [height, 0]}
 			>
@@ -141,60 +117,54 @@ aaa
 						format={formatChartDate}
 						ticks={(ts: number[]) => genXDateTicks(brushedTable, ts)}
 					/>
-					{#if yStats.count > 0}
+					{#if yParams.stats.count > 0}
 						<AxisY
 							gridlines={false}
 							tickMarks={true}
-							ticks={(ts: number[]) => genYTicks(yDomain[0], yDomain[1], ts)}
+							ticks={(ts: number[]) => genYTicks(yParams.domain, ts)}
 							color={chartYColor}
 						/>
 
 						<Line stroke={chartYColor} />
-						<Scatter r={yRadius} fill={chartYColor} />
+						<Scatter r={yParams.radius} fill={chartYColor} />
 					{/if}
-					{#if zStats.count > 0 && zVar !== yVar}
+					{#if zParams.stats.count > 0 && zVar !== yVar}
 						<AxisYZRight
 							gridlines={false}
 							tickMarks={true}
-							ticks={(ts: number[]) => genYTicks(zDomain[0], zDomain[1], ts)}
+							ticks={(ts: number[]) => genYTicks(zParams.domain, ts)}
 							color={chartZDarker}
 						/>
 						<Line stroke={chartZColor} dataSource="z" />
-						<Scatter r={zRadius} fill={chartZColor} dataSource="z" />
+						<Scatter r={zParams.radius} fill={chartZColor} dataSource="z" />
 					{/if}
 				</Svg>
 				<Html>
 					<SharedTooltip
 						formatTitle={formatChartDate}
-						dataset={tooltipPoints}
 						formatKey={(k: string) => formatChartTTKey(k, yVar, zVar)}
 						formatValue={formatChatTTValue}
+						filterKeys={[yVar, zVar]}
 					/>
-					<div class="y-labels" style="font-weight: bold; font-size: 0.9rem; display:flex; justify-content: space-between">
-						<div class="y-axis-label y-label" style="color:{chartYColor};margin-left: 0.2rem">
-							{yVarlabel}
-						</div>
-						<div class="z-axis-label y-label" style="color:{chartZDarker}; margin-right: 0.1rem; text-align: right">
-							{zVarlabel}
-						</div>
-					</div>
+					<YZAxisLabels yLabel={yParams.varLabel} zLabel={zParams.varLabel}/>
 				</Html>
 			</LayerCake>
 		{/if}
 	</div>
 
+	<!-- BRUSH CHART -->
 	<div
 		class="brush-container"
 		style="opacity:0.1"
-		onmouseenter={brushOn}
-		onmouseleave={brushOff}
-		ontouchmove={brushOn}
-		ontouchmovecapture={brushOn}
+		onmouseenter={brushHoverOn}
+		onmouseleave={brushHoverOff}
+		ontouchmove={brushHoverOn}
+		ontouchmovecapture={brushHoverOn}
 		bind:this={brushContainer}
 	>
-		{#if brushedTable && fullPoints.length > 0}
+		{#if brushedTable && points.length > 0}
 			<LayerCake
-				data={fullPoints}
+				data={points}
 				x="date"
 				y={yVar}
 				{yDomain}
@@ -234,9 +204,8 @@ aaa
 		{/if}
 	</div>
 </div>
--->
-<style>
 
+<style>
 	.y-labels {
 		width: 100%;
 		overflow: hidden;
@@ -252,8 +221,6 @@ aaa
 	.y-labels:hover {
 		overflow: visible;
 	}
-
-
 
 	#test :global(.y-axis .tick text) {
 		stroke: #ab00d6;
@@ -285,7 +252,6 @@ aaa
 		/* transform: rotate(20deg); */
 	}
 
-
 	.chart-container {
 		width: 400px;
 		height: 300px;
@@ -303,8 +269,6 @@ aaa
 		position: absolute;
 		/* background-color: white; */
 	}
-
-
 
 	#test {
 		width: 480px;

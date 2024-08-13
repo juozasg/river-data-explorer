@@ -50,6 +50,9 @@
 	/** @type {Array<Object>|undefined} [dataset] - The dataset to work off of—defaults to $data if left unset. You can pass something custom in here in case you don't want to use the main data or it's in a strange format. */
 	export let dataset = undefined;
 
+	/** @type {Array<string>} [] - Display only the tooltip for the given variables. */
+	export let filterKeys = [];
+
 	const w = 220;
 	const w2 = w / 2;
 
@@ -66,6 +69,7 @@
 
 		const rows = Object.keys(result)
 			.filter((k) => k !== $config.x)
+			.filter((k) => filterKeys.length === 0 || filterKeys.includes(k))
 			.filter((k) => result[k] !== null && result[k] !== undefined)
 			.map((key) => {
 				const isY = key === $config.y;
@@ -79,8 +83,8 @@
 					top,
 					fromMouse
 				};
-			})
-			// .sort((a, b) => a.fromMouse - b.fromMouse);
+			});
+		// .sort((a, b) => a.fromMouse - b.fromMouse);
 
 		return rows;
 	}

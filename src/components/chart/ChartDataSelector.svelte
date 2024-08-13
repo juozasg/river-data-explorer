@@ -20,6 +20,7 @@
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
 	import { chartYColor, chartZDarker, genXDateTicks, genYTicks, YZChartParams } from '$src/lib/utils/chart';
 
+import { YZChartParams } from "$src/lib/utils/YZChartParams";
 	let dataset: string = $state('sjrbc');
 	let datasetNum: number = $state(1);
 

@@ -1,7 +1,6 @@
 import type ColumnTable from "arquero/dist/types/table/column-table";
-import { fmtDate, isNumber } from ".";
+import { fmtDate } from ".";
 import { variableMetadata } from "$src/appstate/variableMetadata";
-import { simpleStats, type SimpleStats } from "../data/stats";
 import { getContext } from "svelte";
 
 
@@ -15,9 +14,9 @@ export function roundTickValue(n: number, range: number, extraDecimals = false) 
 	return rounded;
 }
 
-export function genYTicks(domainMin: number, domainMax: number, ts: number[]): number[] {
-	const min = domainMin || ts[0];
-	const max = domainMax || ts[ts.length - 1];
+export function genYTicks(domain: [number, number], ts: number[]): number[] {
+	const min = domain[0] || ts[0];
+	const max = domain[1] || ts[ts.length - 1];
 	const range = max - min;
 	const q = range / 4;
 	// console.log('yTicks', ts, 'min', min, 'max', max);
@@ -45,17 +44,17 @@ export function closestPointIndex(arr: number[], x: number, min = true) {
 	// 	x += 0.05;
 	// }
 	const foundPoint = arr.reduce((prev, curr) =>
-				Math.abs(curr - x) < Math.abs(prev - x) ? curr : prev);
+		Math.abs(curr - x) < Math.abs(prev - x) ? curr : prev);
 	let index = arr.indexOf(foundPoint);
 	if (min && foundPoint > x) {
 		index -= 1;
-	} else if(!min && foundPoint < x) {
+	} else if (!min && foundPoint < x) {
 		// index += 1;
 	}
 
-	if(index < 0) {
+	if (index < 0) {
 		index = 0;
-	} else if(index >= arr.length) {
+	} else if (index >= arr.length) {
 		index = arr.length - 1;
 	}
 
@@ -85,50 +84,5 @@ export function formatChatTTValue(key: string, value: any): string {
 export const chartYColor = '#ab00d6';
 export const chartZColor = '#00d6ab';
 export const chartZDarker = '#00af8c';
-
-
-export class YZChartParams {
-	varname: string;
-	table: ColumnTable;
-	axis: string;
-
-	// calculated in constructor
-	unit: string
-	varLabel: string;
-	stats: SimpleStats
-	radius: number;
-	domain: [number, number];
-
-
-	constructor(
-		axis: "y" | "z", // "y" or "z"
-		varname: string,
-		table: ColumnTable
-	) {
-
-		this.axis = axis;
-		this.varname = varname;
-		this.table = table;
-
-		this.unit = variableMetadata[varname]?.unit || '';
-		const unitParens = this.unit != '' ? ` (${this.unit})` : '';
-		this.varLabel = (variableMetadata[varname]?.label || varname) + unitParens;
-
-
-		this.stats = simpleStats(varname, table);
-		this.radius = this.stats.count > 2 ? 4 : 7;
-
-		const metadataMin: number = variableMetadata[varname]?.scale?.min ?? 0;
-		const metadataMax: number = variableMetadata[varname]?.scale?.max ?? 100;
-
-
-		const domainMin = isNumber(this.stats.min) ? Math.min(metadataMin, this.stats.min!) : metadataMin;
-		const domainMax = this.stats.count < 2 ? metadataMax : roundTickValue(this.stats.max! + (this.stats.range! * 0.1), this.stats.range! * 10);
-
-		this.domain = [domainMin, domainMax];
-	}
-}
-
-
 
 
