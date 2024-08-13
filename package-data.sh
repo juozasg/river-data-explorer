@@ -4,7 +4,7 @@ set -e
 rm -rf tmp
 mkdir -p tmp
 cd tmp
-if [ $1 = "--local" ]; then
+if [[ $1 = "--local" ]]; then
 	cp -r ../../SJRBC-web-map-data data
 	cd data
 	rm -rf .git
