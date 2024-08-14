@@ -8,6 +8,7 @@
 	import { selectedArea } from '$src/appstate/map/featureState.svelte';
 	import RegionStatsPanel from '$src/components/basin/RegionStatsPanel.svelte';
 	import SiteStatsPanel from '$src/components/basin/SiteStatsPanel.svelte';
+	import BasinChart from '$src/components/basin/BasinChart.svelte';
 
 	const onSelectedArea = () => {
 		const areaDetailsAnchor = window.document.getElementById('area-details');
@@ -56,7 +57,7 @@
 					<SiteSelectorMap />
 				</div>
 				<div class="details-bottom">
-					<h1 style="color:purple">plot goes here</h1>
+					<BasinChart />
 				</div>
 			</div>
 		</div>

@@ -26,14 +26,9 @@
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
 
 	import { YZChartParams } from '$src/lib/utils/YZChartParams';
-	import ChartDataSelector from './ChartDataSelector.svelte';
 
-	let tableName = $state('steuben-8');
+	const { table, yVar, zVar }: { table: ColumnTable; yVar: string; zVar: string } = $props();
 
-	let yVar: string = $state('temp');
-	let zVar: string = $state('do');
-
-	const table: ColumnTable | undefined = $derived(sitesTables.get(tableName)?.reify());
 
 	const yParams = $derived(new YZChartParams('y', yVar, table));
 	const zParams = $derived(new YZChartParams('z', zVar, table));
@@ -46,19 +41,10 @@
 		if (!table) return;
 		const sliceIndex = isNumber(brushMaxIndex) ? brushMaxIndex! + 1 : undefined;
 
-		// const sliceIndex =
-		// 	brushMaxIndex == null
-		// 		? undefined
-		// 		: brushMaxIndex >= table.numRows() - 1
-		// 			? undefined
-		// 			: brushMaxIndex + 1;
-
-		// console.log('slicing fullTable', brushMinIndex, sliceIndex);
 		return table?.slice(brushMinIndex || 0, sliceIndex);
 	});
 
 	$effect(() => {
-		console.log('tableName', tableName);
 		console.log('yVar', yVar);
 		console.log('zVar', zVar);
 		console.log('yParams', yParams);
@@ -86,13 +72,8 @@
 	};
 </script>
 
-<div style="margin-left: 2rem">
-	<ChartDataSelector {table} bind:yVar bind:zVar bind:tableName />
-</div>
 
 <div class="yz-chart-container" bind:this={brushedChartContainer as HTMLElement}>
-	<h2>TestCharts</h2>
-
 	<div class="chart-container">
 		<!-- MAIN CHART -->
 		<!-- brushedTable is full table sliced with min,max from the Brush component -->
@@ -206,7 +187,7 @@
 	.yz-chart-container {
 		width: 480px;
 		height: 440px;
-		border: 1px solid blue;
+		border: 1.5px dotted blue;
 		overflow: visible;
 		/* position: absolute; */
 		top: 50px;
@@ -216,7 +197,7 @@
 			width: 400px;
 			height: 300px;
 			/* border: 1px solid red; */
-			margin-left: 2rem;
+			/* margin-left: 2rem; */
 			position: absolute;
 
 			& :global {
@@ -248,7 +229,4 @@
 		}
 	}
 
-	.yz-chart-container {
-		margin-left: 2rem;
-	}
 </style>
