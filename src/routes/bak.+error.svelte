@@ -9,7 +9,7 @@
 
 
 <pre>
-	{err.error.frame}
+	{err.error?.frame}
 </pre>
 
 <pre>
@@ -18,5 +18,5 @@
 
 
 <pre>
-	{err.error.stack || 'No stack' }
+	{err.error?.stack || 'No stack' }
 </pre>

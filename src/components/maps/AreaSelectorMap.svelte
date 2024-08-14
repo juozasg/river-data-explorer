@@ -48,8 +48,19 @@
 	// selectedArea =
 
 	$effect(() => {
-		if(mlMap && mlMap.getLayersOrder().includes('sjriver-huc10')) {
-			mlMap.moveLayer('sjriver-huc10', 'waterway-label');
+		if(mlMap && mlmComponent.dataLoaded() && mlMap.getLayersOrder().includes('sjriver-huc10')) {
+			const huc10 = '0405000122'
+			const siteId = 'sjrbc-45';
+			const mlmFeature = mlMap.querySourceFeatures('sjriver-huc10', {
+				sourceLayer: 'sjriver-huc10',
+				// filter: ['==', 'huc10', "0405000121"]
+				filter: ['==', 'huc10', huc10]
+			})[0];
+
+			mlmFeature.source = 'sjriver-huc10';
+			selectedArea.update(mlMap, mlmFeature);
+			selectedSite.set(sites.all.find((s) => s.id === siteId));
+			console.log('DEBUG SELECTED', selectedSite.site, mlmFeature);
 		}
 	});
 
@@ -97,6 +108,7 @@
 	function mapClick(point: ml.PointLike) {
 		const map = mlMap!;
 		const feature = map.queryRenderedFeatures(point, { layers: ['sjriver-huc10'] })[0] || null;
+		console.log('clicked feature', feature);
 		const changed = selectedArea.update(map, feature);
 		if (changed || hoveredSite) {
 			if (hoveredSite) selectedSite.set(hoveredSite);

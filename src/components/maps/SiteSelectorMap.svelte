@@ -101,18 +101,6 @@
 	{...others}
 />
 
-<!-- {#each sites.all as site (site.id)}
-	<div
-		class="marker"
-		class:is-selected={selectedSite.site?.id === site.id}
-		class:is-outside-area={selectedArea.feature?.id !== site.huc10}
-		onmouseenter={(e) => mouseEnterMarker(e, site)}
-		onmouseleave={(e) => mouseLeaveMarker(e, site)}
-		use:makeMarker={site}
-	>
-		<div class="marker-box"></div>
-	</div>
-{/each} -->
 
 {#if mlMap}
 	{#each sites.allEnabled as site}
