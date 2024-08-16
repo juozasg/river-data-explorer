@@ -33,7 +33,6 @@ export function setFeatureState(map: ml.Map, source: string, id: string | undefi
 }
 
 
-
 export function toggleoffAttribution(divElement: HTMLElement){
 	setTimeout(() => {
 		const attribCtrl = divElement!.querySelectorAll('details.maplibregl-ctrl-attrib');

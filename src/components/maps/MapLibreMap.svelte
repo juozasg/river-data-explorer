@@ -3,7 +3,7 @@
 
 	import { formatLngLat } from '$lib/copyLngLat';
 	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
-	import { transformStyle } from '$src/lib/transformMapStyle';
+	import { transformStyle } from '$src/lib/data/map/transformMapStyle';
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 	import { toggleoffAttribution } from '$src/lib/utils/maplibre';
 	import { onMount } from 'svelte';
@@ -23,13 +23,14 @@
 
 	let baseStyleId: 'TOPO' | 'SATELLITE' = $state('TOPO');
 	const arcgisServicesStyles =
-		'https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles/';
+		// 'cached://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles';
+		'https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles';
 	const apiKey =
 		'AAPK3dfaa40a13c0404983142c26b566596ammsJLVROPRkVaZnrwj6bYIrYdi4FEikx7NZpYg7f5M9XlV2RFL6PgxMA_56IceHv';
 
 	const basemapEnum = 'e20332d6d2af43ff8402bb155df01467';
 	const basemapStyles = {
-		TOPO: `https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles/items/${basemapEnum}?token=${apiKey}`,
+		TOPO: `${arcgisServicesStyles}/items/${basemapEnum}?token=${apiKey}`,
 		SATELLITE: `${arcgisServicesStyles}/arcgis/imagery/?token=${apiKey}`
 	};
 
@@ -59,6 +60,7 @@
 			minZoom: 3
 		});
 
+-
 		// only fires for the initial style, not for map.setStyle
 		mlMap.once('idle', () => {
 			addSources(mlMap!).then(() => {

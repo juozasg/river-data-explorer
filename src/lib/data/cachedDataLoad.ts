@@ -60,6 +60,24 @@ async function fetchDataWithCache(path: string) {
 	return response;
 }
 
+export async function fetchCachedTile(url: string) {
+	const cache = await caches.open('river-website-data-cache');
+	const cachedResponse = await cache.match(url);
+	if (cachedResponse) {
+		console.log('tile cache hit', url);
+		return cachedResponse;
+	}
+
+	const response = await fetch(url);
+	console.log('tile fetch ', url);
+
+	if (!response.ok) throw new Error('Request failed.');
+
+	cache.put(url, response.clone());
+
+	return response;
+}
+
 
 async function sha1Matches(response: Response | undefined, expectedSha1: string | undefined) {
 	if (!response || !expectedSha1) return false;

@@ -4,7 +4,7 @@ import { partition } from '$lib/utils';
 // copy over sjriver- sources and layers from previous style
 // make sure that label elements are on top of sjrbc elements
 export const transformStyle = (previousStyle: ml.StyleSpecification | any, nextStyle: ml.StyleSpecification) => {
-	// console.log(previousStyle, nextStyle, 'STYLE TRANSFORM');
+	// console.log( 'STYLE TRANSFORM', previousStyle, nextStyle);
 	const keepSources: any = {};
 
 	for(const source in previousStyle.sources) {
@@ -12,6 +12,9 @@ export const transformStyle = (previousStyle: ml.StyleSpecification | any, nextS
 			keepSources[source] = previousStyle.sources[source];
 		}
 	}
+
+	// TODO: caching works but doesnt offer much speedup
+	// replaceUrlsWithCached(nextStyle);
 
 	const [labelLayers, nonLabelLayers] = partition(nextStyle.layers, (l: any) =>
 			l.id.match(/label/) || l.id.match(/place/i) || l.id.match(/city/i));
@@ -34,3 +37,21 @@ export const transformStyle = (previousStyle: ml.StyleSpecification | any, nextS
 	};
 	return updatedSpec;
 }
+
+function replaceUrlsWithCached(nextStyle: ml.StyleSpecification) {
+	for (const source in nextStyle.sources) {
+		if (nextStyle.sources[source].type !== 'vector') continue;
+		const vectorSource = nextStyle.sources[source] as ml.VectorSourceSpecification;
+		const url = vectorSource.url;
+		if (!url) continue;
+		(nextStyle.sources[source] as ml.VectorSourceSpecification).url = url.replace('https://', 'cached://');
+
+		const tileUrls = vectorSource.tiles;
+		if (tileUrls) {
+			(nextStyle.sources[source] as ml.VectorSourceSpecification).tiles = tileUrls.map((url: string) => url.replace('https://', 'cached://'));
+		}
+	}
+
+	if (nextStyle.sprite) nextStyle.sprite = (nextStyle.sprite as string).replace('https://', 'cached://');
+}
+

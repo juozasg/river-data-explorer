@@ -8,7 +8,8 @@ export const trailingSlash = 'always';
 export type VariableName = string;
 
 export const load = async ({ fetch }) => {
-
+	// TODO: works but doesnt offer much speedup, risk of references going out of date meanwhile
+	// addMaplibreCachedProtocol();
 	let response = await fetch(`/api/variables`);
 	const variablePages = await response.json();
 
@@ -36,3 +37,5 @@ const loadManifests = async (fetch: (arg0: string) => Promise<any>) => {
 	const variableMetadata = yaml.load(await r2.text());
 	return { dataManifest, variableMetadata };
 }
+
+

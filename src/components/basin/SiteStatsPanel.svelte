@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
 	import { selectedSite } from '$src/appstate/map/featureState.svelte';
-	import { variableMetadata } from '$src/appstate/variableMetadata';
 	import { allVariableStats } from '$src/lib/data/stats';
 	import type { VariableStats } from '$src/lib/types/analysis';
 	import { fmtVarNum, varunits } from '$src/lib/utils';
+	import { onMount } from 'svelte';
 	import StatsDataTable from '../site/StatsDataTable.svelte';
+	import VariableTooltip from '../site/VariableTooltip.svelte';
 
 	const table = $derived(selectedSite.site && sitesTables.get(selectedSite.site.id));
 
@@ -14,11 +15,78 @@
 		// dont order empty tables because column date won't exist
 		return allVariableStats(table);
 	});
+
+	let hoveredVariable: string | undefined = $state();
+
+	let panel: HTMLDivElement | undefined = $state();
+	let variableTooltip: VariableTooltip | undefined = $state();
+
+	// onMount(() => {
+	// 	panel.on('mousemove', (e) => {
+	// 		hoveredRiver.mouseMove(e, ['sjriver-river']);
+	// 		hoveredArea.mouseMove(e, ['sjriver-huc10']);
+
+	// 		if (hoveredRiver.feature || hoveredSite || hoveredArea.feature) {
+	// 			mlmComponent.showTooltip(e.point.x, e.point.y);
+	// 		} else {
+	// 			mlmComponent.hideTooltip();
+	// 		}
+	// 	});
+	// });
+
+	const mouseEnterVariable = (e: MouseEvent, variable: string) => {
+		hoveredVariable = variable;
+		// console.log('mouse entered variable', variable, e);
+		if (variableTooltip) {
+			variableTooltip.showTooltip(e.pageX, e.pageY);
+		}
+	};
+
+	const mouseMoveVariable = (e: MouseEvent, variable: string) => {
+		hoveredVariable = variable;
+		// console.log('mouse move variable', variable, e);
+		if (variableTooltip) {
+			variableTooltip.showTooltip(e.pageX, e.pageY);
+		}
+	};
+
+	const mouseLeaveVariable = (e: MouseEvent, variable: string) => {
+		hoveredVariable = undefined;
+		// console.log('mouse left variable', variable, e);
+		if (variableTooltip) {
+			variableTooltip.hideTooltip();
+		}
+	};
+
+	// const touchStartVariable = (e: TouchEvent, variable: string) => {
+	// 	hoveredVariable = variable;
+	// 	console.log('touchs start variable', variable, e);
+	// };
+
+	const tooltipTex = (varname: string): string => {
+		// return `Variable: ${varname}`;
+		let lorem = '';
+		for (let i = 0; i < varname.length; i++) {
+			lorem += 'lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum ';
+		}
+		return lorem;
+	};
 </script>
 
-<div id="panel">
+{#snippet tooltipContent()}
+	<h5>{hoveredVariable || ''}</h5>
+	<p>{tooltipTex(hoveredVariable ||' ')}</p>
+	<!-- <p>{hoveredSite.site?.id || ''}</p> -->
+	<!-- {#if hoveredSiteStats}
+		<TooltipSiteStats stats={hoveredSiteStats} />
+	{/if} -->
+{/snippet}
+
+<div id="panel" bind:this={panel}>
 	{#if selectedSite.site}
-		<h3 class="site-label">Site: {selectedSite.site?.name} ({selectedSite.site?.id})</h3>
+		<h3 class="site-label">
+			Site: {selectedSite.site?.name} ({selectedSite.site?.id})
+		</h3>
 		<StatsDataTable data={rows}>
 			<th>Variable</th>
 			<th>Last</th>
@@ -32,7 +100,13 @@
 			<th>To</th>
 
 			{#snippet row(r: VariableStats)}
-				<td>{r.label} {varunits(r.variable)}</td>
+				<td
+					onmouseenter={(e: MouseEvent) => mouseEnterVariable(e, r.variable)}
+					onmouseleave={(e: MouseEvent) => mouseLeaveVariable(e, r.variable)}
+					onmousemove={(e: MouseEvent) => mouseMoveVariable(e, r.variable)}
+					>{r.label} {varunits(r.variable)}
+				</td>
+				<!-- ontouchstart={(e: TouchEvent) => touchStartVariable(e, r.variable)} -->
 				<td>{fmtVarNum(r.variable, r.lastObservation)}</td>
 				<td>{r.numObservations}</td>
 				<td class="stat">{fmtVarNum(r.variable, r.min)}</td>
@@ -44,6 +118,9 @@
 				<td class="date">{r.dateToLabel}</td>
 			{/snippet}
 		</StatsDataTable>
+		<!-- {#if hoveredVariable} -->
+		<VariableTooltip bind:this={variableTooltip} {tooltipContent} />
+		<!-- {/if} -->
 	{:else}
 		<h2>Click a site marker on the map to select</h2>
 	{/if}
