@@ -1,15 +1,21 @@
+import * as sr from 'svelte/reactivity';
+
+
 export type VariableName = string;
-export type VariableMetadata = Record<VariableName, {[key: string]: any}>;
+export type variablesMetadata = Record<VariableName, {[key: string]: any}>;
 
 // not reactive - instead set by load() in layout.ts to be globally available
 // its loaded in during static site build
-export const variableMetadata: VariableMetadata = {};
+export const variablesMetadata: variablesMetadata = {};
 
+export const variablesBriefMarkdown = new sr.Map<string, string>();
 
 export function isCategoricalVar(varname: VariableName): boolean {
-  return !!variableMetadata[varname]?.categories;
+  return !!variablesMetadata[varname]?.categories;
 }
 
+
+export const variableBriefs: Record<VariableName, string> = {};
 // from variables.yaml example
 /*
 do:
