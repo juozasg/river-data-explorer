@@ -6,7 +6,7 @@
 	import type { VariableStats } from '$src/lib/types/analysis';
 	import { fmtVarNum, varunits } from '$src/lib/utils';
 	import type Column from 'arquero/dist/types/table/column';
-	import StatsDataTable from '../site/StatsDataTable.svelte';
+	import StatsDataTable from '../website/StatsDataTable.svelte';
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
 	import { concatTablesAllColumns } from '$src/lib/data/tableHelpers';
 

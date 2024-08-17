@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { toggleHideTooltips } from '$src/appstate/ui/tooltips.svelte';
+	import type { Snippet } from 'svelte';
 
 	let {
 		tooltipContent,
@@ -33,12 +34,21 @@
 			tooltip.style.display = 'none';
 		}
 	};
+
+	// let content = $state('a<b>a</b>a');
+	let content: Snippet | undefined = $state();
+	export const setContent = (c: any) => {
+		content = c;
+	};
 </script>
 
 
 
 <div bind:this={tooltip} class="hover-tooltip" style="pointer-events: none;">
-	{@render tooltipContent()}
+	<!-- {@render tooltipContent()} -->
+	 {#if content}
+		{@render content()}
+	 {/if}
 </div>
 
 <style>

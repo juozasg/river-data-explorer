@@ -30,16 +30,16 @@ export class YZChartParams {
 		this.table = table;
 
 		if (varname && table) {
-			this.unit = variableMetadata[varname]?.unit || '';
+			this.unit = variablesMetadata[varname]?.unit || '';
 			const unitParens = this.unit != '' ? ` (${this.unit})` : '';
-			this.varLabel = (variableMetadata[varname]?.label || varname) + unitParens;
+			this.varLabel = (variablesMetadata[varname]?.label || varname) + unitParens;
 
 
 			this.stats = simpleStats(varname, table);
 			this.radius = this.stats.count > 2 ? 4 : 7;
 
-			const metadataMin: number = variableMetadata[varname]?.scale?.min ?? 0;
-			const metadataMax: number = variableMetadata[varname]?.scale?.max ?? 100;
+			const metadataMin: number = variablesMetadata[varname]?.scale?.min ?? 0;
+			const metadataMax: number = variablesMetadata[varname]?.scale?.max ?? 100;
 
 			const domainMin = isNumber(this.stats.min) ? Math.min(metadataMin, this.stats.min!) : metadataMin;
 			const domainMax = this.stats.count < 2 ? metadataMax : roundTickValue(this.stats.max! + (this.stats.range! * 0.25), this.stats.range! * 10);

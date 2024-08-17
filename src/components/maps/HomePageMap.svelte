@@ -12,7 +12,7 @@
 	import type { Site } from '$src/lib/types/site';
 	import Marker from './Marker.svelte';
 	import { sitesDataStats } from '$src/lib/data/stats';
-	import TooltipSiteStats from '../site/TooltipSiteStats.svelte';
+	import TooltipSiteStats from '../website/TooltipContentSiteStats.svelte';
 
 	type Props = {
 		onSelected?: () => void;

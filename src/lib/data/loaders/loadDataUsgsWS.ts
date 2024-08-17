@@ -28,7 +28,7 @@ export async function loadDatasetsUsgsWS() {
 		const usgsSiteTimeseries = dailies.value.timeSeries;
 
 		// console.log('usgsSiteTimeseries', usgsSiteTimeseries);
-		usgsTimeseriesToSiteTables(usgsSiteTimeseries, variablesMetadata);
+		usgsTimeseriesToSiteTables(usgsSiteTimeseries);
 	} catch (error) {
 		console.error('Error loading USGS sites', error);
 		notify(`Error loading USGS sites ${dailiesUrl}`, 'error', 6000);
@@ -38,7 +38,7 @@ export async function loadDatasetsUsgsWS() {
 }
 
 
-function usgsTimeseriesToSiteTables(timeSeries: any, variableMetadata: VariablesMetadata) {
+function usgsTimeseriesToSiteTables(timeSeries: any) {
 	type DateTimeString = string;
 	const siteDateValues: Record<SiteId, Record<DateTimeString, any>> = {};
 
@@ -53,7 +53,7 @@ function usgsTimeseriesToSiteTables(timeSeries: any, variableMetadata: Variables
 			continue;
 		}
 
-		if(!variableMetadata[sjriverVarname]) {
+		if(!variablesMetadata[sjriverVarname]) {
 			console.log('Unsupported variable. Add to variables.yaml', sjriverVarname);
 			continue;
 		}

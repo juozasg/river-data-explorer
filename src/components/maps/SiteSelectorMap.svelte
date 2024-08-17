@@ -13,7 +13,7 @@
 	import { fitFeatureBounds, makeSiteMarker, setFeatureState } from '$src/lib/utils/maplibre';
 	import Marker from './Marker.svelte';
 	import { sitesDataStats } from '$src/lib/data/stats';
-	import TooltipSiteStats from '../site/TooltipSiteStats.svelte';
+	import TooltipSiteStats from '../website/TooltipContentSiteStats.svelte';
 
 	// type Props = {
 	// 	onSelected?: () => void;

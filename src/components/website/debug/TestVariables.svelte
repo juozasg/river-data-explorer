@@ -10,7 +10,7 @@
 	const sjrbcSites = $derived([...sitesTables.keys()].filter(k => k.startsWith('')));
 	const sjrbcCols = $derived([...new Set(sjrbcSites.map(k => sitesTables.get(k)?.columnNames()).flat())]);
 	onMount(() => {
-		console.log('variableMetadata', variablesMetadata)
+		console.log('variablesMetadata', variablesMetadata)
 	});
 </script>
 

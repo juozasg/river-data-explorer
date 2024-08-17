@@ -4,9 +4,9 @@
 
   import { copyLngLat } from '$lib/copyLngLat.js';
   import { toggleHideTooltipsKeydown } from "$src/appstate/ui/tooltips.svelte.js";
-  import DebugFooter from '$src/components/site/debug/DebugFooter.svelte';
-  import Navbar from '$src/components/site/Navbar.svelte';
-  import Notifications from '$src/components/site/Notifications.svelte';
+  import DebugFooter from '$src/components/website/debug/DebugFooter.svelte';
+  import Navbar from '$src/components/website/Navbar.svelte';
+  import Notifications from '$src/components/website/Notifications.svelte';
   import { onMount } from 'svelte';
 
 	const { data, children } = $props();

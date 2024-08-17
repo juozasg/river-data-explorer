@@ -5,8 +5,8 @@
 	import type { VariableStats } from '$src/lib/types/analysis';
 	import { fmtVarNum, varunits } from '$src/lib/utils';
 	import { onMount } from 'svelte';
-	import StatsDataTable from '../site/StatsDataTable.svelte';
-	import VariableTooltip from '../site/VariableTooltip.svelte';
+	import StatsDataTable from '../website/StatsDataTable.svelte';
+	import VariableTooltip from '../website/WebsiteTooltip.svelte';
 	import { variablesBriefMarkdown } from '$src/appstate/variablesMetadata.svelte';
 
 	const table = $derived(selectedSite.site && sitesTables.get(selectedSite.site.id));
@@ -37,9 +37,11 @@
 
 	const mouseEnterVariable = (e: MouseEvent, variable: string) => {
 		hoveredVariable = variable;
-		console.log('mouse entered variable', variable, e);
+		// console.log('mouse entered variable', variable, e);
 		if (variableTooltip) {
 			variableTooltip.showTooltip(e.pageX, e.pageY);
+			// variableTooltip.setContent(tooltipTex(variable));
+			variableTooltip.setContent(tooltipContent);
 		}
 	};
 
@@ -80,12 +82,7 @@
 </script>
 
 {#snippet tooltipContent()}
-	<!-- <h5>{hoveredVariable || ''}</h5> -->
 	<p>{tooltipTex(hoveredVariable ||' ')}</p>
-	<!-- <p>{hoveredSite.site?.id || ''}</p> -->
-	<!-- {#if hoveredSiteStats}
-		<TooltipSiteStats stats={hoveredSiteStats} />
-	{/if} -->
 {/snippet}
 
 <div id="panel" bind:this={panel}>

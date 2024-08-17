@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
-	import StatsDataTable from '$src/components/site/StatsDataTable.svelte';
+	import StatsDataTable from '$src/components/website/StatsDataTable.svelte';
 	import { variableStats } from '$src/lib/data/stats.js';
 	import type { VariableStats } from '$src/lib/types/analysis';
 	import { fmtVarNum } from '$src/lib/utils';
@@ -14,7 +14,7 @@
 		if(table) {
 			for(const variable of table.columnNames()) {
 				if(variable === 'date') continue;
-				const vs = variableStats(variable, table);
+				const vs = variableStats(variable, table, {errorLabel: variable});
 				rs.push(vs);
 			}
 		}

@@ -15,7 +15,7 @@
 	import { addSources } from '$src/lib/data/map/mapData';
 	import Marker from './Marker.svelte';
 	import { sitesDataStats } from '$src/lib/data/stats';
-	import TooltipSiteStats from '../site/TooltipSiteStats.svelte';
+	import TooltipSiteStats from '../website/TooltipContentSiteStats.svelte';
 
 	type Props = {
 		onSelected?: () => void;
