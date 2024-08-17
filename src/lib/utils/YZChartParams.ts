@@ -1,6 +1,6 @@
 import type ColumnTable from "arquero/dist/types/table/column-table";
 import { isNumber } from ".";
-import { variableMetadata } from "$src/appstate/variableMetadata";
+import { variablesMetadata } from "$src/appstate/variablesMetadata.svelte";
 import { simpleStats, type SimpleStats } from "../data/stats";
 import { roundTickValue } from "./chart";
 

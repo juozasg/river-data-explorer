@@ -6,7 +6,7 @@ import { notify } from "$src/appstate/ui/notifications.svelte";
 // import { oneMonthAgo } from "$lib/utils";
 // import { usgsStationIds } from "./loadSitesUsgsWS";
 import { sitesTables, type SiteId } from "$src/appstate/data/datasets.svelte";
-import { variableMetadata, type VariableMetadata } from '$src/appstate/variableMetadata';
+import { variablesMetadata, type VariablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import { retryingFetch } from '$src/lib/utils/retryingFetch';
 
 export async function loadDatasetsUsgsWS() {
@@ -28,7 +28,7 @@ export async function loadDatasetsUsgsWS() {
 		const usgsSiteTimeseries = dailies.value.timeSeries;
 
 		// console.log('usgsSiteTimeseries', usgsSiteTimeseries);
-		usgsTimeseriesToSiteTables(usgsSiteTimeseries, variableMetadata);
+		usgsTimeseriesToSiteTables(usgsSiteTimeseries, variablesMetadata);
 	} catch (error) {
 		console.error('Error loading USGS sites', error);
 		notify(`Error loading USGS sites ${dailiesUrl}`, 'error', 6000);
@@ -38,7 +38,7 @@ export async function loadDatasetsUsgsWS() {
 }
 
 
-function usgsTimeseriesToSiteTables(timeSeries: any, variableMetadata: VariableMetadata) {
+function usgsTimeseriesToSiteTables(timeSeries: any, variableMetadata: VariablesMetadata) {
 	type DateTimeString = string;
 	const siteDateValues: Record<SiteId, Record<DateTimeString, any>> = {};
 

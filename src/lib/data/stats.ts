@@ -6,7 +6,7 @@ import type { Site } from "$lib/types/site";
 import { fmtDate } from "$lib/utils";
 import { sitesTables } from '$src/appstate/data/datasets.svelte';
 import { concatTablesAllColumns } from './tableHelpers';
-import { isCategoricalVar, variableMetadata } from '$src/appstate/variableMetadata';
+import { isCategoricalVar, variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 
 
 export function columnMeans(table: ColumnTable): any {
@@ -79,7 +79,7 @@ export function variableStats(variable: string, table: ColumnTable, { errorLabel
 		}
 
 
-		const label = variableMetadata[variable]?.label || variable;
+		const label = variablesMetadata[variable]?.label || variable;
 
 		const tsTable = table
 			.select('date', variable).rename({ [variable]: 'var' })

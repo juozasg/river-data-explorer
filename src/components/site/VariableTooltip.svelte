@@ -15,7 +15,8 @@
 		// lastMouseLocation = { x, y };
 		if(tooltip) {
 			const containerHeight = tooltip.clientHeight || 0;
-			console.log('containerHeight', containerHeight);
+
+			// console.log('containerHeight', containerHeight);
 			// const containerHeight = 0;
 
 			tooltip.style.display = 'block';
@@ -23,6 +24,7 @@
 			tooltip.style.top = (y - containerHeight - 12) + 'px';
 			tooltip.style.left = x + 'px';
 			// tooltip.style.top = y + 'px';
+			// console.log('top', tooltip.style.top);
 		}
 	};
 

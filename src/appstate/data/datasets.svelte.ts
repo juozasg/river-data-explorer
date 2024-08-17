@@ -5,7 +5,7 @@ import { loadDataCsv } from "$lib/data/cachedDataLoad";
 import { startedLoading } from '../ui/loadingItem.svelte';
 import { dataPathsStartingWith } from '$src/lib/data/loaders/loadAppData';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
-import { variableMetadata } from '$src/appstate/variableMetadata';
+import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 
 export type SiteId = string;
 export const sitesTables: Map<SiteId, ColumnTable> = new sr.Map();
@@ -25,7 +25,7 @@ export async function loadDatasets() {
 	const records = filesRecords.flat();
 	console.log('sitesRecords loaded. records.length = ', records.length, 'record[0] = ', records[0])
 
-	const validKeys = Object.keys(variableMetadata);
+	const validKeys = Object.keys(variablesMetadata);
 	console.log('known variables', validKeys);
 	for (const r of records) {
 		r.siteId = r.siteId.trim();
@@ -71,7 +71,7 @@ function parseValue(key: string, value: string): number | Date | string | undefi
 		return new Date(value);
 	}
 
-	const isCategorical = !!(variableMetadata[key]?.categories);
+	const isCategorical = !!(variablesMetadata[key]?.categories);
 	if (isCategorical) {
 		return value;
 	}

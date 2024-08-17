@@ -14,4 +14,5 @@
 	{/if}
 
 	<SiteStatsPanel />
+	<SiteStatsPanel />
 </div>

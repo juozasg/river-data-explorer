@@ -2,11 +2,11 @@ import * as sr from 'svelte/reactivity';
 
 
 export type VariableName = string;
-export type variablesMetadata = Record<VariableName, {[key: string]: any}>;
+export type VariablesMetadata = Record<VariableName, {[key: string]: any}>;
 
 // not reactive - instead set by load() in layout.ts to be globally available
 // its loaded in during static site build
-export const variablesMetadata: variablesMetadata = {};
+export const variablesMetadata: VariablesMetadata = {};
 
 export const variablesBriefMarkdown = new sr.Map<string, string>();
 

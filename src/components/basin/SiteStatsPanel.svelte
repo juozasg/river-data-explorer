@@ -7,6 +7,7 @@
 	import { onMount } from 'svelte';
 	import StatsDataTable from '../site/StatsDataTable.svelte';
 	import VariableTooltip from '../site/VariableTooltip.svelte';
+	import { variablesBriefMarkdown } from '$src/appstate/variablesMetadata.svelte';
 
 	const table = $derived(selectedSite.site && sitesTables.get(selectedSite.site.id));
 
@@ -36,7 +37,7 @@
 
 	const mouseEnterVariable = (e: MouseEvent, variable: string) => {
 		hoveredVariable = variable;
-		// console.log('mouse entered variable', variable, e);
+		console.log('mouse entered variable', variable, e);
 		if (variableTooltip) {
 			variableTooltip.showTooltip(e.pageX, e.pageY);
 		}
@@ -46,7 +47,8 @@
 		hoveredVariable = variable;
 		// console.log('mouse move variable', variable, e);
 		if (variableTooltip) {
-			variableTooltip.showTooltip(e.pageX, e.pageY);
+			// variableTooltip.showTooltip(e.pageX, e.pageY);
+			variableTooltip.showTooltip(e.x, e.y);
 		}
 	};
 
@@ -65,16 +67,20 @@
 
 	const tooltipTex = (varname: string): string => {
 		// return `Variable: ${varname}`;
+		if(variablesBriefMarkdown.get(varname)) {
+			return variablesBriefMarkdown.get(varname) as string;
+		}
+
 		let lorem = '';
 		for (let i = 0; i < varname.length; i++) {
-			lorem += 'lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum ';
+			lorem += 'm lorem ipsum lorem ipsum lorem ipsum lorem ipsum ';
 		}
 		return lorem;
 	};
 </script>
 
 {#snippet tooltipContent()}
-	<h5>{hoveredVariable || ''}</h5>
+	<!-- <h5>{hoveredVariable || ''}</h5> -->
 	<p>{tooltipTex(hoveredVariable ||' ')}</p>
 	<!-- <p>{hoveredSite.site?.id || ''}</p> -->
 	<!-- {#if hoveredSiteStats}

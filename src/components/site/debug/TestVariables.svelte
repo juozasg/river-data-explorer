@@ -5,12 +5,12 @@
 	import { columnMeans } from '$src/lib/data/stats';
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
 	import { onMount } from 'svelte';
-	import { variableMetadata } from '$src/appstate/variableMetadata';
+	import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 
 	const sjrbcSites = $derived([...sitesTables.keys()].filter(k => k.startsWith('')));
 	const sjrbcCols = $derived([...new Set(sjrbcSites.map(k => sitesTables.get(k)?.columnNames()).flat())]);
 	onMount(() => {
-		console.log('variableMetadata', variableMetadata)
+		console.log('variableMetadata', variablesMetadata)
 	});
 </script>
 
@@ -25,7 +25,7 @@
 
 	<h3>varsmetadata</h3>
 	<pre>
-	{JSON.stringify(variableMetadata, null, 2)}
+	{JSON.stringify(variablesMetadata, null, 2)}
 	</pre>
 </div>
 

@@ -1,4 +1,4 @@
-import { variableMetadata } from '$src/appstate/variableMetadata.js';
+import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import * as yaml from 'js-yaml';
 
 export const prerender = true;
@@ -18,10 +18,10 @@ export const load = async ({ fetch }) => {
 
 	const { dataManifest, variableMetadata: vmd } = await loadManifests(fetch);
 
-	Object.assign(variableMetadata, vmd)
+	Object.assign(variablesMetadata, vmd)
 
 	console.log('Data manifest', dataManifest);
-	console.log('variableMetadata', variableMetadata);
+	console.log('variableMetadata', variablesMetadata);
 
 	return {
 		variablePages,

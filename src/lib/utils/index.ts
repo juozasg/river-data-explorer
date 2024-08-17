@@ -1,7 +1,7 @@
 import sprintfpkg from 'sprintf';
 const {sprintf} = sprintfpkg;
 
-import { variableMetadata } from '$src/appstate/variableMetadata';
+import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import type { ImportGlobRecord, MarkdownPage, MarkdownComponent } from '../types/page';
 
 export const getMarkdownPages = async (allMdPages: ImportGlobRecord): Promise<MarkdownPage[]> => {
@@ -36,14 +36,14 @@ export function partition(array: any[], filter: (e: any, i: number, arr: any[]) 
 export const fmtVarNum = (varname: string, n: number | undefined | string, units = false) => {
 	if(n === undefined) return '';
 	if(typeof n !== 'number') return n;
-	const fmt = variableMetadata[varname]?.format || variableMetadata['default']?.format || '%.2f';
-	const unit = (units && variableMetadata[varname]?.unit) || '';
+	const fmt = variablesMetadata[varname]?.format || variablesMetadata['default']?.format || '%.2f';
+	const unit = (units && variablesMetadata[varname]?.unit) || '';
 	return sprintf(fmt, n) + ' ' + unit;
 };
 
 
 export function varunits(varname: string, parens = true) {
-	const unit = variableMetadata[varname]?.unit;
+	const unit = variablesMetadata[varname]?.unit;
 	if (!unit) return '';
 	return parens ? `(${unit})` : unit;
 }
