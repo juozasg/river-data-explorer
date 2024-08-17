@@ -11,7 +11,7 @@
 
 
 	// map div top corner = (0,0)
-	export const showTooltip = (x: number, y: number) => {
+	export const show = (x: number, y: number) => {
 		// console.log('showTooltip', x, y);
 		// lastMouseLocation = { x, y };
 		if(tooltip) {
@@ -22,14 +22,20 @@
 
 			tooltip.style.display = 'block';
 			// tooltip.style.left = x + 6 + 'px';
-			tooltip.style.top = (y - containerHeight - 12) + 'px';
+			let top = y - containerHeight - 12;
+
+			console.log('top', top);
+			if(top < 0) {
+				top = y + 12;
+			}
+			tooltip.style.top = top + 'px';
 			tooltip.style.left = x + 'px';
 			// tooltip.style.top = y + 'px';
 			// console.log('top', tooltip.style.top);
 		}
 	};
 
-	export const hideTooltip = () => {
+	export const hide = () => {
 		if(tooltip) {
 			tooltip.style.display = 'none';
 		}

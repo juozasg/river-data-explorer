@@ -8,6 +8,7 @@
 	import StatsDataTable from '../website/StatsDataTable.svelte';
 	import VariableTooltip from '../website/WebsiteTooltip.svelte';
 	import { variablesBriefMarkdown } from '$src/appstate/variablesMetadata.svelte';
+	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 
 	const table = $derived(selectedSite.site && sitesTables.get(selectedSite.site.id));
 
@@ -19,46 +20,30 @@
 
 	let hoveredVariable: string | undefined = $state();
 
-	let panel: HTMLDivElement | undefined = $state();
-	let variableTooltip: VariableTooltip | undefined = $state();
-
-	// onMount(() => {
-	// 	panel.on('mousemove', (e) => {
-	// 		hoveredRiver.mouseMove(e, ['sjriver-river']);
-	// 		hoveredArea.mouseMove(e, ['sjriver-huc10']);
-
-	// 		if (hoveredRiver.feature || hoveredSite || hoveredArea.feature) {
-	// 			mlmComponent.showTooltip(e.point.x, e.point.y);
-	// 		} else {
-	// 			mlmComponent.hideTooltip();
-	// 		}
-	// 	});
-	// });
-
 	const mouseEnterVariable = (e: MouseEvent, variable: string) => {
 		hoveredVariable = variable;
 		// console.log('mouse entered variable', variable, e);
-		if (variableTooltip) {
-			variableTooltip.showTooltip(e.pageX, e.pageY);
-			// variableTooltip.setContent(tooltipTex(variable));
-			variableTooltip.setContent(tooltipContent);
+		if (tooltip) {
+			tooltip.show(e.pageX, e.pageY);
+			// tooltip.setContent(tooltipTex(variable));
+			tooltip.content = tooltipContent;
 		}
 	};
 
 	const mouseMoveVariable = (e: MouseEvent, variable: string) => {
 		hoveredVariable = variable;
 		// console.log('mouse move variable', variable, e);
-		if (variableTooltip) {
-			// variableTooltip.showTooltip(e.pageX, e.pageY);
-			variableTooltip.showTooltip(e.x, e.y);
+		if (tooltip) {
+			// tooltip.show(e.pageX, e.pageY);
+			tooltip.show(e.x, e.y);
 		}
 	};
 
 	const mouseLeaveVariable = (e: MouseEvent, variable: string) => {
 		hoveredVariable = undefined;
 		// console.log('mouse left variable', variable, e);
-		if (variableTooltip) {
-			variableTooltip.hideTooltip();
+		if (tooltip) {
+			tooltip.hide();
 		}
 	};
 
@@ -85,7 +70,7 @@
 	<p>{tooltipTex(hoveredVariable ||' ')}</p>
 {/snippet}
 
-<div id="panel" bind:this={panel}>
+<div id="panel">
 	{#if selectedSite.site}
 		<h3 class="site-label">
 			Site: {selectedSite.site?.name} ({selectedSite.site?.id})
@@ -122,7 +107,7 @@
 			{/snippet}
 		</StatsDataTable>
 		<!-- {#if hoveredVariable} -->
-		<VariableTooltip bind:this={variableTooltip} {tooltipContent} />
+		<!-- <VariableTooltip bind:this={variableTooltip} {tooltipContent} /> -->
 		<!-- {/if} -->
 	{:else}
 		<h2>Click a site marker on the map to select</h2>
