@@ -10,6 +10,7 @@
 	import LayerSwitcher from './LayerSwitcher.svelte';
 	import MapTooltip from './MapTooltip.svelte';
 	import { toggleRiverLayerVisibility } from '$src/lib/data/map/mapData';
+	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 
 	let {
 		zoom = 8,
@@ -35,7 +36,7 @@
 	};
 
 	let showRiverLayer = $state(true);
-	let tooltipComponent: MapTooltip | undefined = $state();
+	// let tooltipComponent: MapTooltip | undefined = $state();
 
 	let _dataLoaded = $state(false);
 
@@ -60,7 +61,7 @@
 			minZoom: 3
 		});
 
--
+
 		// only fires for the initial style, not for map.setStyle
 		mlMap.once('idle', () => {
 			addSources(mlMap!).then(() => {
@@ -87,7 +88,7 @@
 			// mouseout event is fired when mouse hovers a marker inside the map rect
 			if(e.point.x < 0 || e.point.x > width || e.point.y < 0 || e.point.y > height) {
 				mapMouseLocation.onMouseOut();
-				hideTooltip();
+				tooltip.hide();
 			}
 		});
 
@@ -99,24 +100,17 @@
 		toggleRiverLayerVisibility(mlMap, showRiverLayer);
 	});
 
-	export const showTooltip = (x: number, y: number) => {
-		tooltipComponent?.showTooltip(x, y);
-	};
-
-	export const hideTooltip = () => {
-		tooltipComponent?.hideTooltip();
-	};
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div style="position: relative; height: 100%">
 	<LayerSwitcher bind:baseStyleId bind:showRiverLayer />
-	<div class="map" bind:this={divElement}></div>
+	<div class="map" bind:this={divElement} onmouseleave={() => tooltip.hide()}></div>
 	{#if mapMouseLocation.lngLat}
 		<pre>{formatLngLat(mapMouseLocation.lngLat, 4)} press C to copy</pre>
 	{/if}
 
-	<MapTooltip bind:this={tooltipComponent} {tooltipContent}/>
+	<!-- <MapTooltip bind:this={tooltipComponent} {tooltipContent}/> -->
 </div>
 
 <style>

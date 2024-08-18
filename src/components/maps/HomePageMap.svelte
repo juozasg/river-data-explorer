@@ -13,6 +13,7 @@
 	import Marker from './Marker.svelte';
 	import { sitesDataStats } from '$src/lib/data/stats';
 	import TooltipSiteStats from '../website/TooltipContentSiteStats.svelte';
+	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 
 	type Props = {
 		onSelected?: () => void;
@@ -42,14 +43,17 @@
 		console.log('HomePageMap onMount', divElement, mlMap, mlmComponent);
 		const map = mlMap!;
 
-		map.on('mousemove', (e) => {
+		map.on('mousemove', (e: ml.MapMouseEvent ) => {
 			hoveredRiver.mouseMove(e, ['sjriver-river']);
 			hoveredArea.mouseMove(e, ['sjriver-huc10']);
 
 			if (hoveredRiver.feature || hoveredSite || hoveredArea.feature) {
-				mlmComponent.showTooltip(e.point.x, e.point.y);
+				// mlmComponent.showTooltip(e.point.x, e.point.y);
+				tooltip.show(e.originalEvent.x, e.originalEvent.y);
+				tooltip.content = tooltipContent;
 			} else {
-				mlmComponent.hideTooltip();
+				// mlmComponent.hideTooltip();
+				tooltip.hide();
 			}
 		});
 	});
