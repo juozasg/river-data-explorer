@@ -84,7 +84,7 @@
 		background-color: white;
 		border: 1px solid #222;
 		padding: 5px;
-		padding-bottom: 1.5rem;
+		/* padding-bottom: 1.5rem; */
 		font-size: 80%;
 		min-width: 200px;
 		max-width: 300px;
@@ -100,9 +100,8 @@
 		z-index: 1005;
 		background: rgba(255, 255, 255, 0.85);
 
-		/* transition:
-			top 10ms ease normal,
-			bottom 10ms ease normal; */
+		filter: drop-shadow(3px 3px 4px #00000046);
+
 	}
 
 
@@ -122,10 +121,10 @@
 	}
 
 	.hint {
-		display: inline-block;
-		position: absolute;
-		bottom: 2px;
-		right: 6px;
+		display: block;
+		/* position: absolute;	 */
+		/* bottom: 2px; */
+		/* right: 6px; */
 		font-size: 12px;
 		text-align: right;
 

@@ -47,27 +47,19 @@
 		}
 	};
 
-	// const touchStartVariable = (e: TouchEvent, variable: string) => {
-	// 	hoveredVariable = variable;
-	// 	console.log('touchs start variable', variable, e);
-	// };
-
-	const tooltipTex = (varname: string): string => {
+	const tooltipText = (varname: string): string => {
 		// return `Variable: ${varname}`;
 		if(variablesBriefMarkdown.get(varname)) {
 			return variablesBriefMarkdown.get(varname) as string;
+		} else {
+			return `Variable: ${varname}`;
 		}
+	}
 
-		let lorem = '';
-		for (let i = 0; i < varname.length; i++) {
-			lorem += 'm lorem ipsum lorem ipsum lorem ipsum lorem ipsum ';
-		}
-		return lorem;
-	};
 </script>
 
 {#snippet tooltipContent()}
-	<p>{tooltipTex(hoveredVariable ||' ')}</p>
+	<p>{tooltipText(hoveredVariable ||' ')}</p>
 {/snippet}
 
 <div id="panel">
@@ -94,7 +86,6 @@
 					onmousemove={(e: MouseEvent) => mouseMoveVariable(e, r.variable)}
 					>{r.label} {varunits(r.variable)}
 				</td>
-				<!-- ontouchstart={(e: TouchEvent) => touchStartVariable(e, r.variable)} -->
 				<td>{fmtVarNum(r.variable, r.lastObservation)}</td>
 				<td>{r.numObservations}</td>
 				<td class="stat">{fmtVarNum(r.variable, r.min)}</td>
