@@ -131,6 +131,9 @@
 		padding: 5px;
 		z-index: 15;
 		pointer-events: none;
+
+		filter: drop-shadow(3px 3px 4px #00000046);
+
 	}
 	.line {
 		position: absolute;

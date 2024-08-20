@@ -101,7 +101,6 @@
 		background: rgba(255, 255, 255, 0.85);
 
 		filter: drop-shadow(3px 3px 4px #00000046);
-
 	}
 
 
