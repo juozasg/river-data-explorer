@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
-	import { selectedArea } from '$src/appstate/map/featureState.svelte';
+	import { selectedRegion } from '$src/appstate/map/featureState.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
 	import { allVariableStats, sitesDataStats, variableStats } from '$src/lib/data/stats';
 	import type { VariableStats } from '$src/lib/types/analysis';
@@ -10,7 +10,7 @@
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
 	import { concatTablesAllColumns } from '$src/lib/data/tableHelpers';
 
-	const area = $derived(selectedArea);
+	const area = $derived(selectedRegion);
 	const sitesInArea = $derived(sites.allEnabled.filter((s) => s.huc10 === area.id));
 
 	let firstObs: Date | undefined = $state();

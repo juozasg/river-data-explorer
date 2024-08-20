@@ -8,7 +8,6 @@
 	import { toggleoffAttribution } from '$src/lib/utils/maplibre';
 	import { onMount } from 'svelte';
 	import LayerSwitcher from './LayerSwitcher.svelte';
-	import MapTooltip from './MapTooltip.svelte';
 	import { toggleRiverLayerVisibility } from '$src/lib/data/map/mapData';
 	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 
@@ -18,8 +17,7 @@
 		addSources,
 		addLayers,
 		divElement = $bindable(),
-		mlMap = $bindable(),
-		tooltipContent,
+		mlMap = $bindable()
 	}: MapLibreMapProps = $props();
 
 	let baseStyleId: 'TOPO' | 'SATELLITE' = $state('TOPO');
@@ -42,10 +40,10 @@
 
 	export const dataLoaded = () => {
 		return _dataLoaded;
-	}
+	};
 
 	$effect(() => {
-		if(!mlMap) return;
+		if (!mlMap) return;
 
 		const style = basemapStyles[baseStyleId];
 		mlMap.setStyle(style, { transformStyle });
@@ -61,7 +59,6 @@
 			minZoom: 3
 		});
 
-
 		// only fires for the initial style, not for map.setStyle
 		mlMap.once('idle', () => {
 			addSources(mlMap!).then(() => {
@@ -69,7 +66,7 @@
 				const style = basemapStyles[baseStyleId];
 				mlMap!.setStyle(style, { transformStyle }); // force transformStyle to reorder layers
 				toggleRiverLayerVisibility(mlMap!, showRiverLayer);
-				mlMap!.once('idle', () => _dataLoaded = true);
+				mlMap!.once('idle', () => (_dataLoaded = true));
 				// _dataLoaded = true;
 			});
 		});
@@ -80,37 +77,27 @@
 			mapMouseLocation.onMouseMove(mlMap, e);
 		});
 
-		mlMap.on('mouseout', (e): void => {
-			const rect = divElement!.getClientRects()[0];
-			const width = rect.width;
-			const height = rect.height;
-
-			// mouseout event is fired when mouse hovers a marker inside the map rect
-			if(e.point.x < 0 || e.point.x > width || e.point.y < 0 || e.point.y > height) {
-				mapMouseLocation.onMouseOut();
-				tooltip.hide();
-			}
-		});
-
 		toggleoffAttribution(divElement!);
 	});
 
+	function containerMouseLeave() {
+		mapMouseLocation.onMouseOut();
+		tooltip.hide();
+	}
+
 	$effect(() => {
-		if(!mlMap) return;
+		if (!mlMap) return;
 		toggleRiverLayerVisibility(mlMap, showRiverLayer);
 	});
-
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div style="position: relative; height: 100%">
 	<LayerSwitcher bind:baseStyleId bind:showRiverLayer />
-	<div class="map" bind:this={divElement} onmouseleave={() => tooltip.hide()}></div>
+	<div class="map" bind:this={divElement} onmouseleave={containerMouseLeave}></div>
 	{#if mapMouseLocation.lngLat}
 		<pre>{formatLngLat(mapMouseLocation.lngLat, 4)} press C to copy</pre>
 	{/if}
-
-	<!-- <MapTooltip bind:this={tooltipComponent} {tooltipContent}/> -->
 </div>
 
 <style>

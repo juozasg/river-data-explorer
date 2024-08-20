@@ -106,7 +106,7 @@ export class SelectedFeature extends MLMFeatureState {
 }
 
 // global state for selected and hovered area feature and state
-export const selectedArea = new SelectedFeature();
+export const selectedRegion = new SelectedFeature();
 let _hoveredSite: Site | undefined = $state();
 
 export const hoveredSite = {

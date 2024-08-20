@@ -6,7 +6,7 @@
 	import { addLayers } from '$src/lib/data/map/sitesMapData';
 	import MapLibreMap from './MapLibreMap.svelte';
 
-	import { hoveredSite, selectedArea, selectedSite } from '$src/appstate/map/featureState.svelte';
+	import { hoveredSite, selectedRegion, selectedSite } from '$src/appstate/map/featureState.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
 	import { addSources } from '$src/lib/data/map/mapData';
 	import type { Site } from '$src/lib/types/site';
@@ -14,10 +14,8 @@
 	import Marker from './Marker.svelte';
 	import { sitesDataStats } from '$src/lib/data/stats';
 	import TooltipSiteStats from '../website/TooltipContentSiteStats.svelte';
+	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 
-	// type Props = {
-	// 	onSelected?: () => void;
-	// } & Partial<MapLibreMapProps>;
 
 	let { ...others }: Partial<MapLibreMapProps> = $props();
 
@@ -32,11 +30,21 @@
 	onMount(() => {
 		console.log('SiteSelectorMap onMount', divElement, mlMap, mlmComponent);
 		mlMap!.on('click', (e) => mapClick(e.point));
+
+		mlMap!.on('mousemove', (e) => {
+			if (hoveredSite.site) {
+				tooltip.content = tooltipContent;
+				tooltip.show(e.originalEvent.x, e.originalEvent.y, true);
+			} else {
+				tooltip.hide();
+			}
+		});
+
 	});
 
 	// mark
 	$effect(() => {
-		selectedArea.feature;
+		selectedRegion.feature;
 		mlmComponent.dataLoaded();
 		if (!mlMap || !mlmComponent.dataLoaded()) return;
 		const map = mlMap!;
@@ -46,25 +54,24 @@
 			// console.log('FALSE', feature.id);
 		});
 
-		if (selectedArea.feature) {
-			setFeatureState(map, 'sjriver-huc10', selectedArea.feature.id, { selected: true });
-			fitFeatureBounds(map, selectedArea.feature);
+		if (selectedRegion.feature) {
+			setFeatureState(map, 'sjriver-huc10', selectedRegion.feature.id, { selected: true });
+			fitFeatureBounds(map, selectedRegion.feature);
 			// console.log('---TRUE0---', selectedArea.feature.id);
 		}
 	});
 
 	const markerMouseEnter = (e: MouseEvent, site: Site) => {
-		const rect = divElement?.getClientRects()[0];
-		const [x, y] = [e.clientX - (rect!.left || 0), e.clientY - (rect!.top || 0)];
-
-		// console.log(x, y)
-		mlmComponent.showTooltip(x, y);
 		hoveredSite.set(site);
+		// tooltip.content = tooltipContent;
+		// tooltip.show(e.x + 16, e.y, true);
+
 	};
+
 
 	const markerMouseLeave = (e: MouseEvent, site: Site) => {
 		hoveredSite.set(undefined);
-		mlmComponent.hideTooltip();
+		tooltip.hide();
 	};
 
 	function mapClick(point: ml.PointLike) {
@@ -79,13 +86,13 @@
 	}
 
 	function isHighlighted(site: Site) {
-		return !!(selectedArea.id && selectedArea.id === site.huc10);
+		return !!(selectedRegion.id && selectedRegion.id === site.huc10);
 	}
 </script>
 
 {#snippet tooltipContent()}
-	<h5>{hoveredSite.site?.name || ''}</h5>
-	<p>{hoveredSite.site?.id || ''}</p>
+	<h5>Site: {hoveredSite.site?.name || ''}</h5>
+	<i>ID: {hoveredSite.site?.id || ''}</i>
 	{#if hoveredSiteStats}
 		<TooltipSiteStats stats={hoveredSiteStats} />
 	{/if}
@@ -95,7 +102,6 @@
 	bind:this={mlmComponent}
 	{addSources}
 	{addLayers}
-	{tooltipContent}
 	bind:divElement
 	bind:mlMap
 	{...others}

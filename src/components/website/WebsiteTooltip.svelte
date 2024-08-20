@@ -1,60 +1,82 @@
 <script lang="ts">
-	import { toggleHideTooltips } from '$src/appstate/ui/tooltips.svelte';
+	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 	import type { Snippet } from 'svelte';
 
-	let {
-		tooltipContent,
-	}: any = $props();
+	let tooltipElement: HTMLDivElement | undefined = $state();
+	let showToggleHint = $state(false);
 
-	let tooltip: HTMLDivElement | undefined = $state();
-	// let lastMouseLocation: { x: number; y: number } | undefined;
+	let toggleable = $state(false);
 
+	export const isToggleable = () => {
+		return toggleable;
+	}
 
 	// map div top corner = (0,0)
-	export const show = (x: number, y: number) => {
-		// console.log('showTooltip', x, y);
-		// lastMouseLocation = { x, y };
-		if(tooltip) {
-			const containerHeight = tooltip.clientHeight || 0;
+	export const show = (x: number, y: number, _toggleable = false) => {
+		if(_toggleable == false) {
+			showToggleHint = false;
+			tooltip.toggledHidden = false;
+		} else {
+			showToggleHint = true;
+		}
 
-			// console.log('containerHeight', containerHeight);
-			// const containerHeight = 0;
+		toggleable = _toggleable;
 
-			tooltip.style.display = 'block';
+		if(tooltip?.toggledHidden || !content) {
+			hide();
+			return;
+		}
+
+		if(tooltipElement) {
+			const containerHeight = tooltipElement.clientHeight || 0;
+			// prevents tooltip jumping/flashing if this code runs before clientRect is available
+			if(containerHeight == 0) {
+				tooltipElement.style.opacity = "0";
+			} else {
+				tooltipElement.style.opacity = "1";
+			}
+
+
+
+			tooltipElement.style.display = 'block';
 			// tooltip.style.left = x + 6 + 'px';
 			let top = y - containerHeight - 12;
 
-			console.log('top', top);
 			if(top < 0) {
 				top = y + 12;
 			}
-			tooltip.style.top = top + 'px';
-			tooltip.style.left = x + 'px';
+			tooltipElement.style.top = top + 'px';
+			tooltipElement.style.left = x + 'px';
 			// tooltip.style.top = y + 'px';
 			// console.log('top', tooltip.style.top);
 		}
 	};
 
 	export const hide = () => {
-		if(tooltip) {
-			tooltip.style.display = 'none';
+		if(tooltipElement) {
+			tooltipElement.style.display = 'none';
 		}
 	};
 
 	// let content = $state('a<b>a</b>a');
 	let content: Snippet | undefined = $state();
-	export const setContent = (c: any) => {
+	export const setContentSnippet = (c: Snippet) => {
 		content = c;
 	};
 </script>
 
 
 
-<div bind:this={tooltip} class="hover-tooltip" style="pointer-events: none;">
+<div bind:this={tooltipElement} class="hover-tooltip" style="pointer-events: none;">
 	<!-- {@render tooltipContent()} -->
 	 {#if content}
 		{@render content()}
+		{#if showToggleHint}
+			<span class="hint"><i><kbd>T</kbd> to hide</i></span>
+		{/if}
 	 {/if}
+
+
 </div>
 
 <style>
@@ -97,5 +119,18 @@
 		border-top: 1px solid #ccc;
 		padding-top: 5px;
 		margin-top: 5px;
+	}
+
+	.hint {
+		display: inline-block;
+		position: absolute;
+		bottom: 2px;
+		right: 6px;
+		font-size: 12px;
+		text-align: right;
+
+		kbd {
+			font-size: 12px;
+		}
 	}
 </style>

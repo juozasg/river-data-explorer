@@ -48,11 +48,9 @@
 			hoveredArea.mouseMove(e, ['sjriver-huc10']);
 
 			if (hoveredRiver.feature || hoveredSite || hoveredArea.feature) {
-				// mlmComponent.showTooltip(e.point.x, e.point.y);
-				tooltip.show(e.originalEvent.x, e.originalEvent.y);
+				tooltip.show(e.originalEvent.x, e.originalEvent.y, true);
 				tooltip.content = tooltipContent;
 			} else {
-				// mlmComponent.hideTooltip();
 				tooltip.hide();
 			}
 		});

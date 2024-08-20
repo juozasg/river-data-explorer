@@ -7,7 +7,7 @@
 	import { addLayers } from '$src/lib/data/map/areasMapData';
 	import {
 		MLMHoveredFeatureState,
-		selectedArea,
+		selectedRegion,
 		selectedSite
 	} from '$src/appstate/map/featureState.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
@@ -16,6 +16,7 @@
 	import Marker from './Marker.svelte';
 	import { sitesDataStats } from '$src/lib/data/stats';
 	import TooltipSiteStats from '../website/TooltipContentSiteStats.svelte';
+	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 
 	type Props = {
 		onSelected?: () => void;
@@ -37,16 +38,6 @@
 		hoveredAreaSites.length > 0 ? sitesDataStats(hoveredAreaSites) : undefined
 	);
 
-	// $effect(() => {
-	// 	console.log('sites.all updated', sites.allEnabled);
-	// });
-
-	// $effect(() => {
-	// 	console.log(' hoveredArea.id updated',  hoveredArea.id);
-	// });
-
-	// selectedArea =
-
 	$effect(() => {
 		if(mlMap && mlmComponent.dataLoaded() && mlMap.getLayersOrder().includes('sjriver-huc10')) {
 			const huc10 = '0405000122'
@@ -58,7 +49,7 @@
 			})[0];
 
 			mlmFeature.source = 'sjriver-huc10';
-			selectedArea.update(mlMap, mlmFeature);
+			selectedRegion.update(mlMap, mlmFeature);
 			selectedSite.set(sites.all.find((s) => s.id === siteId));
 			console.log('DEBUG SELECTED', selectedSite.site, mlmFeature);
 		}
@@ -74,9 +65,10 @@
 			hoveredArea.mouseMove(e, ['sjriver-huc10']);
 
 			if (hoveredArea.feature) {
-				mlmComponent.showTooltip(e.point.x, e.point.y);
+				tooltip.show(e.originalEvent.x, e.originalEvent.y, true);
+				tooltip.content = tooltipContent;
 			} else {
-				mlmComponent.hideTooltip();
+				tooltip.hide();
 			}
 		});
 
@@ -109,7 +101,7 @@
 		const map = mlMap!;
 		const feature = map.queryRenderedFeatures(point, { layers: ['sjriver-huc10'] })[0] || null;
 		console.log('clicked feature', feature);
-		const changed = selectedArea.update(map, feature);
+		const changed = selectedRegion.update(map, feature);
 		if (changed || hoveredSite) {
 			if (hoveredSite) selectedSite.set(hoveredSite);
 			console.log('selectedSite', selectedSite.site);

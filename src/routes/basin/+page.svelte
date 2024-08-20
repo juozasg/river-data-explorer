@@ -1,11 +1,10 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import { fade } from 'svelte/transition';
 
 	import RegionTypeTabs from './RegionTypeTabs.svelte';
-	import AreaSelectorMap from '$src/components/maps/AreaSelectorMap.svelte';
+	import AreaSelectorMap from '$src/components/maps/RegionSelectorMap.svelte';
 	import SiteSelectorMap from '$src/components/maps/SiteSelectorMap.svelte';
-	import { selectedArea } from '$src/appstate/map/featureState.svelte';
+	import { selectedRegion } from '$src/appstate/map/featureState.svelte';
 	import RegionStatsPanel from '$src/components/basin/RegionStatsPanel.svelte';
 	import SiteStatsPanel from '$src/components/basin/SiteStatsPanel.svelte';
 	import BasinChart from '$src/components/basin/BasinChart.svelte';
@@ -34,23 +33,23 @@
 </div>
 
 <div id="area-details">
-	{#if !selectedArea.feature}
-		<div class="placeholder" class:is-hidden={!!selectedArea.feature}>
+	{#if !selectedRegion.feature}
+		<div class="placeholder" class:is-hidden={!!selectedRegion.feature}>
 			<h2><a onclick={onChangeArea}>Select watershed region</a></h2>
 		</div>
 	{/if}
-	{#if selectedArea.feature}
+	{#if selectedRegion.feature}
 		<h4 class="has-text-centered">
-			Region: {selectedArea.name} (HUC10: {selectedArea.id})<button
+			Region: {selectedRegion.name} (HUC10: {selectedRegion.id})<button
 				class="change-button"
 				onclick={onChangeArea}
-				class:blink={selectedArea.feature}
+				class:blink={selectedRegion.feature}
 				>Change region <Icon inline={true} class="icon" icon="lets-icons:up" />
 			</button>
 		</h4>
 	{/if}
 
-	<div class="columns" style="height: 100%" class:is-hidden={!selectedArea.feature}>
+	<div class="columns" style="height: 100%" class:is-hidden={!selectedRegion.feature}>
 		<div class="column left-column is-half">
 			<div class="details">
 				<div class="details-top">
