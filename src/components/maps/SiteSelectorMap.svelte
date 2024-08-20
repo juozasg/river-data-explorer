@@ -16,7 +16,6 @@
 	import TooltipSiteStats from '../website/TooltipContentSiteStats.svelte';
 	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 
-
 	let { ...others }: Partial<MapLibreMapProps> = $props();
 
 	let mlmComponent: MapLibreMap;
@@ -39,7 +38,6 @@
 				tooltip.hide();
 			}
 		});
-
 	});
 
 	// mark
@@ -51,23 +49,17 @@
 
 		map.querySourceFeatures('sjriver-huc10').forEach((feature) => {
 			setFeatureState(map, 'sjriver-huc10', feature.id, { selected: false });
-			// console.log('FALSE', feature.id);
 		});
 
 		if (selectedRegion.feature) {
 			setFeatureState(map, 'sjriver-huc10', selectedRegion.feature.id, { selected: true });
 			fitFeatureBounds(map, selectedRegion.feature);
-			// console.log('---TRUE0---', selectedArea.feature.id);
 		}
 	});
 
 	const markerMouseEnter = (e: MouseEvent, site: Site) => {
 		hoveredSite.set(site);
-		// tooltip.content = tooltipContent;
-		// tooltip.show(e.x + 16, e.y, true);
-
 	};
-
 
 	const markerMouseLeave = (e: MouseEvent, site: Site) => {
 		hoveredSite.set(undefined);
@@ -97,15 +89,15 @@
 	{/if}
 {/snippet}
 
-<MapLibreMap
-	bind:this={mlmComponent}
-	{addSources}
-	{addLayers}
-	bind:divElement
-	bind:mlMap
-	{...others}
-/>
-
+	<MapLibreMap
+		bind:this={mlmComponent}
+		{addSources}
+		{addLayers}
+		bind:divElement
+		bind:mlMap
+		containerClass="site-selector-map"
+		{...others}
+	/>
 
 {#if mlMap}
 	{#each sites.allEnabled as site}
@@ -120,4 +112,12 @@
 {/if}
 
 <style>
+	:global(.site-selector-map .maplibregl-ctrl-attrib-inner) {
+		display: none !important;
+	}
+	:global(.site-selector-map .maplibregl-ctrl-attrib) {
+		display: none !important;
+	}
+
+
 </style>

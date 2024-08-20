@@ -17,7 +17,8 @@
 		addSources,
 		addLayers,
 		divElement = $bindable(),
-		mlMap = $bindable()
+		mlMap = $bindable(),
+		containerClass = '',
 	}: MapLibreMapProps = $props();
 
 	let baseStyleId: 'TOPO' | 'SATELLITE' = $state('TOPO');
@@ -92,7 +93,7 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div style="position: relative; height: 100%">
+<div style="position: relative; height: 100%" class={containerClass}>
 	<LayerSwitcher bind:baseStyleId bind:showRiverLayer />
 	<div class="map" bind:this={divElement} onmouseleave={containerMouseLeave}></div>
 	{#if mapMouseLocation.lngLat}
@@ -112,7 +113,7 @@
 
 	pre {
 		position: absolute;
-		bottom: -22px;
+		bottom: -10px;
 		left: 0px;
 		z-index: 2;
 		background: none;

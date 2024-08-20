@@ -10,4 +10,5 @@ export interface MapLibreMapProps {
 
 	divElement?: HTMLDivElement;
 	mlMap?: ml.Map;
+	containerClass?: string;
 }

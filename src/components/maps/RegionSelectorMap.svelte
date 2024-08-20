@@ -59,7 +59,7 @@
 			mlmFeature.source = 'sjriver-huc10';
 			selectedRegion.update(mlMap, mlmFeature);
 			selectedSite.set(sites.all.find((s) => s.id === siteId));
-			console.log('DEBUG SELECTED', selectedSite.site, mlmFeature);
+			// console.log('DEBUG SELECTED', selectedSite.site, mlmFeature);
 		}
 	});
 
