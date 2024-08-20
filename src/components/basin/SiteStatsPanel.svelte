@@ -4,11 +4,10 @@
 	import { allVariableStats } from '$src/lib/data/stats';
 	import type { VariableStats } from '$src/lib/types/analysis';
 	import { fmtVarNum, varunits } from '$src/lib/utils';
-	import { onMount } from 'svelte';
 	import StatsDataTable from '../website/StatsDataTable.svelte';
-	import VariableTooltip from '../website/WebsiteTooltip.svelte';
-	import { variablesBriefMarkdown } from '$src/appstate/variablesMetadata.svelte';
 	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
+	import { tooltipText } from '$src/lib/data/tableHelpers';
+	import HoveredVariableTooltip from '../website/HoveredVariableTooltip.svelte';
 
 	const table = $derived(selectedSite.site && sitesTables.get(selectedSite.site.id));
 
@@ -18,49 +17,11 @@
 		return allVariableStats(table);
 	});
 
-	let hoveredVariable: string | undefined = $state();
-
-	const mouseEnterVariable = (e: MouseEvent, variable: string) => {
-		hoveredVariable = variable;
-		// console.log('mouse entered variable', variable, e);
-		if (tooltip) {
-			tooltip.show(e.pageX, e.pageY);
-			// tooltip.setContent(tooltipTex(variable));
-			tooltip.content = tooltipContent;
-		}
-	};
-
-	const mouseMoveVariable = (e: MouseEvent, variable: string) => {
-		hoveredVariable = variable;
-		// console.log('mouse move variable', variable, e);
-		if (tooltip) {
-			// tooltip.show(e.pageX, e.pageY);
-			tooltip.show(e.x, e.y);
-		}
-	};
-
-	const mouseLeaveVariable = (e: MouseEvent, variable: string) => {
-		hoveredVariable = undefined;
-		// console.log('mouse left variable', variable, e);
-		if (tooltip) {
-			tooltip.hide();
-		}
-	};
-
-	const tooltipText = (varname: string): string => {
-		// return `Variable: ${varname}`;
-		if(variablesBriefMarkdown.get(varname)) {
-			return variablesBriefMarkdown.get(varname) as string;
-		} else {
-			return `Variable: ${varname}`;
-		}
-	}
+	let variableTooltip: HoveredVariableTooltip | undefined = $state();
 
 </script>
 
-{#snippet tooltipContent()}
-	<p>{tooltipText(hoveredVariable ||' ')}</p>
-{/snippet}
+<HoveredVariableTooltip bind:this={variableTooltip} />
 
 <div id="panel">
 	{#if selectedSite.site}
@@ -81,9 +42,8 @@
 
 			{#snippet row(r: VariableStats)}
 				<td
-					onmouseenter={(e: MouseEvent) => mouseEnterVariable(e, r.variable)}
-					onmouseleave={(e: MouseEvent) => mouseLeaveVariable(e, r.variable)}
-					onmousemove={(e: MouseEvent) => mouseMoveVariable(e, r.variable)}
+					onmouseleave={(e: MouseEvent) => variableTooltip?.mouseLeaveVariable(e)}
+					onmousemove={(e: MouseEvent) => variableTooltip?.mouseMoveVariable(e, r.variable)}
 					>{r.label} {varunits(r.variable)}
 				</td>
 				<td>{fmtVarNum(r.variable, r.lastObservation)}</td>
@@ -97,9 +57,6 @@
 				<td class="date">{r.dateToLabel}</td>
 			{/snippet}
 		</StatsDataTable>
-		<!-- {#if hoveredVariable} -->
-		<!-- <VariableTooltip bind:this={variableTooltip} {tooltipContent} /> -->
-		<!-- {/if} -->
 	{:else}
 		<h2>Click a site marker on the map to select</h2>
 	{/if}

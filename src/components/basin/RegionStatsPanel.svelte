@@ -5,10 +5,10 @@
 	import { allVariableStats, sitesDataStats, variableStats } from '$src/lib/data/stats';
 	import type { VariableStats } from '$src/lib/types/analysis';
 	import { fmtVarNum, varunits } from '$src/lib/utils';
-	import type Column from 'arquero/dist/types/table/column';
 	import StatsDataTable from '../website/StatsDataTable.svelte';
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
 	import { concatTablesAllColumns } from '$src/lib/data/tableHelpers';
+	import HoveredVariableTooltip from '../website/HoveredVariableTooltip.svelte';
 
 	const area = $derived(selectedRegion);
 	const sitesInArea = $derived(sites.allEnabled.filter((s) => s.huc10 === area.id));
@@ -27,9 +27,13 @@
 		if (combinedTable.numRows() == 0) return [];
 		// dont order empty tables because column date won't exist
 		const orderedTable = combinedTable.orderby('date').reify();
-		return allVariableStats(orderedTable, { errorLabel:  sitesInArea.map(s => s.id).join(', ') });
+		return allVariableStats(orderedTable, { errorLabel: sitesInArea.map((s) => s.id).join(', ') });
 	});
+
+	let variableTooltip: HoveredVariableTooltip | undefined = $state();
 </script>
+
+<HoveredVariableTooltip bind:this={variableTooltip} />
 
 <div id="panel">
 	<div class="flex">
@@ -57,7 +61,11 @@
 		<th>To</th>
 
 		{#snippet row(r: VariableStats)}
-			<td>{r.label} {varunits(r.variable)}</td>
+			<td
+				onmouseleave={(e: MouseEvent) => variableTooltip?.mouseLeaveVariable(e)}
+				onmousemove={(e: MouseEvent) => variableTooltip?.mouseMoveVariable(e, r.variable)}
+				>{r.label} {varunits(r.variable)}
+			</td>
 			<td>{r.numObservations}</td>
 			<td class="stat">{fmtVarNum(r.variable, r.min)}</td>
 			<td class="stat">{fmtVarNum(r.variable, r.max)}</td>

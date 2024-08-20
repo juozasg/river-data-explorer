@@ -38,9 +38,17 @@
 		hoveredAreaSites.length > 0 ? sitesDataStats(hoveredAreaSites) : undefined
 	);
 
+	// debug
 	$effect(() => {
-		if(mlMap && mlmComponent.dataLoaded() && mlMap.getLayersOrder().includes('sjriver-huc10')) {
-			const huc10 = '0405000122'
+		if (
+			window &&
+			window.location.hostname === 'localhost' &&
+			mlMap &&
+			mlmComponent.dataLoaded() &&
+			mlMap.getLayersOrder().includes('sjriver-huc10') &&
+			!selectedSite.site
+		) {
+			const huc10 = '0405000122';
 			const siteId = 'sjrbc-45';
 			const mlmFeature = mlMap.querySourceFeatures('sjriver-huc10', {
 				sourceLayer: 'sjriver-huc10',

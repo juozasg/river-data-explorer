@@ -1,3 +1,4 @@
+import { variablesBriefMarkdown } from '$src/appstate/variablesMetadata.svelte';
 import  * as aq from 'arquero';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
 
@@ -19,4 +20,13 @@ export function concatTablesAllColumns(tables: ColumnTable[]): ColumnTable {
 	const columns = tablesUniqueColumns(tables);
 	const t0 = emptyTable(columns); // initial table determines result columns
 	return tables.reduce((acc, t) => acc.concat(t), t0);
+}
+
+
+export function tooltipText(varname: string): string  {
+	if(variablesBriefMarkdown.get(varname)) {
+		return variablesBriefMarkdown.get(varname) as string;
+	} else {
+		return `Variable: ${varname}`;
+	}
 }
