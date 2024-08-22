@@ -58,8 +58,6 @@
 				<td class="date">{r.dateToLabel}</td>
 			{/snippet}
 		</StatsDataTable>
-	{:else}
-		<h2>Click a site marker on the map to select</h2>
 	{/if}
 </div>
 

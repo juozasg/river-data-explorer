@@ -121,6 +121,7 @@ export const hoveredSite = {
 
 
 let _selectedSite: Site | undefined = $state();
+let _selectedSite2: Site | undefined = $state();
 
 export const selectedSite = {
 	get site() {
@@ -131,4 +132,17 @@ export const selectedSite = {
 		_selectedSite = site;
 	}
 }
+
+
+export const selectedSite2 = {
+	get site() {
+		return _selectedSite2;
+	},
+
+	set(site: Site | undefined) {
+		_selectedSite2 = site;
+	}
+}
+
+
 

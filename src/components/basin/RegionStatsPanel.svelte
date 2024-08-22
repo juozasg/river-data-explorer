@@ -115,6 +115,11 @@
 		}
 	}
 
+	.region-label {
+		border-left: 6px solid #ab00d6;
+		padding-left: 3px;
+	}
+
 	h3 :global(.icon) {
 		height: 24px;
 		vertical-align: -6px !important;
@@ -124,10 +129,7 @@
 		animation: blink 1s linear 2;
 	}
 
-	.region-label {
-		border-left: 6px solid #ab00d6;
-		padding-left: 3px;
-	}
+
 
 	@keyframes blink {
 		50% {

@@ -9,12 +9,11 @@
 
 	let showLayersDropdown = $state(false);
 	const datasets = $derived(sites.allDatasets);
-	const datasetsEnabled: {[key:string]: boolean} = $state({});
+	const datasetsEnabled: { [key: string]: boolean } = $state({});
 
 	$effect(() => {
-		setEnabledDatasets(Object.keys(datasetsEnabled).filter(ds => datasetsEnabled[ds]));
+		setEnabledDatasets(Object.keys(datasetsEnabled).filter((ds) => datasetsEnabled[ds]));
 	});
-
 
 	$effect(() => {
 		for (const ds of datasets) {
@@ -54,7 +53,7 @@
 	};
 </script>
 
-<div class="map-layer-switcher dropdown" class:is-active={showLayersDropdown}>
+<div class="map-control dropdown" class:is-active={showLayersDropdown}>
 	<div class="dropdown-trigger">
 		<button
 			class="button"
@@ -79,9 +78,17 @@
 
 			<hr class="dropdown-divider" />
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
-			<a class="dropdown-item" onclick={setTopographic}>Topographic</a>
+			<a class="dropdown-item" onclick={setTopographic}>
+				<form>
+						<input type="radio" name="topographic" checked={baseStyleId == 'TOPO'} />
+						Topographic
+				</form>
+			</a>
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
-			<a class="dropdown-item" onclick={setSatellite}>Satellite</a>
+			<a class="dropdown-item" onclick={setSatellite}>
+				<input type="radio" name="satellite" checked={baseStyleId == 'SATELLITE'} />
+				Satellite
+			</a>
 			<hr class="dropdown-divider" />
 			<div class="dropdown-item">
 				<label class="checkbox">
@@ -94,7 +101,7 @@
 </div>
 
 <style>
-	.map-layer-switcher {
+	.map-control {
 		position: absolute;
 		top: 10px;
 		left: 10px;

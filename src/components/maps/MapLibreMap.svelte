@@ -10,6 +10,8 @@
 	import LayerSwitcher from './LayerSwitcher.svelte';
 	import { toggleRiverLayerVisibility } from '$src/lib/data/map/mapData';
 	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
+	import VariableSelector from './VariableSelector.svelte';
+	import TimeSelector from './TimeSelector.svelte';
 
 	let {
 		zoom = 8,
@@ -95,9 +97,11 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div style="position: relative; height: 100%" class={containerClass}>
 	<LayerSwitcher bind:baseStyleId bind:showRiverLayer />
+	<VariableSelector />
+	<TimeSelector />
 	<div class="map" bind:this={divElement} onmouseleave={containerMouseLeave}></div>
 	{#if mapMouseLocation.lngLat}
-		<pre>{formatLngLat(mapMouseLocation.lngLat, 4)} press C to copy</pre>
+		<pre>{formatLngLat(mapMouseLocation.lngLat, 4)} (C to copy)</pre>
 	{/if}
 </div>
 
@@ -113,8 +117,8 @@
 
 	pre {
 		position: absolute;
-		bottom: -10px;
-		left: 0px;
+		bottom: 10px;
+		right: -2px;
 		z-index: 2;
 		background: none;
 		padding: 0.5rem;
