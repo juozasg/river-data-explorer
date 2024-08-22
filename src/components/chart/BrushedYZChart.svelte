@@ -26,12 +26,17 @@
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
 
 	import { YZChartParams } from '$src/lib/utils/YZChartParams';
+	import { selectedRegion, selectedSite } from '$src/appstate/map/featureState.svelte';
 
 	const { table, yVar, zVar, chartWidth, chartHeight }: { table: ColumnTable; yVar: string; zVar: string, chartWidth: number, chartHeight: number } = $props();
 
 
+
 	const yParams = $derived(new YZChartParams('y', yVar, table));
 	const zParams = $derived(new YZChartParams('z', zVar, table));
+
+	const yAxisLabel = $derived(`${yParams.varLabel} <span class="location-label">${selectedRegion?.name}<span>`);
+	const zAxisLabel = $derived(`${zParams.varLabel} <span class="location-label">${selectedSite.site?.name}<span>`);
 
 	let brushMinIndex: number | null = $state(null);
 	let brushMaxIndex: number | null = $state(null);
@@ -57,10 +62,6 @@
 		brushedChartContainer?.querySelectorAll('.x-axis .tick text')
 	);
 
-	// const xTickTextElements = () =>
-	// 	(brushedChartContainer?.querySelectorAll('.x-axis .tick text') as NodeListOf<HTMLElement>) ||
-	// 	([] as HTMLElement[]);
-
 	const brushHoverOn = () => {
 		brushContainer!.style.opacity = '1';
 		xTickTextElements?.forEach((t) => (t.style.opacity = '0'));
@@ -72,9 +73,9 @@
 	};
 </script>
 
-
+<!-- extra chart container nesting makes LayerCake happy -->
 <div class="yz-chart-container" bind:this={brushedChartContainer as HTMLElement}>
-	<div class="chart-container" style={`width: ${chartWidth}px; height: ${chartHeight}px`}>
+	<div class="chart-container" style={`width: ${chartWidth}px; height: ${chartHeight - 52}px;`}>
 		<!-- MAIN CHART -->
 		<!-- brushedTable is full table sliced with min,max from the Brush component -->
 		{#if brushedTable && brushedTable.numRows() > 0}
@@ -124,7 +125,7 @@
 						formatValue={formatChatTTValue}
 						filterKeys={[yVar, zVar]}
 					/>
-					<YZAxisLabels yLabel={yParams.varLabel} zLabel={zParams.varLabel} />
+					<YZAxisLabels yLabel={yAxisLabel} zLabel={zAxisLabel} />
 				</Html>
 			</LayerCake>
 		{/if}
@@ -185,18 +186,19 @@
 
 <style>
 	.yz-chart-container {
-		width: 480px;
-		height: 440px;
-		border: 1.5px dotted blue;
+		width: 100%;
+		height: 100%;
 		overflow: visible;
-		/* position: absolute; */
-		top: 50px;
-		left: 50px;
+		/* width: 480px; */
+		/* height: 440px; */
+		/* border: 1.5px dotted blue; */
+		position: relative;
 
 		.chart-container {
 			/* border: 1px solid red; */
 			/* margin-left: 2rem; */
 			position: absolute;
+			top: 24px;
 
 			& :global {
 				.x-axis .tick:nth-child(even) text {
@@ -219,11 +221,11 @@
 
 		.brush-container {
 			height: 22px;
-			bottom: 50px;
-			width: 396px;
-			margin-left: 34px;
+			bottom: 0px;
+			width: 100%;
+			margin-left: 0px;
 			position: absolute;
-			/* background-color: white; */
+			cursor: col-resize;
 		}
 	}
 
