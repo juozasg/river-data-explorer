@@ -7,6 +7,8 @@
 	import StatsDataTable from '../website/StatsDataTable.svelte';
 	import HoveredVariableTooltip from '../website/HoveredVariableTooltip.svelte';
 
+	const { onVarClicked }: { onVarClicked: (name: string) => void } = $props();
+
 	const table = $derived(selectedSite.site && sitesTables.get(selectedSite.site.id));
 
 	const rows: VariableStats[] = $derived.by(() => {
@@ -39,9 +41,10 @@
 			<th>To</th>
 
 			{#snippet row(r: VariableStats)}
-				<td
+				<td class="variable-label"
 					onmouseleave={(e: MouseEvent) => variableTooltip?.mouseLeaveVariable(e)}
 					onmousemove={(e: MouseEvent) => variableTooltip?.mouseMoveVariable(e, r.variable)}
+					onclick={() => onVarClicked(r.variable)}
 					>{r.label} {varunits(r.variable)}
 				</td>
 				<td>{fmtVarNum(r.variable, r.lastObservation)}</td>
@@ -77,6 +80,15 @@
 			font-size: 0.9rem;
 			color: #444;
 		}
+	}
+
+
+	.variable-label:hover {
+		cursor: pointer;
+		text-decoration: underline;
+		text-decoration-color: #00af8c;
+		text-decoration-thickness: 2px;
+		/* text-decoration-style:double; */
 	}
 
 	td.date {

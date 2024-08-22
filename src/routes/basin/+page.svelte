@@ -20,6 +20,8 @@
 	};
 
 
+	let yVar: string = $state('temp');
+	let zVar: string = $state('do');
 </script>
 
 <svelte:head>
@@ -53,17 +55,17 @@
 					<SiteSelectorMap />
 				</div>
 				<div class="details-bottom">
-					<BasinChart />
+					<BasinChart {yVar} {zVar} />
 				</div>
 			</div>
 		</div>
 		<div class="column right-column is-half">
 			<div class="details">
 				<div class="details-top">
-					<RegionStatsPanel />
+					<RegionStatsPanel onVarClicked={(varname: string) => yVar = varname} />
 				</div>
 				<div class="details-bottom">
-					<SiteStatsPanel />
+					<SiteStatsPanel onVarClicked={(varname: string) => zVar = varname} />
 				</div>
 			</div>
 		</div>

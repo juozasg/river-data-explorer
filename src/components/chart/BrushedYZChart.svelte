@@ -30,8 +30,6 @@
 
 	const { table, yVar, zVar, chartWidth, chartHeight }: { table: ColumnTable; yVar: string; zVar: string, chartWidth: number, chartHeight: number } = $props();
 
-
-
 	const yParams = $derived(new YZChartParams('y', yVar, table));
 	const zParams = $derived(new YZChartParams('z', zVar, table));
 
@@ -50,10 +48,8 @@
 	});
 
 	$effect(() => {
-		console.log('yVar', yVar);
-		console.log('zVar', zVar);
-		console.log('yParams', yParams);
-		console.log('zParams', zParams);
+		console.log('table', table.objects());
+		console.log('brushedTable', brushedTable?.objects());
 	});
 
 	let brushedChartContainer = $state<HTMLElement>();

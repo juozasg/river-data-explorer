@@ -1,6 +1,4 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte';
-
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
 	import { selectedRegion } from '$src/appstate/map/featureState.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
@@ -11,6 +9,8 @@
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
 	import { concatTablesAllColumns } from '$src/lib/data/tableHelpers';
 	import HoveredVariableTooltip from '../website/HoveredVariableTooltip.svelte';
+
+	const { onVarClicked }: { onVarClicked: (name: string) => void } = $props();
 
 	const region = $derived(selectedRegion);
 	const sitesInArea = $derived(sites.allEnabled.filter((s) => s.huc10 === region.id));
@@ -37,7 +37,8 @@
 <div id="region-stats-panel">
 	{#if region.feature}
 		<h3 class="region-label">
-			Region: <span style="font-weight: 400">{region.name}</span> <span class="subtitle">HUC10:{region.id}</span>
+			Region: <span style="font-weight: 400">{region.name}</span>
+			<span class="subtitle">HUC10:{region.id}</span>
 		</h3>
 	{/if}
 	<div class="flex stats-summary">
@@ -66,8 +67,10 @@
 
 		{#snippet row(r: VariableStats)}
 			<td
+				class="variable-label"
 				onmouseleave={(e: MouseEvent) => variableTooltip?.mouseLeaveVariable(e)}
 				onmousemove={(e: MouseEvent) => variableTooltip?.mouseMoveVariable(e, r.variable)}
+				onclick={() => onVarClicked(r.variable)}
 				>{r.label} {varunits(r.variable)}
 			</td>
 			<td>{r.numObservations}</td>
@@ -89,6 +92,13 @@
 		font-size: 80%;
 		display: flex;
 		flex-direction: column;
+	}
+
+	.variable-label:hover {
+		cursor: pointer;
+		text-decoration: underline;
+		text-decoration-color: #ab00d6;
+		text-decoration-thickness: 2px;
 	}
 
 	p {
