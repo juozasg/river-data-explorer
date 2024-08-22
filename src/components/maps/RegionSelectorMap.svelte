@@ -47,6 +47,7 @@
 			mlmComponent.dataLoaded() &&
 			mlMap.getLayersOrder().includes('sjriver-huc10') &&
 			!selectedSite.site
+			&& false
 		) {
 			const huc10 = '0405000122';
 			const siteId = 'sjrbc-45';

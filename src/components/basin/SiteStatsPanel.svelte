@@ -5,8 +5,6 @@
 	import type { VariableStats } from '$src/lib/types/analysis';
 	import { fmtVarNum, varunits } from '$src/lib/utils';
 	import StatsDataTable from '../website/StatsDataTable.svelte';
-	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
-	import { tooltipText } from '$src/lib/data/tableHelpers';
 	import HoveredVariableTooltip from '../website/HoveredVariableTooltip.svelte';
 
 	const table = $derived(selectedSite.site && sitesTables.get(selectedSite.site.id));
@@ -23,10 +21,10 @@
 
 <HoveredVariableTooltip bind:this={variableTooltip} />
 
-<div id="panel">
+<div id="site-stats-panel">
 	{#if selectedSite.site}
 		<h3 class="site-label">
-			Site: {selectedSite.site?.name} ({selectedSite.site?.id})
+			Site: {selectedSite.site?.name} <span class="subtitle">{selectedSite.site?.id}</span>
 		</h3>
 		<StatsDataTable data={rows}>
 			<th>Variable</th>
@@ -63,7 +61,7 @@
 </div>
 
 <style>
-	#panel {
+	#site-stats-panel {
 		height: 100%;
 
 		font-size: 80%;
@@ -74,6 +72,11 @@
 	h3 {
 		margin-bottom: 3px;
 		margin-top: 0.5rem;
+
+		.subtitle {
+			font-size: 0.9rem;
+			color: #444;
+		}
 	}
 
 	td.date {

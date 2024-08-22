@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Icon from '@iconify/svelte';
+
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
 	import { selectedRegion } from '$src/appstate/map/featureState.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
@@ -10,11 +12,8 @@
 	import { concatTablesAllColumns } from '$src/lib/data/tableHelpers';
 	import HoveredVariableTooltip from '../website/HoveredVariableTooltip.svelte';
 
-	const area = $derived(selectedRegion);
-	const sitesInArea = $derived(sites.allEnabled.filter((s) => s.huc10 === area.id));
-
-	let firstObs: Date | undefined = $state();
-	let lastObs: Date | undefined = $state();
+	const region = $derived(selectedRegion);
+	const sitesInArea = $derived(sites.allEnabled.filter((s) => s.huc10 === region.id));
 
 	const sitesStats = $derived(sitesDataStats(sitesInArea));
 	const sitesInAreaTables = $derived(
@@ -35,7 +34,12 @@
 
 <HoveredVariableTooltip bind:this={variableTooltip} />
 
-<div id="panel">
+<div id="region-stats-panel">
+	{#if region.feature}
+		<h3>
+			Region: {region.name} <span class="subtitle">HUC10:{region.id}</span>
+		</h3>
+	{/if}
 	<div class="flex">
 		<div class="cell"><p><b>{sitesStats.numSites}</b> sites</p></div>
 		<div class="cell"><p><b>{sitesStats.numVariables}</b> variables</p></div>
@@ -79,7 +83,7 @@
 </div>
 
 <style>
-	#panel {
+	#region-stats-panel {
 		height: 100%;
 
 		font-size: 80%;
@@ -89,6 +93,30 @@
 
 	p {
 		margin-bottom: 0.2rem !important;
+	}
+
+	h3 {
+		margin-bottom: 3px;
+		/* margin-top: 0.5rem; */
+
+		.subtitle {
+			font-size: 0.9rem;
+			color: #444;
+		}
+	}
+
+	h3 :global(.icon) {
+		height: 24px;
+		vertical-align: -6px !important;
+	}
+
+	h3 :global(.blink) {
+		animation: blink 1s linear 2;
+	}
+	@keyframes blink {
+		50% {
+			opacity: 0;
+		}
 	}
 
 	.flex {

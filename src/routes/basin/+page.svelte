@@ -10,13 +10,13 @@
 	import BasinChart from '$src/components/basin/BasinChart.svelte';
 
 	const onSelectedArea = () => {
-		const areaDetailsAnchor = window.document.getElementById('area-details');
-		areaDetailsAnchor?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		const regionDetailsA = window.document.getElementById('region-details');
+		regionDetailsA?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 	};
 
-	const onChangeArea = () => {
-		const areaSelectAnchor = window.document.getElementById('basin-areas');
-		areaSelectAnchor?.scrollIntoView({ behavior: 'instant', block: 'start' });
+	const scrollIntoViewRegionMap = () => {
+		const basinRegionsA = window.document.getElementById('basin-regions');
+		basinRegionsA?.scrollIntoView({ behavior: 'instant', block: 'start' });
 	};
 </script>
 
@@ -24,7 +24,7 @@
 	<title>Search the Basin</title>
 </svelte:head>
 
-<div id="basin-areas">
+<div id="basin-regions">
 	<h3 id="section-select-area" class="has-text-centered">Select watershed region</h3>
 
 	<RegionTypeTabs />
@@ -32,22 +32,18 @@
 	<AreaSelectorMap onSelected={onSelectedArea} --map-height="70vh" zoom={8.35} />
 </div>
 
-<div id="area-details">
-	{#if !selectedRegion.feature}
-		<div class="placeholder" class:is-hidden={!!selectedRegion.feature}>
-			<h2><a onclick={onChangeArea}>Select watershed region</a></h2>
-		</div>
-	{/if}
+
+<div id="region-details">
 	{#if selectedRegion.feature}
-		<h4 class="has-text-centered">
-			Region: {selectedRegion.name} (HUC10: {selectedRegion.id})<button
-				class="change-button"
-				onclick={onChangeArea}
-				class:blink={selectedRegion.feature}
-				>Change region <Icon inline={true} class="icon" icon="lets-icons:up" />
-			</button>
-		</h4>
-	{/if}
+	<div class="change-region-container">
+		<button
+			class="change-region-button"
+			onclick={scrollIntoViewRegionMap}
+			class:blink={selectedRegion.feature}
+			>Change region <Icon inline={true} class="icon" icon="lets-icons:up" />
+		</button>
+	</div>
+{/if}
 
 	<div class="columns" style="height: 100%" class:is-hidden={!selectedRegion.feature}>
 		<div class="column left-column is-half">
@@ -71,6 +67,12 @@
 			</div>
 		</div>
 	</div>
+
+	{#if !selectedRegion.feature}
+		<div class="placeholder" class:is-hidden={!!selectedRegion.feature}>
+			<h2><a onclick={scrollIntoViewRegionMap}>Select watershed region</a></h2>
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -93,8 +95,8 @@
 		padding-left: 1rem !important;
 	}
 
-	#basin-areas {
-		margin-bottom: 1.5rem;
+	#basin-regions {
+		margin-bottom: 1rem;
 	}
 
 	.details-top {
@@ -106,25 +108,10 @@
 		height: calc(50% - 1rem);
 	}
 
-	#area-details {
+	#region-details {
 		margin-top: 1rem;
 		/* border: 1px solid aqua; */
 		height: calc(100vh - 112px);
-
-		h4 button.change-button {
-			margin-left: 1rem;
-			font-weight: 400;
-
-			background: none !important;
-			border: none;
-			padding: 0 !important;
-
-			font-size: 1.25rem;
-			color: #485fc7;
-			cursor: pointer;
-			text-decoration: dotted underline;
-			cursor: pointer;
-		}
 	}
 
 	.columns {
@@ -137,17 +124,38 @@
 		margin-bottom: 1rem;
 	}
 
-	h4 :global(.icon) {
+	.change-region-container {
+		width: 100%;
+		text-align: center;
+		margin-bottom: 1rem;
+	}
+
+	button.change-region-button {
+		margin-left: 1rem;
+		font-weight: 400;
+
+		background: none !important;
+		border: none;
+		padding: 0 !important;
+
+		font-size: 1.25rem;
+		color: #485fc7;
+		cursor: pointer;
+		text-decoration: dotted underline;
+		cursor: pointer;
+	}
+
+	.change-region-button :global(.icon) {
 		height: 24px;
 		vertical-align: -6px !important;
 	}
 
-	h4 :global(.blink) {
-    animation: blink 1s linear 2;
-  }
-  @keyframes blink {
-    50% {
-      opacity: 0;
-    }
-  }
+	.change-region-button.blink {
+		animation: blink 1s linear 2;
+	}
+	@keyframes blink {
+		50% {
+			opacity: 0;
+		}
+	}
 </style>
