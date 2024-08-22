@@ -24,7 +24,7 @@
 <div id="site-stats-panel">
 	{#if selectedSite.site}
 		<h3 class="site-label">
-			Site: {selectedSite.site?.name} <span class="subtitle">{selectedSite.site?.id}</span>
+			Site: <span style="font-weight: 400">{selectedSite.site?.name}</span> <span class="subtitle">{selectedSite.site?.id}</span>
 		</h3>
 		<StatsDataTable data={rows}>
 			<th>Variable</th>
@@ -88,6 +88,11 @@
 		max-width: 3rem;
 		overflow-x: hidden;
 		padding-right: 0.5rem;
+	}
+
+	.site-label {
+		border-left: 6px solid #00af8c;
+		padding-left: 3px;
 	}
 
 	th {

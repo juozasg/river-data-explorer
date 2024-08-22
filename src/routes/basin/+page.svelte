@@ -18,6 +18,8 @@
 		const basinRegionsA = window.document.getElementById('basin-regions');
 		basinRegionsA?.scrollIntoView({ behavior: 'instant', block: 'start' });
 	};
+
+
 </script>
 
 <svelte:head>
@@ -32,18 +34,17 @@
 	<AreaSelectorMap onSelected={onSelectedArea} --map-height="70vh" zoom={8.35} />
 </div>
 
-
 <div id="region-details">
 	{#if selectedRegion.feature}
-	<div class="change-region-container">
-		<button
-			class="change-region-button"
-			onclick={scrollIntoViewRegionMap}
-			class:blink={selectedRegion.feature}
-			>Change region <Icon inline={true} class="icon" icon="lets-icons:up" />
-		</button>
-	</div>
-{/if}
+		<div class="change-region-container">
+			<button
+				class="change-region-button"
+				onclick={scrollIntoViewRegionMap}
+				class:blink={selectedRegion.feature}
+				>Change region <Icon inline={true} class="icon" icon="lets-icons:up" />
+			</button>
+		</div>
+	{/if}
 
 	<div class="columns" style="height: 100%" class:is-hidden={!selectedRegion.feature}>
 		<div class="column left-column is-half">

@@ -27,7 +27,7 @@
 
 	import { YZChartParams } from '$src/lib/utils/YZChartParams';
 
-	const { table, yVar, zVar }: { table: ColumnTable; yVar: string; zVar: string } = $props();
+	const { table, yVar, zVar, chartWidth, chartHeight }: { table: ColumnTable; yVar: string; zVar: string, chartWidth: number, chartHeight: number } = $props();
 
 
 	const yParams = $derived(new YZChartParams('y', yVar, table));
@@ -74,7 +74,7 @@
 
 
 <div class="yz-chart-container" bind:this={brushedChartContainer as HTMLElement}>
-	<div class="chart-container">
+	<div class="chart-container" style={`width: ${chartWidth}px; height: ${chartHeight}px`}>
 		<!-- MAIN CHART -->
 		<!-- brushedTable is full table sliced with min,max from the Brush component -->
 		{#if brushedTable && brushedTable.numRows() > 0}
@@ -194,8 +194,6 @@
 		left: 50px;
 
 		.chart-container {
-			width: 400px;
-			height: 300px;
 			/* border: 1px solid red; */
 			/* margin-left: 2rem; */
 			position: absolute;

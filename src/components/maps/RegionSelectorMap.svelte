@@ -144,7 +144,6 @@
 	bind:this={mlmComponent}
 	{addSources}
 	{addLayers}
-	{tooltipContent}
 	bind:divElement
 	bind:mlMap
 	{...others}

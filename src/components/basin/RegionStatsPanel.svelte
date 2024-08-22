@@ -36,11 +36,11 @@
 
 <div id="region-stats-panel">
 	{#if region.feature}
-		<h3>
-			Region: {region.name} <span class="subtitle">HUC10:{region.id}</span>
+		<h3 class="region-label">
+			Region: <span style="font-weight: 400">{region.name}</span> <span class="subtitle">HUC10:{region.id}</span>
 		</h3>
 	{/if}
-	<div class="flex">
+	<div class="flex stats-summary">
 		<div class="cell"><p><b>{sitesStats.numSites}</b> sites</p></div>
 		<div class="cell"><p><b>{sitesStats.numVariables}</b> variables</p></div>
 		<div class="cell"><p><b>{sitesStats.numRecords}</b> records</p></div>
@@ -113,10 +113,22 @@
 	h3 :global(.blink) {
 		animation: blink 1s linear 2;
 	}
+
+	.region-label {
+		border-left: 6px solid #ab00d6;
+		padding-left: 3px;
+	}
+
 	@keyframes blink {
 		50% {
 			opacity: 0;
 		}
+	}
+
+	.stats-summary {
+		color: #777;
+		margin-bottom: 0 !important;
+		font-size: 0.9rem !important;
 	}
 
 	.flex {
