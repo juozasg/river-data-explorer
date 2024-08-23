@@ -10,6 +10,8 @@ import { variablesBriefMarkdown } from '$src/appstate/variablesMetadata.svelte';
 import  * as aq from 'arquero';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
 import { dateEqualYMD, fmtDate } from '../utils';
+import { sitesTables } from '$src/appstate/data/datasets.svelte';
+import type { Site } from '../types/site';
 
 export function tablesUniqueColumns(tables: ColumnTable[]): string[] {
 	const cols = tables.flatMap(t => t.columnNames());
@@ -65,18 +67,24 @@ export function tableIndexBeforeDate(table: ColumnTable, date: Date, fromIndex =
 }
 
 
-export function tableGetBeforeDate(table: ColumnTable, varname: string, date?: Date): number | undefined {
+export function tableGetBeforeDate(table: ColumnTable, varname: string, date?: Date): number | Date | undefined {
 	if (!table.columnNames().includes(varname)) return undefined;
 
 	let timeIndex = date ? tableIndexBeforeDate(table, date) : table.numRows() - 1;
-	console.log('tableGetBeforeDate', varname, fmtDate(date), 'index', timeIndex);
+	// console.log('tableGetBeforeDate', varname, fmtDate(date), 'index', timeIndex);
 	if(timeIndex === -1) return undefined;
 	try {
-		console.log('at index', table.object(timeIndex));
+		// console.log('at index', table.object(timeIndex));
 		return table.get(varname, timeIndex);
 	} catch (e) {
 		console.error('varValueBeforeDate', e);
 		return undefined;
 	}
+}
 
+
+export function siteGetBeforeDate(site: Site, varname: string, date?: Date): number | Date| undefined {
+	const table = sitesTables.get(site.id);
+	if (!table) return undefined;
+	return tableGetBeforeDate(table, varname, date);
 }

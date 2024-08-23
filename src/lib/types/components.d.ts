@@ -12,4 +12,5 @@ export interface MapLibreMapProps {
 	mlMap?: ml.Map;
 	containerClass?: string;
 	startDate?: Date;
+	endDate?: Date;
 }

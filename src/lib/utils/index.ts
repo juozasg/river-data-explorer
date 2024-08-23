@@ -1,5 +1,5 @@
 import sprintfpkg from 'sprintf';
-const {sprintf} = sprintfpkg;
+const { sprintf } = sprintfpkg;
 
 import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import type { ImportGlobRecord, MarkdownPage, MarkdownComponent } from '../types/page';
@@ -26,16 +26,16 @@ export const basename = (path: string, ext?: string): string => {
 
 
 export function partition(array: any[], filter: (e: any, i: number, arr: any[]) => any) {
-  const pass: any[] = []
+	const pass: any[] = []
 	const fail: any[] = [];
-  array.forEach((e, idx, arr) => (filter(e, idx, arr) ? pass : fail).push(e));
-  return [pass, fail];
+	array.forEach((e, idx, arr) => (filter(e, idx, arr) ? pass : fail).push(e));
+	return [pass, fail];
 }
 
 
 export const fmtVarNum = (varname: string, n: number | undefined | string, units = false) => {
-	if(n === undefined) return '';
-	if(typeof n !== 'number') return n;
+	if (n === undefined) return '';
+	if (typeof n !== 'number') return n;
 	const fmt = variablesMetadata[varname]?.format || variablesMetadata['default']?.format || '%.2f';
 	const unit = (units && variablesMetadata[varname]?.unit) || '';
 	return sprintf(fmt, n) + ' ' + unit;
@@ -55,11 +55,21 @@ export function fmtDate(date: Date | undefined): string {
 	return `${shortMon(date)} ${date.getDate()}, ${date.getFullYear()}`;
 }
 
+// YYYY-MM-DD
+export function fmtDateValue(date: Date) {
+	if (!date || isNaN(date.valueOf())) return '';
+
+	const offset = date.getTimezoneOffset();
+	date = new Date(date.getTime() - (offset * 60 * 1000));
+	return date.toISOString().split('T')[0];
+};
+
+
 
 export function oneMonthAgo() {
-  const oneDay = 1000 * 60 * 60 * 24;
-  const oneMonth = oneDay * 30;
-  return (Date.now() - oneMonth);
+	const oneDay = 1000 * 60 * 60 * 24;
+	const oneMonth = oneDay * 30;
+	return (Date.now() - oneMonth);
 }
 
 

@@ -16,6 +16,9 @@
 	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
 	import { siteVariableColor } from '$src/lib/data/map/helpers/markerHelpers';
+	import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
+	import { siteGetBeforeDate } from '$src/lib/data/tableHelpers';
+	import { fmtDate } from '$src/lib/utils';
 
 	type Props = {
 		onSelected?: () => void;
@@ -69,16 +72,56 @@
 	};
 
 	const startDate = $derived.by(() => {
+		// sitesTables;
 		const tables = sites.allEnabled.map((s) => sitesTables.get(s.id)).filter((t) => t);
 		const dates = tables.map((t) => t?.get('date')).filter((d) => d) as Date[];
+		if (dates.length === 0) return new Date('1990-01-01');
 		return new Date(Math.min(...dates.map((d) => d.valueOf())));
+
 	});
 
+	const endDate = $derived.by(() => {
+		const tables = sites.allEnabled.map((s) => sitesTables.get(s.id)).filter((t) => t);
+		const dates = tables.map((t) => t?.get('date', t.numRows() - 1)).filter((d) => d) as Date[];
+		if (dates.length === 0) return new Date();
+		return new Date(Math.max(...dates.map((d) => d.valueOf())));
+	});
+
+	// $effect(() => console.log('STARTART startDate', startDate));
+	// $effect(() => console.log('ENDEND  endDate', endDate));
+	// $effect(() => console.log('SELECTED DATE',  mlmComponent.selectedDate));
 
 	function markerColor(site: Site) {
 		return siteVariableColor(site, mlmComponent.selectedVariable, mlmComponent.selectedDate);
 	}
+
+	function selectedVariableLabel() {
+		return variablesMetadata[mlmComponent.selectedVariable]?.label || mlmComponent.selectedVariable;
+	}
+
+	function selectedVariableUnit() {
+		return (variablesMetadata[mlmComponent.selectedVariable]?.unit || '') + ' ';
+	}
+
+	function selectedDateVariableValue(site: Site) {
+		const val = siteGetBeforeDate(site, mlmComponent.selectedVariable, mlmComponent.selectedDate);
+		return val || 'N/A'
+	}
+
+	function selectedDateClosestBeforeDate(site: Site) {
+		const date = siteGetBeforeDate(site, 'date', mlmComponent.selectedDate);
+		if(date instanceof Date && !isNaN(date.valueOf())) {
+			return fmtDate(date)
+		}
+		return 'N/A';
+	}
+
+
 </script>
+
+{#snippet variableValueBeforeDate(site: Site)}
+<p>{selectedVariableLabel()}: {selectedDateVariableValue(site)} {selectedVariableUnit()}({selectedDateClosestBeforeDate(site)})</p>
+{/snippet}
 
 {#snippet tooltipContent()}
 	{#if hoveredArea.feature}
@@ -98,7 +141,7 @@
 	{#if hoveredSite}
 		<h5 class="site tooltip-section">Site: {hoveredSite.name || ''}</h5>
 		<i>Site ID: {hoveredSite.id}</i>
-		<p>Temperature: 40 C (Mar 29, 2016)</p>
+		{@render variableValueBeforeDate(hoveredSite)}
 		{#if hoveredSiteStats}
 			<TooltipSiteStats stats={hoveredSiteStats} />
 		{/if}
@@ -113,6 +156,7 @@
 	bind:mlMap
 	{...others}
 	{startDate}
+	{endDate}
 />
 
 {#if mlMap}

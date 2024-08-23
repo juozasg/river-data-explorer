@@ -1,31 +1,33 @@
 <script lang="ts">
-	import { fmtDate } from '$src/lib/utils';
+	import { fmtDate, fmtDateValue } from '$src/lib/utils';
 
-	// YYYY-MM-DD
-	const fmtDateValue = (date: Date) => {
-		try {
-			return date.toISOString().split('T')[0];
-		} catch (e) {
-			return '';
-		}
-	};
 
 	// const startDate = new Date('2015-12-30');
 
-	const { startDate = new Date('2015-12-30') }: { startDate: Date } = $props();
-	// const todayDate = new Date();
-	const todayDate = new Date('2016-03-30');
+	const {
+		startDate = new Date('2015-12-30'),
+		endDate = new Date()
+	}: { startDate: Date; endDate?: Date } = $props();
 
 
-	let rangeInputValue = $state(todayDate.valueOf());
-	let dateInputValue = $state(fmtDateValue(todayDate));
-	export const selectedDate = $derived(new Date(rangeInputValue));
+
+
+	let dateInputValue = $state(fmtDateValue(endDate));
+	let rangeInputValue: number | string = $state(endDate.valueOf());
+	export const selectedDate = $derived(new Date(parseInt(rangeInputValue as any)));
+
+	// $effect(() => {
+	// 	console.log('SLIDERS startDate', startDate);
+	// 	console.log('SLIDERS endDate', endDate);
+	// 	console.log('SLIDERS rangeInputValue', rangeInputValue, typeof rangeInputValue);
+	// 	console.log('SLIDERS selectedDate', selectedDate);
+	// });
 
 	// on input change update slider if date is valid
 	const dateInputChange = (e: Event) => {
 		if (dateInputValue?.length > 0) {
 			const date = new Date(dateInputValue);
-			if (date >= startDate && date <= todayDate) {
+			if (date >= startDate && date <= endDate) {
 				rangeInputValue = date.valueOf();
 			}
 		}
@@ -36,7 +38,7 @@
 	const dateinputOnBlur = (e: Event) => {
 		if (dateInputValue?.length > 0) {
 			const date = new Date(dateInputValue);
-			if (date >= startDate && date <= todayDate) {
+			if (date >= startDate && date <= endDate) {
 				rangeInputValue = date.valueOf();
 				return;
 			}
@@ -52,15 +54,23 @@
 	};
 
 	const firstLabel = $derived(fmtDate(startDate));
+	const lastLabel = $derived(fmtDate(endDate));
 </script>
 
 <div class="map-control">
 	<div class="slider-labels">
-		<span class="first-label"
-			>{firstLabel}</span
-		>
-		<span class="last-label">now</span>
+		<span class="first-label">{firstLabel}</span>
+		<span class="last-label">{lastLabel}</span>
 	</div>
+	<input
+	class="range"
+	type="range"
+	bind:value={rangeInputValue}
+	min={startDate.valueOf()}
+	max={endDate.valueOf()}
+	step={86400000}
+	oninput={rangeInputOnInput}
+	/>
 	<input
 		class="date"
 		type="date"
@@ -68,16 +78,7 @@
 		onchange={dateInputChange}
 		onblur={dateinputOnBlur}
 		min={fmtDateValue(startDate)}
-		max={fmtDateValue(todayDate)}
-	/>
-	<input
-		class="range"
-		type="range"
-		bind:value={rangeInputValue}
-		min={startDate.valueOf()}
-		max={todayDate.valueOf()}
-		step={86400000}
-		oninput={rangeInputOnInput}
+		max={fmtDateValue(endDate)}
 	/>
 </div>
 
@@ -85,7 +86,7 @@
 	.slider-labels {
 		position: absolute;
 		top: 0;
-		left: 160px;
+		left: 12px;
 		width: calc(100% - 160px);
 		height: 16px;
 
@@ -96,15 +97,15 @@
 			top: 2px;
 		}
 		.first-label {
-			left: -9px;
+			left: 4px;
 			@-moz-document url-prefix() {
 				/* not great but input date native style */
-				left: 0px;
+				/* left: 0px; */
 			}
 		}
 
 		.last-label {
-			right: 30px;
+			right: 22px;
 			@-moz-document url-prefix() {
 				/* not great but input date native style */
 				right: 22px;
@@ -138,7 +139,7 @@
 		}
 
 		input.date:hover {
-			background-color: #18A0D1;
+			background-color: #18a0d1;
 			color: hsl(0, 0%, 4%);
 		}
 
@@ -178,7 +179,7 @@
 
 		/* fancy slider */
 		input.range {
-			--c: #18A0D1; /* active color */
+			--c: #18a0d1; /* active color */
 			--l: 4px; /* line thickness*/
 			--h: 20px; /* thumb height */
 			--w: 5px; /* thumb width */

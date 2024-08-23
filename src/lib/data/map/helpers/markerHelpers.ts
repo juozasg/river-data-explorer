@@ -23,7 +23,7 @@ export function siteVariableColor(site: Site, varname: string, beforeDate?: Date
 		if (value === undefined) return ghost;
 
 		const c = gradientColor(varname, value);
-		console.log('NEW VALUE', value, c);
+		// console.log('NEW VALUE', value, c);
 		return c;
 	} catch (e) {
 		console.error('siteVariableColor', e);
