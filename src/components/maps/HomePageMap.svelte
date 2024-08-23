@@ -116,7 +116,7 @@
 />
 
 {#if mlMap}
-	{#each sites.allEnabled as site (site.id)}
+	{#each sites.allEnabled as site (site.id, mlmComponent.selectedVariable, mlmComponent.selectedDate)}
 		<Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site} color={markerColor(site)} />
 	{/each}
 {/if}

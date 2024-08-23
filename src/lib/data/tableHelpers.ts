@@ -9,6 +9,7 @@ if(typeof window !== 'undefined') {
 import { variablesBriefMarkdown } from '$src/appstate/variablesMetadata.svelte';
 import  * as aq from 'arquero';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
+import { dateEqualYMD, fmtDate } from '../utils';
 
 export function tablesUniqueColumns(tables: ColumnTable[]): string[] {
 	const cols = tables.flatMap(t => t.columnNames());
@@ -39,17 +40,39 @@ export function tooltipText(varname: string): string  {
 	}
 }
 
+// tested and works, could be written better tho
+export function tableIndexBeforeDate(table: ColumnTable, date: Date, fromIndex = 0, toIndex?: number): number {
+	if(table.numRows() === 0) return -1;
+	if(toIndex === undefined) toIndex = table.numRows() - 1;
+	if(fromIndex === toIndex) return table.get('date', fromIndex) < date ? fromIndex : -1;
 
-export function tableIndexBeforeDate(table: ColumnTable, date: Date): number {
-	return 0;
+	const midIndex = Math.floor((fromIndex + toIndex) / 2);
+	if(midIndex === toIndex) return midIndex;
+
+	const midDate = table.get('date', midIndex);
+	// console.log('mid', midIndex, fmtDate(midDate))
+	if(dateEqualYMD(midDate, date)) return midIndex;
+
+	if(midDate < date) {
+		const nextDate = table.get('date', midIndex + 1);
+		if(nextDate > date) return midIndex;
+		if(dateEqualYMD(nextDate, date)) return midIndex + 1;
+		return tableIndexBeforeDate(table, date, midIndex + 1, toIndex);
+	} else {
+		if(table.get('date', midIndex - 1) < date) return midIndex - 1;
+		return tableIndexBeforeDate(table, date, fromIndex, midIndex - 1);
+	}
 }
 
 
-export function tableBeforeDate(table: ColumnTable, varname: string, date?: Date): number | undefined {
+export function tableGetBeforeDate(table: ColumnTable, varname: string, date?: Date): number | undefined {
 	if (!table.columnNames().includes(varname)) return undefined;
 
-	const timeIndex = date ? tableIndexBeforeDate(table, date) : table.numRows() - 1;
+	let timeIndex = date ? tableIndexBeforeDate(table, date) : table.numRows() - 1;
+	console.log('tableGetBeforeDate', varname, fmtDate(date), 'index', timeIndex);
+	if(timeIndex === -1) return undefined;
 	try {
+		console.log('at index', table.object(timeIndex));
 		return table.get(varname, timeIndex);
 	} catch (e) {
 		console.error('varValueBeforeDate', e);

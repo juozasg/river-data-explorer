@@ -51,7 +51,7 @@
 
 	export const selectedDate = $derived(timeSelector?.selectedDate || new Date());
 	export const selectedVariable: string = $derived(variableSelector?.selectedVariable || 'temp');
-	$inspect('selectedDate', selectedDate);
+	// $inspect('selectedDate', selectedDate);
 
 	$effect(() => {
 		if (!mlMap) return;

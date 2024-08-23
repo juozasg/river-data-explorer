@@ -26,6 +26,7 @@ export class Sites {
 
 	get allEnabled() {
 		const datasets = enabledDatasets();
+		return this.sites.filter(s => s.id === 'sjrbc-20');
 		return this.sites.filter(s => datasets.includes(s.dataset));
 	}
 

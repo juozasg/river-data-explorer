@@ -13,7 +13,8 @@
 	// const startDate = new Date('2015-12-30');
 
 	const { startDate = new Date('2015-12-30') }: { startDate: Date } = $props();
-	const todayDate = new Date();
+	// const todayDate = new Date();
+	const todayDate = new Date('2016-03-30');
 
 
 	let rangeInputValue = $state(todayDate.valueOf());
