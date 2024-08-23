@@ -21,6 +21,7 @@
 		divElement = $bindable(),
 		mlMap = $bindable(),
 		containerClass = '',
+		startDate = new Date('2015-12-30')
 	}: MapLibreMapProps = $props();
 
 	let baseStyleId: 'TOPO' | 'SATELLITE' = $state('TOPO');
@@ -102,7 +103,7 @@
 <div style="position: relative; height: 100%" class={containerClass}>
 	<LayerSwitcher bind:baseStyleId bind:showRiverLayer />
 	<VariableSelector />
-	<TimeSelector />
+	<TimeSelector {startDate} />
 	<div class="map" bind:this={divElement} onmouseleave={containerMouseLeave}></div>
 	{#if mapMouseLocation.lngLat}
 		<pre>{formatLngLat(mapMouseLocation.lngLat, 4)} (C to copy)</pre>

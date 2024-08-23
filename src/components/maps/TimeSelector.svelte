@@ -1,15 +1,80 @@
 <script lang="ts">
-	const firstLabel = $state('Dec 30, 2015');
-	const dateInputValue = $state('2017-06-01');
+	import { fmtDate } from '$src/lib/utils';
+
+	// YYYY-MM-DD
+	const fmtDateValue = (date: Date) => {
+		return date.toISOString().split('T')[0];
+	};
+
+	// const startDate = new Date('2015-12-30');
+
+	const { startDate = new Date('2015-12-30') }: { startDate: Date } = $props();
+	const todayDate = new Date();
+
+	export const selectedDate = $derived(() => new Date(rangeInputValue));
+
+	let rangeInputValue = $state(todayDate.valueOf());
+	let dateInputValue = $state(fmtDateValue(todayDate));
+
+	// on input change update slider if date is valid
+	const dateInputChange = (e: Event) => {
+		console.log('date input change', e);
+
+		if (dateInputValue?.length > 0) {
+			const date = new Date(dateInputValue);
+			if (date >= startDate && date <= todayDate) {
+				console.log('valid date', date);
+				rangeInputValue = date.valueOf();
+			}
+		}
+	};
+
+	// on input blur update date input if range is valid
+	// OR copy always valid range input value to the date input
+	const dateinputOnBlur = (e: Event) => {
+		if (dateInputValue?.length > 0) {
+			const date = new Date(dateInputValue);
+			if (date >= startDate && date <= todayDate) {
+				rangeInputValue = date.valueOf();
+				return;
+			}
+		}
+
+		// dont have a valid date in the date input. copy from range input
+		dateInputValue = fmtDateValue(new Date(rangeInputValue));
+	};
+
+	const rangeInputOnInput = (e: Event) => {
+		const rangeDate = new Date(rangeInputValue);
+		dateInputValue = fmtDateValue(rangeDate);
+	};
+
+	const firstLabel = $derived(fmtDate(startDate));
 </script>
 
 <div class="map-control">
 	<div class="slider-labels">
-		<span class="first-label">{firstLabel}</span>
+		<span class="first-label"
+			>{firstLabel}</span
+		>
 		<span class="last-label">now</span>
 	</div>
-	<input class="date" type="date" value={dateInputValue} />
-	<input class="range" type="range" />
+	<input
+		class="date"
+		type="date"
+		bind:value={dateInputValue}
+		onchange={dateInputChange}
+		onblur={dateinputOnBlur}
+	/>
+	<input
+		class="range"
+		type="range"
+		bind:value={rangeInputValue}
+		min={startDate.valueOf()}
+		max={todayDate.valueOf()}
+		step={86400000}
+		oninput={rangeInputOnInput}
+	/>
 </div>
 
 <style>
@@ -69,7 +134,7 @@
 		}
 
 		input.date:hover {
-			background-color: hsl(0, 0%, 96%);
+			background-color: #18A0D1;
 			color: hsl(0, 0%, 4%);
 		}
 
@@ -109,7 +174,7 @@
 
 		/* fancy slider */
 		input.range {
-			--c: #3D9CBE; /* active color */
+			--c: #18A0D1; /* active color */
 			--l: 4px; /* line thickness*/
 			--h: 20px; /* thumb height */
 			--w: 5px; /* thumb width */
