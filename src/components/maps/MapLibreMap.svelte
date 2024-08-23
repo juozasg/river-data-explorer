@@ -14,7 +14,7 @@
 	import TimeSelector from './TimeSelector.svelte';
 
 	let {
-		zoom = 8,
+		zoom = 7.9,
 		center = [-85.5, 41.825],
 		addSources,
 		addLayers,

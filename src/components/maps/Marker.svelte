@@ -28,6 +28,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	class="marker"
+	data-site-id={site.id}
 	onmouseenter={(e) => markerMouseEnter(e, site)}
 	onmouseleave={(e) => markerMouseLeave(e, site)}
 	class:is-selected={site.id === selectedSite.site?.id}

@@ -27,7 +27,7 @@ export async function loadDatasetsUsgsWS() {
 		const dailies = await usgsDailies.json();
 		const usgsSiteTimeseries = dailies.value.timeSeries;
 
-		// console.log('usgsSiteTimeseries', usgsSiteTimeseries);
+		console.log('usgsSiteTimeseries', usgsSiteTimeseries);
 		usgsTimeseriesToSiteTables(usgsSiteTimeseries);
 	} catch (error) {
 		console.error('Error loading USGS sites', error);

@@ -17,12 +17,13 @@
 
 	$effect(() => {
 		for (const ds of datasets) {
-			datasetsEnabled[ds] = false;
-			// datasetsEnabled[ds] = true;
+			// datasetsEnabled[ds] = false;
+			datasetsEnabled[ds] = true;
 		}
 
-		datasetsEnabled['sjrbc'] = true;
+		// datasetsEnabled['sjrbc'] = true;
 		// datasetsEnabled['usgs'] = true;
+		datasetsEnabled['invert'] = false;
 	});
 
 	interface Props {

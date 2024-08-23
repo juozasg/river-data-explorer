@@ -27,6 +27,7 @@ export async function loadDatasets() {
 
 	const validKeys = Object.keys(variablesMetadata);
 	console.log('known variables', validKeys);
+	const futureDate = new Date((new Date()).valueOf() + 1000 * 60 * 60 * 24 * 2); // 2 days from now
 	for (const r of records) {
 		r.siteId = r.siteId.trim();
 		r.date = r.date.trim();
@@ -34,6 +35,8 @@ export async function loadDatasets() {
 		if (!r.siteId || !r.date) {
 			continue;
 		}
+
+
 		const record: Record<string, any> = {};
 		for (const key in r) {
 			if (key == 'siteId') {
@@ -43,6 +46,11 @@ export async function loadDatasets() {
 			if (validKeys.includes(key) || key == 'date') {
 				record[key] = parseValue(key, r[key] as string);
 			}
+		}
+
+		if(!record.date && isNaN(record.date.valueOf()) || record.date > futureDate) {
+			// console.warn('Invalid date in csv files', r.date, r, record.date);
+			continue
 		}
 
 		const siteRecords = sitesRecords.get(r.siteId) || [];
