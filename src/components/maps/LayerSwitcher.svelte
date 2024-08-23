@@ -22,6 +22,7 @@
 		}
 
 		datasetsEnabled['sjrbc'] = true;
+		// datasetsEnabled['usgs'] = true;
 	});
 
 	interface Props {

@@ -16,7 +16,8 @@
 
 	let { map, markerMouseEnter, markerMouseLeave, site, highlighted }: Props = $props();
 
-	const usgs = $derived(site.dataset === 'usgs');
+	// const red = $derived(site.dataset === 'usgs');
+	const red = false;
 
 	const makeMarker = (node: HTMLElement, site: Site) => {
 		return makeSiteMarker(node, map, site);
@@ -30,7 +31,7 @@
 	onmouseleave={(e) => markerMouseLeave(e, site)}
 	class:is-selected={site.id === selectedSite.site?.id}
 	class:highlighted
-	class:usgs
+	class:red
 	use:makeMarker={site}
 >
 	<div class="marker-box"></div>
@@ -81,7 +82,7 @@
 		}
 	}
 
-	.marker.usgs {
+	.marker.red {
 		.marker-box {
 			/* background-color: #CDF8C0; */
 			width: 15px;

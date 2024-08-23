@@ -100,7 +100,7 @@
 	/>
 
 {#if mlMap}
-	{#each sites.allEnabled as site}
+	{#each sites.allEnabled as site (site.id)}
 		<Marker
 			map={mlMap}
 			{markerMouseEnter}

@@ -14,6 +14,7 @@
 	import { sitesDataStats } from '$src/lib/data/stats';
 	import TooltipSiteStats from '../website/TooltipContentSiteStats.svelte';
 	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
+	import { sitesTables } from '$src/appstate/data/datasets.svelte';
 
 	type Props = {
 		onSelected?: () => void;
@@ -65,6 +66,13 @@
 		// console.log('markermouse', site?.id, site);
 		hoveredSite = null;
 	};
+
+
+	const startDate = $derived.by(() => {
+		const tables = sites.allEnabled.map(s => sitesTables.get(s.id)).filter(t => t);
+		const dates = tables.map(t => t?.get('date')).filter(d => d) as Date[];
+		return new Date(Math.min(...dates.map(d => d.valueOf())));
+	});
 </script>
 
 {#snippet tooltipContent()}
@@ -95,14 +103,14 @@
 	bind:this={mlmComponent}
 	{addSources}
 	{addLayers}
-	{tooltipContent}
 	bind:divElement
 	bind:mlMap
 	{...others}
+	{startDate}
 />
 
 {#if mlMap}
-	{#each sites.allEnabled as site}
+	{#each sites.allEnabled as site (site.id)}
 		<Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site} />
 	{/each}
 {/if}

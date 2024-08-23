@@ -38,6 +38,7 @@
 		hoveredAreaSites.length > 0 ? sitesDataStats(hoveredAreaSites) : undefined
 	);
 
+
 	// debug
 	$effect(() => {
 		if (
@@ -150,7 +151,7 @@
 />
 
 {#if mlMap}
-	{#each sites.allEnabled as site}
+	{#each sites.allEnabled as site (site.id)}
 		<Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site} />
 	{/each}
 {/if}
