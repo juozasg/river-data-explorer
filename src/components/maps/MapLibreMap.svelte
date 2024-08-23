@@ -3,12 +3,12 @@
 
 	import { formatLngLat } from '$lib/copyLngLat';
 	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
-	import { transformStyle } from '$src/lib/data/map/transformMapStyle';
+	import { transformStyle } from '$src/lib/data/map/helpers/transformMapStyle';
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 	import { toggleoffAttribution } from '$src/lib/utils/maplibre';
 	import { onMount } from 'svelte';
 	import LayerSwitcher from './LayerSwitcher.svelte';
-	import { toggleRiverLayerVisibility } from '$src/lib/data/map/mapData';
+	import { toggleRiverLayerVisibility } from '$src/lib/data/map/mapData/mapData';
 	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 	import VariableSelector from './VariableSelector.svelte';
 	import TimeSelector from './TimeSelector.svelte';
@@ -45,6 +45,13 @@
 	export const dataLoaded = () => {
 		return _dataLoaded;
 	};
+
+	let variableSelector: VariableSelector | undefined = $state();
+	let timeSelector: TimeSelector | undefined = $state();
+
+	export const selectedDate = $derived(timeSelector?.selectedDate || new Date());
+	export const selectedVariable: string = $derived(variableSelector?.selectedVariable || 'temp');
+	$inspect('selectedDate', selectedDate);
 
 	$effect(() => {
 		if (!mlMap) return;
@@ -102,8 +109,8 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div style="position: relative; height: 100%" class={containerClass}>
 	<LayerSwitcher bind:baseStyleId bind:showRiverLayer />
-	<VariableSelector />
-	<TimeSelector {startDate} />
+	<VariableSelector bind:this={variableSelector} />
+	<TimeSelector {startDate} bind:this={timeSelector}/>
 	<div class="map" bind:this={divElement} onmouseleave={containerMouseLeave}></div>
 	{#if mapMouseLocation.lngLat}
 		<pre>{formatLngLat(mapMouseLocation.lngLat, 4)} (C to copy)</pre>

@@ -3,7 +3,11 @@
 
 	// YYYY-MM-DD
 	const fmtDateValue = (date: Date) => {
-		return date.toISOString().split('T')[0];
+		try {
+			return date.toISOString().split('T')[0];
+		} catch (e) {
+			return '';
+		}
 	};
 
 	// const startDate = new Date('2015-12-30');
@@ -11,19 +15,16 @@
 	const { startDate = new Date('2015-12-30') }: { startDate: Date } = $props();
 	const todayDate = new Date();
 
-	export const selectedDate = $derived(() => new Date(rangeInputValue));
 
 	let rangeInputValue = $state(todayDate.valueOf());
 	let dateInputValue = $state(fmtDateValue(todayDate));
+	export const selectedDate = $derived(new Date(rangeInputValue));
 
 	// on input change update slider if date is valid
 	const dateInputChange = (e: Event) => {
-		console.log('date input change', e);
-
 		if (dateInputValue?.length > 0) {
 			const date = new Date(dateInputValue);
 			if (date >= startDate && date <= todayDate) {
-				console.log('valid date', date);
 				rangeInputValue = date.valueOf();
 			}
 		}

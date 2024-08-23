@@ -12,9 +12,10 @@
 		markerMouseLeave: (e: MouseEvent, site: Site) => void;
 		site: Site;
 		highlighted?: boolean;
+		color?: string;
 	};
 
-	let { map, markerMouseEnter, markerMouseLeave, site, highlighted }: Props = $props();
+	let { map, markerMouseEnter, markerMouseLeave, site, highlighted, color = 'green'}: Props = $props();
 
 	// const red = $derived(site.dataset === 'usgs');
 	const red = false;
@@ -33,6 +34,7 @@
 	class:highlighted
 	class:red
 	use:makeMarker={site}
+	style="--color: {color};"
 >
 	<div class="marker-box"></div>
 </div>
@@ -48,7 +50,8 @@
 
 			width: 10px;
 			height: 10px;
-			background-color: #ebc0f8;
+			/* background-color: #ebc0f8; */
+			background-color: var(--color);
 		}
 	}
 

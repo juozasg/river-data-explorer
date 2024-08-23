@@ -7,14 +7,15 @@
 
 	import { MLMHoveredFeatureState } from '$src/appstate/map/featureState.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
-	import { addLayers } from '$src/lib/data/map/homePageMapData';
-	import { addSources } from '$src/lib/data/map/mapData';
+	import { addLayers } from '$src/lib/data/map/sourcesLayers/homePageMapData';
+	import { addSources } from '$src/lib/data/map/sourcesLayers/mapData';
 	import type { Site } from '$src/lib/types/site';
 	import Marker from './Marker.svelte';
 	import { sitesDataStats } from '$src/lib/data/stats';
 	import TooltipSiteStats from '../website/TooltipContentSiteStats.svelte';
 	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
+	import { siteVariableColor } from '$src/lib/data/map/helpers/markerHelpers';
 
 	type Props = {
 		onSelected?: () => void;
@@ -44,7 +45,7 @@
 		console.log('HomePageMap onMount', divElement, mlMap, mlmComponent);
 		const map = mlMap!;
 
-		map.on('mousemove', (e: ml.MapMouseEvent ) => {
+		map.on('mousemove', (e: ml.MapMouseEvent) => {
 			hoveredRiver.mouseMove(e, ['sjriver-river']);
 			hoveredArea.mouseMove(e, ['sjriver-huc10']);
 
@@ -67,12 +68,16 @@
 		hoveredSite = null;
 	};
 
-
 	const startDate = $derived.by(() => {
-		const tables = sites.allEnabled.map(s => sitesTables.get(s.id)).filter(t => t);
-		const dates = tables.map(t => t?.get('date')).filter(d => d) as Date[];
-		return new Date(Math.min(...dates.map(d => d.valueOf())));
+		const tables = sites.allEnabled.map((s) => sitesTables.get(s.id)).filter((t) => t);
+		const dates = tables.map((t) => t?.get('date')).filter((d) => d) as Date[];
+		return new Date(Math.min(...dates.map((d) => d.valueOf())));
 	});
+
+
+	function markerColor(site: Site) {
+		return siteVariableColor(site, mlmComponent.selectedVariable, mlmComponent.selectedDate);
+	}
 </script>
 
 {#snippet tooltipContent()}
@@ -93,6 +98,7 @@
 	{#if hoveredSite}
 		<h5 class="site tooltip-section">Site: {hoveredSite.name || ''}</h5>
 		<i>Site ID: {hoveredSite.id}</i>
+		<p>Temperature: 40 C (Mar 29, 2016)</p>
 		{#if hoveredSiteStats}
 			<TooltipSiteStats stats={hoveredSiteStats} />
 		{/if}
@@ -111,7 +117,7 @@
 
 {#if mlMap}
 	{#each sites.allEnabled as site (site.id)}
-		<Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site} />
+		<Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site} color={markerColor(site)} />
 	{/each}
 {/if}
 

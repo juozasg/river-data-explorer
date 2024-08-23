@@ -3,12 +3,12 @@
 	import { onMount } from 'svelte';
 
 	import type { MapLibreMapProps } from '$lib/types/components';
-	import { addLayers } from '$src/lib/data/map/sitesMapData';
+	import { addLayers } from '$src/lib/data/map/mapData/sitesMapData';
 	import MapLibreMap from './MapLibreMap.svelte';
 
 	import { hoveredSite, selectedRegion, selectedSite } from '$src/appstate/map/featureState.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
-	import { addSources } from '$src/lib/data/map/mapData';
+	import { addSources } from '$src/lib/data/map/mapData/mapData';
 	import type { Site } from '$src/lib/types/site';
 	import { fitFeatureBounds, makeSiteMarker, setFeatureState } from '$src/lib/utils/maplibre';
 	import Marker from './Marker.svelte';

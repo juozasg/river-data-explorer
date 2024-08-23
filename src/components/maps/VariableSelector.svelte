@@ -1,3 +1,9 @@
+<script lang="ts">
+	let selectedVariable = $state('temp');
+
+	export const selectedVarname = $derived(selectedVariable);
+</script>
+
 <!-- <div class="map-control">
 	<select>
 		<option value="topo">Topographic</option>

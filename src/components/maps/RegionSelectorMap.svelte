@@ -4,7 +4,7 @@
 
 	import MapLibreMap from './MapLibreMap.svelte';
 	import type { MapLibreMapProps } from '$src/lib/types/components';
-	import { addLayers } from '$src/lib/data/map/areasMapData';
+	import { addLayers } from '$src/lib/data/map/mapData/areasMapData';
 	import {
 		MLMHoveredFeatureState,
 		selectedRegion,
@@ -12,7 +12,7 @@
 	} from '$src/appstate/map/featureState.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
 	import type { Site } from '$src/lib/types/site';
-	import { addSources } from '$src/lib/data/map/mapData';
+	import { addSources } from '$src/lib/data/map/mapData/mapData';
 	import Marker from './Marker.svelte';
 	import { sitesDataStats } from '$src/lib/data/stats';
 	import TooltipSiteStats from '../website/TooltipContentSiteStats.svelte';
