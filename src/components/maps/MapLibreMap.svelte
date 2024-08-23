@@ -59,8 +59,12 @@
 			style,
 			center, // starting position [lng, lat]
 			zoom, // starting zoom
-			minZoom: 3
+			minZoom: 3,
+			attributionControl: false
 		});
+
+		mlMap.addControl(new ml.AttributionControl(), 'bottom-right');
+
 
 		// only fires for the initial style, not for map.setStyle
 		mlMap.once('idle', () => {
