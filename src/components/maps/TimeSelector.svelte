@@ -65,6 +65,8 @@
 		bind:value={dateInputValue}
 		onchange={dateInputChange}
 		onblur={dateinputOnBlur}
+		min={fmtDateValue(startDate)}
+		max={fmtDateValue(todayDate)}
 	/>
 	<input
 		class="range"
@@ -100,10 +102,10 @@
 		}
 
 		.last-label {
-			right: 24px;
+			right: 30px;
 			@-moz-document url-prefix() {
 				/* not great but input date native style */
-				right: 12px;
+				right: 22px;
 			}
 		}
 	}
