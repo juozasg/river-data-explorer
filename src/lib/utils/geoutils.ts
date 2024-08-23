@@ -1,7 +1,5 @@
 import * as ml from 'maplibre-gl';
 
-
-
 export function bounds(coordinates: ml.LngLatLike[] | GeoJSON.Position[]): ml.LngLatBounds {
 	// Pass the first coordinates in the LineString to `lngLatBounds` &
 	// wrap each coordinate pair in `extend` to include them in the bounds

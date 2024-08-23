@@ -15,7 +15,7 @@ export function siteVariableColor(site: Site, varname: string, beforeDate?: Date
 	try {
 		const table = sitesTables.get(site.id);
 		if (!table) return ghost;
-		if (!table.columnNames().includes(varname)) return ghost;
+
 
 		const value = table.get(varname, 0);
 		if (value === undefined) return ghost;

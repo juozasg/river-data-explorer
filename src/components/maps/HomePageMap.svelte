@@ -7,8 +7,8 @@
 
 	import { MLMHoveredFeatureState } from '$src/appstate/map/featureState.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
-	import { addLayers } from '$src/lib/data/map/sourcesLayers/homePageMapData';
-	import { addSources } from '$src/lib/data/map/sourcesLayers/mapData';
+	import { addLayers } from '$src/lib/data/map/mapData/homePageMapData';
+	import { addSources } from '$src/lib/data/map/mapData/mapData';
 	import type { Site } from '$src/lib/types/site';
 	import Marker from './Marker.svelte';
 	import { sitesDataStats } from '$src/lib/data/stats';

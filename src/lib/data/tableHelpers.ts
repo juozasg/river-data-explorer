@@ -1,3 +1,11 @@
+import snarkdown from 'snarkdown';
+
+if(typeof window !== 'undefined') {
+	// @ts-ignore
+	window.snarkdown = snarkdown;
+}
+
+
 import { variablesBriefMarkdown } from '$src/appstate/variablesMetadata.svelte';
 import  * as aq from 'arquero';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
@@ -25,8 +33,27 @@ export function concatTablesAllColumns(tables: ColumnTable[]): ColumnTable {
 
 export function tooltipText(varname: string): string  {
 	if(variablesBriefMarkdown.get(varname)) {
-		return variablesBriefMarkdown.get(varname) as string;
+		return snarkdown(variablesBriefMarkdown.get(varname) as string);
 	} else {
 		return `Variable: ${varname}`;
 	}
+}
+
+
+export function tableIndexBeforeDate(table: ColumnTable, date: Date): number {
+	return 0;
+}
+
+
+export function tableBeforeDate(table: ColumnTable, varname: string, date?: Date): number | undefined {
+	if (!table.columnNames().includes(varname)) return undefined;
+
+	const timeIndex = date ? tableIndexBeforeDate(table, date) : table.numRows() - 1;
+	try {
+		return table.get(varname, timeIndex);
+	} catch (e) {
+		console.error('varValueBeforeDate', e);
+		return undefined;
+	}
+
 }
