@@ -65,7 +65,6 @@
 		const rangeFraction =
 			(parseInt(rangeInputValue as any) - startDate.valueOf()) /
 			(endDate.valueOf() - startDate.valueOf());
-			console.log(rangeFraction);
 
 			if(firstLabelE){
 				firstLabelE.style.opacity = `${rangeFraction * 1}`;
@@ -91,15 +90,6 @@
 		step={86400000}
 		oninput={rangeInputOnInput}
 	/>
-	<!-- <input
-		class="date"
-		type="date"
-		bind:value={dateInputValue}
-		onchange={dateInputChange}
-		onblur={dateinputOnBlur}
-		min={fmtDateValue(startDate)}
-		max={fmtDateValue(endDate)}
-	/> -->
 
 	<DateYMDSelects {startDate} {endDate} onChange={onYMDChange} />
 </div>
@@ -125,10 +115,6 @@
 			z-index: 1000;
 			pointer-events: none;
 		}
-
-		/* span:hover {
-			display: none;
-		} */
 		.first-label {
 			left: -6px;
 		}
@@ -233,20 +219,5 @@
 			}
 		}
 
-		/* normalize date input between chrome and firefox */
-		/* input[type='date'] {
-			-webkit-align-items: center;
-			align-items: center;
-			display: -webkit-inline-flex;
-			overflow: hidden;
-			-webkit-padding-start: 1px;
-			padding: 0;
-		} */
-		input::-webkit-calendar-picker-indicator {
-			/* padding-left: 10px; */
-			/* padding-right: 10px; */
-			/* left: 10px; */
-			/* position: relative; */
-		}
 	}
 </style>

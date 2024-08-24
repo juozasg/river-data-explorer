@@ -69,6 +69,10 @@ export function fmtDateValue(date: Date) {
 	return date.toISOString().split('T')[0];
 };
 
+export function daysInMonth(year: number, month: number) {
+	return new Date(year, month, 0).getDate();
+}
+
 
 
 export function oneMonthAgo() {

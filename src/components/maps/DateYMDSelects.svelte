@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fmtDate, fmtDateValue, fmtDateYmd } from '$src/lib/utils';
+	import { daysInMonth, fmtDate, fmtDateValue, fmtDateYmd } from '$src/lib/utils';
 
 	// const startDate = new Date('2015-12-30');
 
@@ -9,50 +9,61 @@
 		onChange
 	}: { startDate: Date; endDate: Date; onChange: (date: Date) => void } = $props();
 
+	const startYear = $derived(startDate.getFullYear());
+	const endYear = $derived(endDate.getFullYear());
+	const yearsArray = $derived(
+		Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i)
+	);
+
+	let selectedYear: number = $state(2020);
+	let selectedMon: number = $state(1);
+	let selectedDay: number = $state(1);
+	let daysInSelectedMonth = $derived(daysInMonth(selectedYear, selectedMon));
+
+	$effect(() => {
+		selectedYear = endYear;
+		selectedMon = endDate.getMonth() + 1;
+		selectedDay = endDate.getDate();
+	});
+
+	$effect(() => {
+		if(selectedDay > daysInSelectedMonth) {
+			selectedDay = daysInSelectedMonth;
+		}
+	});
+
+	$effect(() => {
+		// console.log('startYear', startDate);
+		// console.log('endYear', endDate);
+		console.log(selectedYear, selectedMon, selectedDay, daysInSelectedMonth);
+	});
 </script>
 
 <div class="date-selects">
-	<select style="width: 4rem;">
-		<option value="2001">2901</option>
-		<option value="2002">2902</option>
-		<option value="2003">2903</option>
-		<option value="2004">2904</option>
-		<option value="2005">2905</option>
-		<option value="2006">2906</option>
-		<option value="2007">2907</option>
-		<option value="2008">2908</option>
-		<option value="2009">2909</option>
-		<option value="2010">2910</option>
-		<option value="2011">2911</option>
-		<option value="2012">2912</option>
+	<select style="width: 4rem;" bind:value={selectedYear}>
+		{#each yearsArray as year}
+			<option value={year}>{year}</option>
+		{/each}
 	</select>
-	<select style="width: 3.25rem;">
-		<option value="1">Jan</option>
-		<option value="2">02</option>
-		<option value="3">03</option>
-		<option value="4">04</option>
-		<option value="5">05</option>
-		<option value="6">06</option>
-		<option value="7">07</option>
-		<option value="8">08</option>
-		<option value="9">09</option>
-		<option value="10">10</option>
-		<option value="11">11</option>
-		<option value="12">12</option>
+	<!-- <select style="width: 3.25rem;" bind:value={selectedMon}> -->
+	<select style="width: 3.25rem;" bind:value={selectedMon}>
+		<option value={1}>Jan</option>
+		<option value={2}>Feb</option>
+		<option value={3}>Mar</option>
+		<option value={4}>Apr</option>
+		<option value={5}>May</option>
+		<option value={6}>Jun</option>
+		<option value={7}>Jul</option>
+		<option value={8}>Aug</option>
+		<option value={9}>Sep</option>
+		<option value={10}>Oct</option>
+		<option value={11}>Nov</option>
+		<option value={12}>Dec</option>
 	</select>
-	<select style="width: 2.8rem;">
-		<option value="1">01</option>
-		<option value="2">02</option>
-		<option value="3">03</option>
-		<option value="4">04</option>
-		<option value="5">05</option>
-		<option value="6">06</option>
-		<option value="7">07</option>
-		<option value="8">08</option>
-		<option value="9">09</option>
-		<option value="10">10</option>
-		<option value="11">11</option>
-		<option value="12">12</option>
+	<select style="width: 2.8rem;" bind:value={selectedDay}>
+		{#each Array.from({ length: daysInSelectedMonth }, (_, i) => i + 1) as day}
+			<option value={day}>{day}</option>
+		{/each}
 	</select>
 </div>
 
