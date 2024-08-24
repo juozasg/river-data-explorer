@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { fmtDate, fmtDateValue } from '$src/lib/utils';
+	import DateYMDSelects from './DateYMDSelects.svelte';
 
+	import { fmtDate, fmtDateValue, fmtDateYmd } from '$src/lib/utils';
 
 	// const startDate = new Date('2015-12-30');
 
@@ -8,9 +9,6 @@
 		startDate = new Date('2015-12-30'),
 		endDate = new Date()
 	}: { startDate: Date; endDate?: Date } = $props();
-
-
-
 
 	let dateInputValue = $state(fmtDateValue(endDate));
 	let rangeInputValue: number | string = $state(endDate.valueOf());
@@ -53,25 +51,47 @@
 		dateInputValue = fmtDateValue(rangeDate);
 	};
 
-	const firstLabel = $derived(fmtDate(startDate));
-	const lastLabel = $derived(fmtDate(endDate));
+	const firstLabel = $derived(fmtDateYmd(startDate));
+	const lastLabel = $derived(fmtDateYmd(endDate));
+
+	const onYMDChange = (date: Date) => {
+		console.log('YMD date', date);
+	};
+
+	let firstLabelE = $state<HTMLElement>();
+	let lastLabelE = $state<HTMLElement>();
+
+	$effect(() => {
+		const rangeFraction =
+			(parseInt(rangeInputValue as any) - startDate.valueOf()) /
+			(endDate.valueOf() - startDate.valueOf());
+			console.log(rangeFraction);
+
+			if(firstLabelE){
+				firstLabelE.style.opacity = `${rangeFraction * 1}`;
+			}
+			if(lastLabelE){
+				lastLabelE.style.opacity = `${(1-rangeFraction) * 1}`;
+			}
+
+	});
 </script>
 
 <div class="map-control">
 	<div class="slider-labels">
-		<span class="first-label">{firstLabel}</span>
-		<span class="last-label">{lastLabel}</span>
+		<span class="first-label" bind:this={firstLabelE}>{firstLabel}</span>
+		<span class="last-label" bind:this={lastLabelE}>{lastLabel}</span>
 	</div>
 	<input
-	class="range"
-	type="range"
-	bind:value={rangeInputValue}
-	min={startDate.valueOf()}
-	max={endDate.valueOf()}
-	step={86400000}
-	oninput={rangeInputOnInput}
+		class="range"
+		type="range"
+		bind:value={rangeInputValue}
+		min={startDate.valueOf()}
+		max={endDate.valueOf()}
+		step={86400000}
+		oninput={rangeInputOnInput}
 	/>
-	<input
+	<!-- <input
 		class="date"
 		type="date"
 		bind:value={dateInputValue}
@@ -79,13 +99,15 @@
 		onblur={dateinputOnBlur}
 		min={fmtDateValue(startDate)}
 		max={fmtDateValue(endDate)}
-	/>
+	/> -->
+
+	<DateYMDSelects {startDate} {endDate} onChange={onYMDChange} />
 </div>
 
 <style>
 	.slider-labels {
 		position: absolute;
-		top: 0;
+		bottom: 0;
 		left: 12px;
 		width: calc(100% - 160px);
 		height: 16px;
@@ -93,23 +115,26 @@
 		span {
 			display: block;
 			position: absolute;
-			font-size: 0.9rem;
-			top: 2px;
+			font-size: 0.8rem;
+			bottom: 5px;
+			/* font-weight: 600; */
+			padding: 0.25rem;
+			background-color: hsla(0, 0%, 100%, 0.8);
+			opacity: 1;
+			border-radius: 4px;
+			z-index: 1000;
+			pointer-events: none;
 		}
+
+		/* span:hover {
+			display: none;
+		} */
 		.first-label {
-			left: 4px;
-			@-moz-document url-prefix() {
-				/* not great but input date native style */
-				/* left: 0px; */
-			}
+			left: -6px;
 		}
 
 		.last-label {
-			right: 22px;
-			@-moz-document url-prefix() {
-				/* not great but input date native style */
-				right: 22px;
-			}
+			right: 46px;
 		}
 	}
 
@@ -121,6 +146,7 @@
 		bottom: 0px;
 		left: 0px;
 		width: calc(100% - 2rem);
+		height: 36px;
 		margin: 1rem;
 
 		margin-bottom: 18px;
@@ -138,36 +164,13 @@
 			opacity: 1;
 		}
 
-		input.date:hover {
-			background-color: #18a0d1;
-			color: hsl(0, 0%, 4%);
-		}
-
-		/* border: 1px dotted red; */
-
-		input.date {
-			width: 130px;
-			@-moz-document url-prefix() {
-				width: 140px;
-			}
-
-			padding: 0px;
-
-			/* border-right: 1px solid hsl(0, 0%, 86%); */
-			position: relative;
-			top: 0px;
-			margin-left: 6px;
-			/* padding-right: 0px; */
-			/* margin-right: */
-			/* padding: 0; */
-			/* margin: 0; */
-		}
-
 		input.range {
-			width: calc(100% - 166px);
-			position: relative;
-			bottom: -6px;
+			width: calc(100% - 200px);
+			/* position: relative; */
+			position: absolute;
+			bottom: 2px;
 			left: 6px;
+			cursor: col-resize !important;
 		}
 
 		input {
@@ -181,7 +184,7 @@
 		input.range {
 			--c: #18a0d1; /* active color */
 			--l: 4px; /* line thickness*/
-			--h: 20px; /* thumb height */
+			--h: 30px; /* thumb height */
 			--w: 5px; /* thumb width */
 
 			/* width: 400px; */
@@ -201,6 +204,8 @@
 
 		/* chromium */
 		input[type='range' i]::-webkit-slider-thumb {
+			z-index: 10001;
+
 			height: var(--h);
 			width: var(--w);
 			background: var(--_c);
@@ -212,6 +217,7 @@
 		}
 		/* Firefox */
 		input[type='range']::-moz-range-thumb {
+			z-index: 10001;
 			height: var(--h);
 			width: var(--w);
 			background: var(--_c);
@@ -228,15 +234,14 @@
 		}
 
 		/* normalize date input between chrome and firefox */
-		input[type='date'] {
+		/* input[type='date'] {
 			-webkit-align-items: center;
 			align-items: center;
 			display: -webkit-inline-flex;
-			/* font-family: monospace; */
 			overflow: hidden;
 			-webkit-padding-start: 1px;
 			padding: 0;
-		}
+		} */
 		input::-webkit-calendar-picker-indicator {
 			/* padding-left: 10px; */
 			/* padding-right: 10px; */

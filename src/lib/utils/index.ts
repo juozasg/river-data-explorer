@@ -55,6 +55,11 @@ export function fmtDate(date: Date | undefined): string {
 	return `${shortMon(date)} ${date.getDate()}, ${date.getFullYear()}`;
 }
 
+export function fmtDateYmd(date: Date | undefined): string {
+	if (!date) return 'N/A';
+	return `${date.getFullYear()} ${shortMon(date)} ${date.getDate()}`;
+}
+
 // YYYY-MM-DD
 export function fmtDateValue(date: Date) {
 	if (!date || isNaN(date.valueOf())) return '';
