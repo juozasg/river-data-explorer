@@ -12,9 +12,6 @@
 
 	let rangeInputValue: number | string = $state(endDate.valueOf());
 	$effect(() => {
-		console.log('endDate updated', endDate);
-		// rangeInputValue = endDate.valueOf();
-		// const rangeDate = new Date(rangeInputValue);
 		ymdSelector?.setYMD(endDate.getUTCFullYear(), endDate.getUTCMonth() + 1, endDate.getUTCDate());
 	});
 
@@ -24,8 +21,6 @@
 	let ymdSelector = $state<DateYMDSelects>();
 	const rangeInputOnInput = (e: Event) => {
 		const rangeDate = new Date(rangeInputValue);
-		console.log('range input ', fmtDateYmd(rangeDate), fmtDateYmd(startDate), fmtDateYmd(endDate));
-
 		ymdSelector?.setYMD(rangeDate.getUTCFullYear(), rangeDate.getUTCMonth() + 1, rangeDate.getUTCDate());
 	};
 
@@ -33,13 +28,8 @@
 	const lastLabel = $derived(fmtDateYmd(endDate));
 
 	const onYMDChange = (date: Date) => {
-		console.log('onYMDChange', fmtDateYmd(date));
 		if (date >= startDate && date <= endDate) {
 			rangeInputValue = date.valueOf();
-		} else {
-			// console.log('out of range', fmtDateYmd(date), fmtDateYmd(startDate), fmtDateYmd(endDate));
-			// const rangeDate = new Date(rangeInputValue);
-			// ymdSelector?.setYMD(rangeDate.getUTCFullYear(), rangeDate.getUTCMonth() + 1, rangeDate.getUTCDate());
 		}
 	};
 
@@ -47,7 +37,6 @@
 	let lastLabelE = $state<HTMLElement>();
 
 	$effect(() => {
-		console.log('rangeValue', rangeInputValue);
 		const rangeFraction =
 			(parseInt(rangeInputValue as any) - startDate.valueOf()) /
 			(endDate.valueOf() - startDate.valueOf());

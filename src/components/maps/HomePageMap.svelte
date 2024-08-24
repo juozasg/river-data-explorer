@@ -85,7 +85,7 @@
 		if (dates.length === 0) return new Date();
 		// console.log('DATES', dates);
 		const maxDate = new Date(Math.max(...dates.map((d) => d.valueOf())));
-		console.log('DATES MAXXX', maxDate);
+		// console.log('DATES MAXXX', maxDate);
 		return maxDate;
 	});
 

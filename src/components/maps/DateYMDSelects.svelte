@@ -2,7 +2,6 @@
 	import { daysInMonth } from '$src/lib/utils';
 
 	export function setYMD(year: number, mon: number, day: number) {
-		console.log('setYMD', year, mon, day);
 		selectedYear = year;
 		selectedMon = mon;
 		selectedDay = day;
@@ -21,14 +20,14 @@
 	});
 
 	$effect(() => {
-		console.log('selectedDate UPDATED', selectedDate, startDate, endDate);
+		// console.log('selectedDate UPDATED', selectedDate, startDate, endDate);
 		if (selectedDate < startDate) {
-			console.log('selectedDate < startDate', selectedDate, startDate);
+			// console.log('selectedDate < startDate', selectedDate, startDate);
 			selectedYear = startDate.getUTCFullYear();
 			selectedMon = startDate.getUTCMonth() + 1;
 			selectedDay = startDate.getUTCDate();
 		} else if (selectedDate > endDate) {
-			console.log('selectedDate > endDate', selectedDate, endDate);
+			// console.log('selectedDate > endDate', selectedDate, endDate);
 			selectedYear = endDate.getUTCFullYear();
 			selectedMon = endDate.getUTCMonth() + 1;
 			selectedDay = endDate.getUTCDate();
@@ -48,7 +47,6 @@
 
 	export const selectedDate: Date = $derived(
 		new Date(Date.UTC(selectedYear, selectedMon - 1, selectedDay))
-		// new Date(`${selectedYear}-${selectedMon}-${selectedDay}`)
 	);
 
 
