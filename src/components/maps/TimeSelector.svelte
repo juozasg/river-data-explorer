@@ -1,14 +1,17 @@
 <script lang="ts">
 	import DateYMDSelects from './DateYMDSelects.svelte';
 
-	import { fmtDateYmd } from '$src/lib/utils';
+	import { fmtDate, fmtDateYmd } from '$src/lib/utils';
 
-	// const startDate = new Date('2015-12-30');
 
 	const {
 		startDate,
 		endDate
 	}: { startDate: Date; endDate: Date } = $props();
+
+	$effect(() => {
+		console.log('TimeSelector startDate ', fmtDate(startDate),'endDate', fmtDate(endDate));
+	});
 
 	let rangeInputValue: number | string = $state(endDate.valueOf());
 	$effect(() => {

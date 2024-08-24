@@ -70,7 +70,7 @@ export function fmtDateValue(date: Date) {
 };
 
 export function daysInMonth(year: number, month: number) {
-	return new Date(year, month, 0).getUTCDate();
+	return new Date(year, month, 0).getDate();
 }
 
 
