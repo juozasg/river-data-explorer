@@ -9,9 +9,9 @@
 export function strftime(sFormat: string, date: Date) {
   // if (!(date instanceof Date)) date = new Date();
   var nDay = date.getDay(),
-    nDate = date.getDate(),
-    nMonth = date.getMonth(),
-    nYear = date.getFullYear(),
+    nDate = date.getUTCDate(),
+    nMonth = date.getUTCMonth(),
+    nYear = date.getUTCFullYear(),
     nHour = date.getHours(),
     aDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     aMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -38,8 +38,8 @@ export function strftime(sFormat: string, date: Date) {
       '%d': zeroPad(nDate, 2),
       '%e': nDate,
       '%F': date.toISOString().slice(0,10),
-      '%G': getThursday().getFullYear(),
-      '%g': (getThursday().getFullYear() + '').slice(2),
+      '%G': getThursday().getUTCFullYear(),
+      '%g': (getThursday().getUTCFullYear() + '').slice(2),
       '%H': zeroPad(nHour, 2),
       '%I': zeroPad((nHour+11)%12 + 1, 2),
       '%j': zeroPad(aDayCount[nMonth] + nDate + ((nMonth>1 && isLeapYear()) ? 1 : 0), 3),

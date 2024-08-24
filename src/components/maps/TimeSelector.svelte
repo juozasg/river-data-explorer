@@ -15,7 +15,7 @@
 		console.log('endDate updated', endDate);
 		// rangeInputValue = endDate.valueOf();
 		// const rangeDate = new Date(rangeInputValue);
-		ymdSelector?.setYMD(endDate.getFullYear(), endDate.getMonth() + 1, endDate.getDate());
+		ymdSelector?.setYMD(endDate.getUTCFullYear(), endDate.getUTCMonth() + 1, endDate.getUTCDate());
 	});
 
 	export const selectedDate = $derived(new Date(parseInt(rangeInputValue as any)));
@@ -26,7 +26,7 @@
 		const rangeDate = new Date(rangeInputValue);
 		console.log('range input ', fmtDateYmd(rangeDate), fmtDateYmd(startDate), fmtDateYmd(endDate));
 
-		ymdSelector?.setYMD(rangeDate.getFullYear(), rangeDate.getMonth() + 1, rangeDate.getDate());
+		ymdSelector?.setYMD(rangeDate.getUTCFullYear(), rangeDate.getUTCMonth() + 1, rangeDate.getUTCDate());
 	};
 
 	const firstLabel = $derived(fmtDateYmd(startDate));
@@ -39,7 +39,7 @@
 		} else {
 			// console.log('out of range', fmtDateYmd(date), fmtDateYmd(startDate), fmtDateYmd(endDate));
 			// const rangeDate = new Date(rangeInputValue);
-			// ymdSelector?.setYMD(rangeDate.getFullYear(), rangeDate.getMonth() + 1, rangeDate.getDate());
+			// ymdSelector?.setYMD(rangeDate.getUTCFullYear(), rangeDate.getUTCMonth() + 1, rangeDate.getUTCDate());
 		}
 	};
 

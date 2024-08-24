@@ -15,36 +15,40 @@
 	}: { startDate: Date; endDate: Date; onChange: (date: Date) => void } = $props();
 
 	$effect(() => {
-		selectedYear = endDate.getFullYear();
-		selectedMon = endDate.getMonth() + 1;
-		selectedDay = endDate.getDate();
+		selectedYear = endDate.getUTCFullYear();
+		selectedMon = endDate.getUTCMonth() + 1;
+		selectedDay = endDate.getUTCDate();
 	});
 
 	$effect(() => {
+		console.log('selectedDate UPDATED', selectedDate, startDate, endDate);
 		if (selectedDate < startDate) {
-			selectedYear = startDate.getFullYear();
-			selectedMon = startDate.getMonth() + 1;
-			selectedDay = startDate.getDate();
+			console.log('selectedDate < startDate', selectedDate, startDate);
+			selectedYear = startDate.getUTCFullYear();
+			selectedMon = startDate.getUTCMonth() + 1;
+			selectedDay = startDate.getUTCDate();
 		} else if (selectedDate > endDate) {
-			selectedYear = endDate.getFullYear();
-			selectedMon = endDate.getMonth() + 1;
-			selectedDay = endDate.getDate();
+			console.log('selectedDate > endDate', selectedDate, endDate);
+			selectedYear = endDate.getUTCFullYear();
+			selectedMon = endDate.getUTCMonth() + 1;
+			selectedDay = endDate.getUTCDate();
 		}
 	});
 
-	const startYear = $derived(startDate.getFullYear());
-	const endYear = $derived(endDate.getFullYear());
+	const startYear = $derived(startDate.getUTCFullYear());
+	const endYear = $derived(endDate.getUTCFullYear());
 	const yearsArray = $derived(
 		Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i)
 	);
 
-	let selectedYear: number = $state(endDate.getFullYear());
-	let selectedMon: number = $state(endDate.getMonth() + 1);
-	let selectedDay: number = $state(endDate.getDate());
+	let selectedYear: number = $state(endDate.getUTCFullYear());
+	let selectedMon: number = $state(endDate.getUTCMonth() + 1);
+	let selectedDay: number = $state(endDate.getUTCDate());
 	let daysInSelectedMonth = $derived(daysInMonth(selectedYear, selectedMon));
 
 	export const selectedDate: Date = $derived(
-		new Date(`${selectedYear}-${selectedMon}-${selectedDay}`)
+		new Date(Date.UTC(selectedYear, selectedMon - 1, selectedDay))
+		// new Date(`${selectedYear}-${selectedMon}-${selectedDay}`)
 	);
 
 

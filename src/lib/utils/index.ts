@@ -52,12 +52,12 @@ export function varunits(varname: string, parens = true) {
 const shortMon = (date: Date): string => date.toLocaleString('default', { month: 'short' });
 export function fmtDate(date: Date | undefined): string {
 	if (!date) return 'N/A';
-	return `${shortMon(date)} ${date.getDate()}, ${date.getFullYear()}`;
+	return `${shortMon(date)} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
 }
 
 export function fmtDateYmd(date: Date | undefined): string {
 	if (!date) return 'N/A';
-	return `${date.getFullYear()} ${shortMon(date)} ${date.getDate()}`;
+	return `${date.getUTCFullYear()} ${shortMon(date)} ${date.getUTCDate()}`;
 }
 
 // YYYY-MM-DD
@@ -70,7 +70,7 @@ export function fmtDateValue(date: Date) {
 };
 
 export function daysInMonth(year: number, month: number) {
-	return new Date(year, month, 0).getDate();
+	return new Date(year, month, 0).getUTCDate();
 }
 
 
@@ -83,9 +83,9 @@ export function oneMonthAgo() {
 
 
 export function dateEqualYMD(date1: Date, date2: Date): boolean {
-	return date1.getFullYear() === date2.getFullYear() &&
-		date1.getMonth() === date2.getMonth() &&
-		date1.getDate() === date2.getDate();
+	return date1.getUTCFullYear() === date2.getUTCFullYear() &&
+		date1.getUTCMonth() === date2.getUTCMonth() &&
+		date1.getUTCDate() === date2.getUTCDate();
 }
 
 
