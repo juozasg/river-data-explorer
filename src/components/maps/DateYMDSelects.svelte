@@ -1,13 +1,36 @@
 <script lang="ts">
-	import { daysInMonth, fmtDate, fmtDateValue, fmtDateYmd } from '$src/lib/utils';
+	import { daysInMonth } from '$src/lib/utils';
 
-	// const startDate = new Date('2015-12-30');
+	export function setYMD(year: number, mon: number, day: number) {
+		console.log('setYMD', year, mon, day);
+		selectedYear = year;
+		selectedMon = mon;
+		selectedDay = day;
+	}
 
 	const {
-		startDate = new Date('2015-12-30'),
-		endDate = new Date(),
+		startDate,
+		endDate,
 		onChange
 	}: { startDate: Date; endDate: Date; onChange: (date: Date) => void } = $props();
+
+	$effect(() => {
+		selectedYear = endDate.getFullYear();
+		selectedMon = endDate.getMonth() + 1;
+		selectedDay = endDate.getDate();
+	});
+
+	$effect(() => {
+		if (selectedDate < startDate) {
+			selectedYear = startDate.getFullYear();
+			selectedMon = startDate.getMonth() + 1;
+			selectedDay = startDate.getDate();
+		} else if (selectedDate > endDate) {
+			selectedYear = endDate.getFullYear();
+			selectedMon = endDate.getMonth() + 1;
+			selectedDay = endDate.getDate();
+		}
+	});
 
 	const startYear = $derived(startDate.getFullYear());
 	const endYear = $derived(endDate.getFullYear());
@@ -15,27 +38,24 @@
 		Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i)
 	);
 
-	let selectedYear: number = $state(2020);
-	let selectedMon: number = $state(1);
-	let selectedDay: number = $state(1);
+	let selectedYear: number = $state(endDate.getFullYear());
+	let selectedMon: number = $state(endDate.getMonth() + 1);
+	let selectedDay: number = $state(endDate.getDate());
 	let daysInSelectedMonth = $derived(daysInMonth(selectedYear, selectedMon));
 
+	export const selectedDate: Date = $derived(
+		new Date(`${selectedYear}-${selectedMon}-${selectedDay}`)
+	);
+
+
 	$effect(() => {
-		selectedYear = endYear;
-		selectedMon = endDate.getMonth() + 1;
-		selectedDay = endDate.getDate();
+		onChange(selectedDate);
 	});
 
 	$effect(() => {
-		if(selectedDay > daysInSelectedMonth) {
+		if (selectedDay > daysInSelectedMonth) {
 			selectedDay = daysInSelectedMonth;
 		}
-	});
-
-	$effect(() => {
-		// console.log('startYear', startDate);
-		// console.log('endYear', endDate);
-		console.log(selectedYear, selectedMon, selectedDay, daysInSelectedMonth);
 	});
 </script>
 
@@ -45,7 +65,6 @@
 			<option value={year}>{year}</option>
 		{/each}
 	</select>
-	<!-- <select style="width: 3.25rem;" bind:value={selectedMon}> -->
 	<select style="width: 3.25rem;" bind:value={selectedMon}>
 		<option value={1}>Jan</option>
 		<option value={2}>Feb</option>
@@ -73,11 +92,12 @@
 		display: inline-block;
 		width: 180px;
 		top: 5px;
-		right: 6px;
+		right: -4px;
+		/* height: 30px; */
 
 		select {
 			width: 60px;
-			height: 30px;
+			height: 28px;
 			font-size: 1rem;
 			border: 1px solid hsl(0, 0%, 46%);
 			border-radius: 4px;

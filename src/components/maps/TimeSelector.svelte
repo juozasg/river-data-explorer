@@ -1,78 +1,63 @@
 <script lang="ts">
 	import DateYMDSelects from './DateYMDSelects.svelte';
 
-	import { fmtDate, fmtDateValue, fmtDateYmd } from '$src/lib/utils';
+	import { fmtDateYmd } from '$src/lib/utils';
 
 	// const startDate = new Date('2015-12-30');
 
 	const {
-		startDate = new Date('2015-12-30'),
-		endDate = new Date()
-	}: { startDate: Date; endDate?: Date } = $props();
+		startDate,
+		endDate
+	}: { startDate: Date; endDate: Date } = $props();
 
-	let dateInputValue = $state(fmtDateValue(endDate));
 	let rangeInputValue: number | string = $state(endDate.valueOf());
+	$effect(() => {
+		console.log('endDate updated', endDate);
+		// rangeInputValue = endDate.valueOf();
+		// const rangeDate = new Date(rangeInputValue);
+		ymdSelector?.setYMD(endDate.getFullYear(), endDate.getMonth() + 1, endDate.getDate());
+	});
+
 	export const selectedDate = $derived(new Date(parseInt(rangeInputValue as any)));
 
-	// $effect(() => {
-	// 	console.log('SLIDERS startDate', startDate);
-	// 	console.log('SLIDERS endDate', endDate);
-	// 	console.log('SLIDERS rangeInputValue', rangeInputValue, typeof rangeInputValue);
-	// 	console.log('SLIDERS selectedDate', selectedDate);
-	// });
 
-	// on input change update slider if date is valid
-	const dateInputChange = (e: Event) => {
-		if (dateInputValue?.length > 0) {
-			const date = new Date(dateInputValue);
-			if (date >= startDate && date <= endDate) {
-				rangeInputValue = date.valueOf();
-			}
-		}
-	};
-
-	// on input blur update date input if range is valid
-	// OR copy always valid range input value to the date input
-	const dateinputOnBlur = (e: Event) => {
-		if (dateInputValue?.length > 0) {
-			const date = new Date(dateInputValue);
-			if (date >= startDate && date <= endDate) {
-				rangeInputValue = date.valueOf();
-				return;
-			}
-		}
-
-		// dont have a valid date in the date input. copy from range input
-		dateInputValue = fmtDateValue(new Date(rangeInputValue));
-	};
-
+	let ymdSelector = $state<DateYMDSelects>();
 	const rangeInputOnInput = (e: Event) => {
 		const rangeDate = new Date(rangeInputValue);
-		dateInputValue = fmtDateValue(rangeDate);
+		console.log('range input ', fmtDateYmd(rangeDate), fmtDateYmd(startDate), fmtDateYmd(endDate));
+
+		ymdSelector?.setYMD(rangeDate.getFullYear(), rangeDate.getMonth() + 1, rangeDate.getDate());
 	};
 
 	const firstLabel = $derived(fmtDateYmd(startDate));
 	const lastLabel = $derived(fmtDateYmd(endDate));
 
 	const onYMDChange = (date: Date) => {
-		console.log('YMD date', date);
+		console.log('onYMDChange', fmtDateYmd(date));
+		if (date >= startDate && date <= endDate) {
+			rangeInputValue = date.valueOf();
+		} else {
+			// console.log('out of range', fmtDateYmd(date), fmtDateYmd(startDate), fmtDateYmd(endDate));
+			// const rangeDate = new Date(rangeInputValue);
+			// ymdSelector?.setYMD(rangeDate.getFullYear(), rangeDate.getMonth() + 1, rangeDate.getDate());
+		}
 	};
 
 	let firstLabelE = $state<HTMLElement>();
 	let lastLabelE = $state<HTMLElement>();
 
 	$effect(() => {
+		console.log('rangeValue', rangeInputValue);
 		const rangeFraction =
 			(parseInt(rangeInputValue as any) - startDate.valueOf()) /
 			(endDate.valueOf() - startDate.valueOf());
 
 			if(firstLabelE){
-				firstLabelE.style.opacity = `${rangeFraction * 1}`;
+				firstLabelE.style.opacity = `${rangeFraction**(0.7)  * 1}`;
 			}
 			if(lastLabelE){
-				lastLabelE.style.opacity = `${(1-rangeFraction) * 1}`;
+				lastLabelE.style.opacity = `${(1-rangeFraction)**(0.7) * 1}`;
 			}
-
 	});
 </script>
 
@@ -91,7 +76,7 @@
 		oninput={rangeInputOnInput}
 	/>
 
-	<DateYMDSelects {startDate} {endDate} onChange={onYMDChange} />
+	<DateYMDSelects {startDate} {endDate} onChange={onYMDChange} bind:this={ymdSelector}/>
 </div>
 
 <style>
@@ -151,10 +136,10 @@
 		}
 
 		input.range {
-			width: calc(100% - 200px);
+			width: calc(100% - 187px);
 			/* position: relative; */
 			position: absolute;
-			bottom: 2px;
+			bottom: 3px;
 			left: 6px;
 			cursor: col-resize !important;
 		}
