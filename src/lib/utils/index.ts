@@ -77,6 +77,14 @@ export function varunits(varname: string, parens = true) {
 	return parens ? `(${unit})` : unit;
 }
 
+export function varlabel(varname: string, units = true) {
+	const unit = varunits(varname, false);
+	const label = variablesMetadata[varname]?.label || varname;
+	if(!units) return label;
+
+	return unit ? `${label} (${unit})` : label;
+}
+
 
 const shortMon = (date: Date): string => date.toLocaleString('default', { month: 'short' });
 export function fmtDate(date: Date | undefined): string {

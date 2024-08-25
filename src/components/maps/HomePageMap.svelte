@@ -151,7 +151,7 @@
 				);
 
 				if(color === ghost) {
-					m.style.opacity = '0.4';
+					m.style.opacity = '0.5';
 				} else {
 					m.style.opacity = '1';
 				}
