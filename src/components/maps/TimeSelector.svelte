@@ -12,15 +12,15 @@
 
 	const validDateValues = $derived((validDates || []).map((d) => d.valueOf()));
 
-	$effect(() => {
-		console.log(
-			' ---> TimeSelector startDate ',
-			startDate.toISOString(),
-			'endDate',
-			endDate.toISOString()
-		);
-		// console.log(' ---> TimeSelector validDates ', validDates);
-	});
+	// $effect(() => {
+	// 	console.log(
+	// 		' ---> TimeSelector startDate ',
+	// 		startDate.toISOString(),
+	// 		'endDate',
+	// 		endDate.toISOString()
+	// 	);
+	// 	// console.log(' ---> TimeSelector validDates ', validDates);
+	// });
 
 	let ymdSelector = $state<DateYMDSelects>();
 	export const ymdSelectedDate = $derived(ymdSelector?.selectedDate);

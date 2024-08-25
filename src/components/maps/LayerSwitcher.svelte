@@ -46,6 +46,8 @@
 
 	onMount(() => {
 		document.body.addEventListener('click', (e) => {
+			const checkboxContainer = (e.target as HTMLElement).closest('.dropdown-keep-open');
+			if (checkboxContainer) return;
 			showLayersDropdown = false;
 		});
 	});
@@ -71,8 +73,8 @@
 	<div class="dropdown-menu" id="dropdown-menu3" role="menu">
 		<div class="dropdown-content">
 			{#each Object.entries(datasetsEnabled) as [ds]}
-				<div class="dropdown-item">
-					<label class="checkbox">
+				<div class="dropdown-item dropdown-keep-open">
+					<label class="checkbox" style="width: 100%">
 						<input type="checkbox" bind:checked={datasetsEnabled[ds]} />
 						<tt>{ds}</tt> Sites
 					</label>
@@ -109,6 +111,11 @@
 		top: 10px;
 		left: 10px;
 		z-index: 1002;
+		/* width: 200px; */
+	}
+
+	.dropdown-menu {
+		width: 16rem !important;
 	}
 
 	div.dropdown-item:hover {

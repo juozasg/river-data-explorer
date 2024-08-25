@@ -83,6 +83,11 @@
 	const varname = $derived(mlmComponent?.selectedVariable || 'temp');
 	const selectedDate = $derived(mlmComponent?.selectedDate || endDate);
 
+	$effect(() => {
+		console.log('HOME varname', varname);
+		console.log('HOME selectedDate', selectedDate);
+	});
+
 	let validDates: Date[] = $derived(sitesValidDates(sites.allEnabled, varname));
 
 	// $effect(() => {

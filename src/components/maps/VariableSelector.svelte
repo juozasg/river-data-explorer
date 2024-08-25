@@ -10,7 +10,8 @@
 	let showVarsDropdown = $state(false);
 
 	$effect(() => {
-		console.log('selectedVarname', selectedVarname);
+		console.log('varselector selectedVariable', selectedVariable);
+		console.log('varselector selectedVarname', selectedVarname);
 	});
 
 	onMount(() => {
@@ -64,16 +65,25 @@
 
 <style>
 	.map-control {
+		height: 40px;
+
+
+		z-index: 100002;
 		position: absolute;
 		top: 10px;
 		left: 130px;
-		z-index: 100002;
-		height: 100%;
+
+		&.is-active {
+			height: 100%;
+		}
+
+		.dropdown-trigger {
+			height: 40px;
+		}
 
 		.dropdown-menu {
 			height: 100%;
 			top: 40px;
-
 		}
 
 		.dropdown-content {
@@ -83,6 +93,8 @@
 			position: relative;
 
 		}
+
+
 
 		/*
 		.dropdown-menu {
