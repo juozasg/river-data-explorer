@@ -19,7 +19,7 @@
 	import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 	import { siteGetBeforeDate } from '$src/lib/data/tableHelpers';
 	import { fmtDate, UTCDayDate, varunits } from '$src/lib/utils';
-	import { sitesEarliestDate, sitesLatestDate } from '$src/lib/data/dateStats';
+	import { sitesEarliestDate, sitesLatestDate, sitesValidDates } from '$src/lib/data/dateStats';
 
 	type Props = {
 		onSelected?: () => void;
@@ -27,7 +27,7 @@
 
 	let { onSelected, ...others }: Props = $props();
 
-	let mlmComponent: MapLibreMap;
+	let mlmComponent: MapLibreMap | undefined = $state();
 	let mapContainerElement: HTMLDivElement | undefined = $state();
 	let mlMap: ml.Map | undefined = $state();
 
@@ -72,15 +72,28 @@
 		hoveredSite = null;
 	};
 
+
 	const startDate = $derived(sitesEarliestDate(sites.allEnabled));
 	const endDate = $derived(sitesLatestDate(sites.allEnabled));
 	const someDates = ['2000-01-11', '2000-01-20', '2010-01-01',  '2023-08-08', '2023-08-9'].map(d => UTCDayDate(d))
-	let validDates: Date[] = $state([]);
+
+
+
+
+	const varname = $derived(mlmComponent?.selectedVariable || 'temp');
+	const selectedDate = $derived(mlmComponent?.selectedDate || endDate);
+
+	let validDates: Date[] = $derived(sitesValidDates(sites.allEnabled, varname));
+
+	// $effect(() => {
+	// 	const nextDay = new Date(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate() + 1));
+	// 	// TODO: test exclusign start end
+	// 	validDates = [startDate, nextDay, ...someDates, endDate];
+	// });
+
 
 	$effect(() => {
-		const nextDay = new Date(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate() + 1));
-		// TODO: test exclusign start end
-		validDates = [startDate, nextDay, ...someDates, endDate];
+		sitesValidDates(sites.allEnabled, varname);
 	});
 
 
@@ -92,24 +105,24 @@
 
 	function markerColor(site: Site) {
 		// return 'red';
-		return siteVariableColor(site.id, mlmComponent.selectedVariable, mlmComponent.selectedDate);
+		return siteVariableColor(site.id, varname, selectedDate);
 	}
 
 	function selectedVariableLabel() {
-		return variablesMetadata[mlmComponent.selectedVariable]?.label || mlmComponent.selectedVariable;
+		return variablesMetadata[varname]?.label || varname;
 	}
 
 	function selectedVariableUnit() {
-		return varunits(mlmComponent.selectedVariable, false);
+		return varunits(varname, false);
 	}
 
 	function selectedDateVariableValue(site: Site) {
-		const val = siteGetBeforeDate(site, mlmComponent.selectedVariable, mlmComponent.selectedDate);
+		const val = siteGetBeforeDate(site, varname, selectedDate);
 		return val || 'N/A';
 	}
 
 	function selectedDateClosestBeforeDate(site: Site) {
-		const date = siteGetBeforeDate(site, 'date', mlmComponent.selectedDate);
+		const date = siteGetBeforeDate(site, 'date', selectedDate);
 		if (date instanceof Date && !isNaN(date.valueOf())) {
 			return fmtDate(date);
 		}
@@ -120,8 +133,8 @@
 
 	$effect(() => {
 		sites.allEnabled; // when this is updated markers are rebuilt
-		mlmComponent.selectedDate;
-		// console.log('SELECTEDDDD DATE', mlmComponent.selectedDate);
+		mlmComponent?.selectedDate;
+		// console.log('SELECTEDDDD DATE', selectedDate);
 		const markers = mapContainerElement?.querySelectorAll('.marker');
 		// console.log('# MARKERS', markers?.length);
 		if (markers && markers.length > 0) {
@@ -131,10 +144,17 @@
 				// console.log(sid)
 				// console.log(m);
 				// m.style.setProperty('--color', getRandomColor());
+				const color = siteVariableColor(sid, varname, selectedDate);
 				m.style.setProperty(
 					'--color',
-					siteVariableColor(sid, mlmComponent.selectedVariable, mlmComponent.selectedDate)
+					color
 				);
+
+				if(color === ghost) {
+					m.style.opacity = '0.4';
+				} else {
+					m.style.opacity = '1';
+				}
 			}
 			// const m0 = markers.item(0) as HTMLElement;
 			// console.log(m0);
@@ -189,7 +209,6 @@
 />
 
 {#if mlMap}
-	<!-- {#each sites.allEnabled as site (`${site.id}- ${mlmComponent.selectedVariable}-${mlmComponent.selectedDate?.valueOf()}`)} -->
 	{#each sites.allEnabled as site (site.id)}
 		<Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site} color={ghost} />
 		<!-- <Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site} color={markerColor(site)} /> -->

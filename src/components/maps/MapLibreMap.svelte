@@ -23,7 +23,7 @@
 		containerClass = '',
 		startDate = new Date('2015-12-30'),
 		endDate = new Date(),
-		validDates,
+		validDates = [],
 	}: MapLibreMapProps = $props();
 
 	let baseStyleId: 'TOPO' | 'SATELLITE' = $state('TOPO');

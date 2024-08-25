@@ -125,14 +125,14 @@
 		position: absolute;
 		top: 0;
 		left: 6px;
-		width: calc(100% - 191px);
+		width: calc(100% - 189px);
 		height: 100%;
 		/* background-color: rgb(222, 193, 249); */
 
 		.tick {
 			position: absolute;
 			bottom: 4px;
-			width: 4px;
+			width: 2px;
 			height: 12px;
 			/* background-color: #62B3C6; */
 			background-color: #ABABAB;
