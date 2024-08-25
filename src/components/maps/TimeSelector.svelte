@@ -1,77 +1,59 @@
 <script lang="ts">
 	import DateYMDSelects from './DateYMDSelects.svelte';
 
-	import { fmtDate, fmtDateISO, fmtDateYmd } from '$src/lib/utils';
+	import { binarySearch, fmtDate, fmtDateISO, fmtDateYmd, seqid, UTCDayDate } from '$src/lib/utils';
+	import { onMount, untrack } from 'svelte';
 
-	const { startDate, endDate }: { startDate: Date; endDate: Date } = $props();
+	const {
+		startDate,
+		endDate,
+		validDates
+	}: { startDate: Date; endDate: Date; validDates: Date[] } = $props();
+
+	const validDateValues = $derived((validDates || []).map((d) => d.valueOf()));
 
 	$effect(() => {
-		console.log(' ---> TimeSelector startDate ', startDate.toISOString(), 'endDate', endDate.toISOString());
+		console.log(
+			' ---> TimeSelector startDate ',
+			startDate.toISOString(),
+			'endDate',
+			endDate.toISOString()
+		);
+		// console.log(' ---> TimeSelector validDates ', validDates);
 	});
-
 
 	let ymdSelector = $state<DateYMDSelects>();
 	export const ymdSelectedDate = $derived(ymdSelector?.selectedDate);
 
 	let rangeInputValue: number | string = $state(endDate.valueOf());
-	export const rangeInputDate = $derived(new Date(parseInt(rangeInputValue as any)));
+	export const selectedDate = $derived(new Date(parseInt(rangeInputValue as any)));
+
+	// keep range input value within bounds
 	$effect(() => {
-		if(rangeInputDate < startDate) {
+		if (selectedDate < startDate) {
 			rangeInputValue = startDate.valueOf();
 			ymdSelector?.setSelectedDate(startDate);
-		} else if(rangeInputDate > endDate) {
+		} else if (selectedDate > endDate) {
 			rangeInputValue = endDate.valueOf();
 			ymdSelector?.setSelectedDate(endDate);
-
 		}
-		// console.log('rangeInputDate', rangeInputDate.toISOString());
 	});
 
+	// updated YMD with range input
 	$effect(() => {
-		ymdSelector?.setSelectedDate(rangeInputDate);
+		ymdSelector?.setSelectedDate(selectedDate);
 	});
 
-
+	// update range input with YMD
 	$effect(() => {
-		// console.log('range input change', rangeInputValue, 'max', endDate.valueOf(), '!! min', startDate.valueOf());
-		console.log('RANGE INPUT DATE', fmtDateISO(new Date(parseInt(rangeInputValue))), ' ----- max', fmtDateISO(endDate), '!! min', fmtDateISO(startDate));
+		if (ymdSelectedDate) {
+			rangeInputValue = ymdSelectedDate.valueOf();
+			// snapToValidDate();
+		}
 	});
-
-
-	// const rangeInputOnInput = (e: Event) => {
-	// 	const rangeDate = new Date(rangeInputValue);
-	// 	ymdSelector?.setSelectedDate(endDate);
-	// };
 
 	const firstLabel = $derived(fmtDateYmd(startDate));
 	const lastLabel = $derived(fmtDateYmd(endDate));
-
-
-
-	// $effect(() => {
-	// 	console.log('rangeInputDate', rangeInputDate.toISOString());
-	// 	console.log('ymdSelectedDate', ymdSelectedDate?.toISOString());
-	// });
-
-	$effect(() => {
-		if (ymdSelectedDate) {
-			if(ymdSelectedDate < startDate) {
-				console.log('LOWER BOUND ymdSelectedDate < startDate');
-				// ymdSelector!.setYMD(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate());
-			} else if(ymdSelectedDate > endDate) {
-				console.log('UPPER BOUND ymdSelectedDate > endDate');
-				// ymdSelector!.setYMD(endDate.getUTCFullYear(), endDate.getUTCMonth(), endDate.getUTCDate());
-			}
-		}
-
-	});
-
-	// const onYMDChange = (date: Date) => {
-	// 	console.log('onYMDChange', date.toISOString());
-	// 	if (date >= startDate && date <= endDate) {
-	// 		rangeInputValue = date.valueOf();
-	// 	}
-	// };
 
 	let firstLabelE = $state<HTMLElement>();
 	let lastLabelE = $state<HTMLElement>();
@@ -88,6 +70,22 @@
 			lastLabelE.style.opacity = `${(1 - rangeFraction) ** 0.7 * 1}`;
 		}
 	});
+
+	$effect(() => {
+		if (validDateValues.length === 0) return;
+
+	});
+
+	const snapToValidDate = () => {
+		if(validDateValues.length === 0) return;
+		const closestValue = binarySearch(validDateValues, parseInt(rangeInputValue as any));
+		rangeInputValue = closestValue;
+	};
+
+	const dateToFraction = (date: Date) => {
+		return (date.valueOf() - startDate.valueOf()) / (endDate.valueOf() - startDate.valueOf());
+	};
+
 </script>
 
 <div class="map-control">
@@ -95,22 +93,55 @@
 		<span class="first-label" bind:this={firstLabelE}>{firstLabel}</span>
 		<span class="last-label" bind:this={lastLabelE}>{lastLabel}</span>
 	</div>
+	<div class="slider-ticks">
+		{#each validDates || [] as date}
+			<div class="tick" style="left: {dateToFraction(date) * 100}%"></div>
+		{/each}
+	</div>
+	<!-- class="time-slider-range range" -->
 	<input
-		class="range"
+		class="time-slider-range range"
 		type="range"
 		bind:value={rangeInputValue}
 		min={startDate.valueOf()}
 		max={endDate.valueOf()}
 		step={86400000}
+		onchange={snapToValidDate}
 	/>
 
-	<DateYMDSelects {startDate} {endDate} bind:this={ymdSelector} />
+	<DateYMDSelects {startDate} {endDate} {validDates} bind:this={ymdSelector} />
+
+	<!-- {#if validDates && validDates.length > 0}
+		<datalist id={datalistId}>
+			{#each validDates as date}
+				<option value={date.valueOf()}></option>
+			{/each}
+		</datalist>
+	{/if} -->
 </div>
 
 <style>
+	.slider-ticks {
+		position: absolute;
+		top: 0;
+		left: 6px;
+		width: calc(100% - 191px);
+		height: 100%;
+		/* background-color: rgb(222, 193, 249); */
+
+		.tick {
+			position: absolute;
+			bottom: 4px;
+			width: 4px;
+			height: 12px;
+			/* background-color: #62B3C6; */
+			background-color: #ABABAB;
+		}
+
+	}
 	.slider-labels {
 		position: absolute;
-		bottom: 0;
+		top: 0;
 		left: 12px;
 		width: calc(100% - 160px);
 		height: 16px;
@@ -119,21 +150,21 @@
 			display: block;
 			position: absolute;
 			font-size: 0.8rem;
-			bottom: 5px;
+			top: -5px;
 			/* font-weight: 600; */
 			padding: 0.25rem;
-			background-color: hsla(0, 0%, 100%, 0.8);
+			/* background-color: hsla(0, 0%, 100%, 0.8); */
 			opacity: 1;
-			border-radius: 4px;
+			/* border-radius: 4px; */
 			z-index: 1000;
 			pointer-events: none;
 		}
 		.first-label {
-			left: -6px;
+			left: -10px;
 		}
 
 		.last-label {
-			right: 46px;
+			right: 30px;
 		}
 	}
 
@@ -154,7 +185,6 @@
 
 		border-radius: 4px;
 		background-color: hsl(0, 0%, 100%);
-		/* background-color: greenyellow; */
 		border-color: hsl(0, 0%, 86%);
 		border-width: 1px;
 		color: hsl(0, 0%, 21%);
@@ -165,7 +195,6 @@
 
 		input.range {
 			width: calc(100% - 187px);
-			/* position: relative; */
 			position: absolute;
 			bottom: 3px;
 			left: 6px;
@@ -174,62 +203,8 @@
 
 		input {
 			font-size: 1.2rem;
-			/* padding: 0.25rem; */
-			/* border: 1px solid #ccc; */
+
 			border: none;
-		}
-
-		/* fancy slider */
-		input.range {
-			--c: #18a0d1; /* active color */
-			--l: 4px; /* line thickness*/
-			--h: 30px; /* thumb height */
-			--w: 5px; /* thumb width */
-
-			/* width: 400px; */
-			height: var(--h); /* needed for Firefox*/
-			--_c: color-mix(in srgb, var(--c), #000 var(--p, 0%));
-			-webkit-appearance: none;
-			-moz-appearance: none;
-			appearance: none;
-			background: none;
-			cursor: pointer;
-			overflow: hidden;
-		}
-		input.range:focus-visible,
-		input.range:hover {
-			--p: 0%;
-		}
-
-		/* chromium */
-		input[type='range' i]::-webkit-slider-thumb {
-			z-index: 10001;
-
-			height: var(--h);
-			width: var(--w);
-			background: var(--_c);
-			border-image: linear-gradient(90deg, var(--_c) 50%, #ababab 0) 0 1 / calc(50% - var(--l) / 2)
-				100vw/0 100vw;
-			-webkit-appearance: none;
-			appearance: none;
-			transition: 0.3s;
-		}
-		/* Firefox */
-		input[type='range']::-moz-range-thumb {
-			z-index: 10001;
-			height: var(--h);
-			width: var(--w);
-			background: var(--_c);
-			border-image: linear-gradient(90deg, var(--_c) 50%, #ababab 0) 0 1 / calc(50% - var(--l) / 2)
-				100vw/0 100vw;
-			-webkit-appearance: none;
-			appearance: none;
-			transition: 0.3s;
-		}
-		@supports not (color: color-mix(in srgb, red, red)) {
-			input {
-				--_c: var(--c);
-			}
 		}
 	}
 </style>

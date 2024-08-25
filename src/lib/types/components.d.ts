@@ -13,4 +13,5 @@ export interface MapLibreMapProps {
 	containerClass?: string;
 	startDate?: Date;
 	endDate?: Date;
+	validDates?: Date[];
 }

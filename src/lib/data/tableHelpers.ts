@@ -43,6 +43,7 @@ export function tooltipText(varname: string): string  {
 }
 
 // tested and works, could be written better tho
+// TODO: rewrite using binarySearch function
 export function tableIndexBeforeDate(table: ColumnTable, date: Date, fromIndex = 0, toIndex?: number): number {
 	if(table.numRows() === 0) return -1;
 	if(toIndex === undefined) toIndex = table.numRows() - 1;

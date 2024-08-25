@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { daysInMonth } from '$src/lib/utils';
+	import { daysInMonth, seqid } from '$src/lib/utils';
 
 	export function setYMD(year: number, mon: number, day: number) {
 		console.log('setYMD', year, mon, day);
@@ -8,29 +8,27 @@
 		selectedDay = day;
 	}
 
-	const {
-		startDate,
-		endDate
-	}: { startDate: Date; endDate: Date; } = $props();
+	const { startDate, endDate, validDates }: { startDate: Date; endDate: Date; validDates: Date[] } =
+		$props();
 
-	$effect(() => {
-		console.log(' ---> DateYMDSelects startDate ', startDate.toISOString(), 'endDate', endDate.toISOString());
-	});
+	const validYears = $derived(Array.from(new Set(validDates.map((d) => d.getUTCFullYear()))));
 
+	const isValidYear = (year: number) => validYears.includes(year);
+	const isValidMonth = (mon: number) => {
+		return validDates.some((d) => d.getUTCFullYear() === selectedYear && d.getUTCMonth() === mon);
+	};
+
+	const isValidDay = (day: number) => {
+		return validDates.some(
+			(d) =>
+				d.getUTCFullYear() === selectedYear &&
+				d.getUTCMonth() === selectedMon &&
+				d.getUTCDate() === day
+		);
+	};
 
 	// $effect(() => {
-	// 	console.log('*** selectedDate UPDATED', 'selected', selectedDate, 'START -', startDate, ' END - ', endDate);
-	// 	if (selectedDate < startDate) {
-	// 		console.log('** selectedDate < startDate');
-	// 		selectedYear = startDate.getUTCFullYear();
-	// 		selectedMon = startDate.getUTCMonth();
-	// 		selectedDay = startDate.getUTCDate();
-	// 	} else if (selectedDate > endDate) {
-	// 		console.log('** selectedDate > endDate');
-	// 		selectedYear = endDate.getUTCFullYear();
-	// 		selectedMon = endDate.getUTCMonth();
-	// 		selectedDay = endDate.getUTCDate();
-	// 	}
+	// 	console.log(' ---> DateYMDSelects startDate ', startDate.toISOString(), 'endDate', endDate.toISOString());
 	// });
 
 	const startYear = $derived(startDate.getUTCFullYear());
@@ -54,37 +52,57 @@
 		selectedDay = date.getUTCDate();
 	}
 
-
 	$effect(() => {
 		if (selectedDay > daysInSelectedMonth) {
 			selectedDay = daysInSelectedMonth;
 		}
 	});
+
+	let monthsSelectEl = $state<HTMLSelectElement>();
+	let daysSelectEl = $state<HTMLSelectElement>();
+
+	const validateUserChange = () => {
+		const selectedMonthOption = monthsSelectEl?.querySelector('option[value="' + selectedMon + '"]') as HTMLOptionElement;
+		const selectedDayOption = daysSelectEl?.querySelector('option[value="' + selectedDay + '"]') as HTMLOptionElement;
+		// console.log('monsEl', monthsSelectEl, selectedMonthOption);
+		if (selectedMonthOption?.disabled || selectedDayOption?.disabled) {
+			const validDate = validDates.find((d) => d.getUTCFullYear() === selectedYear)
+			if (validDate) {
+				setSelectedDate(validDate);
+			}
+		}
+	};
+
+	const monthThreeLetterNames = [
+		'Jan',
+		'Feb',
+		'Mar',
+		'Apr',
+		'May',
+		'Jun',
+		'Jul',
+		'Aug',
+		'Sep',
+		'Oct',
+		'Nov',
+		'Dec'
+	];
 </script>
 
 <div class="date-selects">
-	<select style="width: 4rem;" bind:value={selectedYear}>
+	<select style="width: 4rem;" bind:value={selectedYear} onchange={validateUserChange}>
 		{#each yearsArray as year}
-			<option value={year}>{year}</option>
+			<option disabled={!isValidYear(year)} value={year}>{year}</option>
 		{/each}
 	</select>
-	<select style="width: 3.25rem;" bind:value={selectedMon}>
-		<option value={0}>Jan</option>
-		<option value={1}>Feb</option>
-		<option value={2}>Mar</option>
-		<option value={3}>Apr</option>
-		<option value={4}>May</option>
-		<option value={5}>Jun</option>
-		<option value={6}>Jul</option>
-		<option value={7}>Aug</option>
-		<option value={8}>Sep</option>
-		<option value={9}>Oct</option>
-		<option value={10}>Nov</option>
-		<option value={11}>Dec</option>
+	<select style="width: 3.25rem;" bind:value={selectedMon} onchange={validateUserChange} bind:this={monthsSelectEl}>
+		{#each monthThreeLetterNames as name, i}
+			<option disabled={!isValidMonth(i)} value={i}>{name}</option>
+		{/each}
 	</select>
-	<select style="width: 2.8rem;" bind:value={selectedDay}>
+	<select style="width: 2.8rem;" bind:value={selectedDay} bind:this={daysSelectEl}>
 		{#each Array.from({ length: daysInSelectedMonth }, (_, i) => i + 1) as day}
-			<option value={day}>{day}</option>
+			<option disabled={!isValidDay(day)} value={day}>{day}</option>
 		{/each}
 	</select>
 </div>
@@ -106,6 +124,10 @@
 			border-radius: 4px;
 			padding: 0px;
 			margin: 0px;
+
+			option:disabled {
+				display: none;
+			}
 		}
 	}
 </style>

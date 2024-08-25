@@ -6,7 +6,7 @@ import { UTCDayDate } from "../utils";
 export function sitesEarliestDate(sites: Site[]): Date {
 	const tables = sites.map((s) => sitesTables.get(s.id)).filter((t) => t);
 	const firstDates = tables.map((t) => t?.get('date')).filter((d) => d) as Date[];
-	if (firstDates.length === 0) return UTCDayDate('1900-01-01');
+	if (firstDates.length === 0) return UTCDayDate(0);
 	return UTCDayDate(Math.min(...firstDates.map((d) => d.valueOf())));
 }
 

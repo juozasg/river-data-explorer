@@ -24,6 +24,7 @@
 		// datasetsEnabled['sjrbc'] = true;
 		// datasetsEnabled['usgs'] = true;
 		datasetsEnabled['invert'] = false;
+		datasetsEnabled['usgs'] = false;
 	});
 
 	interface Props {

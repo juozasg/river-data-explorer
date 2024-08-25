@@ -23,6 +23,7 @@
 		containerClass = '',
 		startDate = new Date('2015-12-30'),
 		endDate = new Date(),
+		validDates,
 	}: MapLibreMapProps = $props();
 
 	let baseStyleId: 'TOPO' | 'SATELLITE' = $state('TOPO');
@@ -111,7 +112,7 @@
 <div style="position: relative; height: 100%" class={containerClass}>
 	<LayerSwitcher bind:baseStyleId bind:showRiverLayer />
 	<VariableSelector bind:this={variableSelector} />
-	<TimeSelector {startDate} {endDate} bind:this={timeSelector}/>
+	<TimeSelector {startDate} {endDate} {validDates} bind:this={timeSelector}/>
 	<div class="map" bind:this={divElement} onmouseleave={containerMouseLeave}></div>
 	{#if mapMouseLocation.lngLat}
 		<pre>{formatLngLat(mapMouseLocation.lngLat, 4)} (C to copy)</pre>

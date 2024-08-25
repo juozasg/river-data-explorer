@@ -74,12 +74,22 @@
 
 	const startDate = $derived(sitesEarliestDate(sites.allEnabled));
 	const endDate = $derived(sitesLatestDate(sites.allEnabled));
-
+	const someDates = ['2000-01-11', '2000-01-20', '2010-01-01',  '2023-08-08', '2023-08-9'].map(d => UTCDayDate(d))
+	let validDates: Date[] = $state([]);
 
 	$effect(() => {
-		console.log('HOME startDate', startDate.toISOString());
-		console.log('HOME endDate', endDate.toISOString());
+		const nextDay = new Date(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate() + 1));
+		// TODO: test exclusign start end
+		validDates = [startDate, nextDay, ...someDates, endDate];
 	});
+
+
+	// $effect(() => {
+	// 	console.log('HOME startDate', startDate.toISOString());
+	// 	console.log('HOME endDate', endDate.toISOString());
+	// });
+
+
 	function markerColor(site: Site) {
 		// return 'red';
 		return siteVariableColor(site.id, mlmComponent.selectedVariable, mlmComponent.selectedDate);
@@ -105,10 +115,6 @@
 		}
 		return 'N/A';
 	}
-
-	$effect(() => {
-		// console.log('sites.allEnabled', sites.allEnabled);
-	});
 
 	let markersContainer = $state<HTMLDivElement>();
 
@@ -178,6 +184,7 @@
 	{...others}
 	{startDate}
 	{endDate}
+	{validDates}
 	zoom={7.9}
 />
 

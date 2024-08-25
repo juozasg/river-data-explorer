@@ -11,7 +11,7 @@
 	</select>
 </div> -->
 
-<div class="map-control dropdown" class:is-active={true}>
+<div class="map-control dropdown" class:is-active={false}>
 	<div class="dropdown-trigger">
 		<button
 			class="button"

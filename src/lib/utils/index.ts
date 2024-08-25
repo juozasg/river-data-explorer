@@ -19,6 +19,26 @@ export const getMarkdownPages = async (allMdPages: ImportGlobRecord): Promise<Ma
 	return allPages;
 };
 
+
+export function binarySearch(arr: number[], target: number, lo = 0, hi = arr.length - 1): number {
+	if (target < arr[lo]) {return arr[0]}
+	if (target > arr[hi]) {return arr[hi]}
+
+	const mid = Math.floor((hi + lo) / 2);
+
+	return hi - lo < 2
+		? (target - arr[lo]) < (arr[hi] - target) ? arr[lo] : arr[hi]
+		: target < arr[mid]
+			? binarySearch(arr, target, lo, mid)
+			: target > arr[mid]
+				? binarySearch(arr, target, mid, hi)
+				: arr[mid]
+}
+
+if (typeof window !== 'undefined') {
+	(window as any).binarySearch = binarySearch;
+}
+
 export function getRandomColor() {
 	var letters = '0123456789ABCDEF';
 	var color = '#';
@@ -137,4 +157,10 @@ export function findAncestor(el: HTMLElement | null, cls: any) {
 
 export function isNumber(n: any) {
 	return typeof n === 'number' && !isNaN(n);
+}
+
+let n = new Date().valueOf();
+export function seqid() {
+	return (++n).toString(36);
+
 }
