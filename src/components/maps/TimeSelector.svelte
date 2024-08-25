@@ -1,40 +1,77 @@
 <script lang="ts">
 	import DateYMDSelects from './DateYMDSelects.svelte';
 
-	import { fmtDate, fmtDateYmd } from '$src/lib/utils';
+	import { fmtDate, fmtDateISO, fmtDateYmd } from '$src/lib/utils';
 
-
-	const {
-		startDate,
-		endDate
-	}: { startDate: Date; endDate: Date } = $props();
+	const { startDate, endDate }: { startDate: Date; endDate: Date } = $props();
 
 	$effect(() => {
-		console.log('TimeSelector startDate ', fmtDate(startDate),'endDate', fmtDate(endDate));
+		console.log(' ---> TimeSelector startDate ', startDate.toISOString(), 'endDate', endDate.toISOString());
 	});
-
-	let rangeInputValue: number | string = $state(endDate.valueOf());
-	$effect(() => {
-		ymdSelector?.setYMD(endDate.getUTCFullYear(), endDate.getUTCMonth() + 1, endDate.getUTCDate());
-	});
-
-	export const selectedDate = $derived(new Date(parseInt(rangeInputValue as any)));
 
 
 	let ymdSelector = $state<DateYMDSelects>();
-	const rangeInputOnInput = (e: Event) => {
-		const rangeDate = new Date(rangeInputValue);
-		ymdSelector?.setYMD(rangeDate.getUTCFullYear(), rangeDate.getUTCMonth() + 1, rangeDate.getUTCDate());
-	};
+	export const ymdSelectedDate = $derived(ymdSelector?.selectedDate);
+
+	let rangeInputValue: number | string = $state(endDate.valueOf());
+	export const rangeInputDate = $derived(new Date(parseInt(rangeInputValue as any)));
+	$effect(() => {
+		if(rangeInputDate < startDate) {
+			rangeInputValue = startDate.valueOf();
+			ymdSelector?.setSelectedDate(startDate);
+		} else if(rangeInputDate > endDate) {
+			rangeInputValue = endDate.valueOf();
+			ymdSelector?.setSelectedDate(endDate);
+
+		}
+		// console.log('rangeInputDate', rangeInputDate.toISOString());
+	});
+
+	$effect(() => {
+		ymdSelector?.setSelectedDate(rangeInputDate);
+	});
+
+
+	$effect(() => {
+		// console.log('range input change', rangeInputValue, 'max', endDate.valueOf(), '!! min', startDate.valueOf());
+		console.log('RANGE INPUT DATE', fmtDateISO(new Date(parseInt(rangeInputValue))), ' ----- max', fmtDateISO(endDate), '!! min', fmtDateISO(startDate));
+	});
+
+
+	// const rangeInputOnInput = (e: Event) => {
+	// 	const rangeDate = new Date(rangeInputValue);
+	// 	ymdSelector?.setSelectedDate(endDate);
+	// };
 
 	const firstLabel = $derived(fmtDateYmd(startDate));
 	const lastLabel = $derived(fmtDateYmd(endDate));
 
-	const onYMDChange = (date: Date) => {
-		if (date >= startDate && date <= endDate) {
-			rangeInputValue = date.valueOf();
+
+
+	// $effect(() => {
+	// 	console.log('rangeInputDate', rangeInputDate.toISOString());
+	// 	console.log('ymdSelectedDate', ymdSelectedDate?.toISOString());
+	// });
+
+	$effect(() => {
+		if (ymdSelectedDate) {
+			if(ymdSelectedDate < startDate) {
+				console.log('LOWER BOUND ymdSelectedDate < startDate');
+				// ymdSelector!.setYMD(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate());
+			} else if(ymdSelectedDate > endDate) {
+				console.log('UPPER BOUND ymdSelectedDate > endDate');
+				// ymdSelector!.setYMD(endDate.getUTCFullYear(), endDate.getUTCMonth(), endDate.getUTCDate());
+			}
 		}
-	};
+
+	});
+
+	// const onYMDChange = (date: Date) => {
+	// 	console.log('onYMDChange', date.toISOString());
+	// 	if (date >= startDate && date <= endDate) {
+	// 		rangeInputValue = date.valueOf();
+	// 	}
+	// };
 
 	let firstLabelE = $state<HTMLElement>();
 	let lastLabelE = $state<HTMLElement>();
@@ -44,12 +81,12 @@
 			(parseInt(rangeInputValue as any) - startDate.valueOf()) /
 			(endDate.valueOf() - startDate.valueOf());
 
-			if(firstLabelE){
-				firstLabelE.style.opacity = `${rangeFraction**(0.7)  * 1}`;
-			}
-			if(lastLabelE){
-				lastLabelE.style.opacity = `${(1-rangeFraction)**(0.7) * 1}`;
-			}
+		if (firstLabelE) {
+			firstLabelE.style.opacity = `${rangeFraction ** 0.7 * 1}`;
+		}
+		if (lastLabelE) {
+			lastLabelE.style.opacity = `${(1 - rangeFraction) ** 0.7 * 1}`;
+		}
 	});
 </script>
 
@@ -65,10 +102,9 @@
 		min={startDate.valueOf()}
 		max={endDate.valueOf()}
 		step={86400000}
-		oninput={rangeInputOnInput}
 	/>
 
-	<DateYMDSelects {startDate} {endDate} onChange={onYMDChange} bind:this={ymdSelector}/>
+	<DateYMDSelects {startDate} {endDate} bind:this={ymdSelector} />
 </div>
 
 <style>
@@ -195,6 +231,5 @@
 				--_c: var(--c);
 			}
 		}
-
 	}
 </style>

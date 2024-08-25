@@ -6,6 +6,7 @@ import { startedLoading } from '../ui/loadingItem.svelte';
 import { dataPathsStartingWith } from '$src/lib/data/loaders/loadAppData';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
 import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
+import { UTCDayDate } from '$src/lib/utils';
 
 export type SiteId = string;
 export const sitesTables: Map<SiteId, ColumnTable> = new sr.Map();
@@ -27,7 +28,7 @@ export async function loadDatasets() {
 
 	const validKeys = Object.keys(variablesMetadata);
 	console.log('known variables', validKeys);
-	const futureDate = new Date((new Date()).valueOf() + 1000 * 60 * 60 * 24 * 2); // 2 days from now
+	const futureDate = UTCDayDate((new Date()).valueOf() + 1000 * 60 * 60 * 24 * 2); // 2 days from now
 	for (const r of records) {
 		r.siteId = r.siteId.trim();
 		r.date = r.date.trim();
@@ -76,7 +77,8 @@ export async function loadDatasets() {
 function parseValue(key: string, value: string): number | Date | string | undefined {
 	value = value.trim();
 	if (key == 'date') {
-		return new Date(value);
+		return UTCDayDate(value);
+		// return new Date(Date.UTC(tzd.getUTCFullYear(), tzd.getUTCMonth(), tzd.getUTCDate()));
 	}
 
 	const isCategorical = !!(variablesMetadata[key]?.categories);

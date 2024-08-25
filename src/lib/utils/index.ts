@@ -19,6 +19,15 @@ export const getMarkdownPages = async (allMdPages: ImportGlobRecord): Promise<Ma
 	return allPages;
 };
 
+export function getRandomColor() {
+	var letters = '0123456789ABCDEF';
+	var color = '#';
+	for (var i = 0; i < 6; i++) {
+		color += letters[Math.floor(Math.random() * 16)];
+	}
+	return color;
+}
+
 export const basename = (path: string, ext?: string): string => {
 	const f = path.split('/').pop() as string;
 	return ext ? f.slice(0, -ext.length) : f;
@@ -69,10 +78,26 @@ export function fmtDateValue(date: Date) {
 	return date.toISOString().split('T')[0];
 };
 
-export function daysInMonth(year: number, month: number) {
-	return new Date(year, month, 0).getDate();
+
+export function fmtDateISO(date: Date) {
+	return date.toISOString();
 }
 
+// always returns YYYY-MM-DDT00:00:00 (UTC)
+export function UTCDayDate(date?: Date | string | number | undefined): Date {
+	if (typeof date === 'string')  {
+		date = date.includes('Z') ? new Date(date) : new Date(date + 'Z');
+	};
+	if (typeof date === 'number') date = new Date(date);
+	if (!date || isNaN(date.valueOf())) date = new Date();
+	return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+}
+
+// month is 0-indexed
+// days are 1-indexed, but day=0 means last day of previous month
+export function daysInMonth(year: number, month: number) {
+	return new Date(year, month + 1, 0).getDate();
+}
 
 
 export function oneMonthAgo() {

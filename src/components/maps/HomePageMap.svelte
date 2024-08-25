@@ -18,7 +18,8 @@
 	import { ghost, siteVariableColor } from '$src/lib/data/map/helpers/markerHelpers';
 	import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 	import { siteGetBeforeDate } from '$src/lib/data/tableHelpers';
-	import { fmtDate } from '$src/lib/utils';
+	import { fmtDate, UTCDayDate, varunits } from '$src/lib/utils';
+	import { sitesEarliestDate, sitesLatestDate } from '$src/lib/data/dateStats';
 
 	type Props = {
 		onSelected?: () => void;
@@ -71,28 +72,14 @@
 		hoveredSite = null;
 	};
 
-	const startDate = $derived.by(() => {
-		// sitesTables;
-		const tables = sites.allEnabled.map((s) => sitesTables.get(s.id)).filter((t) => t);
-		const dates = tables.map((t) => t?.get('date')).filter((d) => d) as Date[];
-		if (dates.length === 0) return new Date('1990-01-01');
-		return new Date(Math.min(...dates.map((d) => d.valueOf())));
+	const startDate = $derived(sitesEarliestDate(sites.allEnabled));
+	const endDate = $derived(sitesLatestDate(sites.allEnabled));
+
+
+	$effect(() => {
+		console.log('HOME startDate', startDate.toISOString());
+		console.log('HOME endDate', endDate.toISOString());
 	});
-
-	const endDate = $derived.by(() => {
-		const tables = sites.allEnabled.map((s) => sitesTables.get(s.id)).filter((t) => t);
-		const dates = tables.map((t) => t?.get('date', t.numRows() - 1)).filter((d) => d) as Date[];
-		if (dates.length === 0) return new Date();
-		// console.log('DATES', dates);
-		const maxDate = new Date(Math.max(...dates.map((d) => d.valueOf())));
-		// console.log('DATES MAXXX', maxDate);
-		return maxDate;
-	});
-
-	// $effect(() => console.log('STARTART startDate', startDate));
-	// $effect(() => console.log('ENDEND  endDate', endDate));
-	// $effect(() => console.log('SELECTED DATE',  mlmComponent.selectedDate));
-
 	function markerColor(site: Site) {
 		// return 'red';
 		return siteVariableColor(site.id, mlmComponent.selectedVariable, mlmComponent.selectedDate);
@@ -103,7 +90,7 @@
 	}
 
 	function selectedVariableUnit() {
-		return (variablesMetadata[mlmComponent.selectedVariable]?.unit || '') + ' ';
+		return varunits(mlmComponent.selectedVariable, false);
 	}
 
 	function selectedDateVariableValue(site: Site) {
@@ -125,14 +112,6 @@
 
 	let markersContainer = $state<HTMLDivElement>();
 
-	function getRandomColor() {
-		var letters = '0123456789ABCDEF';
-		var color = '#';
-		for (var i = 0; i < 6; i++) {
-			color += letters[Math.floor(Math.random() * 16)];
-		}
-		return color;
-	}
 	$effect(() => {
 		sites.allEnabled; // when this is updated markers are rebuilt
 		mlmComponent.selectedDate;
@@ -160,8 +139,8 @@
 
 {#snippet variableValueBeforeDate(site: Site)}
 	<p>
-		{selectedVariableLabel()}: {selectedDateVariableValue(site)}
-		{selectedVariableUnit()}({selectedDateClosestBeforeDate(site)})
+		{selectedVariableLabel()}: <u><b>{selectedDateVariableValue(site)}</b></u>
+		{selectedVariableUnit()} ({selectedDateClosestBeforeDate(site)})
 	</p>
 {/snippet}
 
