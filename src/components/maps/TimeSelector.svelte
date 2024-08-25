@@ -1,8 +1,7 @@
 <script lang="ts">
 	import DateYMDSelects from './DateYMDSelects.svelte';
 
-	import { binarySearch, fmtDate, fmtDateISO, fmtDateYmd, seqid, UTCDayDate } from '$src/lib/utils';
-	import { onMount, untrack } from 'svelte';
+	import { binarySearch, fmtDateYmd } from '$src/lib/utils';
 
 	const {
 		startDate,

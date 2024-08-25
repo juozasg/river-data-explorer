@@ -22,7 +22,7 @@ export async function loadAppData(manifest: DataManifest) {
 	loadSitesCsv();
 	loadGeoindexData();
 	// loadSitesUsgsWS();
-	loadDatasetsUsgsWS();
+	// loadDatasetsUsgsWS();
 	loadDatasets();
 	loadMarkdown();
 }
