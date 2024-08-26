@@ -128,16 +128,12 @@
 	$effect(() => {
 		sites.allEnabled; // when this is updated markers are rebuilt
 		mlmComponent?.selectedDate;
-		// console.log('SELECTEDDDD DATE', selectedDate);
 		const markers = mapContainerElement?.querySelectorAll('.marker');
-		// console.log('# MARKERS', markers?.length);
 		if (markers && markers.length > 0) {
 			for (let i = 0; i < markers.length; i++) {
 				const m = markers.item(i) as HTMLElement;
 				const sid = m.getAttribute('data-site-id') as string;
-				// console.log(sid)
-				// console.log(m);
-				// m.style.setProperty('--color', getRandomColor());
+
 				const color = siteVariableColor(sid, varname, selectedDate);
 				m.style.setProperty(
 					'--color',
@@ -150,9 +146,7 @@
 					m.style.opacity = '1';
 				}
 			}
-			// const m0 = markers.item(0) as HTMLElement;
-			// console.log(m0);
-			// m0.style.setProperty('--color', 'red');
+
 		}
 	});
 </script>
