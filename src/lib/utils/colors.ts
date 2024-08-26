@@ -9,7 +9,7 @@ export function interpolateVarColor(varname: string, value: number | string, val
 	}
 
 
-	console.log('interpolateVarColor', varname, value, valueFraction);
+	// console.log('interpolateVarColor', varname, value, valueFraction);
 	// console.log('defaultInterpolatorId', defaultInterpolatorId());
 	// let interpolatorId = defaultInterpolatorId();
 	const md = variablesMetadata[varname];
