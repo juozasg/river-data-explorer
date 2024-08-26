@@ -4,7 +4,7 @@
 	const err = $page.error as any;
 </script>
 
-<h1>🚨 ERROR 🚨 ERROR 🚨</h1>
+<h1>500</h1>
 <h1>{$page.error?.message}</h1>
 
 

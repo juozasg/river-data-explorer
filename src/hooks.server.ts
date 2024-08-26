@@ -12,7 +12,7 @@
 
 // 	return {
 // 		error,
-// 		status,
+// 		// status,
 // 		// event, // makes it crash
 // 		message: 'Internal Error',
 // 	};

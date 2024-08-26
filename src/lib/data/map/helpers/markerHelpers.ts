@@ -1,16 +1,9 @@
 import { sitesTables } from "$src/appstate/data/datasets.svelte";
 import type { Site } from "$src/lib/types/site";
+import { interpolateVarColor } from "$src/lib/utils/colors";
 import { tableGetBeforeDate } from "../../tableHelpers";
 
 export const ghost = 'rgba(0, 0, 0, 0.2)';
-
-export function gradientColor(varname: string, value: number) {
-	const min = 0;
-	const max = 40;
-	const percent = value / max;
-	const hue = 180 * percent;
-	return `hsl(${hue}deg, 100%, 50%)`;
-}
 
 export function siteVariableColor(siteid: string, varname: string, beforeDate?: Date) {
 	try {
@@ -18,13 +11,10 @@ export function siteVariableColor(siteid: string, varname: string, beforeDate?: 
 		const table = sitesTables.get(siteid);
 		if (!table) return ghost;
 
-
 		const value = tableGetBeforeDate(table, varname, beforeDate);
 		if (value === undefined) return ghost;
 
-		const c = gradientColor(varname, value as number);
-		// console.log('NEW VALUE', value, c);
-		return c;
+		return interpolateVarColor(varname, value as number);
 	} catch (e) {
 		console.error('siteVariableColor', e);
 		return ghost;

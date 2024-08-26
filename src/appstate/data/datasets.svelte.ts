@@ -24,10 +24,10 @@ export async function loadDatasets() {
 
 	const filesRecords = await Promise.all(promises);
 	const records = filesRecords.flat();
-	console.log('sitesRecords loaded. records.length = ', records.length, 'record[0] = ', records[0])
+	// console.log('sitesRecords loaded. records.length = ', records.length, 'record[0] = ', records[0])
 
 	const validKeys = Object.keys(variablesMetadata);
-	console.log('known variables', validKeys);
+	// console.log('known variables', validKeys);
 	const futureDate = UTCDayDate((new Date()).valueOf() + 1000 * 60 * 60 * 24 * 2); // 2 days from now
 	for (const r of records) {
 		r.siteId = r.siteId.trim();
@@ -47,6 +47,7 @@ export async function loadDatasets() {
 			if (validKeys.includes(key) || key == 'date') {
 				record[key] = parseValue(key, r[key] as string);
 			}
+
 		}
 
 		if(!record.date && isNaN(record.date.valueOf()) || record.date > futureDate) {

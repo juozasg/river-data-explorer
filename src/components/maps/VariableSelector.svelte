@@ -9,11 +9,6 @@
 
 	let showVarsDropdown = $state(false);
 
-	$effect(() => {
-		console.log('varselector selectedVariable', selectedVariable);
-		console.log('varselector selectedVarname', selectedVarname);
-	});
-
 	onMount(() => {
 		document.body.addEventListener('click', (e) => {
 			showVarsDropdown = false;
@@ -28,12 +23,7 @@
 	const varnames = aremove(Object.keys(variablesMetadata), 'default');
 </script>
 
-<!-- <div class="map-control">
-	<select>
-		<option value="topo">Topographic</option>
-		<option value="satellite">Satellite</option>
-	</select>
-</div> -->
+
 
 <div class="map-control dropdown" class:is-active={showVarsDropdown}>
 	<div class="dropdown-trigger">
