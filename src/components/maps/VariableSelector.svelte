@@ -58,7 +58,7 @@
 		height: 40px;
 
 
-		z-index: 100002;
+		z-index: 1002;
 		position: absolute;
 		top: 10px;
 		left: 130px;
