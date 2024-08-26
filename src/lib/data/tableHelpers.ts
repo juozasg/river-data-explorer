@@ -30,7 +30,7 @@ export function concatTablesAllColumns(tables: ColumnTable[]): ColumnTable {
 
 	const columns = tablesUniqueColumns(tables);
 	const t0 = emptyTable(columns); // initial table determines result columns
-	return tables.reduce((acc, t) => acc.concat(t), t0);
+	return tables.reduce((acc, t) => acc.concat(t), t0).reify();
 }
 
 

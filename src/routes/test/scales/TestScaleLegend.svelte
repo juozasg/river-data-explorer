@@ -1,12 +1,8 @@
 <script lang="ts">
-	import * as d3sc from 'd3-scale-chromatic';
-	import * as d3i from 'd3-interpolate';
-	import * as d3s from 'd3-scale';
 	import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 	import { interpolateVarColor } from '$src/lib/utils/colors';
-	import { allVariableStats, variableStats } from '$src/lib/data/stats';
-	import { concatTablesAllColumns } from '$src/lib/data/tableHelpers';
-	import { sitesTables } from '$src/appstate/data/datasets.svelte';
+	import * as d3sc from 'd3-scale-chromatic';
+	import TestAllStats from '../TestAllStats.svelte';
 
 	let value = $state(0.5);
 	const color = $derived(d3sc.interpolatePlasma(value));
@@ -18,18 +14,10 @@
 	const min = $derived(variablesMetadata[varname]?.scale?.min || 0);
 	const max = $derived(variablesMetadata[varname]?.scale?.max || 10);
 
-	$effect(() => {
-		const combinedTable = concatTablesAllColumns([...sitesTables.values()]);
-		const orderedTable = combinedTable.orderby('date').reify();
-		console.log('all stats', allVariableStats(orderedTable, { errorLabel: '' }));
 
-
-		// if (combinedTable.numRows() == 0) return [];
-		// dont order empty tables because column date won't exist
-		// return allVariableStats(orderedTable, { errorLabel: '' });
-	});
 </script>
 
+<TestAllStats />
 <select bind:value={varname} style="margin-bottom: 2rem">
 	{#each Object.keys(variablesMetadata) as vname}
 		<option>{vname}</option>
