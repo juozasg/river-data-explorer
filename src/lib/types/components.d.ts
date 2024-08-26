@@ -14,4 +14,5 @@ export interface MapLibreMapProps {
 	startDate?: Date;
 	endDate?: Date;
 	validDates: Date[];
+	showCoords?: boolean;
 }

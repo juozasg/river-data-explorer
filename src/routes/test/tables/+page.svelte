@@ -4,18 +4,18 @@
 	import { sites } from "$src/appstate/sites.svelte";
 	import TestDateIndexSearch from "$src/components/website/debug/TestDateIndexSearch.svelte";
 	import { fmtDate } from "$src/lib/utils";
-	// import SiteStatsPanel from "$src/components/basin/SiteStatsPanel.svelte";
+	import SiteStatsPanel from "$src/components/basin/SiteStatsPanel.svelte";
 
-	// $effect(() => {
-	// 	selectedSite.set(sites.all[40]);
-	// });
+	$effect(() => {
+		selectedSite.set(sites.all[40]);
+	});
 
 
 </script>
 
 <div id="panel">
 
-	<TestDateIndexSearch />
-	<!-- <SiteStatsPanel /> -->
+	<!-- <TestDateIndexSearch /> -->
+	<SiteStatsPanel onVarClicked={ ()=> {}}/>
 	<!-- <SiteStatsPanel /> -->
 </div>

@@ -8,7 +8,8 @@
 	import StatsDataTable from '../website/StatsDataTable.svelte';
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
 	import { concatTablesAllColumns } from '$src/lib/data/tableHelpers';
-	import HoveredVariableTooltip from '../website/HoveredVariableTooltip.svelte';
+	import TooltipVariableBrief from '../website/TooltipVariableBrief.svelte';
+	import VarValueStandards from '../website/VarValueStandards.svelte';
 
 	const { onVarClicked }: { onVarClicked: (name: string) => void } = $props();
 
@@ -29,10 +30,10 @@
 		return allVariableStats(orderedTable, { errorLabel: sitesInArea.map((s) => s.id).join(', ') });
 	});
 
-	let variableTooltip: HoveredVariableTooltip | undefined = $state();
+	let variableTooltip: TooltipVariableBrief | undefined = $state();
 </script>
 
-<HoveredVariableTooltip bind:this={variableTooltip} />
+<TooltipVariableBrief bind:this={variableTooltip} />
 
 <div id="region-stats-panel">
 	{#if region.feature}
@@ -69,16 +70,16 @@
 			<td
 				class="variable-label"
 				onmouseleave={(e: MouseEvent) => variableTooltip?.mouseLeaveVariable(e)}
-				onmousemove={(e: MouseEvent) => variableTooltip?.mouseMoveVariable(e, r.variable)}
-				onclick={() => onVarClicked(r.variable)}
-				>{r.label} {varunits(r.variable)}
+				onmousemove={(e: MouseEvent) => variableTooltip?.mouseMoveVariable(e, r.varname)}
+				onclick={() => onVarClicked(r.varname)}
+				>{r.label} {varunits(r.varname)}
 			</td>
 			<td>{r.numObservations}</td>
-			<td class="stat">{fmtVarNum(r.variable, r.min)}</td>
-			<td class="stat">{fmtVarNum(r.variable, r.max)}</td>
-			<td class="stat">{fmtVarNum(r.variable, r.mean)}</td>
-			<td class="stat">{fmtVarNum(r.variable, r.median)}</td>
-			<td class="stat">{fmtVarNum(r.variable, r.stdDev)}</td>
+			<td class="stat"><VarValueStandards v={r.varname} value={r.min}/></td>
+			<td class="stat"><VarValueStandards v={r.varname} value={r.max}/></td>
+			<td class="stat"><VarValueStandards v={r.varname} value={r.mean}/></td>
+			<td class="stat"><VarValueStandards v={r.varname} value={r.median}/></td>
+			<td class="stat">{fmtVarNum(r.varname, r.stdDev)}</td>
 			<td class="date">{r.dateFromLabel}</td>
 			<td class="date">{r.dateToLabel}</td>
 		{/snippet}
@@ -94,11 +95,13 @@
 		flex-direction: column;
 	}
 
-	.variable-label:hover {
-		cursor: pointer;
-		text-decoration: underline;
-		text-decoration-color: #ab00d6;
-		text-decoration-thickness: 2px;
+	#region-stats-panel :global {
+		.variable-label:hover {
+			cursor: pointer;
+			text-decoration: underline;
+			text-decoration-color: #ab00d6;
+			text-decoration-thickness: 2px;
+		}
 	}
 
 	p {
@@ -128,8 +131,6 @@
 	h3 :global(.blink) {
 		animation: blink 1s linear 2;
 	}
-
-
 
 	@keyframes blink {
 		50% {

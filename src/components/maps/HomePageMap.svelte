@@ -193,6 +193,7 @@
 	{startDate}
 	{endDate}
 	{validDates}
+	showCoords={true}
 	zoom={7.9}
 />
 

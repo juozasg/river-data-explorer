@@ -47,13 +47,13 @@
 
 			{#snippet row(r: VariableStats)}
 				<td>{r.label}</td>
-				<td>{fmtVarNum(r.variable, r.lastObservation)}</td>
+				<td>{fmtVarNum(r.varname, r.lastObservation)}</td>
 				<td>{r.numObservations}</td>
-				<td>{fmtVarNum(r.variable, r.min)}</td>
-				<td>{fmtVarNum(r.variable, r.max)}</td>
-				<td>{fmtVarNum(r.variable, r.mean)}</td>
-				<td>{fmtVarNum(r.variable, r.median)}</td>
-				<td>{fmtVarNum(r.variable, r.stdDev)}</td>
+				<td>{fmtVarNum(r.varname, r.min)}</td>
+				<td>{fmtVarNum(r.varname, r.max)}</td>
+				<td>{fmtVarNum(r.varname, r.mean)}</td>
+				<td>{fmtVarNum(r.varname, r.median)}</td>
+				<td>{fmtVarNum(r.varname, r.stdDev)}</td>
 				<td class="date">{r.dateFromLabel}</td>
 				<td class="date">{r.dateToLabel}</td>
 			{/snippet}

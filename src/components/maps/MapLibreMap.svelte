@@ -7,11 +7,12 @@
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 	import { toggleoffAttribution } from '$src/lib/utils/maplibre';
 	import { onMount } from 'svelte';
-	import LayerSwitcher from './LayerSwitcher.svelte';
+	import LayerSwitcher from './controls/LayerSwitcher.svelte';
 	import { toggleRiverLayerVisibility } from '$src/lib/data/map/mapData/mapData';
 	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
-	import VariableSelector from './VariableSelector.svelte';
-	import TimeSelector from './TimeSelector.svelte';
+	import VariableSelector from './controls/VariableSelector.svelte';
+	import TimeSelector from './controls/TimeSelector.svelte';
+	import Legend from './controls/Legend.svelte';
 
 	let {
 		zoom = 7.9,
@@ -24,6 +25,7 @@
 		startDate = new Date('2015-12-30'),
 		endDate = new Date(),
 		validDates = [],
+		showCoords = false,
 	}: MapLibreMapProps = $props();
 
 	let baseStyleId: 'TOPO' | 'SATELLITE' = $state('TOPO');
@@ -118,13 +120,15 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div style="position: relative; height: 100%" class={containerClass}>
+	{#if mapMouseLocation.lngLat && showCoords}
+		<pre>{formatLngLat(mapMouseLocation.lngLat, 4)} (C to copy)</pre>
+	{/if}
 	<LayerSwitcher bind:baseStyleId bind:showRiverLayer />
 	<VariableSelector bind:this={variableSelector} />
 	<TimeSelector {startDate} {endDate} {validDates} bind:this={timeSelector}/>
+	<Legend varname={selectedVariable} />
 	<div class="map" bind:this={divElement} onmouseleave={containerMouseLeave}></div>
-	{#if mapMouseLocation.lngLat}
-		<pre>{formatLngLat(mapMouseLocation.lngLat, 4)} (C to copy)</pre>
-	{/if}
+
 </div>
 
 <style>
@@ -139,7 +143,7 @@
 
 	pre {
 		position: absolute;
-		bottom: 10px;
+		top: 0px;
 		right: -2px;
 		z-index: 2;
 		background: none;

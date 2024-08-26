@@ -147,6 +147,7 @@
 	{addLayers}
 	bind:divElement
 	bind:mlMap
+	showCoords={true}
 	{...others}
 />
 

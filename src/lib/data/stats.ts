@@ -99,7 +99,7 @@ export function variableStats(variable: string, table: ColumnTable, { errorLabel
 		const stats: any = isCategoricalVar(variable) ? emptyStringStats : calculateVarStats(tsTable)
 
 		return {
-			variable,
+			varname: variable,
 			label,
 			lastObservation,
 			numObservations,

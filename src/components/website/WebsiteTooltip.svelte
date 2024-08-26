@@ -29,6 +29,7 @@
 
 		if(tooltipElement) {
 			const containerHeight = tooltipElement.clientHeight || 0;
+			const containerWidth = tooltipElement.clientWidth || 0;
 			// prevents tooltip jumping/flashing if this code runs before clientRect is available
 			if(containerHeight == 0) {
 				tooltipElement.style.opacity = "0";
@@ -36,14 +37,18 @@
 				tooltipElement.style.opacity = "1";
 			}
 
-
-
 			tooltipElement.style.display = 'block';
 			// tooltip.style.left = x + 6 + 'px';
 			let top = y - containerHeight - 12;
 
 			if(top < 0) {
 				top = y + 12;
+			}
+
+			if(x + 10 + containerWidth > window.innerWidth) {
+				x = window.innerWidth - containerWidth - 10;
+				// const diff = x + containerWidth - window.innerWidth;
+				// x -= diff;
 			}
 			tooltipElement.style.top = top + 'px';
 			tooltipElement.style.left = x + 'px';
