@@ -42,17 +42,24 @@
 
 <style>
 	.marker {
-		/* opacity: 0.8; */
 		padding: 3px;
 		.marker-box {
+			opacity: 1;
 			border: 1px solid #3b084b;
 			border-radius: 0px;
 			transform: rotateY(0deg) rotate(45deg);
 
+			width: 12px;
+			height: 12px;
+			background-color: var(--color);
+		}
+	}
+
+	:global(.marker.ghost) {
+		.marker-box {
+			opacity: 0.5;
 			width: 10px;
 			height: 10px;
-			/* background-color: #ebc0f8; */
-			background-color: var(--color);
 		}
 	}
 
@@ -77,35 +84,28 @@
 
 	.marker.highlighted {
 		.marker-box {
-			/* background-color: #CDF8C0; */
 			width: 15px;
 			height: 15px;
 			border-width: 2px;
 
-			/* border-radius: 8px; */
 		}
 	}
 
 	.marker.red {
 		.marker-box {
-			/* background-color: #CDF8C0; */
 			width: 15px;
 			height: 15px;
 			border-width: 2px;
 			background-color: red;
 
-			/* border-radius: 8px; */
 		}
 	}
 
 	.marker.highlighted:hover {
 		.marker-box {
-			/* background-color: #CDF8C0; */
 			width: 24px;
 			height: 24px;
 			border-radius: 12px;
-
-			/* border-radius: 8px; */
 		}
 	}
 
@@ -118,7 +118,6 @@
 
 			border-color: #cdf8c0;
 			border-width: 4px;
-			/* border-style: */
 		}
 	}
 </style>

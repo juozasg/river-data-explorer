@@ -56,14 +56,6 @@
 	export const selectedDate = $derived(timeSelector?.selectedDate || new Date());
 	export const selectedVariable: string = $derived(variableSelector?.selectedVarname || 'temp');
 
-	// $effect(() => {
-	// 	console.log('MLM selectedVariable', selectedVariable);
-	// });
-
-	// $effect(() => {
-	// 	console.log('MLM variableSelector?.selectedVariable', variableSelector && variableSelector.selectedVariable);
-	// });
-	// $inspect('selectedDate', selectedDate);
 
 	$effect(() => {
 		if (!mlMap) return;

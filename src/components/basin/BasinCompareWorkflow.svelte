@@ -1,5 +1,5 @@
 <script lang="ts">
-  import BasinCompareControlHeading from './BasinCompareControlHeading.svelte';
+  import ChangeRegionHeader from './ChangeRegionHeader.svelte';
 
 	import RegionTypeTabs from '../../routes/basin/RegionTypeTabs.svelte';
 	import AreaSelectorMap from '$src/components/maps/RegionSelectorMap.svelte';
@@ -33,7 +33,7 @@
 </div>
 
 <div id="region-details">
-<BasinCompareControlHeading/>
+<ChangeRegionHeader/>
 
 	<div class="columns" style="height: 100%" class:is-hidden={!selectedRegion.feature}>
 		<div class="column left-column is-half">

@@ -18,8 +18,14 @@
 
 	const siteTable: ColumnTable | undefined = $derived(sitesTables.get(siteTableName)?.reify());
 
+	$effect(() => {
+		console.log('SiteStatsPanel siteTable', siteTable);
+		console.log('siteTableName', siteTableName);
+	});
+
 
 	let chartLayoutElement: HTMLDivElement | undefined = $state();
+
 </script>
 
 <div bind:this={chartLayoutElement} style="widht: 100%; height: 100%;">

@@ -126,9 +126,9 @@
 				);
 
 				if(color === ghost) {
-					m.style.opacity = '0.5';
+					m.classList.add('ghost');
 				} else {
-					m.style.opacity = '1';
+					m.classList.remove('ghost');
 				}
 			}
 		}

@@ -1,6 +1,5 @@
 import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import * as d3sc from 'd3-scale-chromatic';
-import { frac } from 'arquero';
 import { varmax, varmin } from './varHelpers';
 
 export const ghost = 'rgba(0, 0, 0, 0.2)';

@@ -34,6 +34,7 @@
 	{#if selectedSite.site}
 		<h3 class="site-label">
 			<div class="color-marker"></div>
+			<div class="color-marker"></div>
 			Site: <span style="font-weight: 400">{selectedSite.site?.name}</span>
 			<span class="subtitle">{selectedSite.site?.id}</span>
 		</h3>
@@ -52,8 +53,7 @@
 			{#snippet row(r: VariableStats)}
 				<td
 					class="variable-label"
-					class:selected-y={selectedY(r.varname)}
-					class:selected-z={selectedZ(r.varname)}
+
 					onmouseleave={(e: MouseEvent) => variableTooltip?.mouseLeaveVariable(e)}
 					onmousemove={(e: MouseEvent) => variableTooltip?.mouseMoveVariable(e, r.varname)}
 					onclick={() => onVarClicked(r.varname)}
@@ -127,6 +127,7 @@
 		.site-label {
 			border-left: 6px solid #00af8c;
 			padding-left: 3px;
+
 		}
 
 		.color-marker {
@@ -139,6 +140,7 @@
 			height: 100%;
 			/* border-radius: 50%; */
 			background-color: #ab00d6;
+			display: none;
 			/* margin-right: 5px; */
 		}
 
