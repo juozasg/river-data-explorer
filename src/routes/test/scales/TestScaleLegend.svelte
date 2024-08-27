@@ -12,38 +12,45 @@
 
 	const getColor = () => interpolateVarColor(varname, value);
 
-
 	let doc: Document | undefined = $state();
 
 	onMount(() => {
 		doc = document;
 	});
 
-
 	const min = 400;
 	const max = 800;
-
-	const dataUrl = $derived(doc && interpolateVarDataURL(doc, varname));
 </script>
-<input type="range" bind:value {min} {max} step={(max - min) / 1000} style="width:600px" />
 
-<div id="panel" style="width: {value}px">
-	<select bind:value={varname} style="margin-bottom: 2rem">
-		{#each Object.keys(variablesMetadata) as vname}
-			<option>{vname}</option>
-		{/each}
-	</select>
+<div style="margin-top: 5rem;">
+	<div>
+		<input type="range" bind:value {min} {max} step={(max - min) / 1000} style="width:600px" />
+	</div>
+	<div class="select is-multiple">
+		<select multiple size="3">
+			{#each Object.keys(variablesMetadata) as vname}
+				<option>{vname}</option>
+			{/each}
+		</select>
+	</div>
+	<div id="panel" style="width: {value}px">
+		<select bind:value={varname} style="margin-bottom: 2rem">
+			{#each Object.keys(variablesMetadata) as vname}
+				<option>{vname}</option>
+			{/each}
+		</select>
 
-	<pre>
-	min = {min}
-	max = {max}
-	interpid = {variablesMetadata[varname]?.scale?.d3}
-	{varname} = {value}
-</pre>
-	<i>{color}</i>
+		<pre>
+		min = {min}
+		max = {max}
+		interpid = {variablesMetadata[varname]?.scale?.d3}
+		{varname} = {value}
+	</pre>
+		<i>{color}</i>
 
-	<LegendColorBar {varname} />
-	<!-- <LegendColorBar  {varname} /> -->
+		<LegendColorBar {varname} />
+		<!-- <LegendColorBar  {varname} /> -->
+	</div>
 </div>
 
 <style>

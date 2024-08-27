@@ -13,7 +13,7 @@
 	import { fitFeatureBounds, makeSiteMarker, setFeatureState } from '$src/lib/utils/maplibre';
 	import Marker from './Marker.svelte';
 	import { sitesDataStats } from '$src/lib/data/stats';
-	import TooltipSiteStats from '../website/TooltipContentSiteStats.svelte';
+	import TooltipSiteStats from '../tooltips/TooltipContentSiteStats.svelte';
 	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 
 	let { ...others }: Partial<MapLibreMapProps> = $props();

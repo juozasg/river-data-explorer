@@ -1,7 +1,6 @@
 import sprintfpkg from 'sprintf';
 const { sprintf } = sprintfpkg;
 
-import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import type { ImportGlobRecord, MarkdownPage, MarkdownComponent } from '../types/page';
 
 export const getMarkdownPages = async (allMdPages: ImportGlobRecord): Promise<MarkdownPage[]> => {
@@ -59,30 +58,6 @@ export function partition(array: any[], filter: (e: any, i: number, arr: any[]) 
 	const fail: any[] = [];
 	array.forEach((e, idx, arr) => (filter(e, idx, arr) ? pass : fail).push(e));
 	return [pass, fail];
-}
-
-
-export const fmtVarNum = (varname: string, n: number | undefined | string, units = false) => {
-	if (n === undefined) return '';
-	if (typeof n !== 'number') return n;
-	const fmt = variablesMetadata[varname]?.format || variablesMetadata['default']?.format || '%.2f';
-	const unit = (units && variablesMetadata[varname]?.unit) || '';
-	return sprintf(fmt, n) + ' ' + unit;
-};
-
-
-export function varunits(varname: string, parens = true) {
-	const unit = variablesMetadata[varname]?.unit;
-	if (!unit) return '';
-	return parens ? `(${unit})` : unit;
-}
-
-export function varlabel(varname: string, units = true) {
-	const unit = varunits(varname, false);
-	const label = variablesMetadata[varname]?.label || varname;
-	if(!units) return label;
-
-	return unit ? `${label} (${unit})` : label;
 }
 
 

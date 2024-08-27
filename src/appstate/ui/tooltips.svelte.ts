@@ -1,4 +1,4 @@
-import type WebsiteTooltip from "$src/components/website/WebsiteTooltip.svelte";
+import type WebsiteTooltip from "$src/components/tooltips/WebsiteTooltip.svelte";
 import type { Snippet } from "svelte";
 import { notify } from "./notifications.svelte";
 

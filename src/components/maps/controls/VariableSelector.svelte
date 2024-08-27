@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
-	import { aremove, varlabel, varunits } from '$src/lib/utils';
+	import { aremove } from '$src/lib/utils';
+	import { varlabel } from '$src/lib/utils/varHelpers';
 	import { onMount } from 'svelte';
 
 	let selectedVariable = $state('temp');

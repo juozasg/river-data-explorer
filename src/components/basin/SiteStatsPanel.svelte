@@ -3,10 +3,10 @@
 	import { selectedSite } from '$src/appstate/map/featureState.svelte';
 	import { allVariableStats } from '$src/lib/data/stats';
 	import type { VariableStats } from '$src/lib/types/analysis';
-	import { fmtVarNum, varunits } from '$src/lib/utils';
+		import { fmtVarNum, varunits } from '$src/lib/utils/varHelpers';
 	import StatsDataTable from '../website/StatsDataTable.svelte';
-	import TooltipVariableBrief from '../website/TooltipVariableBrief.svelte';
-	import VarValueStandards from '../website/VarValueStandards.svelte';
+	import TooltipVariableBrief from '../tooltips/TooltipVariableBrief.svelte';
+	import VarValueStandards from '../tooltips/VarValueStandards.svelte';
 
 	const { onVarClicked }: { onVarClicked: (name: string) => void } = $props();
 
@@ -47,7 +47,7 @@
 					onmouseleave={(e: MouseEvent) => variableTooltip?.mouseLeaveVariable(e)}
 					onmousemove={(e: MouseEvent) => variableTooltip?.mouseMoveVariable(e, r.varname)}
 					onclick={() => onVarClicked(r.varname)}
-					>{r.label} {varunits(r.varname)}
+					>{r.label} {varunits(r.varname, true)}
 				</td>
 				<td><VarValueStandards v={r.varname} value={r.lastObservation}/></td>
 				<td>{r.numObservations}</td>

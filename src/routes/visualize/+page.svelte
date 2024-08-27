@@ -4,7 +4,7 @@
 	import StatsDataTable from '$src/components/website/StatsDataTable.svelte';
 	import { variableStats } from '$src/lib/data/stats.js';
 	import type { VariableStats } from '$src/lib/types/analysis';
-	import { fmtVarNum } from '$src/lib/utils';
+		import { fmtVarNum } from '$src/lib/utils/varHelpers';
 
 	const site = $derived(sites.findById('sjrbc-1'));
 	const table = $derived(site && sitesTables.get(site.id));

@@ -3,6 +3,7 @@
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
 	import BrushedYzChart from '../chart/BrushedYZChart.svelte';
 	import { selectedSite } from '$src/appstate/map/featureState.svelte';
+	import ElementResizeObserver from '../website/ElementResizeObserver.svelte';
 
 	let siteTableName = $state('');
 
@@ -19,27 +20,10 @@
 
 
 	let chartLayoutElement: HTMLDivElement | undefined = $state();
-	let observer: ResizeObserver | undefined = $state();
-
-	if (typeof window == 'object') {
-		observer = new window.ResizeObserver((entries) => {
-			const entry = entries[0];
-			// console.log('chartLayoutElement contentRect', entry.contentRect);
-
-			chartWidth = entry.contentRect.width;
-			chartHeight = entry.contentRect.height;
-		});
-	}
-
-	$effect(() => {
-		if (chartLayoutElement && observer) {
-			// console.log('OBSERVE chartLayoutElement', chartLayoutElement);
-			observer.observe(chartLayoutElement);
-		}
-	});
 </script>
 
 <div bind:this={chartLayoutElement} style="widht: 100%; height: 100%;">
+	<ElementResizeObserver element={chartLayoutElement} bind:width={chartWidth} bind:height={chartHeight} />
 	{#if siteTable}
 		<BrushedYzChart table={siteTable} {yVar} {zVar} {chartWidth} {chartHeight} />
 	{/if}

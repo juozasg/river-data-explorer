@@ -12,13 +12,14 @@
 	import type { Site } from '$src/lib/types/site';
 	import Marker from './Marker.svelte';
 	import { sitesDataStats } from '$src/lib/data/stats';
-	import TooltipSiteStats from '../website/TooltipContentSiteStats.svelte';
+	import TooltipSiteStats from '../tooltips/TooltipContentSiteStats.svelte';
 	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
 	import { ghost, siteVariableColor } from '$src/lib/data/map/helpers/markerHelpers';
 	import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 	import { siteGetBeforeDate } from '$src/lib/data/tableHelpers';
-	import { fmtDate, UTCDayDate, varunits } from '$src/lib/utils';
+	import { fmtDate, UTCDayDate } from '$src/lib/utils';
+	import { varunits } from '$src/lib/utils/varHelpers';
 	import { sitesEarliestDate, sitesLatestDate, sitesValidDates } from '$src/lib/data/dateStats';
 
 	type Props = {
@@ -107,7 +108,7 @@
 	}
 
 	function selectedVariableUnit() {
-		return varunits(varname, false);
+		return varunits(varname);
 	}
 
 	function selectedDateVariableValue(site: Site) {

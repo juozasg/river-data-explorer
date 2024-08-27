@@ -1,7 +1,7 @@
 <script lang="ts">
   import BasinCompareControlHeading from './BasinCompareControlHeading.svelte';
 
-	import RegionTypeTabs from '../routes/basin/RegionTypeTabs.svelte';
+	import RegionTypeTabs from '../../routes/basin/RegionTypeTabs.svelte';
 	import AreaSelectorMap from '$src/components/maps/RegionSelectorMap.svelte';
 	import SiteSelectorMap from '$src/components/maps/SiteSelectorMap.svelte';
 	import { selectedRegion, selectedSite } from '$src/appstate/map/featureState.svelte';

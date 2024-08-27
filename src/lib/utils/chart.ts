@@ -1,5 +1,6 @@
 import type ColumnTable from "arquero/dist/types/table/column-table";
 import { fmtDate } from ".";
+import { varlabel, varunits } from './varHelpers';
 import { variablesMetadata } from "$src/appstate/variablesMetadata.svelte";
 import { getContext } from "svelte";
 
@@ -68,16 +69,13 @@ export function formatChartDate(d: number): any {
 
 export function formatChartTTKey(key: string, yVarname: string, zVarname: string): string {
 	const keycolor = key == yVarname ? chartYColor : key == zVarname ? chartZDarker : '#444';
-	const label = variablesMetadata[key]?.label || key;
-	const unit = variablesMetadata[key]?.unit || '';
-	// console.log(key, label, keycolor)
-	// const keycolor = '#444';
+	const label = varlabel(key, false);
+
 	return `<span style="font-weight: 600; color: ${keycolor}">${label}</bold>`;
 }
 
 export function formatChatTTValue(key: string, value: any): string {
-
-	const unit = variablesMetadata[key]?.unit || '';
+	const unit = varunits(key);
 	return `${value} ${unit}`;
 }
 

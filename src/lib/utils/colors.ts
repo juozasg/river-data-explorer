@@ -2,6 +2,7 @@ import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import * as d3sc from 'd3-scale-chromatic';
 import { ghost } from '../data/map/helpers/markerHelpers';
 import { frac } from 'arquero';
+import { varmax, varmin } from './varHelpers';
 
 
 
@@ -13,8 +14,8 @@ export function interpolateVarColor(varname: string, value?: number | string, va
 	const md = variablesMetadata[varname];
 	const reverse = !!md?.scale?.d3?.reverse;
 
-	const min = md?.scale?.min || variablesMetadata['default']?.scale?.min || 0;
-	const max = md?.scale?.max || variablesMetadata['default']?.scale?.max || 10;
+	const min = varmin(varname);
+	const max = varmax(varname);
 
 	if(value == undefined && valueFraction == undefined) {
 		return ghost;

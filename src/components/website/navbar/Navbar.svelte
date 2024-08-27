@@ -1,9 +1,9 @@
 <script lang="ts">
-	import NavbarBasin from './navbar/Basin.svelte';
+	import NavbarBasin from './Basin.svelte';
 
 	import { page, navigating } from '$app/stores';
 	import type { MarkdownPage } from '$src/lib/types/page';
-	import NavbarSlugLink from './navbar/SlugLink.svelte';
+	import NavbarSlugLink from './SlugLink.svelte';
 	import { onMount } from 'svelte';
 
 	interface Props {

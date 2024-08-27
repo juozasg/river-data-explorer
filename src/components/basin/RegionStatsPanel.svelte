@@ -4,12 +4,12 @@
 	import { sites } from '$src/appstate/sites.svelte';
 	import { allVariableStats, sitesDataStats, variableStats } from '$src/lib/data/stats';
 	import type { VariableStats } from '$src/lib/types/analysis';
-	import { fmtVarNum, varunits } from '$src/lib/utils';
+		import { fmtVarNum, varunits } from '$src/lib/utils/varHelpers';
 	import StatsDataTable from '../website/StatsDataTable.svelte';
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
 	import { concatTablesAllColumns } from '$src/lib/data/tableHelpers';
-	import TooltipVariableBrief from '../website/TooltipVariableBrief.svelte';
-	import VarValueStandards from '../website/VarValueStandards.svelte';
+	import TooltipVariableBrief from '../tooltips/TooltipVariableBrief.svelte';
+	import VarValueStandards from '../tooltips/VarValueStandards.svelte';
 
 	const { onVarClicked }: { onVarClicked: (name: string) => void } = $props();
 
@@ -72,7 +72,7 @@
 				onmouseleave={(e: MouseEvent) => variableTooltip?.mouseLeaveVariable(e)}
 				onmousemove={(e: MouseEvent) => variableTooltip?.mouseMoveVariable(e, r.varname)}
 				onclick={() => onVarClicked(r.varname)}
-				>{r.label} {varunits(r.varname)}
+				>{r.label} {varunits(r.varname, true)}
 			</td>
 			<td>{r.numObservations}</td>
 			<td class="stat"><VarValueStandards v={r.varname} value={r.min}/></td>

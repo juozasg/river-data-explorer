@@ -1,17 +1,16 @@
 <script lang="ts">
 	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 	import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
-	import { fmtVarNum, varunits } from '$src/lib/utils';
-	import { on } from 'svelte/events';
+		import { fmtVarNum, varunits } from '$src/lib/utils/varHelpers';
 
 	const { v, value }: { v: string; value: number | undefined } = $props();
 
 	const md = variablesMetadata[v];
-	const standartsMin = md?.standards?.min;
-	const standartsMax = md?.standards?.max;
+	const standardsMin = md?.standards?.min;
+	const standardsMax = md?.standards?.max;
 
-	const exceedsMin = $derived(value && typeof standartsMin == 'number' && value < standartsMin);
-	const exceedsMax = $derived(value && typeof standartsMax == 'number' && value > standartsMax);
+	const exceedsMin = $derived(value && typeof standardsMin == 'number' && value < standardsMin);
+	const exceedsMax = $derived(value && typeof standardsMax == 'number' && value > standardsMax);
 
 	export const onmousemove = (e: MouseEvent) => {
 		if(exceedsMin || exceedsMax) {
@@ -30,9 +29,9 @@
 
 {#snippet tooltipContent()}
 	{#if exceedsMax}
-		<p>Above maximum {standartsMax} {varunits(v, false)}</p>
+		<p>Above maximum {standardsMax} {varunits(v)}</p>
 	{:else if exceedsMin}
-		<p>Below minimum {standartsMin} {varunits(v, false)}</p>
+		<p>Below minimum {standardsMin} {varunits(v)}</p>
 	{/if}
 {/snippet}
 

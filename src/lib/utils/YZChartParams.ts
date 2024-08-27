@@ -1,5 +1,6 @@
 import type ColumnTable from "arquero/dist/types/table/column-table";
 import { isNumber } from ".";
+import { varunits } from './varHelpers';
 import { variablesMetadata } from "$src/appstate/variablesMetadata.svelte";
 import { simpleStats, type SimpleStats } from "../data/stats";
 import { roundTickValue } from "./chart";
@@ -13,7 +14,7 @@ export class YZChartParams {
 
 	// calculated in constructor
 	stats: SimpleStats;
-	unit?: string;
+	units?: string;
 	varLabel: string;
 	radius: number = 4;
 	domain: [number, number];
@@ -30,8 +31,8 @@ export class YZChartParams {
 		this.table = table;
 
 		if (varname && table) {
-			this.unit = variablesMetadata[varname]?.unit || '';
-			const unitParens = this.unit != '' ? ` (${this.unit})` : '';
+			this.units = varunits(varname);
+			const unitParens = this.units != '' ? ` (${this.units})` : '';
 			this.varLabel = (variablesMetadata[varname]?.label || varname) + unitParens;
 
 
