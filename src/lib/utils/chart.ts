@@ -1,6 +1,6 @@
 import type ColumnTable from "arquero/dist/types/table/column-table";
 import { fmtDate } from ".";
-import { varlabel, varunits } from './varHelpers';
+import { varcategories, varlabel, varunits } from './varHelpers';
 import { variablesMetadata } from "$src/appstate/variablesMetadata.svelte";
 import { getContext } from "svelte";
 

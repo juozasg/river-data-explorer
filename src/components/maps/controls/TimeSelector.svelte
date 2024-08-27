@@ -97,7 +97,6 @@
 			<div class="tick" style="left: {dateToFraction(date) * 100}%"></div>
 		{/each}
 	</div>
-	<!-- class="time-slider-range range" -->
 	<input
 		class="time-slider-range range"
 		type="range"
@@ -110,13 +109,6 @@
 
 	<DateYMDSelects {startDate} {endDate} {validDates} bind:this={ymdSelector} />
 
-	<!-- {#if validDates && validDates.length > 0}
-		<datalist id={datalistId}>
-			{#each validDates as date}
-				<option value={date.valueOf()}></option>
-			{/each}
-		</datalist>
-	{/if} -->
 </div>
 
 <style>
@@ -126,14 +118,12 @@
 		left: 6px;
 		width: calc(100% - 189px);
 		height: 100%;
-		/* background-color: rgb(222, 193, 249); */
 
 		.tick {
 			position: absolute;
 			bottom: 4px;
 			width: 2px;
 			height: 12px;
-			/* background-color: #62B3C6; */
 			background-color: #ABABAB;
 		}
 
@@ -150,14 +140,12 @@
 			position: absolute;
 			font-size: 0.8rem;
 			top: -5px;
-			/* font-weight: 600; */
 			padding: 0.25rem;
-			/* background-color: hsla(0, 0%, 100%, 0.8); */
 			opacity: 1;
-			/* border-radius: 4px; */
 			z-index: 1000;
 			pointer-events: none;
 		}
+
 		.first-label {
 			left: -10px;
 		}

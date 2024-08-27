@@ -8,7 +8,7 @@ export const fmtVarNum = (varname: string, n: number | undefined | string, units
 	if (typeof n !== 'number') return n;
 	const fmt = variablesMetadata[varname]?.format || variablesMetadata['default']?.format || '%.2f';
 	const unit = (units && varunits(varname)) || '';
-	return sprintf(fmt, n) + ' ' + unit;
+	return units ? sprintf(fmt, n) + ' ' + unit : sprintf(fmt, n);
 };
 
 
@@ -31,6 +31,30 @@ export function varmin(varname: string) {
 }
 
 export function varmax(varname: string) {
-	// console.log(varname, variablesMetadata[varname], variablesMetadata[varname]?.max )
+	if(varcategories(varname)) {
+		return varcategories(varname)!.length - 1;
+	}
 	return variablesMetadata[varname]?.scale?.max ?? variablesMetadata['default']?.scale?.max ?? 10;
+}
+
+export function varrange(varname: string) {
+	return varmax(varname) - varmin(varname);
+}
+
+
+export function varcategories(varname: string) {
+	return !!variablesMetadata[varname]?.categories && Object.keys(variablesMetadata[varname]?.categories).length > 0 ? Object.keys(variablesMetadata[varname]?.categories) : undefined;
+}
+
+export function varcatilabel(varname: string, catIndex: number) {
+	const catkey = varcategories(varname)?.[catIndex];
+	if (!catkey) return '';
+	return variablesMetadata[varname]?.categories?.[catkey]?.label || catkey
+}
+
+export function varcatilegend(varname: string, catIndex: number) {
+	const catkey = varcategories(varname)?.[catIndex];
+	if (!catkey) return '';
+	console.log('catkey', catkey, variablesMetadata[varname]?.categories?.[catkey], variablesMetadata[varname]?.categories?.[catkey]?.legend)
+	return variablesMetadata[varname]?.categories?.[catkey]?.legend || catkey
 }

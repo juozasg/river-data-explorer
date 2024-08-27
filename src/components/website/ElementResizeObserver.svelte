@@ -17,7 +17,6 @@
 	let observer: ResizeObserver | undefined = $state();
 
 	onMount(() => {
-		console.log('ELEMENT on mount', window);
 		observer = new window.ResizeObserver((entries) => {
 			const entry = entries[0];
 			// console.log('element contentRect', entry.contentRect);
