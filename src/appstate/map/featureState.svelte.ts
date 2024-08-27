@@ -11,6 +11,10 @@ abstract class MLMFeatureState {
 		return this.feature?.id;
 	};
 
+	get source() {
+		return this.feature?.source;
+	}
+
 	get name() {
 		return this.feature?.properties?.name || '';
 	}
@@ -28,10 +32,10 @@ abstract class MLMFeatureState {
 export class MLMHoveredFeatureState extends MLMFeatureState {
 	extent: number = 0;
 
-	constructor(extent: number = 0) {
+	constructor(hitboxExtent: number = 0) {
 		super();
 
-		this.extent = extent;
+		this.extent = hitboxExtent;
 	}
 
 	clearCurrentFeatureState(map: ml.Map) {

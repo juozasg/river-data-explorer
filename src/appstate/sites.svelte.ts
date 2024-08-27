@@ -42,6 +42,10 @@ export class Sites {
 		return this.sites.filter(s => s.huc10 === huc10);
 	}
 
+	static inHuc10(sites: Site[], huc10: string | undefined | number) {
+		return sites.filter(s => s.huc10 === huc10);
+	}
+
 	findById(siteId: string) {
 		return this.sites.find(s => s.id === siteId);
 	}
