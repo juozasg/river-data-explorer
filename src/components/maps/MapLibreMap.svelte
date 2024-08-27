@@ -8,7 +8,7 @@
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 	import { toggleoffAttribution } from '$src/lib/utils/maplibre';
 	import { onMount } from 'svelte';
-	import { addMlmLayers } from '$src/lib/data/map/mapData/areasMapData';
+	import { addMlmLayers } from '$src/lib/data/map/mapData/regionsMapData';
 
 	let {
 		mlMap = $bindable(),
