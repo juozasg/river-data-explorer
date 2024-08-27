@@ -14,9 +14,7 @@
 	import SharedTooltip from '$src/components/chart/layercake/SharedTooltip.svelte';
 	import { isNumber } from '$src/lib/utils';
 	import {
-		chartYColor,
-		chartZColor,
-		chartZDarker,
+
 		formatChartDate,
 		formatChartTTKey,
 		formatChatTTValue,
@@ -27,6 +25,7 @@
 
 	import { YZChartParams } from '$src/lib/utils/YZChartParams';
 	import { selectedRegion, selectedSite } from '$src/appstate/map/featureState.svelte';
+	import { chartYColor, chartZDarker, chartZColor } from '$src/lib/utils/colors';
 
 	const { table, yVar, zVar, chartWidth, chartHeight }: { table: ColumnTable; yVar: string; zVar: string, chartWidth: number, chartHeight: number } = $props();
 

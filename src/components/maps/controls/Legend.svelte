@@ -56,9 +56,9 @@
 	);
 </script>
 
-<pre style="position: fixed; top: 0; left:0; z-index: 100001">
+<!-- <pre style="position: fixed; top: 0; left:0; z-index: 100001">
 	nt: {numTicks} {tickValues}
-</pre>
+</pre> -->
 
 <div class="map-control" bind:this={legendControl}>
 	<ElementResizeObserver element={legendControl} bind:width={legendWidth} />
@@ -93,7 +93,7 @@
 		position: absolute;
 		top: 10px;
 		right: 10px;
-		width: calc(100% - 300px);
+		width: calc(100% - 500px);
 		height: 2.5rem;
 		color: hsl(0, 0%, 21%);
 		background-color: hsl(0, 0%, 100%);

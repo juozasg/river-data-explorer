@@ -99,8 +99,13 @@
 		.variable-label:hover {
 			cursor: pointer;
 			text-decoration: underline;
-			text-decoration-color: #ab00d6;
+			/* text-decoration-color: #ab00d6; */
 			text-decoration-thickness: 2px;
+		}
+
+		td.date {
+			/* font-size: 75%; */
+			min-width: 6.2rem;
 		}
 	}
 
@@ -116,11 +121,6 @@
 			font-size: 0.9rem;
 			color: #444;
 		}
-	}
-
-	.region-label {
-		border-left: 6px solid #ab00d6;
-		padding-left: 3px;
 	}
 
 	h3 :global(.icon) {

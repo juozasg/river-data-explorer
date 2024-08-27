@@ -1,8 +1,12 @@
 import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import * as d3sc from 'd3-scale-chromatic';
-import { ghost } from '../data/map/helpers/markerHelpers';
 import { frac } from 'arquero';
 import { varmax, varmin } from './varHelpers';
+
+export const ghost = 'rgba(0, 0, 0, 0.2)';
+export const chartYColor = '#ab00d6';
+export const chartZColor = '#00d6ab';
+export const chartZDarker = '#00af8c';
 
 
 

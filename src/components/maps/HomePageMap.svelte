@@ -15,12 +15,13 @@
 	import TooltipSiteStats from '../tooltips/TooltipContentSiteStats.svelte';
 	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
-	import { ghost, siteVariableColor } from '$src/lib/data/map/helpers/markerHelpers';
+	import {  siteVariableColor } from '$src/lib/data/map/helpers/markerHelpers';
 	import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 	import { siteGetBeforeDate } from '$src/lib/data/tableHelpers';
 	import { fmtDate, UTCDayDate } from '$src/lib/utils';
 	import { varunits } from '$src/lib/utils/varHelpers';
 	import { sitesEarliestDate, sitesLatestDate, sitesValidDates } from '$src/lib/data/dateStats';
+	import { ghost } from '$src/lib/utils/colors';
 
 	type Props = {
 		onSelected?: () => void;
@@ -64,32 +65,12 @@
 	});
 
 	const markerMouseEnter = (e: MouseEvent, site: Site) => {
-		// console.log('markermouse', site?.id, site);
 		hoveredSite = site;
 	};
 
 	const markerMouseLeave = (e: MouseEvent, site: Site) => {
-		// console.log('markermouse', site?.id, site);
 		hoveredSite = null;
 	};
-
-
-	const startDate = $derived(sitesEarliestDate(sites.allEnabled));
-	const endDate = $derived(sitesLatestDate(sites.allEnabled));
-	const someDates = ['2000-01-11', '2000-01-20', '2010-01-01',  '2023-08-08', '2023-08-9'].map(d => UTCDayDate(d));
-
-
-
-
-	const varname = $derived(mlmComponent?.selectedVariable || 'temp');
-	const selectedDate = $derived(mlmComponent?.selectedDate || endDate);
-
-	// $effect(() => {
-	// 	console.log('HOME varname', varname);
-	// 	console.log('HOME selectedDate', selectedDate);
-	// });
-
-	let validDates: Date[] = $derived(sitesValidDates(sites.allEnabled, varname));
 
 
 
@@ -98,10 +79,6 @@
 	});
 
 
-	function markerColor(site: Site) {
-		// return 'red';
-		return siteVariableColor(site.id, varname, selectedDate);
-	}
 
 	function selectedVariableLabel() {
 		return variablesMetadata[varname]?.label || varname;
@@ -124,7 +101,14 @@
 		return 'N/A';
 	}
 
-	let markersContainer = $state<HTMLDivElement>();
+
+	const startDate = $derived(sitesEarliestDate(sites.allEnabled));
+	const endDate = $derived(sitesLatestDate(sites.allEnabled));
+
+	const varname = $derived(mlmComponent?.selectedVariable || 'temp');
+	const selectedDate = $derived(mlmComponent?.selectedDate || endDate);
+
+	let validDates: Date[] = $derived(sitesValidDates(sites.allEnabled, varname));
 
 	$effect(() => {
 		sites.allEnabled; // when this is updated markers are rebuilt
@@ -147,7 +131,6 @@
 					m.style.opacity = '1';
 				}
 			}
-
 		}
 	});
 </script>
@@ -201,7 +184,6 @@
 {#if mlMap}
 	{#each sites.allEnabled as site (site.id)}
 		<Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site} color={ghost} />
-		<!-- <Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site} color={markerColor(site)} /> -->
 	{/each}
 {/if}
 

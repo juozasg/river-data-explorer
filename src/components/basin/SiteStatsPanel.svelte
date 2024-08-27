@@ -3,12 +3,16 @@
 	import { selectedSite } from '$src/appstate/map/featureState.svelte';
 	import { allVariableStats } from '$src/lib/data/stats';
 	import type { VariableStats } from '$src/lib/types/analysis';
-		import { fmtVarNum, varunits } from '$src/lib/utils/varHelpers';
+	import { fmtVarNum, varunits } from '$src/lib/utils/varHelpers';
 	import StatsDataTable from '../website/StatsDataTable.svelte';
 	import TooltipVariableBrief from '../tooltips/TooltipVariableBrief.svelte';
 	import VarValueStandards from '../tooltips/VarValueStandards.svelte';
 
-	const { onVarClicked }: { onVarClicked: (name: string) => void } = $props();
+	const {
+		onVarClicked,
+		yVar,
+		zVar
+	}: { onVarClicked: (name: string) => void; yVar: string; zVar: string } = $props();
 
 	const table = $derived(selectedSite.site && sitesTables.get(selectedSite.site.id));
 
@@ -19,6 +23,9 @@
 	});
 
 	let variableTooltip: TooltipVariableBrief | undefined = $state();
+
+	const selectedY = (varname: string) => varname === yVar;
+	const selectedZ = (varname: string) => varname === zVar;
 </script>
 
 <TooltipVariableBrief bind:this={variableTooltip} />
@@ -26,6 +33,7 @@
 <div id="site-stats-panel">
 	{#if selectedSite.site}
 		<h3 class="site-label">
+			<div class="color-marker"></div>
 			Site: <span style="font-weight: 400">{selectedSite.site?.name}</span>
 			<span class="subtitle">{selectedSite.site?.id}</span>
 		</h3>
@@ -44,17 +52,19 @@
 			{#snippet row(r: VariableStats)}
 				<td
 					class="variable-label"
+					class:selected-y={selectedY(r.varname)}
+					class:selected-z={selectedZ(r.varname)}
 					onmouseleave={(e: MouseEvent) => variableTooltip?.mouseLeaveVariable(e)}
 					onmousemove={(e: MouseEvent) => variableTooltip?.mouseMoveVariable(e, r.varname)}
 					onclick={() => onVarClicked(r.varname)}
 					>{r.label} {varunits(r.varname, true)}
 				</td>
-				<td><VarValueStandards v={r.varname} value={r.lastObservation}/></td>
+				<td><VarValueStandards v={r.varname} value={r.lastObservation} /></td>
 				<td>{r.numObservations}</td>
-				<td class="stat"><VarValueStandards v={r.varname} value={r.min}/></td>
-				<td class="stat"><VarValueStandards v={r.varname} value={r.max}/></td>
-				<td class="stat"><VarValueStandards v={r.varname} value={r.mean}/></td>
-				<td class="stat"><VarValueStandards v={r.varname} value={r.median}/></td>
+				<td class="stat"><VarValueStandards v={r.varname} value={r.min} /></td>
+				<td class="stat"><VarValueStandards v={r.varname} value={r.max} /></td>
+				<td class="stat"><VarValueStandards v={r.varname} value={r.mean} /></td>
+				<td class="stat"><VarValueStandards v={r.varname} value={r.median} /></td>
 				<td class="stat">{fmtVarNum(r.varname, r.stdDev)}</td>
 				<td class="date">{r.dateFromLabel}</td>
 				<td class="date">{r.dateToLabel}</td>
@@ -91,9 +101,21 @@
 			/* text-decoration-style:double; */
 		}
 
+		.selected-y {
+			border-left: 6px solid #ab00d6;
+			padding-left: 3px;
+			/* background-color: #ab00d6; */
+		}
+
+		.selected-z {
+			border-left: 6px solid #00d6ab;
+			padding-left: 3px;
+			/* background-color: #00af8c; */
+		}
+
 		td.date {
 			/* font-size: 75%; */
-			min-width: 6rem;
+			min-width: 6.2rem;
 		}
 
 		td.stat {
@@ -105,6 +127,19 @@
 		.site-label {
 			border-left: 6px solid #00af8c;
 			padding-left: 3px;
+		}
+
+		.color-marker {
+			display: inline-block;
+			position: absolute;
+
+			/* bottom: */
+			width: 6px;
+			/* height: 10px; */
+			height: 100%;
+			/* border-radius: 50%; */
+			background-color: #ab00d6;
+			/* margin-right: 5px; */
 		}
 
 		th {

@@ -11,7 +11,7 @@
 
 {#if selectedRegion.feature}
 	<div class="basin-workflow-control">
-		{#if selectedRegion.feature}
+		<!-- {#if selectedRegion.feature}
 			<div style="width: 100%"><h4>Select site to compare to</h4></div>
 			<div style="width: 100%">
 				<h3 class="region-label">
@@ -19,7 +19,7 @@
 					<span class="subtitle">HUC10:{selectedRegion.id}</span>
 				</h3>
 			</div>
-		{/if}
+		{/if} -->
 		<div class="change-region-container">
 			<button
 				class="change-region-button"

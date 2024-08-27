@@ -57,7 +57,7 @@
 					<RegionStatsPanel onVarClicked={(varname: string) => yVar = varname} />
 				</div>
 				<div class="details-bottom">
-					<SiteStatsPanel onVarClicked={(varname: string) => zVar = varname} />
+					<SiteStatsPanel onVarClicked={(varname: string) => zVar = varname} {yVar} {zVar}/>
 				</div>
 			</div>
 		</div>

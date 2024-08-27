@@ -1,8 +1,7 @@
 import type ColumnTable from "arquero/dist/types/table/column-table";
 import { fmtDate } from ".";
-import { varcategories, varlabel, varunits } from './varHelpers';
-import { variablesMetadata } from "$src/appstate/variablesMetadata.svelte";
-import { getContext } from "svelte";
+import { chartYColor, chartZDarker } from "./colors";
+import { varlabel, varunits } from './varHelpers';
 
 
 // based on how big the range is, round the tick value to a reasonable number
@@ -78,9 +77,5 @@ export function formatChatTTValue(key: string, value: any): string {
 	const unit = varunits(key);
 	return `${value} ${unit}`;
 }
-
-export const chartYColor = '#ab00d6';
-export const chartZColor = '#00d6ab';
-export const chartZDarker = '#00af8c';
 
 
