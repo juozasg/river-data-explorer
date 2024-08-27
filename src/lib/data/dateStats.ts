@@ -34,11 +34,13 @@ export function sitesValidDates(sites: Site[], varname: string): Date[] {
 		.filter((t) => t?.columnNames().includes(varname) && t?.columnNames().includes('date') && t?.numRows() > 0) as ColumnTable[];
 	const allDatesSet = new Set<number>();
 
+	const d1 = new Date()
 	fullTables.forEach((t) => {
+		const data = t.data() as any;
 		for (let i = 0; i < t.numRows(); i++) {
 			const val = t.get(varname, i);
 			if (val !== undefined && val !== null && val !== '') {
-				allDatesSet.add(t.get('date', i).valueOf());
+					allDatesSet.add(t.get('date', i).valueOf());
 			}
 		}
 	});
@@ -47,6 +49,5 @@ export function sitesValidDates(sites: Site[], varname: string): Date[] {
 	allDates.sort((a, b) => a - b);
 
 	return allDates.map((d) => new Date(d));
-
 }
 

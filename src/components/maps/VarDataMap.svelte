@@ -17,7 +17,7 @@
 	import { siteGetBeforeDate } from '$src/lib/data/tableHelpers';
 	import type { MapLayersParams } from '$src/lib/types/mapControls';
 	import type { Site } from '$src/lib/types/site';
-	import { fmtDate } from '$src/lib/utils';
+	import { fmtDate, UTCDayDate } from '$src/lib/utils';
 	import { ghost } from '$src/lib/utils/colors';
 	import { varunits } from '$src/lib/utils/varHelpers';
 	import TooltipSiteStats from '../tooltips/TooltipContentSiteStats.svelte';
@@ -33,15 +33,12 @@
 
 	let { onSelected, ...others }: Props = $props();
 
-	let mlmComponent: MapLibreMap | undefined = $state();
-	let mapContainerElement: HTMLDivElement | undefined = $state();
-	let mlMap: ml.Map | undefined = $state();
+	let mlmComponent = $state<MapLibreMap>();
+	let mlMap = $state<ml.Map>();
 
 	const hoveredRiver = new MLMHoveredFeatureState(10);
 	const hoveredArea = new MLMHoveredFeatureState();
 	let hoveredSite: Site | null = $state(null);
-
-
 
 	const hoveredSiteStats = $derived(hoveredSite ? sitesDataStats([hoveredSite]) : undefined);
 
@@ -54,7 +51,7 @@
 	);
 
 	onMount(() => {
-		console.log('HomePageMap onMount', mapContainerElement, mlMap, mlmComponent);
+		console.log('HomePageMap onMount', mlMap, mlmComponent);
 		const map = mlMap!;
 
 		map.on('mousemove', (e: ml.MapMouseEvent) => {
@@ -91,39 +88,41 @@
 	}
 
 	function selectedDateVariableValue(site: Site) {
-		const val = siteGetBeforeDate(site, varname, selectedDate);
+		const val = siteGetBeforeDate(site, varname, vardate);
 		return val || 'N/A';
 	}
 
 	function selectedDateClosestBeforeDate(site: Site) {
-		const date = siteGetBeforeDate(site, 'date', selectedDate);
+		const date = siteGetBeforeDate(site, 'date', vardate);
 		if (date instanceof Date && !isNaN(date.valueOf())) {
 			return fmtDate(date);
 		}
 		return 'N/A';
 	}
 
+	let varname = $state('temp');
+	let vardate = $state(UTCDayDate());
+
+	$effect(() => {
+		console.log('varname', varname);
+		console.log('vardate', vardate);
+	});
+
 	const startDate = $derived(sitesEarliestDate(sites.allEnabled));
 	const endDate = $derived(sitesLatestDate(sites.allEnabled));
-
-	let variableSelector: VariableSelector | undefined = $state();
-	let timeSelector: TimeSelector | undefined = $state();
-
-	const varname = $derived(mlmComponent?.selectedVariable || 'temp');
-	const selectedDate = $derived(mlmComponent?.selectedDate || endDate);
-
 	let validDates: Date[] = $derived(sitesValidDates(sites.allEnabled, varname));
 
 	$effect(() => {
 		sites.allEnabled; // when this is updated markers are rebuilt
-		mlmComponent?.selectedDate;
-		const markers = mapContainerElement?.querySelectorAll('.marker');
+		vardate;
+		const markers = mlmComponent?.mapDivElement?.querySelectorAll('.marker');
+		// console.log('markers', markers);
 		if (markers && markers.length > 0) {
 			for (let i = 0; i < markers.length; i++) {
 				const m = markers.item(i) as HTMLElement;
 				const sid = m.getAttribute('data-site-id') as string;
 
-				const color = siteVariableColor(sid, varname, selectedDate);
+				const color = siteVariableColor(sid, varname, vardate);
 				m.style.setProperty('--color', color);
 
 				if (color === ghost) {
@@ -179,16 +178,10 @@
 		<pre class="copy-debug">{formatLngLat(mapMouseLocation.lngLat, 4)} (C to copy)</pre>
 	{/if}
 	<LayerSwitcher bind:layersParams />
-	<VariableSelector bind:this={variableSelector} />
-	<TimeSelector {startDate} {endDate} {validDates} bind:this={timeSelector} />
-	<Legend varname={varname} />
-	<MapLibreMap
-		bind:this={mlmComponent}
-		bind:mlMap
-		{layersParams}
-		zoom={7.9}
-		{...others}
-	/>
+	<VariableSelector bind:varname />
+	<TimeSelector {startDate} {endDate} {validDates} bind:vardate />
+	<Legend {varname} />
+	<MapLibreMap bind:this={mlmComponent} bind:mlMap {layersParams} zoom={7.9} {...others} />
 </div>
 
 {#if mlMap}
@@ -198,9 +191,7 @@
 {/if}
 
 <style>
-
-
-pre.copy-debug {
+	pre.copy-debug {
 		position: absolute;
 		top: 0px;
 		right: -2px;

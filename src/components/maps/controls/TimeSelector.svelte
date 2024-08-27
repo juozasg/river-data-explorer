@@ -1,13 +1,14 @@
 <script lang="ts">
 	import DateYMDSelects from './DateYMDSelects.svelte';
 
-	import { binarySearch, fmtDateYmd } from '$src/lib/utils';
+	import { binarySearch, fmtDateYmd, UTCDayDate } from '$src/lib/utils';
 
-	const {
+	let {
 		startDate,
 		endDate,
-		validDates
-	}: { startDate: Date; endDate: Date; validDates: Date[] } = $props();
+		validDates,
+		vardate = $bindable(UTCDayDate())
+	}: { startDate: Date; endDate: Date; validDates: Date[]; vardate?: Date } = $props();
 
 	const validDateValues = $derived((validDates || []).map((d) => d.valueOf()));
 
@@ -25,7 +26,10 @@
 	export const ymdSelectedDate = $derived(ymdSelector?.selectedDate);
 
 	let rangeInputValue: number | string = $state(endDate.valueOf());
-	export const selectedDate = $derived(new Date(parseInt(rangeInputValue as any)));
+	export const selectedDate = $derived(UTCDayDate(parseInt(rangeInputValue as any)));
+	$effect(() => {
+		vardate = selectedDate;
+	});
 
 	// keep range input value within bounds
 	$effect(() => {
@@ -72,11 +76,10 @@
 
 	$effect(() => {
 		if (validDateValues.length === 0) return;
-
 	});
 
 	const snapToValidDate = () => {
-		if(validDateValues.length === 0) return;
+		if (validDateValues.length === 0) return;
 		const closestValue = binarySearch(validDateValues, parseInt(rangeInputValue as any));
 		rangeInputValue = closestValue;
 	};
@@ -84,7 +87,6 @@
 	const dateToFraction = (date: Date) => {
 		return (date.valueOf() - startDate.valueOf()) / (endDate.valueOf() - startDate.valueOf());
 	};
-
 </script>
 
 <div class="map-control">
@@ -108,7 +110,6 @@
 	/>
 
 	<DateYMDSelects {startDate} {endDate} {validDates} bind:this={ymdSelector} />
-
 </div>
 
 <style>
@@ -124,9 +125,8 @@
 			bottom: 4px;
 			width: 2px;
 			height: 12px;
-			background-color: #ABABAB;
+			background-color: #ababab;
 		}
-
 	}
 	.slider-labels {
 		position: absolute;

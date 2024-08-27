@@ -4,9 +4,9 @@
 	import { varlabel } from '$src/lib/utils/varHelpers';
 	import { onMount } from 'svelte';
 
-	let selectedVariable = $state('temp');
+	const varnames = aremove(Object.keys(variablesMetadata), 'default');
+	let { varname = $bindable('temp') }: { varname: string } = $props();
 
-	export const selectedVarname = $derived(selectedVariable);
 
 	let showVarsDropdown = $state(false);
 
@@ -21,10 +21,11 @@
 		showVarsDropdown = !showVarsDropdown;
 	};
 
-	const varnames = aremove(Object.keys(variablesMetadata), 'default');
+	const onclick = (e: Event) => {
+		console.log(e);
+		e.stopPropagation();
+	};
 </script>
-
-
 
 <div class="map-control dropdown" class:is-active={showVarsDropdown}>
 	<div class="dropdown-trigger">
@@ -34,18 +35,25 @@
 			aria-controls="dropdown-menu3"
 			onclick={dropdownToggle}
 		>
-			<span class="dropdown-label">{varlabel(selectedVarname, false)}</span>
+			<span class="dropdown-label">{varlabel(varname, false)}</span>
 			<span class="dropdown-arrow"></span>
 		</button>
 	</div>
 	<div class="dropdown-menu" id="dropdown-menu3" role="menu">
 		<div class="dropdown-content">
 			<form>
-				{#each varnames as varname}
-					<div class="dropdown-item">
-						<label class="checkbox">
-							<input type="radio" name="variable" value={varname} checked={selectedVarname == varname} bind:group={selectedVariable} />
-							<span>{varlabel(varname)}</span>
+				{#each varnames as vname}
+				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+					<div class="dropdown-item" onclick={() => varname = vname}>
+						<label class="radio" >
+							<input
+								type="radio"
+								name="variable"
+								value={vname}
+								checked={varname == vname}
+								/>
+								<!-- bind:group={varname} -->
+							<span>{varlabel(vname)}</span>
 						</label>
 					</div>
 				{/each}
@@ -57,7 +65,6 @@
 <style>
 	.map-control {
 		height: 40px;
-
 
 		z-index: 1002;
 		position: absolute;
@@ -75,6 +82,7 @@
 		.dropdown-menu {
 			height: 100%;
 			top: 40px;
+			width: 22rem !important;
 		}
 
 		.dropdown-content {
@@ -82,20 +90,15 @@
 			overflow-y: scroll;
 			z-index: 10002;
 			position: relative;
-
 		}
 
+		div.dropdown-item:hover {
+			background-color: hsl(0, 0%, 96%);
+			color: hsl(0, 0%, 4%);
+		}
 
-
-		/*
-		.dropdown-menu {
-			display: none;
-		} */
-		/* select {
-			font-size: 1.2rem;
-			padding: 0.25rem;
-			border: 1px solid #ccc;
-
-		} */
+		.dropdown-item {
+			cursor: pointer;
+		}
 	}
 </style>
