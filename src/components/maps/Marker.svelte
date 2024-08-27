@@ -27,7 +27,7 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
-	class="marker"
+	class="marker ghost"
 	data-site-id={site.id}
 	onmouseenter={(e) => markerMouseEnter(e, site)}
 	onmouseleave={(e) => markerMouseLeave(e, site)}

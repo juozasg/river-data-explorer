@@ -1,30 +1,31 @@
 <script lang="ts">
 	import { sites } from '$src/appstate/sites.svelte';
+	import { isDatasetEnabled, setEnabledDatasets, toggleDatasetEnable } from '$src/appstate/ui/layers.svelte';
 	import type { MapLayersParams } from '$src/lib/types/mapControls';
+	import { aremove } from '$src/lib/utils';
 	import { onMount } from 'svelte';
 
 	let { layersParams = $bindable() }: { layersParams: MapLayersParams } = $props();
 	const datasets = $derived(sites.allDatasets);
 
+	$effect(() => {
+		console.log(setEnabledDatasets(aremove(datasets, 'invert')));
+	});
 
 	let showLayersDropdown = $state(false);
 	const dropdownToggle = (e: Event) => {
 		e.stopPropagation();
 		showLayersDropdown = !showLayersDropdown;
+	};
 
-		onMount(() => {
+	onMount(() => {
 		document.body.addEventListener('click', (e) => {
 			const checkboxContainer = (e.target as HTMLElement).closest('.dropdown-keep-open');
 			if (checkboxContainer) return;
 			showLayersDropdown = false;
 		});
 	});
-	};
 
-
-	function toggleEnabledDataset(dsname: string): boolean | null | undefined {
-		throw new Error('Function not implemented.');
-	}
 </script>
 
 <div class="map-control dropdown" class:is-active={showLayersDropdown}>
@@ -44,7 +45,11 @@
 			{#each datasets as dsname}
 				<div class="dropdown-item dropdown-keep-open">
 					<label class="checkbox" style="width: 100%">
-						<input type="checkbox" checked={toggleEnabledDataset(dsname)} onclick={() => toggleEnabledDataset(dsname)} />
+						<input
+							type="checkbox"
+							checked={isDatasetEnabled(dsname)}
+							onclick={() => toggleDatasetEnable(dsname)}
+						/>
 						<tt>{dsname}</tt> Sites
 					</label>
 				</div>
@@ -52,7 +57,7 @@
 
 			<hr class="dropdown-divider" />
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
-			<a class="dropdown-item" onclick={() => layersParams.baseStyleId == 'TOPO'}>
+			<a class="dropdown-item" onclick={() => (layersParams.baseStyleId = 'TOPO')}>
 				<form>
 					<input type="radio" name="topographic" checked={layersParams.baseStyleId == 'TOPO'} />
 					Topographic

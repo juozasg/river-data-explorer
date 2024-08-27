@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import * as ml from 'maplibre-gl';
 	import { onMount } from 'svelte';
 
@@ -120,4 +120,4 @@
 	}
 
 
-</style>
+</style> -->
