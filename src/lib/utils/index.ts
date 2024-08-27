@@ -116,7 +116,7 @@ export function dateEqualYMD(date1: Date, date2: Date): boolean {
 		date1.getUTCDate() === date2.getUTCDate();
 }
 
-
+// returns array with elements removed
 export function aremove(arr: any[] | undefined, ...elements: any[]): any[] {
 	if (!arr || arr.length == 0) return [];
 

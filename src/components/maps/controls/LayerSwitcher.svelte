@@ -1,61 +1,30 @@
 <script lang="ts">
-	import { base } from '$app/paths';
-	import * as sr from 'svelte/reactivity';
-
-	import { sites, Sites } from '$src/appstate/sites.svelte';
+	import { sites } from '$src/appstate/sites.svelte';
+	import type { MapLayersParams } from '$src/lib/types/mapControls';
 	import { onMount } from 'svelte';
-	import { data } from '@maptiler/sdk';
-	import { setEnabledDatasets } from '$src/appstate/ui/layers.svelte';
+
+	let { layersParams = $bindable() }: { layersParams: MapLayersParams } = $props();
+	const datasets = $derived(sites.allDatasets);
+
 
 	let showLayersDropdown = $state(false);
-	const datasets = $derived(sites.allDatasets);
-	const datasetsEnabled: { [key: string]: boolean } = $state({});
+	const dropdownToggle = (e: Event) => {
+		e.stopPropagation();
+		showLayersDropdown = !showLayersDropdown;
 
-	$effect(() => {
-		setEnabledDatasets(Object.keys(datasetsEnabled).filter((ds) => datasetsEnabled[ds]));
-	});
-
-	$effect(() => {
-		for (const ds of datasets) {
-			// datasetsEnabled[ds] = false;
-			datasetsEnabled[ds] = true;
-		}
-
-		// datasetsEnabled['sjrbc'] = true;
-		// datasetsEnabled['usgs'] = true;
-		datasetsEnabled['invert'] = false;
-		// datasetsEnabled['usgs'] = false;
-	});
-
-	interface Props {
-		baseStyleId: string;
-		showRiverLayer: boolean;
-	}
-
-	let { baseStyleId = $bindable(), showRiverLayer = $bindable() }: Props = $props();
-
-	const setTopographic = () => {
-		baseStyleId = 'TOPO';
-		// console.log('TOPO')
-	};
-
-	const setSatellite = () => {
-		baseStyleId = 'SATELLITE';
-		// console.log('SATELLITE')
-	};
-
-	onMount(() => {
+		onMount(() => {
 		document.body.addEventListener('click', (e) => {
 			const checkboxContainer = (e.target as HTMLElement).closest('.dropdown-keep-open');
 			if (checkboxContainer) return;
 			showLayersDropdown = false;
 		});
 	});
-
-	const dropdownToggle = (e: Event) => {
-		e.stopPropagation();
-		showLayersDropdown = !showLayersDropdown;
 	};
+
+
+	function toggleEnabledDataset(dsname: string): boolean | null | undefined {
+		throw new Error('Function not implemented.');
+	}
 </script>
 
 <div class="map-control dropdown" class:is-active={showLayersDropdown}>
@@ -72,32 +41,32 @@
 	</div>
 	<div class="dropdown-menu" id="dropdown-menu3" role="menu">
 		<div class="dropdown-content">
-			{#each Object.entries(datasetsEnabled) as [ds]}
+			{#each datasets as dsname}
 				<div class="dropdown-item dropdown-keep-open">
 					<label class="checkbox" style="width: 100%">
-						<input type="checkbox" bind:checked={datasetsEnabled[ds]} />
-						<tt>{ds}</tt> Sites
+						<input type="checkbox" checked={toggleEnabledDataset(dsname)} onclick={() => toggleEnabledDataset(dsname)} />
+						<tt>{dsname}</tt> Sites
 					</label>
 				</div>
 			{/each}
 
 			<hr class="dropdown-divider" />
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
-			<a class="dropdown-item" onclick={setTopographic}>
+			<a class="dropdown-item" onclick={() => layersParams.baseStyleId == 'TOPO'}>
 				<form>
-						<input type="radio" name="topographic" checked={baseStyleId == 'TOPO'} />
-						Topographic
+					<input type="radio" name="topographic" checked={layersParams.baseStyleId == 'TOPO'} />
+					Topographic
 				</form>
 			</a>
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
-			<a class="dropdown-item" onclick={setSatellite}>
-				<input type="radio" name="satellite" checked={baseStyleId == 'SATELLITE'} />
+			<a class="dropdown-item" onclick={() => (layersParams.baseStyleId = 'SATELLITE')}>
+				<input type="radio" name="satellite" checked={layersParams.baseStyleId == 'SATELLITE'} />
 				Satellite
 			</a>
 			<hr class="dropdown-divider" />
 			<div class="dropdown-item">
 				<label class="checkbox">
-					<input type="checkbox" bind:checked={showRiverLayer} />
+					<input type="checkbox" bind:checked={layersParams.riverLayerVisible} />
 					Mainstem and Tributaries
 				</label>
 			</div>

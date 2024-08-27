@@ -1,5 +1,5 @@
 <script lang="ts">
-	import HomePageMap from "$src/components/maps/HomePageMap.svelte";
+	import DataMap from "$src/components/maps/VarDataMap.svelte";
 
 
 </script>
@@ -19,7 +19,7 @@
 <h1>St. Joseph River Basin Data</h1>
 
 
-<HomePageMap zoom={8.2} --map-width={'100%'} --map-height={'650px'} />
+<DataMap zoom={8.2} --map-width={'100%'} --map-height={'650px'} />
 
 <!-- svelte-ignore a11y-distracting-elements -->
 <marquee>🚧🏗️ UNDER CONSTRUCTION... 		 🏗️🚧</marquee>

@@ -17,7 +17,7 @@ export async function addDataSourceGeoJSON(map: ml.Map, name: GeometryCollection
 	}
 }
 
-export async function addSources(map: ml.Map): Promise<void> {
+export async function addMlmSources(map: ml.Map): Promise<void> {
 	await Promise.all([
 		addDataSourceGeoJSON(map, 'huc10', 'huc10'),
 		addDataSourceGeoJSON(map, 'huc8', 'huc8'),

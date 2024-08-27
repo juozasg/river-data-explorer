@@ -12,7 +12,7 @@
 	} from '$src/appstate/map/featureState.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
 	import type { Site } from '$src/lib/types/site';
-	import { addSources } from '$src/lib/data/map/mapData/mapData';
+	import { addMlmSources } from '$src/lib/data/map/mapData/mapData';
 	import Marker from './Marker.svelte';
 	import { sitesDataStats } from '$src/lib/data/stats';
 	import TooltipSiteStats from '../tooltips/TooltipContentSiteStats.svelte';
@@ -143,7 +143,7 @@
 
 <MapLibreMap
 	bind:this={mlmComponent}
-	{addSources}
+	{addSources: addMlmSources}
 	{addLayers}
 	bind:divElement
 	bind:mlMap

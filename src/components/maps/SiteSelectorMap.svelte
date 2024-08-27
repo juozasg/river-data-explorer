@@ -8,7 +8,7 @@
 
 	import { hoveredSite, selectedRegion, selectedSite } from '$src/appstate/map/featureState.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
-	import { addSources } from '$src/lib/data/map/mapData/mapData';
+	import { addMlmSources } from '$src/lib/data/map/mapData/mapData';
 	import type { Site } from '$src/lib/types/site';
 	import { fitFeatureBounds, makeSiteMarker, setFeatureState } from '$src/lib/utils/maplibre';
 	import Marker from './Marker.svelte';
@@ -91,7 +91,7 @@
 
 	<MapLibreMap
 		bind:this={mlmComponent}
-		{addSources}
+		{addSources: addMlmSources}
 		{addLayers}
 		bind:divElement
 		bind:mlMap

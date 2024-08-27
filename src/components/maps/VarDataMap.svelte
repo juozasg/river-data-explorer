@@ -6,22 +6,26 @@
 	import MapLibreMap from './MapLibreMap.svelte';
 
 	import { MLMHoveredFeatureState } from '$src/appstate/map/featureState.svelte';
+	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
-	import { addLayers } from '$src/lib/data/map/mapData/homePageMapData';
-	import { addSources } from '$src/lib/data/map/mapData/mapData';
-	import type { Site } from '$src/lib/types/site';
-	import Marker from './Marker.svelte';
-	import { sitesDataStats } from '$src/lib/data/stats';
-	import TooltipSiteStats from '../tooltips/TooltipContentSiteStats.svelte';
 	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
-	import { sitesTables } from '$src/appstate/data/datasets.svelte';
-	import {  siteVariableColor } from '$src/lib/data/map/helpers/markerHelpers';
 	import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
-	import { siteGetBeforeDate } from '$src/lib/data/tableHelpers';
-	import { fmtDate, UTCDayDate } from '$src/lib/utils';
-	import { varunits } from '$src/lib/utils/varHelpers';
+	import { formatLngLat } from '$src/lib/copyLngLat';
 	import { sitesEarliestDate, sitesLatestDate, sitesValidDates } from '$src/lib/data/dateStats';
+	import { siteVariableColor } from '$src/lib/data/map/helpers/markerHelpers';
+	import { sitesDataStats } from '$src/lib/data/stats';
+	import { siteGetBeforeDate } from '$src/lib/data/tableHelpers';
+	import type { MapLayersParams } from '$src/lib/types/mapControls';
+	import type { Site } from '$src/lib/types/site';
+	import { fmtDate } from '$src/lib/utils';
 	import { ghost } from '$src/lib/utils/colors';
+	import { varunits } from '$src/lib/utils/varHelpers';
+	import TooltipSiteStats from '../tooltips/TooltipContentSiteStats.svelte';
+	import LayerSwitcher from './controls/LayerSwitcher.svelte';
+	import Legend from './controls/Legend.svelte';
+	import TimeSelector from './controls/TimeSelector.svelte';
+	import VariableSelector from './controls/VariableSelector.svelte';
+	import Marker from './Marker.svelte';
 
 	type Props = {
 		onSelected?: () => void;
@@ -36,6 +40,8 @@
 	const hoveredRiver = new MLMHoveredFeatureState(10);
 	const hoveredArea = new MLMHoveredFeatureState();
 	let hoveredSite: Site | null = $state(null);
+
+
 
 	const hoveredSiteStats = $derived(hoveredSite ? sitesDataStats([hoveredSite]) : undefined);
 
@@ -72,13 +78,9 @@
 		hoveredSite = null;
 	};
 
-
-
 	$effect(() => {
 		sitesValidDates(sites.allEnabled, varname);
 	});
-
-
 
 	function selectedVariableLabel() {
 		return variablesMetadata[varname]?.label || varname;
@@ -101,9 +103,11 @@
 		return 'N/A';
 	}
 
-
 	const startDate = $derived(sitesEarliestDate(sites.allEnabled));
 	const endDate = $derived(sitesLatestDate(sites.allEnabled));
+
+	let variableSelector: VariableSelector | undefined = $state();
+	let timeSelector: TimeSelector | undefined = $state();
 
 	const varname = $derived(mlmComponent?.selectedVariable || 'temp');
 	const selectedDate = $derived(mlmComponent?.selectedDate || endDate);
@@ -120,18 +124,20 @@
 				const sid = m.getAttribute('data-site-id') as string;
 
 				const color = siteVariableColor(sid, varname, selectedDate);
-				m.style.setProperty(
-					'--color',
-					color
-				);
+				m.style.setProperty('--color', color);
 
-				if(color === ghost) {
+				if (color === ghost) {
 					m.classList.add('ghost');
 				} else {
 					m.classList.remove('ghost');
 				}
 			}
 		}
+	});
+
+	let layersParams = $state<MapLayersParams>({
+		baseStyleId: 'TOPO',
+		riverLayerVisible: true
 	});
 </script>
 
@@ -167,19 +173,23 @@
 	{/if}
 {/snippet}
 
-<MapLibreMap
-	bind:this={mlmComponent}
-	{addSources}
-	{addLayers}
-	bind:divElement={mapContainerElement}
-	bind:mlMap
-	{...others}
-	{startDate}
-	{endDate}
-	{validDates}
-	showCoords={true}
-	zoom={7.9}
-/>
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<div style="position: relative; height: 100%">
+	{#if mapMouseLocation.lngLat}
+		<pre class="copy-debug">{formatLngLat(mapMouseLocation.lngLat, 4)} (C to copy)</pre>
+	{/if}
+	<LayerSwitcher bind:layersParams />
+	<VariableSelector bind:this={variableSelector} />
+	<TimeSelector {startDate} {endDate} {validDates} bind:this={timeSelector} />
+	<Legend varname={varname} />
+	<MapLibreMap
+		bind:this={mlmComponent}
+		bind:mlMap
+		{layersParams}
+		zoom={7.9}
+		{...others}
+	/>
+</div>
 
 {#if mlMap}
 	{#each sites.allEnabled as site (site.id)}
@@ -188,4 +198,15 @@
 {/if}
 
 <style>
+
+
+pre.copy-debug {
+		position: absolute;
+		top: 0px;
+		right: -2px;
+		z-index: 2;
+		background: none;
+		padding: 0.5rem;
+		pointer-events: none;
+	}
 </style>
