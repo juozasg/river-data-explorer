@@ -7,8 +7,8 @@ export async function addDataSourceGeoJSON(map: ml.Map, name: GeometryCollection
 	const data = await loadDataJson(`geojson/${name}.geojson`);
 	geometries.set(name, data);
 
-	if(!map.getSource(`sjriver-${name}`)) {
-		map.addSource(`sjriver-${name}`, {
+	if(!map.getSource(`riverapp-${name}`)) {
+		map.addSource(`riverapp-${name}`, {
 			type: 'geojson',
 			data: data,
 			promoteId: promoteId
@@ -28,15 +28,15 @@ export async function addMlmSources(map: ml.Map): Promise<void> {
 }
 
 export function addRiverLayers(map: ml.Map): void {
-	if(map.getLayer('sjriver-river')) map.removeLayer('sjriver-river');
+	if(map.getLayer('riverapp-river')) map.removeLayer('riverapp-river');
 
 	const mainstemColor = '#17a0d1';
 	const tributariesColor = '#1db2e7';
 
 	map.addLayer({
-		id: 'sjriver-river',
+		id: 'riverapp-river',
 		type: 'line',
-		source: 'sjriver-river',
+		source: 'riverapp-river',
 		layout: {
 			'visibility': 'visible',
 			'line-join': 'bevel',
@@ -69,5 +69,5 @@ export function addRiverLayers(map: ml.Map): void {
 }
 
 export async function toggleRiverLayerVisibility(map: ml.Map, visible: boolean) {
-	if(map.getLayer('sjriver-river')) map.setLayoutProperty('sjriver-river', 'visibility', visible ? 'visible' : 'none');
+	if(map.getLayer('riverapp-river')) map.setLayoutProperty('riverapp-river', 'visibility', visible ? 'visible' : 'none');
 }

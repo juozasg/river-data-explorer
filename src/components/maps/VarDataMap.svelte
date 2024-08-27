@@ -51,8 +51,8 @@
 		const map = mlMap!;
 
 		map.on('mousemove', (e: ml.MapMouseEvent) => {
-			hoveredRiver.mouseMove(e, ['sjriver-river']);
-			hoveredRegion.mouseMove(e, ['sjriver-huc10']);
+			hoveredRiver.mouseMove(e, ['riverapp-river']);
+			hoveredRegion.mouseMove(e, ['riverapp-huc10']);
 
 			if (hoveredRiver.feature || hoveredSite || hoveredRegion.feature) {
 				tooltip.show(e.originalEvent.x, e.originalEvent.y, true);

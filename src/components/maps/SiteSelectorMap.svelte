@@ -47,12 +47,12 @@
 		if (!mlMap || !mlmComponent.dataLoaded()) return;
 		const map = mlMap!;
 
-		map.querySourceFeatures('sjriver-huc10').forEach((feature) => {
-			setFeatureState(map, 'sjriver-huc10', feature.id, { selected: false });
+		map.querySourceFeatures('riverapp-huc10').forEach((feature) => {
+			setFeatureState(map, 'riverapp-huc10', feature.id, { selected: false });
 		});
 
 		if (selectedRegion.feature) {
-			setFeatureState(map, 'sjriver-huc10', selectedRegion.feature.id, { selected: true });
+			setFeatureState(map, 'riverapp-huc10', selectedRegion.feature.id, { selected: true });
 			fitFeatureBounds(map, selectedRegion.feature);
 		}
 	});

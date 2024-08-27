@@ -1,14 +1,14 @@
 import * as ml from 'maplibre-gl';
 import { partition } from '$lib/utils';
 
-// copy over sjriver- sources and layers from previous style
+// copy over riverapp- sources and layers from previous style
 // make sure that label elements are on top of sjrbc elements
 export const transformStyle = (previousStyle: ml.StyleSpecification | any, nextStyle: ml.StyleSpecification) => {
 	// console.log( 'STYLE TRANSFORM', previousStyle, nextStyle);
 	const keepSources: any = {};
 
 	for(const source in previousStyle.sources) {
-		if(source.match(/^sjriver-/)) {
+		if(source.match(/^riverapp-/)) {
 			keepSources[source] = previousStyle.sources[source];
 		}
 	}
@@ -19,7 +19,7 @@ export const transformStyle = (previousStyle: ml.StyleSpecification | any, nextS
 	const [labelLayers, nonLabelLayers] = partition(nextStyle.layers, (l: any) =>
 			l.id.match(/label/) || l.id.match(/place/i) || l.id.match(/city/i));
 
-	const keepLayers = previousStyle.layers?.filter((l: any) => l.id.match(/^sjriver-/)) || [];
+	const keepLayers = previousStyle.layers?.filter((l: any) => l.id.match(/^riverapp-/)) || [];
 
 	// console.log('layer splitting', keepLayers, nonLabelLayers, labelLayers)
 

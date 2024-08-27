@@ -9,13 +9,13 @@ export async function addLayers(map: ml.Map): Promise<void> {
 
 
 function addLayersHuc10(map: ml.Map): void {
-	if(map.getLayer('sjriver-sites-huc10-outline')) map.removeLayer('sjriver-sites-huc10-outline');
-	if(map.getLayer('sjriver-sites-huc10')) map.removeLayer('sjriver-sites-huc10');
+	if(map.getLayer('riverapp-sites-huc10-outline')) map.removeLayer('riverapp-sites-huc10-outline');
+	if(map.getLayer('riverapp-sites-huc10')) map.removeLayer('riverapp-sites-huc10');
 
 	map.addLayer({
-		id: 'sjriver-sites-huc10',
+		id: 'riverapp-sites-huc10',
 		type: 'fill',
-		source: 'sjriver-huc10',
+		source: 'riverapp-huc10',
 		layout: {},
 		paint: {
 			// 'fill-color': [
@@ -35,9 +35,9 @@ function addLayersHuc10(map: ml.Map): void {
 	});
 
 	map.addLayer({
-		'id': 'sjriver-huc10-outline',
+		'id': 'riverapp-huc10-outline',
 		'type': 'line',
-		'source': 'sjriver-huc10',
+		'source': 'riverapp-huc10',
 		'layout': {},
 		'paint': {
 			'line-color': '#584070',

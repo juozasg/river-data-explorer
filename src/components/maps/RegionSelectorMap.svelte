@@ -46,19 +46,19 @@
 			window.location.hostname === 'localhost' &&
 			mlMap &&
 			mlmComponent.dataLoaded() &&
-			mlMap.getLayersOrder().includes('sjriver-huc10') &&
+			mlMap.getLayersOrder().includes('riverapp-huc10') &&
 			!selectedSite.site
 			&& false
 		) {
 			const huc10 = '0405000122';
 			const siteId = 'sjrbc-45';
-			const mlmFeature = mlMap.querySourceFeatures('sjriver-huc10', {
-				sourceLayer: 'sjriver-huc10',
+			const mlmFeature = mlMap.querySourceFeatures('riverapp-huc10', {
+				sourceLayer: 'riverapp-huc10',
 				// filter: ['==', 'huc10', "0405000121"]
 				filter: ['==', 'huc10', huc10]
 			})[0];
 
-			mlmFeature.source = 'sjriver-huc10';
+			mlmFeature.source = 'riverapp-huc10';
 			selectedRegion.update(mlMap, mlmFeature);
 			selectedSite.set(sites.all.find((s) => s.id === siteId));
 			// console.log('DEBUG SELECTED', selectedSite.site, mlmFeature);
@@ -72,7 +72,7 @@
 		const map = mlMap!;
 
 		map.on('mousemove', (e) => {
-			hoveredArea.mouseMove(e, ['sjriver-huc10']);
+			hoveredArea.mouseMove(e, ['riverapp-huc10']);
 
 			if (hoveredArea.feature) {
 				tooltip.show(e.originalEvent.x, e.originalEvent.y, true);
@@ -109,7 +109,7 @@
 
 	function mapClick(point: ml.PointLike) {
 		const map = mlMap!;
-		const feature = map.queryRenderedFeatures(point, { layers: ['sjriver-huc10'] })[0] || null;
+		const feature = map.queryRenderedFeatures(point, { layers: ['riverapp-huc10'] })[0] || null;
 		console.log('clicked feature', feature);
 		const changed = selectedRegion.update(map, feature);
 		if (changed || hoveredSite) {

@@ -79,7 +79,7 @@ export class MLMHoveredFeatureState extends MLMFeatureState {
 
 
 export class SelectedFeature extends MLMFeatureState {
-	// layer: string = 'sjriver-huc10';
+	// layer: string = 'riverapp-huc10';
 	// returns true if the feature changed
 	update(map: ml.Map, feature: ml.MapGeoJSONFeature): boolean {
 		// if nothing changed, do nothing
