@@ -46,15 +46,4 @@ function addLayersHuc10(map: ml.Map): void {
 		}
 	});
 
-	// map.addLayer({
-	// 	'id': 'sites-huc10-outline',
-	// 	'type': 'line',
-	// 	'source': 'sjriver-huc10',
-	// 	'layout': {},
-	// 	'paint': {
-	// 		'line-color': '#844',
-	// 		'line-width': 4,
-	// 		'line-opacity': 0.8,
-	// 	}
-	// });
 }

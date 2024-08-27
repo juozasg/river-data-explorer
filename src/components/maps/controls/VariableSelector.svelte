@@ -53,7 +53,7 @@
 								checked={varname == vname}
 								/>
 								<!-- bind:group={varname} -->
-							<span>{varlabel(vname)}</span>
+							<span>{varlabel(vname, true)}</span>
 						</label>
 					</div>
 				{/each}

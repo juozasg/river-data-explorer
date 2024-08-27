@@ -18,7 +18,7 @@ export function varunits(varname: string, parens = false) {
 	return parens ? `(${unit})` : unit;
 }
 
-export function varlabel(varname: string, units = true) {
+export function varlabel(varname: string, units = false) {
 	const unit = varunits(varname);
 	const label = variablesMetadata[varname]?.label || varname;
 	if (!units) return label;

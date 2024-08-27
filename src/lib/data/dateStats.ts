@@ -34,7 +34,6 @@ export function sitesValidDates(sites: Site[], varname: string): Date[] {
 		.filter((t) => t?.columnNames().includes(varname) && t?.columnNames().includes('date') && t?.numRows() > 0) as ColumnTable[];
 	const allDatesSet = new Set<number>();
 
-	const d1 = new Date()
 	fullTables.forEach((t) => {
 		const data = t.data() as any;
 		for (let i = 0; i < t.numRows(); i++) {
