@@ -9,8 +9,10 @@
 	const datasets = $derived(sites.allDatasets);
 
 	$effect(() => {
-		console.log(setEnabledDatasets(aremove(datasets, 'invert')));
+		// console.log(setEnabledDatasets(aremove(datasets, 'invert')));
+		console.log(setEnabledDatasets(['sjrbc', 'steuben', 'usgs']));
 	});
+const a = 1;
 
 	let showLayersDropdown = $state(false);
 	const dropdownToggle = (e: Event) => {

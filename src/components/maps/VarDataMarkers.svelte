@@ -1,10 +1,14 @@
 <script lang="ts">
 	import * as ml from 'maplibre-gl';
+	import * as sr from 'svelte/reactivity';
+
 
 	import { siteVariableColor } from '$src/lib/data/map/helpers/markerHelpers';
 	import type { Site } from '$src/lib/types/site';
 	import { ghost } from '$src/lib/utils/colors';
 	import Marker from './Marker.svelte';
+	import { onMount } from 'svelte';
+	import { fmtDateISO, fmtDateValue } from '$src/lib/utils';
 
 	type Props = {
 		sites: Site[];
@@ -13,6 +17,8 @@
 		varname: string;
 		vardate: Date;
 	};
+
+	// const markers = new sr.Map<number, Marker>();
 
 	let { hoveredSite = $bindable(null), mlMap, sites, varname, vardate }: Props = $props();
 
@@ -24,34 +30,32 @@
 		hoveredSite = null;
 	};
 
-	$effect(() => {
-		sites; // when this is updated markers are rebuilt
-		vardate;
-		const markers = mlMap.getContainer().querySelectorAll('.marker');
-		// console.log('markers', markers);
-		if (markers && markers.length > 0) {
-			for (let i = 0; i < markers.length; i++) {
-				const m = markers.item(i) as HTMLElement;
-				const sid = m.getAttribute('data-site-id') as string;
-
-				const color = siteVariableColor(sid, varname, vardate);
-				m.style.setProperty('--color', color);
-
-				if (color === ghost) {
-					m.classList.add('ghost');
-				} else {
-					m.classList.remove('ghost');
-				}
-			}
-		}
+	onMount(() => {
+		console.log('mounted markers', varname, vardate)
 	});
 
+	$effect(() => {
+		console.log('FX markers  ', varname, vardate);
+	});
+
+	$effect(() => {
+		const markers = sites.map(s => markerRefs[s.id]);
+		markers.forEach(marker => {
+			marker.setColor(siteVariableColor(marker.siteId, varname, vardate));
+		});
+	});
+
+	const markerRefs: {[key: string]: Marker} = {};
 
 </script>
 
 {#if mlMap}
 	{#each sites as site (site.id)}
-		<Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site} />
+		<Marker map={mlMap} {markerMouseEnter} {markerMouseLeave} {site} bind:this={markerRefs[site.id]} emphasized={site.dataset == 'sjrbc'}
+		selected={site.id == 'sjrbc-1'}
+		selectedYVar={site.id == 'sjrbc-2' || site.id == 'sjrbc-1'}
+		selectedZVar={site.id == 'steuben-2'}
+		/>
 	{/each}
 {/if}
 
