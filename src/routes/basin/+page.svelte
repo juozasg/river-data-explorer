@@ -1,5 +1,5 @@
 <script lang="ts">
-  import BasinCompareWorkflow from '$src/components/basin/BasinCompareWorkflow.svelte';
+  import BasinWorkflow from '$src/components/basin/BasinWorkflow.svelte';
 
 </script>
 
@@ -7,4 +7,4 @@
 	<title>Search the Basin</title>
 </svelte:head>
 
-<BasinCompareWorkflow/>
+<BasinWorkflow/>

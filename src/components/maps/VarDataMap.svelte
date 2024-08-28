@@ -6,22 +6,18 @@
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 	import MapLibreMap from './MapLibreMap.svelte';
 
-	import  {
-		toggleHoveredFeatureState,
-		MapFeatureSelectionState,
-		type MapFeature
-	} from '$src/appstate/map/featureState.svelte';
+	import { MapFeatureSelectionState, toggleHoveredFeatureState } from '$src/appstate/map/featureState.svelte';
 	import { sites as globalSites, Sites } from '$src/appstate/sites.svelte';
 	import { sitesEarliestDate, sitesLatestDate, sitesValidDates } from '$src/lib/data/dateStats';
 	import type { MapLayersParams } from '$src/lib/types/mapControls';
 	import type { Site } from '$src/lib/types/site';
 	import { UTCDayDate } from '$src/lib/utils';
+	import { onMount } from 'svelte';
 	import LayerSwitcher from './controls/LayerSwitcher.svelte';
 	import Legend from './controls/Legend.svelte';
 	import TimeSelector from './controls/TimeSelector.svelte';
 	import VariableSelector from './controls/VariableSelector.svelte';
 	import VarDataHoveredFeatures from './VarDataHoveredFeatures.svelte';
-	import { onMount } from 'svelte';
 
 	type Props = {
 		selectedSite?: Site;
@@ -29,13 +25,13 @@
 		zVarSite?: Site;
 		selectedRegion?: MapFeatureSelectionState;
 		selectedRiver?: MapFeatureSelectionState;
+		showRegionTooltip?: boolean;
 		mapClick?: (map: ml.Map, p: ml.PointLike) => void;
 	} & Partial<MapLibreMapProps>;
 
 	// export function
 
-	let { selectedRegion, selectedRiver, selectedSite, yVarSite, zVarSite, mapClick, ...others }: Props =
-		$props();
+	let { selectedRegion, selectedRiver,  mapClick, showRegionTooltip = true, ...others }: Props = $props();
 
 	const sites = $derived(globalSites.allEnabled);
 	const emphasizedSites = $derived(Sites.inRegionFeature(sites, selectedRegion?.feature));
@@ -83,7 +79,7 @@
 
 {#if mlMap}
 	<VarDataHoveredFeatures
-		showRegionTooltip={true}
+		{showRegionTooltip}
 		{mlMap}
 		hoveredSite={_hoveredSite}
 		{hoveredRegion}
@@ -98,11 +94,9 @@
 		{varname}
 		{vardate}
 		{sites}
-		{selectedSite}
-		{yVarSite}
-		{zVarSite}
 		{emphasizedSites}
 		bind:hoveredSite={_hoveredSite}
+		{...others}
 	/>
 {/if}
 

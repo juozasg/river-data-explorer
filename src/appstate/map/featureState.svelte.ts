@@ -3,9 +3,19 @@ import * as ml from 'maplibre-gl';
 import { geomFeatureName } from '../data/geometries.svelte';
 
 
-export type MapFeature = {
+export class MapFeature  {
 	source: string;
 	id: string | number;
+	name: string;
+	sourceType: string;
+
+	constructor(source: string, id: string | number) {
+		this.source = source;
+		this.id = id;
+		this.name = geomFeatureName(source, id);
+		this.sourceType = source.replace(/^riverapp-/, '');
+	}
+
 };
 
 
@@ -28,7 +38,7 @@ export class MapFeatureSelectionState {
 	}
 
 	get name() {
-		return geomFeatureName(this.#feature?.source, this.#feature?.id);
+		return this.#feature?.name || '';
 	}
 }
 

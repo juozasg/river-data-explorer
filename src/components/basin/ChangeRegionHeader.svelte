@@ -1,7 +1,12 @@
 <script lang="ts">
+	import type { MapFeatureSelectionState } from '$src/appstate/map/featureState.svelte';
 	import Icon from '@iconify/svelte';
 
-	import { selectedRegion } from '$src/appstate/map/featureState.svelte';
+	type Props = {
+		selectedRegion: MapFeatureSelectionState;
+	};
+
+	let { selectedRegion }: Props = $props();
 
 	const scrollIntoViewRegionMap = () => {
 		const basinRegionsA = window.document.getElementById('basin-regions');

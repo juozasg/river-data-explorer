@@ -51,7 +51,7 @@ export class Sites {
 
 	static inRegionFeature(sites: Site[], region?: MapFeature) {
 		if(!region || !region.source || region.id == undefined) return [];
-		const regionType = region.source.replace(/^riverapp-/, '');
+		const regionType = region.sourceType; // huc10
 		return sites.filter(s => (s as any)[regionType] === region.id);
 
 	}

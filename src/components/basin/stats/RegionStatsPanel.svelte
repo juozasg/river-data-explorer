@@ -1,20 +1,27 @@
 <script lang="ts">
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
-	import { selectedRegion } from '$src/appstate/map/featureState.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
 	import { allVariableStats, sitesDataStats, variableStats } from '$src/lib/data/stats';
 	import type { VariableStats } from '$src/lib/types/analysis';
 		import { fmtVarNum, varunits } from '$src/lib/utils/varHelpers';
-	import StatsDataTable from '../website/StatsDataTable.svelte';
+	import StatsDataTable from '../../website/StatsDataTable.svelte';
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
 	import { concatTablesAllColumns } from '$src/lib/data/tableHelpers';
-	import TooltipVariableBrief from '../tooltips/TooltipVariableBrief.svelte';
-	import VarValueStandards from '../tooltips/VarValueStandards.svelte';
+	import TooltipVariableBrief from '../../tooltips/TooltipVariableBrief.svelte';
+	import VarValueStandards from '../../tooltips/VarValueStandards.svelte';
+	import type { MapFeature, MapFeatureSelectionState } from '$src/appstate/map/featureState.svelte';
+	import { geomFeatureName } from '$src/appstate/data/geometries.svelte';
 
-	const { onVarClicked }: { onVarClicked: (name: string) => void } = $props();
+	type Props = {
+		region: MapFeature;
+		onVarClicked: (name: string) => void
+	};
 
-	const region = $derived(selectedRegion);
-	const sitesInArea = $derived(sites.allEnabled.filter((s) => s.huc10 === region.id));
+	let { onVarClicked, region }: Props = $props();
+
+
+	// const region = $derived(selectedRegion.feature);
+	const sitesInArea = $derived(sites.allEnabled.filter((s) => s.huc10 === region?.id));
 
 	const sitesStats = $derived(sitesDataStats(sitesInArea));
 	const sitesInAreaTables = $derived(
@@ -36,10 +43,10 @@
 <TooltipVariableBrief bind:this={variableTooltip} />
 
 <div id="region-stats-panel">
-	{#if region.feature}
+	{#if region}
 		<h3 class="region-label">
 			Region: <span style="font-weight: 400">{region.name}</span>
-			<span class="subtitle">HUC10:{region.id}</span>
+			<span class="subtitle">{region.sourceType}:{region.id}</span>
 		</h3>
 	{/if}
 	<div class="flex stats-summary">

@@ -2,7 +2,7 @@ import * as ml from 'maplibre-gl';
 import { bounds } from './geoutils';
 import type { Site } from '../types/site';
 import type { BBoxLike } from '../types/basic';
-import type { MapFeature } from '$src/appstate/map/featureState.svelte';
+import { MapFeature } from '$src/appstate/map/featureState.svelte';
 
 export function onceIdle(map: ml.Map) {
 	if(map.loaded()) return Promise.resolve();
@@ -77,10 +77,6 @@ export function queryMouseMoveHover(e: ml.MapMouseEvent, layers: string[], radiu
 	}
 
 	const features =  safeQueryRenderedFeatures(map, queryGeom, layers);
-	// console.log(features);
 	if (features.length < 1) return undefined;
-	return {
-		source: features[0].source,
-		id: features[0].id as string | number,
-	};
+	return new MapFeature(features[0].source, features[0].id as string | number);
 }

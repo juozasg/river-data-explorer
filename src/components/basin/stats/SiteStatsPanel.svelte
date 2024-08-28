@@ -1,20 +1,23 @@
 <script lang="ts">
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
-	import { selectedSite } from '$src/appstate/map/featureState.svelte';
 	import { allVariableStats } from '$src/lib/data/stats';
 	import type { VariableStats } from '$src/lib/types/analysis';
 	import { fmtVarNum, varunits } from '$src/lib/utils/varHelpers';
-	import StatsDataTable from '../website/StatsDataTable.svelte';
-	import TooltipVariableBrief from '../tooltips/TooltipVariableBrief.svelte';
-	import VarValueStandards from '../tooltips/VarValueStandards.svelte';
+	import StatsDataTable from '../../website/StatsDataTable.svelte';
+	import TooltipVariableBrief from '../../tooltips/TooltipVariableBrief.svelte';
+	import VarValueStandards from '../../tooltips/VarValueStandards.svelte';
+	import type { Site } from '$src/lib/types/site';
 
-	const {
-		onVarClicked,
-		yVar,
-		zVar
-	}: { onVarClicked: (name: string) => void; yVar: string; zVar: string } = $props();
+	type Props = {
+		onVarClicked: (name: string) => void;
+		yVar: string;
+		zVar: string;
+		site: Site;
+	};
 
-	const table = $derived(selectedSite.site && sitesTables.get(selectedSite.site.id));
+	const { onVarClicked, yVar, zVar, site }: Props = $props();
+
+	const table = $derived(site && sitesTables.get(site.id));
 
 	const rows: VariableStats[] = $derived.by(() => {
 		if (!table || table.numRows() == 0) return [];
@@ -31,46 +34,43 @@
 <TooltipVariableBrief bind:this={variableTooltip} />
 
 <div id="site-stats-panel">
-	{#if selectedSite.site}
-		<h3 class="site-label">
-			<div class="color-marker"></div>
-			<div class="color-marker"></div>
-			Site: <span style="font-weight: 400">{selectedSite.site?.name}</span>
-			<span class="subtitle">{selectedSite.site?.id}</span>
-		</h3>
-		<StatsDataTable data={rows}>
-			<th>Variable</th>
-			<th>Last</th>
-			<th>#obs</th>
-			<th>Min</th>
-			<th>Max</th>
-			<th>Mean</th>
-			<th>Median</th>
-			<th>Sd</th>
-			<th>From</th>
-			<th>To</th>
+	<h3 class="site-label">
+		<div class="color-marker"></div>
+		<div class="color-marker"></div>
+		Site:<span style="font-weight: 400">{site.name}</span>
+		<span class="subtitle">{site.id}</span>
+	</h3>
+	<StatsDataTable data={rows}>
+		<th>Variable</th>
+		<th>Last</th>
+		<th>#obs</th>
+		<th>Min</th>
+		<th>Max</th>
+		<th>Mean</th>
+		<th>Median</th>
+		<th>Sd</th>
+		<th>From</th>
+		<th>To</th>
 
-			{#snippet row(r: VariableStats)}
-				<td
-					class="variable-label"
-
-					onmouseleave={(e: MouseEvent) => variableTooltip?.mouseLeaveVariable(e)}
-					onmousemove={(e: MouseEvent) => variableTooltip?.mouseMoveVariable(e, r.varname)}
-					onclick={() => onVarClicked(r.varname)}
-					>{r.label} {varunits(r.varname, true)}
-				</td>
-				<td><VarValueStandards v={r.varname} value={r.lastObservation} /></td>
-				<td>{r.numObservations}</td>
-				<td class="stat"><VarValueStandards v={r.varname} value={r.min} /></td>
-				<td class="stat"><VarValueStandards v={r.varname} value={r.max} /></td>
-				<td class="stat"><VarValueStandards v={r.varname} value={r.mean} /></td>
-				<td class="stat"><VarValueStandards v={r.varname} value={r.median} /></td>
-				<td class="stat">{fmtVarNum(r.varname, r.stdDev)}</td>
-				<td class="date">{r.dateFromLabel}</td>
-				<td class="date">{r.dateToLabel}</td>
-			{/snippet}
-		</StatsDataTable>
-	{/if}
+		{#snippet row(r: VariableStats)}
+			<td
+				class="variable-label"
+				onmouseleave={(e: MouseEvent) => variableTooltip?.mouseLeaveVariable(e)}
+				onmousemove={(e: MouseEvent) => variableTooltip?.mouseMoveVariable(e, r.varname)}
+				onclick={() => onVarClicked(r.varname)}
+				>{r.label} {varunits(r.varname, true)}
+			</td>
+			<td><VarValueStandards v={r.varname} value={r.lastObservation} /></td>
+			<td>{r.numObservations}</td>
+			<td class="stat"><VarValueStandards v={r.varname} value={r.min} /></td>
+			<td class="stat"><VarValueStandards v={r.varname} value={r.max} /></td>
+			<td class="stat"><VarValueStandards v={r.varname} value={r.mean} /></td>
+			<td class="stat"><VarValueStandards v={r.varname} value={r.median} /></td>
+			<td class="stat">{fmtVarNum(r.varname, r.stdDev)}</td>
+			<td class="date">{r.dateFromLabel}</td>
+			<td class="date">{r.dateToLabel}</td>
+		{/snippet}
+	</StatsDataTable>
 </div>
 
 <style>
@@ -127,7 +127,6 @@
 		.site-label {
 			border-left: 6px solid #00af8c;
 			padding-left: 3px;
-
 		}
 
 		.color-marker {

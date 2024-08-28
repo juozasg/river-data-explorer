@@ -14,7 +14,6 @@
 	import SharedTooltip from '$src/components/chart/layercake/SharedTooltip.svelte';
 	import { isNumber } from '$src/lib/utils';
 	import {
-
 		formatChartDate,
 		formatChartTTKey,
 		formatChatTTValue,
@@ -24,16 +23,32 @@
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
 
 	import { YZChartParams } from '$src/lib/utils/YZChartParams';
-	import { selectedRegion, selectedSite } from '$src/appstate/map/featureState.svelte';
 	import { chartYColor, chartZDarker, chartZColor } from '$src/lib/utils/colors';
+	import type { Site } from '$src/lib/types/site';
+	import type { MapFeature } from '$src/appstate/map/featureState.svelte';
 
-	const { table, yVar, zVar, chartWidth, chartHeight }: { table: ColumnTable; yVar: string; zVar: string, chartWidth: number, chartHeight: number } = $props();
+	type Props = {
+		table: ColumnTable;
+		yVar: string;
+		zVar: string;
+		chartWidth: number;
+		chartHeight: number;
+		site?: Site;
+		region?: MapFeature;
+
+	};
+
+	const { table, yVar, zVar, chartWidth, chartHeight, site, region }: Props = $props();
 
 	const yParams = $derived(new YZChartParams('y', yVar, table));
 	const zParams = $derived(new YZChartParams('z', zVar, table));
 
-	const yAxisLabel = $derived(`${yParams.varLabel} <span class="location-label">${selectedRegion?.name}<span>`);
-	const zAxisLabel = $derived(`${zParams.varLabel} <span class="location-label">${selectedSite.site?.name}<span>`);
+	const yAxisLabel = $derived(
+		`${yParams.varLabel} <span class="location-label">${region?.name}<span>`
+	);
+	const zAxisLabel = $derived(
+		`${zParams.varLabel} <span class="location-label">${site?.name}<span>`
+	);
 
 	let brushMinIndex: number | null = $state(null);
 	let brushMaxIndex: number | null = $state(null);
@@ -223,5 +238,4 @@
 			cursor: col-resize;
 		}
 	}
-
 </style>
