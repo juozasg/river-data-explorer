@@ -4,11 +4,12 @@
 	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
 	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 	import { transformStyle } from '$src/lib/data/map/helpers/transformMapStyle';
-	import { addMlmSources, toggleRiverLayerVisibility } from '$src/lib/data/map/mapData/mapData';
+	import { toggleRiverLayerVisibility } from '$src/lib/data/map/mapData/mapData';
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 	import { toggleoffAttribution } from '$src/lib/utils/maplibre';
 	import { onMount } from 'svelte';
 	import { addMlmLayers } from '$src/lib/data/map/mapData/regionsMapData';
+	import { addMlmSources } from '$src/lib/data/map/mapData/addMapSources';
 
 	let {
 		mlMap = $bindable(),
