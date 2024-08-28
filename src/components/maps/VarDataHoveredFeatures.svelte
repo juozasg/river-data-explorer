@@ -2,25 +2,26 @@
 	import * as ml from 'maplibre-gl';
 	import { onMount } from 'svelte';
 
-	import { MLMHoveredFeatureState } from '$src/appstate/map/featureState.svelte';
-	import { Sites } from '$src/appstate/sites.svelte';
+	import { MapFeatureSelectionState } from '$src/appstate/map/featureState.svelte';
 	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 	import { sitesDataStats } from '$src/lib/data/stats';
 	import { siteGetBeforeDate } from '$src/lib/data/tableHelpers';
 	import type { Site } from '$src/lib/types/site';
 	import { fmtDate } from '$src/lib/utils';
+	import { queryMouseMoveHover } from '$src/lib/utils/maplibre';
 	import { varlabel, varunits } from '$src/lib/utils/varHelpers';
 	import TooltipSiteStats from '../tooltips/TooltipContentSiteStats.svelte';
+	import { Sites } from '$src/appstate/sites.svelte';
 
 	type Props = {
 		sites: Site[];
-		hoveredSite: Site | null;
+		hoveredSite?: Site;
 		mlMap: ml.Map;
 		varname: string;
 		vardate: Date;
 		showRegionTooltip?: boolean;
-		hoveredRegion: MLMHoveredFeatureState;
-		hoveredRiver: MLMHoveredFeatureState;
+		hoveredRegion: MapFeatureSelectionState;
+		hoveredRiver: MapFeatureSelectionState;
 	};
 
 	let {
@@ -30,24 +31,18 @@
 		varname,
 		vardate,
 		showRegionTooltip = false,
-		hoveredRiver = $bindable(new MLMHoveredFeatureState(10)),
-		hoveredRegion = $bindable(new MLMHoveredFeatureState())
+		hoveredRiver,
+		hoveredRegion
 	}: Props = $props();
 
 	const hoveredSiteStats = $derived(hoveredSite ? sitesDataStats([hoveredSite]) : undefined);
-
-	const hoveredRegionSites = $derived(
-		sites.filter((s) => hoveredRegion.id && s.huc10 === hoveredRegion.id)
-	);
-
-	const hoveredRegionStats = $derived(
-		hoveredRegionSites.length > 0 ? sitesDataStats(hoveredRegionSites) : undefined
-	);
+	const hoveredRegionSites = $derived(Sites.inRegionFeature(sites, hoveredRegion.feature));
+	const hoveredRegionStats = $derived(hoveredRegionSites.length > 0 ? sitesDataStats(hoveredRegionSites) : undefined);
 
 	onMount(() => {
 		mlMap.on('mousemove', (e: ml.MapMouseEvent) => {
-			hoveredRiver.mouseMove(e, ['riverapp-river']);
-			hoveredRegion.mouseMove(e, ['riverapp-huc10']);
+			hoveredRiver.feature = queryMouseMoveHover(e, ['riverapp-river'], 10);
+			hoveredRegion.feature = queryMouseMoveHover(e, ['riverapp-huc10']);
 
 			if (hoveredRiver.feature || (showRegionTooltip && hoveredRegion.feature) || hoveredSite) {
 				tooltip.show(e.originalEvent.x, e.originalEvent.y, true);
@@ -65,6 +60,7 @@
 		}
 		return 'N/A';
 	}
+
 </script>
 
 {#snippet variableValueBeforeDate(site: Site)}
@@ -88,10 +84,8 @@
 		<h5 class="region" class:tooltip-section={!!hoveredRiver.feature}>
 			Region: {hoveredRegion.name}
 		</h5>
-		<i>HUC10: {hoveredRegion.id}</i>
-		{#if hoveredRegion.feature}
-			<p><b>{Sites.inHuc10(sites, hoveredRegion.feature.id).length}</b> sites</p>
-		{/if}
+		<i>HUC10: {hoveredRegion.feature.id}</i>
+		<p><b>{hoveredRegionSites.length}</b> sites</p>
 		{#if hoveredRegionStats}
 			<TooltipSiteStats stats={hoveredRegionStats} />
 		{/if}

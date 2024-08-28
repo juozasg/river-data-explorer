@@ -4,6 +4,7 @@ import type { Site } from "$lib/types/site";
 import { sitesTables } from "./data/datasets.svelte";
 import { sitesGeoindex } from "./data/geoindexes.svelte";
 import { enabledDatasets } from './ui/layers.svelte';
+import type { MapFeature } from './map/featureState.svelte';
 
 export class Sites {
 	private sites: Site[] = $state([]);
@@ -24,6 +25,8 @@ export class Sites {
 		return aq.from(_sites).groupby(key).orderby(orderby).objects({ grouped: true }) as unknown as Map<string, Site[]>;
 	}
 
+
+
 	get allEnabled() {
 		const datasets = enabledDatasets();
 		// return this.sites.filter(s => s.id === 'sjrbc-20');
@@ -38,12 +41,19 @@ export class Sites {
 		return [...Sites.groupedBy(this.sites, 'dataset').keys()];
 	}
 
-	inHuc10(huc10: string | undefined | number) {
-		return this.sites.filter(s => s.huc10 === huc10);
-	}
+	// inHuc10(huc10: string | undefined | number) {
+	// 	return this.sites.filter(s => s.huc10 === huc10);
+	// }
 
-	static inHuc10(sites: Site[], huc10: string | undefined | number) {
-		return sites.filter(s => s.huc10 === huc10);
+	// static inHuc10(sites: Site[], huc10: string | undefined | number) {
+	// 	return sites.filter(s => s.huc10 === huc10);
+	// }
+
+	static inRegionFeature(sites: Site[], region?: MapFeature) {
+		if(!region || !region.source || region.id == undefined) return [];
+		const regionType = region.source.replace(/^riverapp-/, '');
+		return sites.filter(s => (s as any)[regionType] === region.id);
+
 	}
 
 	findById(siteId: string) {

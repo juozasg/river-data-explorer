@@ -1,42 +1,12 @@
 import * as sr from "svelte/reactivity";
-import { sites } from "../sites.svelte";
 
-const emptyGeoJSON: GeoJSON.FeatureCollection = {
-	type: "FeatureCollection",
-	features: []
-};
+export const geometriesIds = new sr.Map<string, string>();
+export const geometries = new sr.Map<string, GeoJSON.FeatureCollection>();
 
-// siteId: huc10
-export type SiteGeometryIndex = { [key: string]: string; };
-const collectionNames = ['huc10', 'huc12', 'huc8', 'counties', 'basin-states'] as const;
-export type GeometryCollection = typeof collectionNames[number];
-
-export class Geometries {
-	collections: Map<string, GeoJSON.FeatureCollection> = new sr.Map();
-
-	constructor() {
-		for(const name of collectionNames) {
-			this.collections.set(name, emptyGeoJSON);
-		}
-	}
-
-	get huc10(): GeoJSON.FeatureCollection {
-		return this.collections.get('huc10')!;
-	}
-
-
-	set(name: GeometryCollection | string, data: GeoJSON.FeatureCollection) {
-		if(!collectionNames.includes(name as any)) {
-			return;
-		}
-		const numFeatures = this.collections.get(name)?.features.length;
-		this.collections.set(name, data);
-
-		if(numFeatures !== data.features.length) {
-			sites.reindexGeometries();
-		}
-	}
+export function geomFeatureName(source: string | undefined, id: string | number | undefined): string {
+	if (!source) return !!id ? id.toString() : '';
+	const col = source.replace(/^riverapp-/, '');
+	const idProperty = geometriesIds.get(col) || 'id';
+	const feature = geometries.get(col)?.features.find(f => f.properties?.[idProperty] === id);
+	return feature?.properties?.name || id?.toString() || '';
 }
-
-
-export const geometries = new Geometries();

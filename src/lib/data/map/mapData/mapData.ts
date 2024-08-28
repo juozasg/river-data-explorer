@@ -1,11 +1,12 @@
 import * as ml from 'maplibre-gl';
 
 import { loadDataJson } from '$lib/data/cachedDataLoad';
-import { geometries, type GeometryCollection } from '$src/appstate/data/geometries.svelte';
+import { geometries, geometriesIds } from '$src/appstate/data/geometries.svelte';
 
-export async function addDataSourceGeoJSON(map: ml.Map, name: GeometryCollection | string, promoteId?: string | undefined) {
+export async function addDataSourceGeoJSON(map: ml.Map, name: string, promoteId?: string | undefined) {
 	const data = await loadDataJson(`geojson/${name}.geojson`);
-	geometries.set(name, data);
+	geometries.set(name, data)
+	geometriesIds.set(name, promoteId || 'id');
 
 	if(!map.getSource(`riverapp-${name}`)) {
 		map.addSource(`riverapp-${name}`, {

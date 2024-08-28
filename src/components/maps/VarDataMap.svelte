@@ -6,8 +6,12 @@
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 	import MapLibreMap from './MapLibreMap.svelte';
 
-	import { MLMHoveredFeatureState } from '$src/appstate/map/featureState.svelte';
-	import { sites } from '$src/appstate/sites.svelte';
+	import  {
+		toggleHoveredFeatureState,
+		MapFeatureSelectionState,
+		type MapFeature
+	} from '$src/appstate/map/featureState.svelte';
+	import { sites as globalSites, Sites } from '$src/appstate/sites.svelte';
 	import { sitesEarliestDate, sitesLatestDate, sitesValidDates } from '$src/lib/data/dateStats';
 	import type { MapLayersParams } from '$src/lib/types/mapControls';
 	import type { Site } from '$src/lib/types/site';
@@ -17,31 +21,53 @@
 	import TimeSelector from './controls/TimeSelector.svelte';
 	import VariableSelector from './controls/VariableSelector.svelte';
 	import VarDataHoveredFeatures from './VarDataHoveredFeatures.svelte';
+	import { onMount } from 'svelte';
 
 	type Props = {
-		onSelected?: () => void;
+		selectedSite?: Site;
+		yVarSite?: Site;
+		zVarSite?: Site;
+		selectedRegion?: MapFeatureSelectionState;
+		selectedRiver?: MapFeatureSelectionState;
+		mapClick?: (map: ml.Map, p: ml.PointLike) => void;
 	} & Partial<MapLibreMapProps>;
 
-	let { onSelected, ...others }: Props = $props();
+	// export function
+
+	let { selectedRegion, selectedRiver, selectedSite, yVarSite, zVarSite, mapClick, ...others }: Props =
+		$props();
+
+	const sites = $derived(globalSites.allEnabled);
+	const emphasizedSites = $derived(Sites.inRegionFeature(sites, selectedRegion?.feature));
 
 	let mlMap = $state<ml.Map>();
+	export const mlmMap = $derived(mlMap);
 
-	let hoveredRiver = $state(new MLMHoveredFeatureState(10));
-	let hoveredRegion = $state(new MLMHoveredFeatureState());
-	let hoveredSite: Site | null = $state(null);
-
+	let _hoveredSite = $state<Site>();
+	export const hoveredSite = $derived(_hoveredSite);
+	export const hoveredRegion = new MapFeatureSelectionState((c, u) =>
+		toggleHoveredFeatureState(mlMap, c, u)
+	);
+	export const hoveredRiver = new MapFeatureSelectionState((c, u) =>
+		toggleHoveredFeatureState(mlMap, c, u)
+	);
 
 	let varname = $state('temp');
 	let vardate = $state(UTCDayDate());
 
-	const startDate = $derived(sitesEarliestDate(sites.allEnabled));
-	const endDate = $derived(sitesLatestDate(sites.allEnabled));
-	let validDates: Date[] = $derived(sitesValidDates(sites.allEnabled, varname));
+	const startDate = $derived(sitesEarliestDate(sites));
+	const endDate = $derived(sitesLatestDate(sites));
+	let validDates: Date[] = $derived(sitesValidDates(sites, varname));
 
 	let layersParams = $state<MapLayersParams>({
 		baseStyleId: 'TOPO',
 		riverLayerVisible: true
 	});
+
+	onMount(() => {
+		mlMap!.on('click', (e) => mapClick && mapClick(mlMap!, e.point));
+	});
+
 
 </script>
 
@@ -56,18 +82,28 @@
 </div>
 
 {#if mlMap}
-<VarDataHoveredFeatures
-showRegionTooltip={true}
+	<VarDataHoveredFeatures
+		showRegionTooltip={true}
 		{mlMap}
-		{hoveredSite}
-		bind:hoveredRegion
-		bind:hoveredRiver
+		hoveredSite={_hoveredSite}
+		{hoveredRegion}
+		{hoveredRiver}
 		{varname}
 		{vardate}
-		sites={sites.allEnabled}
+		{sites}
 	/>
 
-	<VarDataMarkers {mlMap} {varname} {vardate} sites={sites.allEnabled} bind:hoveredSite />
+	<VarDataMarkers
+		{mlMap}
+		{varname}
+		{vardate}
+		{sites}
+		{selectedSite}
+		{yVarSite}
+		{zVarSite}
+		{emphasizedSites}
+		bind:hoveredSite={_hoveredSite}
+	/>
 {/if}
 
 <style>

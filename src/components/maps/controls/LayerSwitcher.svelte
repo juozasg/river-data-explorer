@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { sites } from '$src/appstate/sites.svelte';
-	import { isDatasetEnabled, setEnabledDatasets, toggleDatasetEnable } from '$src/appstate/ui/layers.svelte';
+	import {
+		isDatasetEnabled,
+		setEnabledDatasets,
+		toggleDatasetEnable
+	} from '$src/appstate/ui/layers.svelte';
 	import type { MapLayersParams } from '$src/lib/types/mapControls';
 	import { aremove } from '$src/lib/utils';
 	import { onMount } from 'svelte';
@@ -9,10 +13,10 @@
 	const datasets = $derived(sites.allDatasets);
 
 	$effect(() => {
-		// console.log(setEnabledDatasets(aremove(datasets, 'invert')));
-		console.log(setEnabledDatasets(['sjrbc', 'steuben', 'usgs']));
+		// setEnabledDatasets(aremove(datasets, 'invert'));
+		setEnabledDatasets(['sjrbc', 'steuben', 'usgs']);
 	});
-const a = 1;
+	const a = 1;
 
 	let showLayersDropdown = $state(false);
 	const dropdownToggle = (e: Event) => {
@@ -27,7 +31,6 @@ const a = 1;
 			showLayersDropdown = false;
 		});
 	});
-
 </script>
 
 <div class="map-control dropdown" class:is-active={showLayersDropdown}>

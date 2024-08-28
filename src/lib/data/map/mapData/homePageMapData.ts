@@ -1,38 +1,38 @@
 
-import * as ml from 'maplibre-gl';
-import { addRiverLayers } from './mapData';
+// import * as ml from 'maplibre-gl';
+// import { addRiverLayers } from './mapData';
 
-export async function addLayers(map: ml.Map): Promise<void> {
-	addLayersHuc10(map);
-	addRiverLayers(map);
-}
+// export async function addLayers(map: ml.Map): Promise<void> {
+// 	addLayersHuc10(map);
+// 	addRiverLayers(map);
+// }
 
 
-function addLayersHuc10(map: ml.Map): void {
-	map.addLayer({
-		'id': 'riverapp-huc10',
-		'type': 'fill',
-		'source': 'riverapp-huc10',
-		'layout': {},
-		'paint': {
-			'fill-color': '#698',
-			'fill-opacity': [
-				'case',
-				['boolean', ['feature-state', 'hover'], false],
-				0.6,
-				0.3
-			]
-		}
-	});
+// function addLayersHuc10(map: ml.Map): void {
+// 	map.addLayer({
+// 		'id': 'riverapp-huc10',
+// 		'type': 'fill',
+// 		'source': 'riverapp-huc10',
+// 		'layout': {},
+// 		'paint': {
+// 			'fill-color': '#698',
+// 			'fill-opacity': [
+// 				'case',
+// 				['boolean', ['feature-state', 'hover'], false],
+// 				0.6,
+// 				0.3
+// 			]
+// 		}
+// 	});
 
-	map.addLayer({
-		'id': 'riverapp-huc10-outline',
-		'type': 'line',
-		'source': 'riverapp-huc10',
-		'layout': {},
-		'paint': {
-			'line-color': '#584070',
-			'line-width': 1,
-		}
-	});
-}
+// 	map.addLayer({
+// 		'id': 'riverapp-huc10-outline',
+// 		'type': 'line',
+// 		'source': 'riverapp-huc10',
+// 		'layout': {},
+// 		'paint': {
+// 			'line-color': '#584070',
+// 			'line-width': 1,
+// 		}
+// 	});
+// }

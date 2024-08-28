@@ -3,8 +3,6 @@
 
 	import type { Site } from '$src/lib/types/site';
 	import { makeSiteMarker } from '$src/lib/utils/maplibre';
-	import { selectedSite } from '$src/appstate/map/featureState.svelte';
-	import { onMount } from 'svelte';
 	import { ghost } from '$src/lib/utils/colors';
 
 	type Props = {
@@ -14,8 +12,8 @@
 		site: Site;
 		emphasized?: boolean;
 		selected?: boolean;
-		selectedYVar?: boolean;
-		selectedZVar?: boolean;
+		isYVar?: boolean;
+		isZVar?: boolean;
 	};
 
 	let {
@@ -25,28 +23,20 @@
 		site,
 		emphasized = false,
 		selected = false,
-		selectedYVar = false,
-		selectedZVar = false
+		isYVar = false,
+		isZVar = false
 	}: Props = $props();
 
 	let color = $state('yellowgreen');
+	export const isGhost = $derived(color == ghost);
 
 	const makeMarker = (node: HTMLElement, site: Site) => {
 		return makeSiteMarker(node, map, site);
 	};
 
-	// @hmr:keep-all
-
-	// onMount(() => {
-	// 	console.log('mounted marker', site.id, color)
-	// });
-
-	$effect(() => {
-		console.log('FX marker color1 ', color);
-	});
-
 	export const siteId = site.id;
 	export const setColor = (c: string) => (color = c);
+
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -59,14 +49,14 @@
 	class:emphasized
 	use:makeMarker={site}
 >
-	{#if selectedYVar}
-		<div class="selected-y"></div>
+	{#if isYVar}
+		<div class="y-var-site"></div>
 	{/if}
-	{#if selectedZVar}
-		<div class="selected-z"></div>
+	{#if isZVar}
+		<div class="z-var-site"></div>
 	{/if}
 
-	<div style="--color: {color}" class="marker-box" class:ghost={color == ghost}></div>
+	<div style="--color: {color}" class="marker-box" class:ghost={isGhost}></div>
 </div>
 
 <style>
@@ -84,55 +74,54 @@
 			background-color: var(--color);
 		}
 
-		.selected-y {
+		.y-var-site {
 			z-index: 3;
 			position: absolute;
-			bottom: calc(50% - 6px);
-			left: calc(-2px - 70%);
-			width: 12px;
-			height: 12px;
+			bottom: calc(50% - 2.5px);
+			left: calc(-1px - 70%);
+			width: 18px;
+			height: 6px;
 			background-color: #ab00d6;
-			border: 2px solid #3b084b;
+			border: 1px solid #3b084b;
+			border-right: none;
+
 		}
 
-		.selected-z {
+		.z-var-site {
 			z-index: 3;
 			position: absolute;
-			bottom: calc(50% - 6px);
-			right: calc(-2px - 70%);
-			width: 12px;
-			height: 12px;
-			background-color: #00af8c;
-			border: 2px solid #3b084b;
+			bottom: calc(50% - 2.5px);
+			right: calc(-1px - 70%);
+			width: 18px;
+			height: 6px;
+			background-color: #00d6ab;
+			border: 1px solid #3b084b;
+			border-left: none;
 		}
+
+
 		&:hover:not(.is-selected) {
-			.selected-y {
-				left: calc(2px - 70%);
-				border-radius: 6px;
+			.y-var-site {
+				left: calc(-4px - 70%);
 			}
 
-			.selected-z {
-				right: calc(2px - 70%);
-				border-radius: 6px;
+			.z-var-site {
+				z-index: 0;
 
+				right: calc(-4px - 70%);
 			}
 		}
 
 		&:hover.is-selected {
-			.selected-y {
-				left: calc(10px - 70%);
-				border-radius: 6px;
+			.y-var-site {
+				left: calc(4px - 70%);
 			}
 
-			.selected-z {
-				right: calc(10px - 70%);
-				border-radius: 6px;
+			.z-var-site {
+				right: calc(4px - 70%);
 			}
 		}
 
-		/*
-		border-left: 8px solid #ab00d6;
-			border-right: 8px solid #00d6ab; */
 	}
 
 	.marker .marker-box.ghost {
@@ -142,7 +131,6 @@
 	}
 
 	.marker:has(.marker-box:not(.ghost)) {
-		/* border: 4px solid #ba5cd6; */
 		z-index: 1;
 	}
 
@@ -150,24 +138,19 @@
 		padding: 0px;
 		z-index: 3 !important;
 		.marker-box {
-			/* background-color: #cdf8c0; */
-			/* position: relative; */
+
 			width: 22px;
 			height: 22px;
 			border-radius: 11px;
-			/* border-style: ridge; */
 			border-width: 2px;
 		}
 	}
 
 	.marker.is-selected:hover {
-		/* border: 2px solid purple; */
 		.marker-box {
-			/* border-color: #cdf8c0; */
 			width: 34px !important;
 			height: 34px !important;
 			border-radius: 17px !important;
-			/* border-width: 2px !important; */
 		}
 	}
 
@@ -177,14 +160,11 @@
 		padding: 0px;
 		padding-left: -4px;
 		.marker-box {
-			/* background-color: #ebc0f8; */
 			width: 24px !important;
 			height: 24px !important;
-			/* border-radius: 12px; */
 
 			border-width: 7px !important;
 			border-style: double;
-			/* transform: rotateY(0deg) rotate(0deg); */
 		}
 	}
 
