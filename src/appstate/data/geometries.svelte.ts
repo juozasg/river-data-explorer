@@ -10,3 +10,8 @@ export function geomFeatureName(source: string | undefined, id: string | number 
 	const feature = geometries.get(col)?.features.find(f => f.properties?.[idProperty] === id);
 	return feature?.properties?.name || id?.toString() || '';
 }
+
+// if(window !== undefined) {
+// 	(window as any).geometries = geometries;
+// 	(window as any).geometriesIds = geometriesIds;
+// }

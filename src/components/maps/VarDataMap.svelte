@@ -6,7 +6,10 @@
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 	import MapLibreMap from './MapLibreMap.svelte';
 
-	import { MapFeatureSelectionState, toggleHoveredFeatureState } from '$src/appstate/map/featureState.svelte';
+	import {
+		MapFeatureSelectionState,
+		toggleHoveredFeatureState
+	} from '$src/appstate/map/featureState.svelte';
 	import { sites as globalSites, Sites } from '$src/appstate/sites.svelte';
 	import { sitesEarliestDate, sitesLatestDate, sitesValidDates } from '$src/lib/data/dateStats';
 	import type { MapLayersParams } from '$src/lib/types/mapControls';
@@ -26,12 +29,22 @@
 		selectedRegion?: MapFeatureSelectionState;
 		selectedRiver?: MapFeatureSelectionState;
 		showRegionTooltip?: boolean;
+
 		mapClick?: (map: ml.Map, p: ml.PointLike) => void;
 	} & Partial<MapLibreMapProps>;
 
 	// export function
 
-	let { selectedRegion, selectedRiver,  mapClick, showRegionTooltip = true, ...others }: Props = $props();
+	let {
+		selectedRegion,
+		selectedRiver,
+		mapClick,
+		showRegionTooltip = true,
+		...others
+	}: Props = $props();
+
+	let _mlmComponent = $state<MapLibreMap>();
+	export const mlmComponent = $derived(_mlmComponent);
 
 	const sites = $derived(globalSites.allEnabled);
 	const emphasizedSites = $derived(Sites.inRegionFeature(sites, selectedRegion?.feature));
@@ -63,18 +76,18 @@
 	onMount(() => {
 		mlMap!.on('click', (e) => mapClick && mapClick(mlMap!, e.point));
 	});
-
-
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div style="position: relative; height: 100%">
-	<MapLatLonDebug />
-	<LayerSwitcher bind:layersParams />
-	<VariableSelector bind:varname />
-	<TimeSelector {startDate} {endDate} {validDates} bind:vardate />
-	<Legend {varname} />
-	<MapLibreMap bind:mlMap {layersParams} zoom={7.9} {...others} />
+<div class="controls">
+		<MapLatLonDebug />
+		<LayerSwitcher bind:layersParams />
+		<VariableSelector bind:varname />
+		<TimeSelector {startDate} {endDate} {validDates} bind:vardate />
+		<Legend {varname} />
+</div>
+	<MapLibreMap bind:this={_mlmComponent} bind:mlMap {layersParams} zoom={7.9} {...others} />
 </div>
 
 {#if mlMap}

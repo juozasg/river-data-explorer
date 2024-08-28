@@ -82,7 +82,7 @@
 		.dropdown-menu {
 			height: 100%;
 			top: 40px;
-			width: 22rem !important;
+			width: 24rem !important;
 		}
 
 		.dropdown-content {

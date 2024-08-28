@@ -93,7 +93,7 @@
 		position: absolute;
 		top: 10px;
 		right: 10px;
-		width: calc(100% - 500px);
+		width: calc(100% - 460px);
 		height: 2.5rem;
 		color: hsl(0, 0%, 21%);
 		background-color: hsl(0, 0%, 100%);

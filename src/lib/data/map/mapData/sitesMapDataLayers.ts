@@ -1,8 +1,8 @@
 import * as ml from 'maplibre-gl';
 
-import { addRiverLayers } from './mapData';
+import { addRiverLayers } from './riverLayers';
 
-export async function addLayers(map: ml.Map): Promise<void> {
+export async function addSitesDetailsMapLayers(map: ml.Map): Promise<void> {
 	addLayersHuc10(map);
 	addRiverLayers(map);
 }

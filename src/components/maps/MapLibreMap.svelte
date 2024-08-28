@@ -4,18 +4,19 @@
 	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
 	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 	import { transformStyle } from '$src/lib/data/map/helpers/transformMapStyle';
-	import { toggleRiverLayerVisibility } from '$src/lib/data/map/mapData/mapData';
+	import { toggleRiverLayerVisibility } from '$src/lib/data/map/mapData/riverLayers';
 	import type { MapLibreMapProps } from '$src/lib/types/components';
 	import { toggleoffAttribution } from '$src/lib/utils/maplibre';
 	import { onMount } from 'svelte';
-	import { addMlmLayers } from '$src/lib/data/map/mapData/regionsMapData';
-	import { addMlmSources } from '$src/lib/data/map/mapData/addMapSources';
+	import { addMlmSources } from '$src/lib/data/map/mapData/mapSources';
+	import { addMapLayers } from '$src/lib/data/map/mapData/regionsMapLayers';
 
 	let {
 		mlMap = $bindable(),
 		zoom = 7.9,
 		center = [-85.5, 41.825],
-		layersParams
+		layersParams,
+		addLayers = addMapLayers
 	}: MapLibreMapProps = $props();
 
 	let mapDiv = $state<HTMLDivElement>();
@@ -63,11 +64,13 @@
 		});
 
 		mlMap.addControl(new ml.AttributionControl(), 'bottom-right');
+		mlMap.addControl(new ml.NavigationControl(), 'bottom-right');
+
 
 		// only fires for the initial style, not for map.setStyle
 		mlMap.once('idle', () => {
 			addMlmSources(mlMap!).then(() => {
-				addMlmLayers(mlMap!);
+				addLayers(mlMap!);
 				const style = basemapStyles[layersParams.baseStyleId];
 				mlMap!.setStyle(style, { transformStyle }); // force transformStyle to reorder layers
 				toggleRiverLayerVisibility(mlMap!, layersParams.riverLayerVisible);
@@ -97,5 +100,8 @@
 		height: var(--map-height, 100%);
 		width: var(--map-width, 100%);
 		z-index: 1;
+		& :global(.maplibregl-ctrl-bottom-right  .maplibregl-ctrl-group) {
+			margin-bottom: 3rem;
+		}
 	}
 </style>

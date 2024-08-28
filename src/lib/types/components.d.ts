@@ -10,5 +10,5 @@ export interface MapLibreMapProps {
 	layersParams: MapLayersParams;
 	divElement?: HTMLDivElement;
 	mlMap?: ml.Map;
-	addLayers: (map: ml.Map) => Promise<void>;
+	addLayers?: (map: ml.Map) => Promise<void>;
 }

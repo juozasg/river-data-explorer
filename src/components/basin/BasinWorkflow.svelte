@@ -15,6 +15,10 @@
 		toggleSelectedFeatureState
 	} from '$src/appstate/map/featureState.svelte';
 	import type { Site } from '$src/lib/types/site';
+	import { onMount } from 'svelte';
+	import { geometries } from '$src/appstate/data/geometries.svelte';
+	import { addSitesDetailsMapLayers } from '$src/lib/data/map/mapData/sitesMapDataLayers';
+	import { fitFeatureBounds } from '$src/lib/utils/maplibre';
 
 	let regionSelectionMap = $state<VarDataMap>();
 	let detailsMap = $state<VarDataMap>();
@@ -22,6 +26,11 @@
 	const updatedRegionSelection = (curr?: MapFeature, u?: MapFeature) => {
 		toggleSelectedFeatureState(regionSelectionMap?.mlmMap, curr, u);
 		toggleSelectedFeatureState(detailsMap?.mlmMap, curr, u);
+
+
+		if (u&& detailsMap?.mlmMap) {
+			fitFeatureBounds(detailsMap.mlmMap, u);
+		}
 
 		// region selection changed, focus details map
 		if (u) {
@@ -31,16 +40,6 @@
 	};
 
 	function regionMapClick(map: ml.Map, p: ml.PointLike) {
-		console.log('regionSelectionMap MapClick', p);
-		console.log(
-			'regionSelectionMap hovered',
-			'river',
-			regionSelectionMap?.hoveredRiver.feature,
-			'region',
-			regionSelectionMap?.hoveredRegion.feature,
-			'site',
-			regionSelectionMap?.hoveredSite
-		);
 
 		selectedSite = regionSelectionMap?.hoveredSite;
 		selectedRegion.feature = regionSelectionMap?.hoveredRegion.feature;
@@ -48,28 +47,17 @@
 	}
 
 	function detailsMapClick(map: ml.Map, p: ml.PointLike) {
-		console.log('detailsMap MapClick', p);
-		console.log(
-			'detailsMap hovered',
-			'river',
-			detailsMap?.hoveredRiver.feature,
-			'region',
-			detailsMap?.hoveredRegion.feature,
-			'site',
-			detailsMap?.hoveredSite
-		);
-
 		selectedSite = detailsMap?.hoveredSite;
 		// selectedRegion.feature = detailsMap?.hoveredRegion.feature;
 		selectedRiver.feature = detailsMap?.hoveredRiver.feature;
 	}
 
-	const scrollIntoViewRegionMap = () => {
-		const basinRegionsA = window.document.getElementById('basin-regions');
-		basinRegionsA?.scrollIntoView({ behavior: 'instant', block: 'start' });
-	};
 
 	const selectedRegion = new MapFeatureSelectionState(updatedRegionSelection);
+	$effect(() => {
+		// if(geometries.get('huc10') && detailsMap?.mlmComponent?.dataLoaded()) selectedRegion.feature = new MapFeature('riverapp-huc10', "0405000118");
+	});
+
 	const selectedRiver = new MapFeatureSelectionState((c, u) => {}); // TODO: selecting river does something
 	let selectedSite = $state<Site>();
 	let yVarSite = $state<Site>();
@@ -100,10 +88,11 @@
 <div id="region-details">
 	<ChangeRegionHeader {selectedRegion} />
 
-	<div class="columns" style="height: 100%" class:is-hidden={!selectedRegion.feature}>
+	<!-- <div class="columns" style="height: 100%" class:is-hidden={!selectedRegion.feature}> -->
+	<div class="columns" style="height: 100%">
 		<div class="column left-column is-half">
 			<div class="details">
-				<div class="details-to site-selector-map">
+				<div class="details-top site-selector-map">
 					<VarDataMap
 						bind:this={detailsMap}
 						{selectedSite}
@@ -111,8 +100,12 @@
 						{zVarSite}
 						mapClick={detailsMapClick}
 						{selectedRegion}
+						addLayers={addSitesDetailsMapLayers}
 						showRegionTooltip={false}
-					/>
+						--map-width="100%"
+
+						/>
+						<!-- --map-height="" -->
 				</div>
 				<div class="details-bottom">
 					<!-- {#if !selectedSite.site}
@@ -135,12 +128,12 @@
 			</div>
 		</div>
 	</div>
-
+<!--
 	{#if !selectedRegion.feature}
 		<div class="placeholder" class:is-hidden={!!selectedRegion.feature}>
 			<h2><a onclick={scrollIntoViewRegionMap}>Select a watershed region</a></h2>
 		</div>
-	{/if}
+	{/if} -->
 </div>
 
 <style>
@@ -198,4 +191,8 @@
 	:global(.site-selector-map .maplibregl-ctrl-attrib) {
 		display: none !important;
 	}
+
+	.site-selector-map :global(.maplibregl-ctrl-bottom-right  .maplibregl-ctrl-group) {
+			margin-bottom: 4rem;
+		}
 </style>

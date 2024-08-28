@@ -162,7 +162,7 @@
 		position: absolute;
 		bottom: 0px;
 		left: 0px;
-		width: calc(100% - 2rem);
+		width: calc(100% - 28px);
 		height: 36px;
 		margin: 1rem;
 
