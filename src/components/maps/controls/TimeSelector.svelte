@@ -156,13 +156,13 @@
 	}
 
 	.map-control {
-		opacity: 0.7;
+		/* opacity: 0.5; */
 
 		z-index: 1000;
 		position: absolute;
 		bottom: 0px;
 		left: 0px;
-		width: calc(100% - 28px);
+		width: calc(100% - 26px);
 		height: 36px;
 		margin: 1rem;
 

@@ -2,23 +2,16 @@
 	import * as ml from 'maplibre-gl';
 	import ChangeRegionHeader from './ChangeRegionHeader.svelte';
 
-	import RegionTypeTabs from '../../routes/basin/RegionTypeTabs.svelte';
-	import RegionSelectorMap from '$src/components/maps/RegionSelectorMap.svelte';
-	import SiteSelectorMap from '$src/components/maps/SiteSelectorMap.svelte';
-	import RegionStatsPanel from '$src/components/basin/stats/RegionStatsPanel.svelte';
-	import SiteStatsPanel from '$src/components/basin/stats/SiteStatsPanel.svelte';
-	import BasinChart from '$src/components/basin/BasinChart.svelte';
-	import VarDataMap from '../maps/VarDataMap.svelte';
 	import {
 		MapFeature,
 		MapFeatureSelectionState,
 		toggleSelectedFeatureState
 	} from '$src/appstate/map/featureState.svelte';
-	import type { Site } from '$src/lib/types/site';
-	import { onMount } from 'svelte';
-	import { geometries } from '$src/appstate/data/geometries.svelte';
 	import { addSitesDetailsMapLayers } from '$src/lib/data/map/mapData/sitesMapDataLayers';
+	import type { Site } from '$src/lib/types/site';
 	import { fitFeatureBounds } from '$src/lib/utils/maplibre';
+	import RegionTypeTabs from '../../routes/basin/RegionTypeTabs.svelte';
+	import VarDataMap from '../maps/VarDataMap.svelte';
 
 	let regionSelectionMap = $state<VarDataMap>();
 	let detailsMap = $state<VarDataMap>();
@@ -27,8 +20,7 @@
 		toggleSelectedFeatureState(regionSelectionMap?.mlmMap, curr, u);
 		toggleSelectedFeatureState(detailsMap?.mlmMap, curr, u);
 
-
-		if (u&& detailsMap?.mlmMap) {
+		if (u && detailsMap?.mlmMap) {
 			fitFeatureBounds(detailsMap.mlmMap, u);
 		}
 
@@ -40,9 +32,20 @@
 	};
 
 	function regionMapClick(map: ml.Map, p: ml.PointLike) {
-
-		selectedSite = regionSelectionMap?.hoveredSite;
-		selectedRegion.feature = regionSelectionMap?.hoveredRegion.feature;
+		if (regionSelectionMap?.hoveredSite || !regionSelectionMap?.hoveredRegion.feature) {
+			selectedSite = regionSelectionMap?.hoveredSite;
+		}
+		console.log(
+			'selectedSite',
+			selectedSite,
+			'selectedRegion',
+			selectedRegion.feature,
+			'hoveredRegion',
+			regionSelectionMap?.hoveredRegion.feature
+		);
+		if (!regionSelectionMap?.hoveredSite || !selectedRegion.feature) {
+			selectedRegion.feature = regionSelectionMap?.hoveredRegion.feature;
+		}
 		selectedRiver.feature = regionSelectionMap?.hoveredRiver.feature;
 	}
 
@@ -51,7 +54,6 @@
 		// selectedRegion.feature = detailsMap?.hoveredRegion.feature;
 		selectedRiver.feature = detailsMap?.hoveredRiver.feature;
 	}
-
 
 	const selectedRegion = new MapFeatureSelectionState(updatedRegionSelection);
 	$effect(() => {
@@ -102,10 +104,8 @@
 						{selectedRegion}
 						addLayers={addSitesDetailsMapLayers}
 						showRegionTooltip={false}
-						--map-width="100%"
-
-						/>
-						<!-- --map-height="" -->
+					/>
+					<!-- --map-height="" -->
 				</div>
 				<div class="details-bottom">
 					<!-- {#if !selectedSite.site}
@@ -128,7 +128,7 @@
 			</div>
 		</div>
 	</div>
-<!--
+	<!--
 	{#if !selectedRegion.feature}
 		<div class="placeholder" class:is-hidden={!!selectedRegion.feature}>
 			<h2><a onclick={scrollIntoViewRegionMap}>Select a watershed region</a></h2>
@@ -192,7 +192,7 @@
 		display: none !important;
 	}
 
-	.site-selector-map :global(.maplibregl-ctrl-bottom-right  .maplibregl-ctrl-group) {
-			margin-bottom: 4rem;
-		}
+	.site-selector-map :global(.maplibregl-ctrl-bottom-right .maplibregl-ctrl-group) {
+		margin-bottom: 4rem;
+	}
 </style>

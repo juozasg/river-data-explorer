@@ -130,6 +130,11 @@
 		height: 10px;
 	}
 
+	.marker .marker-box {
+
+		filter: drop-shadow(2px 2px 3px #00000046);
+	}
+
 	.marker:has(.marker-box:not(.ghost)) {
 		z-index: 1;
 	}
