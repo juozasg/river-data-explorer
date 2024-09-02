@@ -39,7 +39,8 @@
 			{/if}
 		</div>
 
-		Site:<span style="font-weight: 400">{site.name}</span>
+		<span>Site:</span>
+		<span style="font-weight: 400">{site.name}</span>
 		<span class="subtitle">{site.id}</span>
 	</h3>
 	<StatsDataTable data={rows}>
@@ -105,7 +106,7 @@
 		}
 	}
 
-	#site-stats-panel :global {
+	#site-stats-panel  {
 		td.date {
 			/* font-size: 75%; */
 			min-width: 6.2rem;
@@ -116,31 +117,26 @@
 			overflow-x: hidden;
 			padding-right: 0.5rem;
 		}
-		/* .color-marker {
-			display: inline-block;
-			position: absolute;
 
-			width: 6px;
-			height: 100%;
-			background-color: #ab00d6;
-			display: none;
-		} */
 
 		.selection-hints {
-			display: flex;
-			height: auto;
-			margin-right: 3px;
+			height: 20px;
+			display: inline-block;
+			position: relative;
+			bottom: -3px;
 
 			pointer-events: none;
-			/* border: 1px solid salmon; */
 
 			.y-selection {
+				display: inline-block;
 				background-color: #ab00d6;
 				width: 6px;
 				height: 100%;
 			}
 
 			.z-selection {
+				display: inline-block;
+
 				background-color: #00d6ab;
 				width: 6px;
 				height: 100%;
