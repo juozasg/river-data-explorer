@@ -1,9 +1,8 @@
 import * as ml from 'maplibre-gl';
 import { bounds } from './geoutils';
 import type { Site } from '../types/site';
-import type { BBoxLike } from '../types/basic';
-import { MapFeature } from '$src/appstate/map/featureState.svelte';
-import { geometries } from '$src/appstate/data/geometries.svelte';
+import { type BBoxLike } from '../types/map';
+import { regionFeatures, type RegionFeature } from '$src/appstate/data/features.svelte';
 
 export function onceIdle(map: ml.Map) {
 	if (map.loaded()) return Promise.resolve();
@@ -12,10 +11,9 @@ export function onceIdle(map: ml.Map) {
 	})
 }
 
-export function fitFeatureBounds(map: ml.Map, feature: MapFeature) {
-
-	const geomfeat = geometries.get(feature.sourceType)?.features.find(f => f?.properties?.[feature.sourceType] == feature.id);
-	const geometry = geomfeat?.geometry as GeoJSON.Polygon;
+export function fitFeatureBounds(map: ml.Map, feature: RegionFeature) {
+	// const geomfeat = geometries.get(feature.regionType)?.features.find(f => f?.properties?.[feature.regionType] == feature.id);
+	const geometry = feature.geometry as GeoJSON.Polygon;
 	const coordinates: GeoJSON.Position[] = geometry.coordinates[0];
 
 	map.fitBounds(bounds(coordinates), {
@@ -67,7 +65,7 @@ export function safeQueryRenderedFeatures(map: ml.Map, queryGeom: ml.PointLike |
 }
 
 
-export function queryMouseMoveHover(e: ml.MapMouseEvent, layers: string[], radius = 0): MapFeature | undefined {
+export function queryMouseMoveHover(e: ml.MapMouseEvent, layers: string[], radius = 0): RegionFeature | undefined {
 	const map = e.target;
 
 	let queryGeom: ml.PointLike | BBoxLike = e.point;
@@ -80,5 +78,5 @@ export function queryMouseMoveHover(e: ml.MapMouseEvent, layers: string[], radiu
 
 	const features = safeQueryRenderedFeatures(map, queryGeom, layers);
 	if (features.length < 1) return undefined;
-	return new MapFeature(features[0].source, features[0].id as string | number);
+	return regionFeatures.getForSource(features[0].source, features[0].id as string | number);
 }

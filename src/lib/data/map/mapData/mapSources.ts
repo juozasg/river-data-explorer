@@ -1,8 +1,7 @@
 import * as ml from 'maplibre-gl';
 
 import { loadDataJson } from '$lib/data/cachedDataLoad';
-import { geometries, geometriesIds } from '$src/appstate/data/geometries.svelte';
-
+import { regionFeatures } from '$src/appstate/data/features.svelte';
 
 
 export async function addMlmSources(map: ml.Map): Promise<void> {
@@ -19,8 +18,11 @@ export async function addMlmSources(map: ml.Map): Promise<void> {
 
 export async function addDataSourceGeoJSON(map: ml.Map, name: string, promoteId?: string | undefined) {
 	const data = await loadDataJson(`geojson/${name}.geojson`);
-	geometries.set(name, data)
-	geometriesIds.set(name, promoteId || 'id');
+
+	regionFeatures.addGeoJSONCollection(name, promoteId || 'id', data);
+	// console.log(data)
+	// geometries.set(name, data)
+	// geometriesIds.set(name, promoteId || 'id');
 
 	if(!map.getSource(`riverapp-${name}`)) {
 		map.addSource(`riverapp-${name}`, {

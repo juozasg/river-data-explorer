@@ -25,7 +25,7 @@
 	import { YZChartParams } from '$src/lib/utils/YZChartParams';
 	import { chartYColor, chartZDarker, chartZColor } from '$src/lib/utils/colors';
 	import type { Site } from '$src/lib/types/site';
-	import type { MapFeature } from '$src/appstate/map/featureState.svelte';
+	import type { RegionFeature } from '$src/appstate/data/features.svelte';
 
 	type Props = {
 		table: ColumnTable;
@@ -34,7 +34,7 @@
 		chartWidth: number;
 		chartHeight: number;
 		site?: Site;
-		region?: MapFeature;
+		region?: RegionFeature;
 
 	};
 

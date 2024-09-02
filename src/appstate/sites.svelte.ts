@@ -4,7 +4,7 @@ import type { Site } from "$lib/types/site";
 import { sitesTables } from "./data/datasets.svelte";
 import { sitesGeoindex } from "./data/geoindexes.svelte";
 import { enabledDatasets } from './ui/layers.svelte';
-import type { MapFeature } from './map/featureState.svelte';
+import type { RegionFeature } from './data/features.svelte';
 
 export class Sites {
 	private sites: Site[] = $state([]);
@@ -49,9 +49,9 @@ export class Sites {
 	// 	return sites.filter(s => s.huc10 === huc10);
 	// }
 
-	static inRegionFeature(sites: Site[], region?: MapFeature) {
+	static forRegionFeature(sites: Site[], region?: RegionFeature) {
 		if(!region || !region.source || region.id == undefined) return [];
-		const regionType = region.sourceType; // huc10
+		const regionType = region.regionType; // huc10
 		return sites.filter(s => (s as any)[regionType] === region.id);
 
 	}

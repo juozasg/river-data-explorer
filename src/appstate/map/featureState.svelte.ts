@@ -1,28 +1,13 @@
 import * as ml from 'maplibre-gl';
-
-import { geomFeatureName } from '../data/geometries.svelte';
-
-
-export class MapFeature  {
-	source: string;
-	id: string | number;
-	name: string;
-	sourceType: string;
-
-	constructor(source: string, id: string | number) {
-		this.source = source;
-		this.id = id;
-		this.name = geomFeatureName(source, id);
-		this.sourceType = source.replace(/^riverapp-/, '');
-	}
-
-};
+import type { RegionFeature } from '../data/features.svelte';
 
 
-export type FeatureSelectionChangeFn = (current: MapFeature | undefined, updated: MapFeature | undefined) => void;
+
+
+export type FeatureSelectionChangeFn = (current: RegionFeature | undefined, updated: RegionFeature | undefined) => void;
 
 export class MapFeatureSelectionState {
-	#feature = $state<MapFeature>();
+	#feature = $state<RegionFeature>();
 	#onChange: FeatureSelectionChangeFn
 
 	constructor(onChange: FeatureSelectionChangeFn) {
@@ -30,7 +15,7 @@ export class MapFeatureSelectionState {
 	}
 
 	get feature() { return this.#feature }
-	set feature(feature: MapFeature | undefined) {
+	set feature(feature: RegionFeature | undefined) {
 		// nothing changed
 		if(this.#feature?.id == feature?.id && this.#feature?.source == feature?.source) return;
 		this.#onChange(this.#feature, feature);
@@ -43,7 +28,7 @@ export class MapFeatureSelectionState {
 }
 
 
-export const toggleHoveredFeatureState = (map: ml.Map | undefined, current: MapFeature | undefined, updated: MapFeature | undefined) => {
+export const toggleHoveredFeatureState = (map: ml.Map | undefined, current: RegionFeature | undefined, updated: RegionFeature | undefined) => {
 	if (!map) return;
 	if (current) {
 		map.setFeatureState({ source: current.source, id: current.id }, { hover: false });
@@ -55,7 +40,7 @@ export const toggleHoveredFeatureState = (map: ml.Map | undefined, current: MapF
 }
 
 
-export const toggleSelectedFeatureState = (map: ml.Map | undefined, current: MapFeature | undefined, updated: MapFeature | undefined) => {
+export const toggleSelectedFeatureState = (map: ml.Map | undefined, current: RegionFeature | undefined, updated: RegionFeature | undefined) => {
 	if (!map) return;
 	if (current) {
 		map.setFeatureState({ source: current.source, id: current.id }, { selected: false });

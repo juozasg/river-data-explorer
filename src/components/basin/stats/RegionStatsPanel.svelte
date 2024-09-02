@@ -1,31 +1,31 @@
 <script lang="ts">
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
-	import { allVariableStats, sitesDataStats, variableStats } from '$src/lib/data/stats';
-	import type { VariableStats } from '$src/lib/types/analysis';
-		import { fmtVarNum, varunits } from '$src/lib/utils/varHelpers';
-	import StatsDataTable from '../../website/StatsDataTable.svelte';
-	import type ColumnTable from 'arquero/dist/types/table/column-table';
+	import { allVariableStats, sitesDataStats } from '$src/lib/data/stats';
 	import { concatTablesAllColumns } from '$src/lib/data/tableHelpers';
+	import type { VariableStats } from '$src/lib/types/analysis';
+	import { DataSelection } from '$src/lib/types/components';
+	import { fmtVarNum, varunits } from '$src/lib/utils/varHelpers';
+	import type ColumnTable from 'arquero/dist/types/table/column-table';
 	import TooltipVariableBrief from '../../tooltips/TooltipVariableBrief.svelte';
 	import VarValueStandards from '../../tooltips/VarValueStandards.svelte';
-	import type { MapFeature, MapFeatureSelectionState } from '$src/appstate/map/featureState.svelte';
-	import { geomFeatureName } from '$src/appstate/data/geometries.svelte';
+	import StatsDataTable from '../../website/StatsDataTable.svelte';
+	import type { RegionFeature } from '$src/appstate/data/features.svelte';
 
 	type Props = {
-		region: MapFeature;
+		region: RegionFeature;
+		dataSelection: DataSelection;
+
 		onVarClicked: (name: string) => void
 	};
 
-	let { onVarClicked, region }: Props = $props();
+	let { onVarClicked, region, dataSelection }: Props = $props();
 
+	const sitesInRegion = $derived(sites.allEnabled.filter((s) => s.huc10 === region?.id));
 
-	// const region = $derived(selectedRegion.feature);
-	const sitesInArea = $derived(sites.allEnabled.filter((s) => s.huc10 === region?.id));
-
-	const sitesStats = $derived(sitesDataStats(sitesInArea));
+	const sitesStats = $derived(sitesDataStats(sitesInRegion));
 	const sitesInAreaTables = $derived(
-		sitesInArea.map((s) => sitesTables.get(s.id)).filter((t) => t)
+		sitesInRegion.map((s) => sitesTables.get(s.id)).filter((t) => t)
 	) as ColumnTable[];
 
 	const rows: VariableStats[] = $derived.by(() => {
@@ -34,7 +34,7 @@
 		if (combinedTable.numRows() == 0) return [];
 		// dont order empty tables because column date won't exist
 		const orderedTable = combinedTable.orderby('date').reify();
-		return allVariableStats(orderedTable, { errorLabel: sitesInArea.map((s) => s.id).join(', ') });
+		return allVariableStats(orderedTable, { errorLabel: sitesInRegion.map((s) => s.id).join(', ') });
 	});
 
 	let variableTooltip: TooltipVariableBrief | undefined = $state();
@@ -46,7 +46,7 @@
 	{#if region}
 		<h3 class="region-label">
 			Region: <span style="font-weight: 400">{region.name}</span>
-			<span class="subtitle">{region.sourceType}:{region.id}</span>
+			<span class="subtitle">{region.regionType}:{region.id}</span>
 		</h3>
 	{/if}
 	<div class="flex stats-summary">

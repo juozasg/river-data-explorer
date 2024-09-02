@@ -3,7 +3,6 @@
 	import ChangeRegionHeader from './ChangeRegionHeader.svelte';
 
 	import {
-		MapFeature,
 		MapFeatureSelectionState,
 		toggleSelectedFeatureState
 	} from '$src/appstate/map/featureState.svelte';
@@ -12,11 +11,14 @@
 	import { fitFeatureBounds } from '$src/lib/utils/maplibre';
 	import RegionTypeTabs from '../../routes/basin/RegionTypeTabs.svelte';
 	import VarDataMap from '../maps/VarDataMap.svelte';
+	import RegionStatsPanel from './stats/RegionStatsPanel.svelte';
+	import { DataSelection } from '$src/lib/types/components';
+	import type { RegionFeature } from '$src/appstate/data/features.svelte';
 
 	let regionSelectionMap = $state<VarDataMap>();
 	let detailsMap = $state<VarDataMap>();
 
-	const updatedRegionSelection = (curr?: MapFeature, u?: MapFeature) => {
+	const updatedRegionSelection = (curr?: RegionFeature, u?: RegionFeature) => {
 		toggleSelectedFeatureState(regionSelectionMap?.mlmMap, curr, u);
 		toggleSelectedFeatureState(detailsMap?.mlmMap, curr, u);
 
@@ -52,20 +54,28 @@
 	function detailsMapClick(map: ml.Map, p: ml.PointLike) {
 		selectedSite = detailsMap?.hoveredSite;
 		// selectedRegion.feature = detailsMap?.hoveredRegion.feature;
-		selectedRiver.feature = detailsMap?.hoveredRiver.feature;
+		selectedRiver.feature = detailsMap?. hoveredRiver.feature;
 	}
 
 	const selectedRegion = new MapFeatureSelectionState(updatedRegionSelection);
 	$effect(() => {
-		// if(geometries.get('huc10') && detailsMap?.mlmComponent?.dataLoaded()) selectedRegion.feature = new MapFeature('riverapp-huc10', "0405000118");
+		// if(geometries.get('huc10') && detailsMap?.mlmComponent?.dataLoaded()) selectedRegion.feature = new RegionFeature('riverapp-huc10', "0405000118");
 	});
 
 	const selectedRiver = new MapFeatureSelectionState((c, u) => {}); // TODO: selecting river does something
 	let selectedSite = $state<Site>();
-	let yVarSite = $state<Site>();
-	let zVarSite = $state<Site>();
-	let yVar: string = $state('temp');
-	let zVar: string = $state('do');
+
+	const dataSelection = $state(new DataSelection());
+
+	dataSelection.yVar = 'temp';
+	dataSelection.zVar = 'do';
+
+	let detailMapVarname = $state('temp');
+
+	// let yVarSite = $state<Site>();
+	// let zVarSite = $state<Site>();
+	// let yVar: string = $state('temp');
+	// let zVar: string = $state('do');
 </script>
 
 <div id="basin-regions">
@@ -79,8 +89,7 @@
 		bind:this={regionSelectionMap}
 		zoom={8.35}
 		{selectedSite}
-		{yVarSite}
-		{zVarSite}
+		{dataSelection}
 		mapClick={regionMapClick}
 		{selectedRegion}
 		--map-height="70vh"
@@ -90,7 +99,6 @@
 <div id="region-details">
 	<ChangeRegionHeader {selectedRegion} />
 
-	<!-- <div class="columns" style="height: 100%" class:is-hidden={!selectedRegion.feature}> -->
 	<div class="columns" style="height: 100%">
 		<div class="column left-column is-half">
 			<div class="details">
@@ -98,11 +106,11 @@
 					<VarDataMap
 						bind:this={detailsMap}
 						{selectedSite}
-						{yVarSite}
-						{zVarSite}
+						{dataSelection}
 						mapClick={detailsMapClick}
 						{selectedRegion}
 						addLayers={addSitesDetailsMapLayers}
+						bind:varname={detailMapVarname}
 						showRegionTooltip={false}
 					/>
 					<!-- --map-height="" -->
@@ -120,7 +128,13 @@
 		<div class="column right-column is-half">
 			<div class="details">
 				<div class="details-top">
-					<!-- <RegionStatsPanel onVarClicked={(varname: string) => yVar = varname} /> -->
+					{#if selectedRegion.feature}
+						<RegionStatsPanel
+							{dataSelection}
+							region={selectedRegion.feature}
+							onVarClicked={(varname: string) => detailMapVarname = varname}
+							/>
+					{/if}
 				</div>
 				<div class="details-bottom">
 					<!-- <SiteStatsPanel onVarClicked={(varname: string) => zVar = varname} {yVar} {zVar}/> -->

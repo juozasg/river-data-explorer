@@ -6,7 +6,6 @@
 		toggleDatasetEnable
 	} from '$src/appstate/ui/layers.svelte';
 	import type { MapLayersParams } from '$src/lib/types/mapControls';
-	import { aremove } from '$src/lib/utils';
 	import { onMount } from 'svelte';
 
 	let { layersParams = $bindable() }: { layersParams: MapLayersParams } = $props();

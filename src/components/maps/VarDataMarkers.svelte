@@ -1,17 +1,15 @@
 <script lang="ts">
 	import * as ml from 'maplibre-gl';
 
-
 	import { siteVariableColor } from '$src/lib/data/map/helpers/markerHelpers';
 	import type { Site } from '$src/lib/types/site';
-	import { onMount } from 'svelte';
 	import Marker from './Marker.svelte';
 
 	type Props = {
 		sites: Site[];
 		mlMap: ml.Map;
-		varname: string;
-		vardate: Date;
+		varname: string; // variable in map dropdown
+		vardate: Date; // date with time selector
 		hoveredSite?: Site;
 		selectedSite?: Site;
 		yVarSite?: Site;

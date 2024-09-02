@@ -3,7 +3,7 @@
 	import MapLatLonDebug from './MapLatLonDebug.svelte';
 	import VarDataMarkers from './VarDataMarkers.svelte';
 
-	import type { MapLibreMapProps } from '$src/lib/types/components';
+	import type { DataSelection, MapLibreMapProps } from '$src/lib/types/components';
 	import MapLibreMap from './MapLibreMap.svelte';
 
 	import {
@@ -24,11 +24,11 @@
 
 	type Props = {
 		selectedSite?: Site;
-		yVarSite?: Site;
-		zVarSite?: Site;
+		dataSelection: DataSelection;
 		selectedRegion?: MapFeatureSelectionState;
 		selectedRiver?: MapFeatureSelectionState;
 		showRegionTooltip?: boolean;
+		varname?: string;
 
 		mapClick?: (map: ml.Map, p: ml.PointLike) => void;
 	} & Partial<MapLibreMapProps>;
@@ -40,6 +40,8 @@
 		selectedRiver,
 		mapClick,
 		showRegionTooltip = true,
+		dataSelection,
+		varname = $bindable('temp'),
 		...others
 	}: Props = $props();
 
@@ -47,7 +49,7 @@
 	export const mlmComponent = $derived(_mlmComponent);
 
 	const sites = $derived(globalSites.allEnabled);
-	const emphasizedSites = $derived(Sites.inRegionFeature(sites, selectedRegion?.feature));
+	const emphasizedSites = $derived(Sites.forRegionFeature(sites, selectedRegion?.feature));
 
 	let mlMap = $state<ml.Map>();
 	export const mlmMap = $derived(mlMap);
@@ -61,7 +63,6 @@
 		toggleHoveredFeatureState(mlMap, c, u)
 	);
 
-	let varname = $state('temp');
 	let vardate = $state(UTCDayDate());
 
 	const startDate = $derived(sitesEarliestDate(sites));
@@ -107,6 +108,8 @@
 		{varname}
 		{vardate}
 		{sites}
+		yVarSite={dataSelection.ySite}
+		zVarSite={dataSelection.zSite}
 		{emphasizedSites}
 		bind:hoveredSite={_hoveredSite}
 		{...others}

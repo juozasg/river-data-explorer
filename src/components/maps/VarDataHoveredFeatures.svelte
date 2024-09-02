@@ -36,7 +36,7 @@
 	}: Props = $props();
 
 	const hoveredSiteStats = $derived(hoveredSite ? sitesDataStats([hoveredSite]) : undefined);
-	const hoveredRegionSites = $derived(Sites.inRegionFeature(sites, hoveredRegion.feature));
+	const hoveredRegionSites = $derived(Sites.forRegionFeature(sites, hoveredRegion.feature));
 	const hoveredRegionStats = $derived(hoveredRegionSites.length > 0 ? sitesDataStats(hoveredRegionSites) : undefined);
 
 	onMount(() => {
