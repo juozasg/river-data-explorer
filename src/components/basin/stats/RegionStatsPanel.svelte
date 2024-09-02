@@ -106,13 +106,6 @@
 	}
 
 	#region-stats-panel :global {
-		.variable-label:hover {
-			cursor: pointer;
-			text-decoration: underline;
-			/* text-decoration-color: #ab00d6; */
-			text-decoration-thickness: 2px;
-		}
-
 		td.date {
 			/* font-size: 75%; */
 			min-width: 6.2rem;

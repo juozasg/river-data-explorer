@@ -17,8 +17,9 @@
 	import { sites } from '$src/appstate/sites.svelte';
 	import BasinChart from './BasinChart.svelte';
 	import { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
-	import { data } from '@maptiler/sdk';
 	import { UTCDayDate } from '$src/lib/utils';
+	import { data } from '@maptiler/sdk';
+	import { chartYColor, chartZColor } from '$src/lib/utils/colors';
 
 	let regionSelectionMap = $state<VarDataMap>();
 	let detailsMap = $state<VarDataMap>();
@@ -69,13 +70,6 @@
 
 	const dataSelection = new DataSelectionState();
 
-	// dataSelection.yVar = 'temp';
-	// dataSelection.zVar = 'do';
-
-	// setTimeout(() => {
-	// 	dataSelection.zVar = 'do';
-	// }, 4000);
-
 	let detailMapVarname = $state('temp');
 	let detailMapVardate = $state(UTCDayDate());
 	function chartOnDateSelected(d: Date) {
@@ -84,7 +78,6 @@
 			detailMapVarname = dataSelection.yVar || dataSelection.zVar || 'temp';
 		}
 	}
-
 
 	// TEST
 	const testRegion = $derived(
@@ -104,21 +97,36 @@
 		}
 	});
 
-	$effect(() => {
-		console.log('-- data Selection', dataSelection);
-	});
-
-
 	function regionTableVarClicked(varname: string) {
-		console.log('region data table clicked', varname);
 		detailMapVarname = varname;
 	}
 
+	let clickAssignsYAxis = $state(true); // or Z axis
+
+	let siteStatsVarHoverColor = $derived(clickAssignsYAxis ? chartYColor + '33' : chartZColor + '33');
+
 	function siteTableVarClicked(varname: string) {
-		console.log('site data table clicked 111', varname);
-		// detailMapVarname = varname;
-		dataSelection.ySite = selectedSite;
-		dataSelection.yVar = varname;
+		if(dataSelection.yVar == varname && dataSelection.ySite?.id == selectedSite?.id) {
+			dataSelection.yVar = undefined;
+			dataSelection.ySite = undefined;
+			return;
+		}
+
+		if(dataSelection.zVar == varname && dataSelection.zSite?.id == selectedSite?.id) {
+			dataSelection.zVar = undefined;
+			dataSelection.zSite = undefined;
+			return;
+		}
+
+		if(clickAssignsYAxis) {
+			dataSelection.yVar = varname;
+			dataSelection.ySite = selectedSite;
+		} else {
+			dataSelection.zVar = varname;
+			dataSelection.zSite = selectedSite;
+		}
+
+		clickAssignsYAxis = !clickAssignsYAxis;
 	}
 </script>
 
@@ -158,7 +166,7 @@
 					<!-- --map-height="" -->
 				</div>
 				<div class="details-bottom">
-					<BasinChart {dataSelection} onDateSelected={chartOnDateSelected} />
+					<BasinChart {dataSelection} {selectedSite} onDateSelected={chartOnDateSelected} />
 				</div>
 			</div>
 		</div>
@@ -180,7 +188,7 @@
 							{dataSelection}
 							site={selectedSite}
 							onVarClicked={siteTableVarClicked}
-
+							hoverColor={siteStatsVarHoverColor}
 						/>
 					{/if}
 				</div>

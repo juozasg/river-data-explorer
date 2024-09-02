@@ -12,11 +12,12 @@
 	type Props = {
 		site: Site;
 		dataSelection: DataSelectionState;
+		hoverColor?: string;
 
 		onVarClicked: (name: string) => void;
 	};
 
-	const { onVarClicked, dataSelection, site }: Props = $props();
+	const { onVarClicked, dataSelection, site, hoverColor }: Props = $props();
 
 	const table = $derived(site && sitesTables.get(site.id));
 
@@ -65,6 +66,7 @@
 				zHinted={dataSelection.zVar === r.varname}
 				varname={r.varname}
 				onclick={() => onVarClicked(r.varname)}
+				{hoverColor}
 			>
 				{r.label}
 				{varunits(r.varname, true)}
@@ -103,13 +105,6 @@
 	}
 
 	#site-stats-panel :global {
-		.variable-label:hover {
-			cursor: pointer;
-			text-decoration: underline;
-			text-decoration-thickness: 2px;
-			/* text-decoration-style:double; */
-		}
-
 		td.date {
 			/* font-size: 75%; */
 			min-width: 6.2rem;

@@ -5,27 +5,31 @@
 	import ElementResizeObserver from '../website/ElementResizeObserver.svelte';
 	import type { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
 	import Icon from '@iconify/svelte';
+	import type { Site } from '$src/lib/types/site';
 
 
 	type Props = {
 		dataSelection: DataSelectionState;
+		selectedSite?: Site;
 		onDateSelected?: (d: Date) => void;
 	};
-	const { dataSelection, onDateSelected }: Props = $props();
+	const { dataSelection, onDateSelected, selectedSite }: Props = $props();
 
 	// let siteTableName = $state('');
 
 	let chartWidth = $state(200);
 	let chartHeight = $state(200);
 
+	// TODO: this is not real data
 	const siteTable: ColumnTable | undefined = $derived(
-		sitesTables.get(dataSelection.ySite?.id || '')?.reify()
+		sitesTables.get(dataSelection.ySite?.id || dataSelection.zSite?.id || '')?.reify()
 	);
 
-	$effect(() => {
-		console.log('SiteStatsPanel siteTable', siteTable);
-		console.log('SiteStatsPanel dataSelection', JSON.stringify(dataSelection));
-	});
+	// $effect(() => {
+	// 	console.log('BASIN CHART siteTable', siteTable);
+	// 	console.log('BASIN CHART dataSelection', dataSelection.yVar, JSON.stringify(dataSelection));
+	// });
+
 
 	let chartLayoutElement: HTMLDivElement | undefined = $state();
 
@@ -48,7 +52,7 @@
 			{chartHeight}
 			{onDateSelected}
 		/>
-	{:else if !dataSelection.ySite?.id}
+	{:else if !selectedSite?.id}
 		<div class="placeholder">
 			<h2>
 				<Icon class="icon" height="none" icon="lets-icons:arrow-drop-up"/>
@@ -56,7 +60,7 @@
 				<Icon class="icon" height="none" icon="lets-icons:arrow-drop-up"/>
 			</h2>
 		</div>
-	{:else if !dataSelection.yVar}
+	{:else if (!dataSelection.yVar && !dataSelection.zVar)}
 		<div class="placeholder">
 			<h2>Click a variable to graph  <Icon class="icon" height="none" icon="lets-icons:arrow-drop-right"/></h2>
 		</div>

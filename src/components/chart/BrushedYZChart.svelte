@@ -39,10 +39,8 @@
 
 	const { table, dataSelection, chartWidth, chartHeight, onDateSelected }: Props = $props();
 
-	// const { yVar, zVar } = dataSelection;
-
-	const yVar = dataSelection.yVar;
-	const zVar = dataSelection.zVar;
+	const yVar = $derived(dataSelection.yVar);
+	const zVar = $derived(dataSelection.zVar);
 
 	const yParams = $derived(new YZChartParams('y', yVar, table));
 	const zParams = $derived(new YZChartParams('z', zVar, table));
