@@ -38,9 +38,9 @@
 	const siteStats = $derived(hoveredSite ? sitesDataStats([hoveredSite]) : undefined);
 
 	const regionSites = $derived(Sites.forRegionFeature(sites, hoveredRegion.feature));
-	$effect(() => {
-		console.log(hoveredRegion.feature, regionSites, regionStats)
-	});
+	// $effect(() => {
+	// 	console.log(hoveredRegion.feature, regionSites, regionStats)
+	// });
 	const regionStats = $derived(regionSites.length > 0 ? sitesDataStats(regionSites) : undefined);
 
 	onMount(() => {

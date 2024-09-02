@@ -20,8 +20,8 @@ export const load = async ({ fetch }) => {
 
 	Object.assign(variablesMetadata, vmd)
 
-	console.log('Data manifest', dataManifest);
-	console.log('variablesMetadata', variablesMetadata);
+	// console.log('Data manifest', dataManifest);
+	// console.log('variablesMetadata', variablesMetadata);
 
 	return {
 		variablePages,

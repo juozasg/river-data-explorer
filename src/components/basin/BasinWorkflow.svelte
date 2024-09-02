@@ -13,7 +13,7 @@
 	import VarDataMap from '../maps/VarDataMap.svelte';
 	import RegionStatsPanel from './stats/RegionStatsPanel.svelte';
 	import { DataSelection } from '$src/lib/types/components';
-	import type { RegionFeature } from '$src/appstate/data/features.svelte';
+	import { regionFeatures, type RegionFeature } from '$src/appstate/data/features.svelte';
 
 	let regionSelectionMap = $state<VarDataMap>();
 	let detailsMap = $state<VarDataMap>();
@@ -76,6 +76,11 @@
 	// let zVarSite = $state<Site>();
 	// let yVar: string = $state('temp');
 	// let zVar: string = $state('do');
+
+	const testRegion = $derived(regionFeatures.getRegionCollection('huc10').find((r) => r.id === '0405000118'));
+	$effect(() => {
+		console.log(testRegion);
+	});
 </script>
 
 <div id="basin-regions">
@@ -128,13 +133,20 @@
 		<div class="column right-column is-half">
 			<div class="details">
 				<div class="details-top">
-					{#if selectedRegion.feature}
+					{#if testRegion}
+						<RegionStatsPanel
+							{dataSelection}
+							region={testRegion}
+							onVarClicked={(varname: string) => detailMapVarname = varname}
+							/>
+							{/if}
+					<!-- {#if selectedRegion.feature}
 						<RegionStatsPanel
 							{dataSelection}
 							region={selectedRegion.feature}
 							onVarClicked={(varname: string) => detailMapVarname = varname}
 							/>
-					{/if}
+							{/if} -->
 				</div>
 				<div class="details-bottom">
 					<!-- <SiteStatsPanel onVarClicked={(varname: string) => zVar = varname} {yVar} {zVar}/> -->
