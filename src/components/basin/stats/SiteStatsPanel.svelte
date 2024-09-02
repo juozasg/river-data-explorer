@@ -62,8 +62,9 @@
 				zSelected={dataSelection.zVar === r.varname &&
 					dataSelection.zSite &&
 					dataSelection.zSite.id == site.id}
-				yHinted={dataSelection.yVar === r.varname}
-				zHinted={dataSelection.zVar === r.varname}
+
+				yHinted={!!r.varname && dataSelection.yVar === r.varname}
+				zHinted={!!r.varname && dataSelection.zVar === r.varname}
 				varname={r.varname}
 				onclick={() => onVarClicked(r.varname)}
 				{hoverColor}

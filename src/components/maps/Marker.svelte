@@ -36,7 +36,6 @@
 
 	export const siteId = site.id;
 	export const setColor = (c: string) => (color = c);
-
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -61,8 +60,6 @@
 
 <style>
 	.marker {
-		padding: 3px;
-		/* opacity: 0.5; */
 		.marker-box {
 			opacity: 1;
 			border: 1px solid #3b084b;
@@ -77,53 +74,51 @@
 		&:has(.y-var-site, .z-var-site) {
 			z-index: 5 !important;
 		}
+	}
+	.marker .y-var-site {
+		position: absolute;
+		bottom: calc(50% - 2.5px);
+		left: calc(-4px - 70%);
+		width: 18px;
+		height: 6px;
+		background-color: #ab00d6;
+		border: 1px solid #4b084b;
+		border-right: none;
+	}
 
-		.y-var-site {
-			position: absolute;
-			bottom: calc(50% - 2.5px);
-			left: calc(-1px - 70%);
-			width: 18px;
-			height: 6px;
-			background-color: #ab00d6;
-			border: 1px solid #4b084b;
-			border-right: none;
+	.marker .z-var-site {
+		position: absolute;
+		bottom: calc(50% - 2.5px);
+		right: calc(-4px - 70%);
+		width: 18px;
+		height: 6px;
+		background-color: #00d6ab;
+		border: 1px solid #3b084b;
+		border-left: none;
+	}
 
-		}
-
-		.z-var-site {
-			position: absolute;
-			bottom: calc(50% - 2.5px);
-			right: calc(-1px - 70%);
-			width: 18px;
-			height: 6px;
-			background-color: #00d6ab;
-			border: 1px solid #3b084b;
-			border-left: none;
-		}
-
-
+	.marker {
 		&:hover:not(.is-selected) {
 			.y-var-site {
-				left: calc(-4px - 70%);
+				left: calc(0px - 70%);
 			}
 
 			.z-var-site {
 				z-index: 0;
 
-				right: calc(-4px - 70%);
+				right: calc(0px - 70%);
 			}
 		}
 
 		&:hover.is-selected {
 			.y-var-site {
-				left: calc(4px - 70%);
+				left: calc(8px - 70%);
 			}
 
 			.z-var-site {
-				right: calc(4px - 70%);
+				right: calc(8px - 70%);
 			}
 		}
-
 	}
 
 	.marker .marker-box.ghost {
@@ -133,8 +128,7 @@
 	}
 
 	.marker .marker-box {
-
-		filter: drop-shadow(2px 2px 3px #00000046);
+		/* filter: drop-shadow(2px 2px 3px #00000046); */
 	}
 
 	.marker:has(.marker-box:not(.ghost)) {
@@ -145,7 +139,6 @@
 		padding: 0px;
 		z-index: 3 !important;
 		.marker-box {
-
 			width: 22px;
 			height: 22px;
 			border-radius: 11px;

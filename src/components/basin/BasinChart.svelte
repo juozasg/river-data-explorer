@@ -9,6 +9,7 @@
 	import type { MapFeatureSelectionState } from '$src/appstate/map/featureState.svelte';
 	import ChangeRegionHeader from './ChangeRegionHeader.svelte';
 	import { concatTablesAllColumns } from '$src/lib/data/tableHelpers';
+	import { isCategoricalVar } from '$src/appstate/variablesMetadata.svelte';
 
 
 	type Props = {
@@ -30,11 +31,19 @@
 		let yTable = sitesTables.get(dataSelection.ySite?.id || '');
 		let zTable = sitesTables.get(dataSelection.zSite?.id || '');
 
-		const yVar = dataSelection.yVar;
-		const zVar = dataSelection.zVar;
-
 		if (!yTable && !zTable) {
 			return;
+		}
+
+		let yVar = dataSelection.yVar;
+		let zVar = dataSelection.zVar;
+
+		if(yVar && isCategoricalVar(yVar)) {
+			yVar = undefined;
+		}
+
+		if(zVar && isCategoricalVar(zVar)) {
+			zVar = undefined;
 		}
 
 		if(yTable && yTable.numRows() > 0 && yVar && yTable.columnNames().includes(yVar)) {
@@ -45,13 +54,12 @@
 			zTable = zTable.select(['date', zVar]).reify();
 		}
 
-		return concatTablesAllColumns([yTable, zTable]);
+		return concatTablesAllColumns([yTable, zTable]).orderby('date').reify();
 
 		// sitesTables.get(dataSelection.ySite?.id || dataSelection.zSite?.id || '')?.reify()
 	});
 
 	// $effect(() => {
-	// 	console.log('BASIN CHART siteTable', siteTable);
 	// 	console.log('BASIN CHART dataSelection', dataSelection.yVar, JSON.stringify(dataSelection));
 	// });
 

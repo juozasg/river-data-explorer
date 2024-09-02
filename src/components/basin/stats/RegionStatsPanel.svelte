@@ -78,8 +78,8 @@
 			<TdStatsVariableLabel
 			ySelected={dataSelection.yVar === r.varname && dataSelection.yRegion && regionEqual(dataSelection.yRegion, region)}
 			zSelected={dataSelection.zVar === r.varname && dataSelection.zRegion && regionEqual(dataSelection.zRegion, region)}
-			yHinted={dataSelection.yVar === r.varname}
-			zHinted={dataSelection.zVar === r.varname}
+			yHinted={!!r.varname && dataSelection.yVar === r.varname}
+			zHinted={!!r.varname && dataSelection.zVar === r.varname}
 			varname={r.varname}
 			onclick={() => onVarClicked(r.varname)}
 			>{r.label} {varunits(r.varname, true)}</TdStatsVariableLabel>

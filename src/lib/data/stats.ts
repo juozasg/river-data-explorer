@@ -7,6 +7,7 @@ import { fmtDateDMonY } from "$lib/utils";
 import { sitesTables } from '$src/appstate/data/datasets.svelte';
 import { concatTablesAllColumns } from './tableHelpers';
 import { isCategoricalVar, variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
+import { varlabel } from '../utils/varHelpers';
 
 
 export function columnMeans(table: ColumnTable): any {
@@ -41,6 +42,8 @@ export function sitesDataStats(sites: Site[]): SitesDataStats {
 
 		const dateFromLabel = fmtDateDMonY(table.get('date'));
 		const dateToLabel = fmtDateDMonY(table.get('date', numRecords - 1));
+
+		// console.log('data stats')
 
 		return {
 			numSites,
@@ -97,6 +100,9 @@ export function variableStats(variable: string, table: ColumnTable, { errorLabel
 
 		const stats: any = isCategoricalVar(variable) ? emptyStringStats : calculateVarStats(tsTable)
 
+		// console.log('variable stats')
+
+
 		return {
 			varname: variable,
 			label,
@@ -112,10 +118,10 @@ export function variableStats(variable: string, table: ColumnTable, { errorLabel
 	}
 }
 
-function emptyVariableStats(variable: string): VariableStats {
+function emptyVariableStats(varname: string): VariableStats {
 	return {
-		variable,
-		label: variable,
+		variable: varname,
+		label: varlabel(varname),
 		lastObservation: '',
 		numObservations: 0,
 		dateFromLabel: 'N/A',
@@ -155,6 +161,9 @@ export function simpleStats(varname: string, table?: ColumnTable): SimpleStats {
 		max: aq.op.max('var'),
 		count: aq.op.count(),
 	});
+
+	// console.log('simple stats')
+
 
 	return {
 		min: stats.get('min'),

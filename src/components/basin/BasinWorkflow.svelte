@@ -19,6 +19,8 @@
 	import { UTCDayDate } from '$src/lib/utils';
 	import { chartYColor, chartZColor } from '$src/lib/utils/colors';
 	import { scrollIntoViewRegionMap } from '$src/lib/utils/dom';
+	import { isCategoricalVar } from '$src/appstate/variablesMetadata.svelte';
+	import { data } from '@maptiler/sdk';
 
 	let regionSelectionMap = $state<VarDataMap>();
 	let detailsMap = $state<VarDataMap>();
@@ -95,6 +97,19 @@
 
 	let clickAssignsYAxis = $state(true); // or Z axis
 
+
+	$effect(() => {
+
+		if(clickAssignsYAxis && dataSelection.yVar && !dataSelection.zVar) {
+			clickAssignsYAxis = false;
+		}
+
+		if(!clickAssignsYAxis && dataSelection.zVar && !dataSelection.yVar) {
+			clickAssignsYAxis = true;
+		}
+
+	});
+
 	let siteStatsVarHoverColor = $derived(
 		clickAssignsYAxis ? chartYColor + '33' : chartZColor + '33'
 	);
@@ -112,7 +127,11 @@
 			return;
 		}
 
-		if (clickAssignsYAxis) {
+		if(isCategoricalVar(varname)) {
+			return;
+		}
+
+		if (clickAssignsYAxis ) {
 			dataSelection.yVar = varname;
 			dataSelection.ySite = selectedSite;
 		} else {
@@ -122,6 +141,10 @@
 
 		clickAssignsYAxis = !clickAssignsYAxis;
 	}
+
+	$effect(() => {
+		console.log(Object.keys(dataSelection), dataSelection.yVar, dataSelection.zVar, dataSelection.ySite, dataSelection.zSite);
+	});
 </script>
 
 <div id="basin-regions">

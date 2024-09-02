@@ -13,7 +13,7 @@
 	const datasets = $derived(sites.allDatasets);
 
 	$effect(() => {
-		setEnabledDatasets(aremove(datasets, 'invert', 'usgs'));
+		setEnabledDatasets(aremove(datasets, 'usgs'));
 		// setEnabledDatasets(['sjrbc', 'steuben', 'usgs']);
 	});
 	const a = 1;
