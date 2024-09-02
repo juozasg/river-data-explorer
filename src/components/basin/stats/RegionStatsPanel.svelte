@@ -1,22 +1,23 @@
 <script lang="ts">
+	import TdStatsVariableLabel from './TdStatsVariableLabel.svelte';
+
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
+	import { regionEqual, type RegionFeature } from '$src/appstate/data/features.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
 	import { allVariableStats, sitesDataStats } from '$src/lib/data/stats';
 	import { concatTablesAllColumns } from '$src/lib/data/tableHelpers';
 	import type { VariableStats } from '$src/lib/types/analysis';
-	import { DataSelection } from '$src/lib/types/components';
 	import { fmtVarNum, varunits } from '$src/lib/utils/varHelpers';
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
-	import TooltipVariableBrief from '../../tooltips/TooltipVariableBrief.svelte';
 	import VarValueStandards from '../../tooltips/VarValueStandards.svelte';
 	import StatsDataTable from '../../website/StatsDataTable.svelte';
-	import type { RegionFeature } from '$src/appstate/data/features.svelte';
+	import type { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
 
 	type Props = {
 		region: RegionFeature;
-		dataSelection: DataSelection;
+		dataSelection: DataSelectionState;
 
-		onVarClicked: (name: string) => void
+		onVarClicked: (name: string) => void;
 	};
 
 	let { onVarClicked, region, dataSelection }: Props = $props();
@@ -34,13 +35,13 @@
 		if (combinedTable.numRows() == 0) return [];
 		// dont order empty tables because column date won't exist
 		const orderedTable = combinedTable.orderby('date').reify();
-		return allVariableStats(orderedTable, { errorLabel: sitesInRegion.map((s) => s.id).join(', ') });
+		return allVariableStats(orderedTable, {
+			errorLabel: sitesInRegion.map((s) => s.id).join(', ')
+		});
 	});
 
-	let variableTooltip: TooltipVariableBrief | undefined = $state();
 </script>
 
-<TooltipVariableBrief bind:this={variableTooltip} />
 
 <div id="region-stats-panel">
 	{#if region}
@@ -74,18 +75,20 @@
 		<th>To</th>
 
 		{#snippet row(r: VariableStats)}
-			<td
-				class="variable-label"
-				onmouseleave={(e: MouseEvent) => variableTooltip?.mouseLeaveVariable(e)}
-				onmousemove={(e: MouseEvent) => variableTooltip?.mouseMoveVariable(e, r.varname)}
-				onclick={() => onVarClicked(r.varname)}
-				>{r.label} {varunits(r.varname, true)}
-			</td>
+			<TdStatsVariableLabel
+			ySelected={dataSelection.yVar === r.varname && dataSelection.yRegion && regionEqual(dataSelection.yRegion, region)}
+			zSelected={dataSelection.zVar === r.varname && dataSelection.zRegion && regionEqual(dataSelection.zRegion, region)}
+			yHinted={dataSelection.yVar === r.varname}
+			zHinted={dataSelection.zVar === r.varname}
+			varname={r.varname}
+			onclick={() => onVarClicked(r.varname)}
+			>{r.label} {varunits(r.varname, true)}</TdStatsVariableLabel>
+
 			<td>{r.numObservations}</td>
-			<td class="stat"><VarValueStandards v={r.varname} value={r.min}/></td>
-			<td class="stat"><VarValueStandards v={r.varname} value={r.max}/></td>
-			<td class="stat"><VarValueStandards v={r.varname} value={r.mean}/></td>
-			<td class="stat"><VarValueStandards v={r.varname} value={r.median}/></td>
+			<td class="stat"><VarValueStandards v={r.varname} value={r.min} /></td>
+			<td class="stat"><VarValueStandards v={r.varname} value={r.max} /></td>
+			<td class="stat"><VarValueStandards v={r.varname} value={r.mean} /></td>
+			<td class="stat"><VarValueStandards v={r.varname} value={r.median} /></td>
 			<td class="stat">{fmtVarNum(r.varname, r.stdDev)}</td>
 			<td class="date">{r.dateFromLabel}</td>
 			<td class="date">{r.dateToLabel}</td>

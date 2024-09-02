@@ -66,7 +66,7 @@ export function formatChartDate(d: number): any {
 	return fmtDateDMonY(date);
 }
 
-export function formatChartTTKey(key: string, yVarname: string, zVarname: string): string {
+export function formatChartTTKey(key: string, yVarname?: string, zVarname?: string): string {
 	const keycolor = key == yVarname ? chartYColor : key == zVarname ? chartZDarker : '#444';
 	const label = varlabel(key, false);
 

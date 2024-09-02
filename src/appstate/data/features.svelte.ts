@@ -25,6 +25,10 @@ export type RegionFeature = {
 	interpolatedTable?: ColumnTable;
 }
 
+export function regionEqual(a: RegionFeature, b: RegionFeature): boolean {
+	return a.regionType === b.regionType && a.id == b.id;
+}
+
 // 'huc10-123456'
 export type RegionFeatureKey = string;
 export class RegionFeatures {

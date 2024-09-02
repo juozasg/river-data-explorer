@@ -3,7 +3,7 @@
 	import MapLatLonDebug from './MapLatLonDebug.svelte';
 	import VarDataMarkers from './VarDataMarkers.svelte';
 
-	import type { DataSelection, MapLibreMapProps } from '$src/lib/types/components';
+	import type { MapLibreMapProps } from '$src/lib/types/components';
 	import MapLibreMap from './MapLibreMap.svelte';
 
 	import {
@@ -21,10 +21,11 @@
 	import TimeSelector from './controls/TimeSelector.svelte';
 	import VariableSelector from './controls/VariableSelector.svelte';
 	import VarDataHoveredFeatures from './VarDataHoveredFeatures.svelte';
+	import type { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
 
 	type Props = {
 		selectedSite?: Site;
-		dataSelection: DataSelection;
+		dataSelection: DataSelectionState;
 		selectedRegion?: MapFeatureSelectionState;
 		selectedRiver?: MapFeatureSelectionState;
 		showRegionTooltip?: boolean;

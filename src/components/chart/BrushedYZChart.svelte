@@ -28,8 +28,8 @@
 
 	type Props = {
 		table: ColumnTable;
-		yVar: string;
-		zVar: string;
+		yVar?: string;
+		zVar?: string;
 		chartWidth: number;
 		chartHeight: number;
 		site?: Site;
@@ -131,7 +131,7 @@
 						formatTitle={formatChartDate}
 						formatKey={(k: string) => formatChartTTKey(k, yVar, zVar)}
 						formatValue={formatChatTTValue}
-						filterKeys={[yVar, zVar]}
+						filterKeys={[yVar, zVar].filter((v) => v) as string[]}
 					/>
 					<YZAxisLabels yLabel={yAxisLabel} zLabel={zAxisLabel} />
 				</Html>

@@ -12,8 +12,11 @@
 	import RegionTypeTabs from '../../routes/basin/RegionTypeTabs.svelte';
 	import VarDataMap from '../maps/VarDataMap.svelte';
 	import RegionStatsPanel from './stats/RegionStatsPanel.svelte';
-	import { DataSelection } from '$src/lib/types/components';
 	import { regionFeatures, type RegionFeature } from '$src/appstate/data/features.svelte';
+	import SiteStatsPanel from './stats/SiteStatsPanel.svelte';
+	import { sites } from '$src/appstate/sites.svelte';
+	import BasinChart from './BasinChart.svelte';
+	import { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
 
 	let regionSelectionMap = $state<VarDataMap>();
 	let detailsMap = $state<VarDataMap>();
@@ -54,32 +57,45 @@
 	function detailsMapClick(map: ml.Map, p: ml.PointLike) {
 		selectedSite = detailsMap?.hoveredSite;
 		// selectedRegion.feature = detailsMap?.hoveredRegion.feature;
-		selectedRiver.feature = detailsMap?. hoveredRiver.feature;
+		selectedRiver.feature = detailsMap?.hoveredRiver.feature;
 	}
 
 	const selectedRegion = new MapFeatureSelectionState(updatedRegionSelection);
-	$effect(() => {
-		// if(geometries.get('huc10') && detailsMap?.mlmComponent?.dataLoaded()) selectedRegion.feature = new RegionFeature('riverapp-huc10', "0405000118");
-	});
 
 	const selectedRiver = new MapFeatureSelectionState((c, u) => {}); // TODO: selecting river does something
 	let selectedSite = $state<Site>();
 
-	const dataSelection = $state(new DataSelection());
+	const dataSelection = new DataSelectionState();
 
-	dataSelection.yVar = 'temp';
-	dataSelection.zVar = 'do';
+	// dataSelection.yVar = 'temp';
+	// dataSelection.zVar = 'do';
+
+	setTimeout(() => {
+		dataSelection.zVar = 'do';
+	}, 4000);
 
 	let detailMapVarname = $state('temp');
 
-	// let yVarSite = $state<Site>();
-	// let zVarSite = $state<Site>();
-	// let yVar: string = $state('temp');
-	// let zVar: string = $state('do');
+	// TEST
+	const testRegion = $derived(
+		regionFeatures.getRegionCollection('huc10').find((r) => r.id === '0405000118')
+	);
 
-	const testRegion = $derived(regionFeatures.getRegionCollection('huc10').find((r) => r.id === '0405000118'));
 	$effect(() => {
-		console.log(testRegion);
+		if(testRegion && detailsMap?.mlmComponent?.dataLoaded()) selectedRegion.feature = testRegion;
+	});
+
+	const testSite = $derived(sites.findById('sjrbc-18'));
+
+	$effect(() => {
+		if(testSite) {
+			selectedSite = testSite;
+			dataSelection.ySite = testSite;
+		}
+	});
+
+	$effect(() => {
+		console.log('-- data Selection', dataSelection);
 	});
 </script>
 
@@ -87,9 +103,6 @@
 	<h3 id="section-select-area" class="has-text-centered">Select watershed region</h3>
 
 	<RegionTypeTabs />
-
-	<!-- <AreaSelectorMap onSelected={onSelectedArea} --map-height="70vh" zoom={8.35} /> -->
-
 	<VarDataMap
 		bind:this={regionSelectionMap}
 		zoom={8.35}
@@ -121,35 +134,36 @@
 					<!-- --map-height="" -->
 				</div>
 				<div class="details-bottom">
-					<!-- {#if !selectedSite.site}
-					<div class="placeholder" class:is-hidden={!!selectedSite.site}>
-						<h2>Click a site marker on the map to select</h2>
-					</div>
-					{/if}
-					<BasinChart {yVar} {zVar} /> -->
+					<BasinChart {dataSelection} />
 				</div>
 			</div>
 		</div>
 		<div class="column right-column is-half">
 			<div class="details">
 				<div class="details-top">
-					{#if testRegion}
-						<RegionStatsPanel
-							{dataSelection}
-							region={testRegion}
-							onVarClicked={(varname: string) => detailMapVarname = varname}
-							/>
-							{/if}
-					<!-- {#if selectedRegion.feature}
+					{#if selectedRegion.feature}
 						<RegionStatsPanel
 							{dataSelection}
 							region={selectedRegion.feature}
-							onVarClicked={(varname: string) => detailMapVarname = varname}
-							/>
-							{/if} -->
+							onVarClicked={(varname: string) => {
+								console.log('region data table clicked', varname);
+								detailMapVarname = varname;
+							}}
+						/>
+					{/if}
+
 				</div>
 				<div class="details-bottom">
-					<!-- <SiteStatsPanel onVarClicked={(varname: string) => zVar = varname} {yVar} {zVar}/> -->
+					{#if testSite}
+						<SiteStatsPanel
+							{dataSelection}
+							site={testSite! as Site}
+							onVarClicked={(varname: string) => {
+								console.log('sites data table clicked', varname);
+								detailMapVarname = varname;
+							}}
+						/>
+					{/if}
 				</div>
 			</div>
 		</div>

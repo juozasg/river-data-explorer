@@ -1,21 +1,22 @@
 <script lang="ts">
+	import type { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
 	import { allVariableStats } from '$src/lib/data/stats';
 	import type { VariableStats } from '$src/lib/types/analysis';
-	import { fmtVarNum, varunits } from '$src/lib/utils/varHelpers';
-	import StatsDataTable from '../../website/StatsDataTable.svelte';
-	import TooltipVariableBrief from '../../tooltips/TooltipVariableBrief.svelte';
-	import VarValueStandards from '../../tooltips/VarValueStandards.svelte';
 	import type { Site } from '$src/lib/types/site';
+	import { fmtVarNum, varunits } from '$src/lib/utils/varHelpers';
+	import VarValueStandards from '../../tooltips/VarValueStandards.svelte';
+	import StatsDataTable from '../../website/StatsDataTable.svelte';
+	import TdStatsVariableLabel from './TdStatsVariableLabel.svelte';
 
 	type Props = {
-		onVarClicked: (name: string) => void;
-		yVar: string;
-		zVar: string;
 		site: Site;
+		dataSelection: DataSelectionState;
+
+		onVarClicked: (name: string) => void;
 	};
 
-	const { onVarClicked, yVar, zVar, site }: Props = $props();
+	const { onVarClicked, dataSelection, site }: Props = $props();
 
 	const table = $derived(site && sitesTables.get(site.id));
 
@@ -24,19 +25,19 @@
 		// dont order empty tables because column date won't exist
 		return allVariableStats(table);
 	});
-
-	let variableTooltip: TooltipVariableBrief | undefined = $state();
-
-	const selectedY = (varname: string) => varname === yVar;
-	const selectedZ = (varname: string) => varname === zVar;
 </script>
-
-<TooltipVariableBrief bind:this={variableTooltip} />
 
 <div id="site-stats-panel">
 	<h3 class="site-label">
-		<div class="color-marker"></div>
-		<div class="color-marker"></div>
+		<div class="selection-hints">
+			{#if dataSelection.ySite && dataSelection.ySite.id == site.id}
+				<div class="y-selection"></div>
+			{/if}
+			{#if dataSelection.zSite && dataSelection.zSite.id == site.id}
+				<div class="z-selection"></div>
+			{/if}
+		</div>
+
 		Site:<span style="font-weight: 400">{site.name}</span>
 		<span class="subtitle">{site.id}</span>
 	</h3>
@@ -53,13 +54,22 @@
 		<th>To</th>
 
 		{#snippet row(r: VariableStats)}
-			<td
-				class="variable-label"
-				onmouseleave={(e: MouseEvent) => variableTooltip?.mouseLeaveVariable(e)}
-				onmousemove={(e: MouseEvent) => variableTooltip?.mouseMoveVariable(e, r.varname)}
+			<TdStatsVariableLabel
+				ySelected={dataSelection.yVar === r.varname &&
+					dataSelection.ySite &&
+					dataSelection.ySite.id == site.id}
+				zSelected={dataSelection.zVar === r.varname &&
+					dataSelection.zSite &&
+					dataSelection.zSite.id == site.id}
+				yHinted={dataSelection.yVar === r.varname}
+				zHinted={dataSelection.zVar === r.varname}
+				varname={r.varname}
 				onclick={() => onVarClicked(r.varname)}
-				>{r.label} {varunits(r.varname, true)}
-			</td>
+			>
+				{r.label}
+				{varunits(r.varname, true)}
+			</TdStatsVariableLabel>
+
 			<td><VarValueStandards v={r.varname} value={r.lastObservation} /></td>
 			<td>{r.numObservations}</td>
 			<td class="stat"><VarValueStandards v={r.varname} value={r.min} /></td>
@@ -96,21 +106,8 @@
 		.variable-label:hover {
 			cursor: pointer;
 			text-decoration: underline;
-			text-decoration-color: #00af8c;
 			text-decoration-thickness: 2px;
 			/* text-decoration-style:double; */
-		}
-
-		.selected-y {
-			border-left: 6px solid #ab00d6;
-			padding-left: 3px;
-			/* background-color: #ab00d6; */
-		}
-
-		.selected-z {
-			border-left: 6px solid #00d6ab;
-			padding-left: 3px;
-			/* background-color: #00af8c; */
 		}
 
 		td.date {
@@ -123,26 +120,36 @@
 			overflow-x: hidden;
 			padding-right: 0.5rem;
 		}
-
-		.site-label {
-			border-left: 6px solid #00af8c;
-			padding-left: 3px;
-		}
-
-		.color-marker {
+		/* .color-marker {
 			display: inline-block;
 			position: absolute;
 
-			/* bottom: */
 			width: 6px;
-			/* height: 10px; */
 			height: 100%;
-			/* border-radius: 50%; */
 			background-color: #ab00d6;
 			display: none;
-			/* margin-right: 5px; */
-		}
+		} */
 
+		.selection-hints {
+			display: flex;
+			height: auto;
+			margin-right: 3px;
+
+			pointer-events: none;
+			/* border: 1px solid salmon; */
+
+			.y-selection {
+				background-color: #ab00d6;
+				width: 6px;
+				height: 100%;
+			}
+
+			.z-selection {
+				background-color: #00d6ab;
+				width: 6px;
+				height: 100%;
+			}
+		}
 		th {
 			position: sticky;
 			top: 0;
