@@ -25,7 +25,8 @@ export function emptyTable(columnNames: string[]): ColumnTable {
 }
 
 
-export function concatTablesAllColumns(tables: ColumnTable[]): ColumnTable {
+export function concatTablesAllColumns(tables: (ColumnTable | undefined)[]): ColumnTable {
+	tables = tables.filter(t => t &&  t.numRows() > 0);
 	if(tables.length === 0) return aq.table([]);
 
 	const columns = tablesUniqueColumns(tables);

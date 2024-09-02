@@ -8,6 +8,8 @@
 	import type { Site } from '$src/lib/types/site';
 	import type { MapFeatureSelectionState } from '$src/appstate/map/featureState.svelte';
 	import ChangeRegionHeader from './ChangeRegionHeader.svelte';
+	import { table } from 'arquero';
+	import { concatTablesAllColumns } from '$src/lib/data/tableHelpers';
 
 
 	type Props = {
@@ -25,9 +27,29 @@
 	let chartHeight = $state(200);
 
 	// TODO: this is not real data
-	const siteTable: ColumnTable | undefined = $derived(
-		sitesTables.get(dataSelection.ySite?.id || dataSelection.zSite?.id || '')?.reify()
-	);
+	const combinedTable: ColumnTable | undefined = $derived.by(() => {
+		let yTable = sitesTables.get(dataSelection.ySite?.id || '');
+		let zTable = sitesTables.get(dataSelection.zSite?.id || '');
+
+		const yVar = dataSelection.yVar;
+		const zVar = dataSelection.zVar;
+
+		if (!yTable && !zTable) {
+			return;
+		}
+
+		if(yTable && yTable.numRows() > 0 && yVar && yTable.columnNames().includes(yVar)) {
+			yTable = yTable.select(['date', yVar]).reify();
+		}
+
+		if(zTable && zTable.numRows() > 0 && zVar && zTable.columnNames().includes(zVar)) {
+			zTable = zTable.select(['date', zVar]).reify();
+		}
+
+		return concatTablesAllColumns([yTable, zTable]);
+
+		// sitesTables.get(dataSelection.ySite?.id || dataSelection.zSite?.id || '')?.reify()
+	});
 
 	// $effect(() => {
 	// 	console.log('BASIN CHART siteTable', siteTable);
@@ -48,9 +70,9 @@
 	/>
 
 
-	{#if siteTable && (dataSelection.yVar || dataSelection.zVar)}
+	{#if combinedTable && (dataSelection.yVar || dataSelection.zVar)}
 		<BrushedYzChart
-			table={siteTable}
+			table={combinedTable}
 			{dataSelection}
 			{chartWidth}
 			{chartHeight}

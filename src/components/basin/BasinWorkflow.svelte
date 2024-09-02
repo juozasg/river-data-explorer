@@ -45,6 +45,9 @@
 	function regionMapClick(map: ml.Map, p: ml.PointLike) {
 		if (regionSelectionMap?.hoveredSite || !regionSelectionMap?.hoveredRegion.feature) {
 			selectedSite = regionSelectionMap?.hoveredSite;
+			// const regionDetailsA = window.document.getElementById('region-details');
+
+			// regionDetailsA?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 		}
 		console.log(
 			'selectedSite',
@@ -188,12 +191,7 @@
 			</div>
 		</div>
 	</div>
-	<!--
-	{#if !selectedRegion.feature}
-		<div class="placeholder" class:is-hidden={!!selectedRegion.feature}>
-			<h2><a onclick={scrollIntoViewRegionMap}>Select a watershed region</a></h2>
-		</div>
-	{/if} -->
+
 </div>
 
 <style>
