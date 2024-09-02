@@ -25,8 +25,6 @@ export class Sites {
 		return aq.from(_sites).groupby(key).orderby(orderby).objects({ grouped: true }) as unknown as Map<string, Site[]>;
 	}
 
-
-
 	get allEnabled() {
 		const datasets = enabledDatasets();
 		// return this.sites.filter(s => s.id === 'sjrbc-20');
@@ -41,16 +39,8 @@ export class Sites {
 		return [...Sites.groupedBy(this.sites, 'dataset').keys()];
 	}
 
-	// inHuc10(huc10: string | undefined | number) {
-	// 	return this.sites.filter(s => s.huc10 === huc10);
-	// }
-
-	// static inHuc10(sites: Site[], huc10: string | undefined | number) {
-	// 	return sites.filter(s => s.huc10 === huc10);
-	// }
-
 	static forRegionFeature(sites: Site[], region?: RegionFeature) {
-		if(!region || !region.source || region.id == undefined) return [];
+		if(!region) return [];
 		const regionType = region.regionType; // huc10
 		return sites.filter(s => (s as any)[regionType] === region.id);
 

@@ -3,7 +3,7 @@ import type ColumnTable from 'arquero/dist/types/table/column-table';
 
 import type { SitesDataStats, VariableStats } from "$lib/types/analysis";
 import type { Site } from "$lib/types/site";
-import { fmtDate } from "$lib/utils";
+import { fmtDateDMonY } from "$lib/utils";
 import { sitesTables } from '$src/appstate/data/datasets.svelte';
 import { concatTablesAllColumns } from './tableHelpers';
 import { isCategoricalVar, variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
@@ -39,9 +39,8 @@ export function sitesDataStats(sites: Site[]): SitesDataStats {
 		const numVariables = table.columnNames().length - 1; // remove 'date'
 		const numRecords = table.numRows();
 
-		const dateFromLabel = fmtDate(table.get('date'));
-		const dateToLabel = fmtDate(table.get('date', numRecords - 1));
-
+		const dateFromLabel = fmtDateDMonY(table.get('date'));
+		const dateToLabel = fmtDateDMonY(table.get('date', numRecords - 1));
 
 		return {
 			numSites,
@@ -92,8 +91,8 @@ export function variableStats(variable: string, table: ColumnTable, { errorLabel
 		}
 
 		const numObservations = tsTable.numRows();
-		const dateFromLabel = fmtDate(tsTable.get('date'));
-		const dateToLabel = fmtDate(tsTable.get('date', numObservations - 1));
+		const dateFromLabel = fmtDateDMonY(tsTable.get('date'));
+		const dateToLabel = fmtDateDMonY(tsTable.get('date', numObservations - 1));
 		const lastObservation = tsTable.get('var', numObservations - 1);
 
 		const stats: any = isCategoricalVar(variable) ? emptyStringStats : calculateVarStats(tsTable)

@@ -9,7 +9,7 @@ if(typeof window !== 'undefined') {
 import { variablesBriefMarkdown } from '$src/appstate/variablesMetadata.svelte';
 import  * as aq from 'arquero';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
-import { dateEqualYMD, fmtDate } from '../utils';
+import { dateEqualYMD, fmtMonDY } from '../utils';
 import { sitesTables } from '$src/appstate/data/datasets.svelte';
 import type { Site } from '../types/site';
 

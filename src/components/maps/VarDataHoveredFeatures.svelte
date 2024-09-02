@@ -7,7 +7,7 @@
 	import { sitesDataStats } from '$src/lib/data/stats';
 	import { siteGetBeforeDate } from '$src/lib/data/tableHelpers';
 	import type { Site } from '$src/lib/types/site';
-	import { fmtDate } from '$src/lib/utils';
+	import { fmtDateDMonY, fmtMonDY } from '$src/lib/utils';
 	import { queryMouseMoveHover } from '$src/lib/utils/maplibre';
 	import { varlabel, varunits } from '$src/lib/utils/varHelpers';
 	import TooltipSiteStats from '../tooltips/TooltipContentSiteStats.svelte';
@@ -35,9 +35,13 @@
 		hoveredRegion
 	}: Props = $props();
 
-	const hoveredSiteStats = $derived(hoveredSite ? sitesDataStats([hoveredSite]) : undefined);
-	const hoveredRegionSites = $derived(Sites.forRegionFeature(sites, hoveredRegion.feature));
-	const hoveredRegionStats = $derived(hoveredRegionSites.length > 0 ? sitesDataStats(hoveredRegionSites) : undefined);
+	const siteStats = $derived(hoveredSite ? sitesDataStats([hoveredSite]) : undefined);
+
+	const regionSites = $derived(Sites.forRegionFeature(sites, hoveredRegion.feature));
+	$effect(() => {
+		console.log(hoveredRegion.feature, regionSites, regionStats)
+	});
+	const regionStats = $derived(regionSites.length > 0 ? sitesDataStats(regionSites) : undefined);
 
 	onMount(() => {
 		mlMap.on('mousemove', (e: ml.MapMouseEvent) => {
@@ -52,11 +56,11 @@
 			}
 		});
 	});
-
+fmtMonDY
 	function selectedDateClosestBeforeDate(site: Site) {
 		const date = siteGetBeforeDate(site, 'date', vardate);
 		if (date instanceof Date && !isNaN(date.valueOf())) {
-			return fmtDate(date);
+			return fmtDateDMonY(date);
 		}
 		return 'N/A';
 	}
@@ -85,9 +89,9 @@
 			Region: {hoveredRegion.name}
 		</h5>
 		<i>HUC10: {hoveredRegion.feature.id}</i>
-		<p><b>{hoveredRegionSites.length}</b> sites</p>
-		{#if hoveredRegionStats}
-			<TooltipSiteStats stats={hoveredRegionStats} />
+		<p><b>{regionSites.length}</b> sites</p>
+		{#if regionStats}
+			<TooltipSiteStats stats={regionStats} />
 		{/if}
 	{/if}
 
@@ -101,8 +105,8 @@
 		</h5>
 		<i>Site ID: {hoveredSite.id}</i>
 		{@render variableValueBeforeDate(hoveredSite)}
-		{#if hoveredSiteStats}
-			<TooltipSiteStats stats={hoveredSiteStats} />
+		{#if siteStats}
+			<TooltipSiteStats stats={siteStats} />
 		{/if}
 	{/if}
 {/snippet}

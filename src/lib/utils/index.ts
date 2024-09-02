@@ -62,14 +62,15 @@ export function partition(array: any[], filter: (e: any, i: number, arr: any[]) 
 
 
 const shortMon = (date: Date): string => date.toLocaleString('default', { month: 'short' });
-export function fmtDate(date: Date | undefined): string {
+export function fmtMonDY(date: Date | undefined): string {
 	if (!date) return 'N/A';
 	return `${shortMon(date)} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
+	// return `${date.getUTCFullYear()}-${shortMon(date)}-${date.getUTCDate()}`;
 }
 
-export function fmtDateYmd(date: Date | undefined): string {
+export function fmtDateDMonY(date: Date | undefined): string {
 	if (!date) return 'N/A';
-	return `${date.getUTCFullYear()} ${shortMon(date)} ${date.getUTCDate()}`;
+	return `${date.getUTCDate()} ${shortMon(date)} ${date.getUTCFullYear()}`;
 }
 
 // YYYY-MM-DD

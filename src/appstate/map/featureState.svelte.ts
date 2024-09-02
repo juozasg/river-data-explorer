@@ -17,7 +17,7 @@ export class MapFeatureSelectionState {
 	get feature() { return this.#feature }
 	set feature(feature: RegionFeature | undefined) {
 		// nothing changed
-		if(this.#feature?.id == feature?.id && this.#feature?.source == feature?.source) return;
+		if(this.#feature?.id == feature?.id && this.#feature?.mlSource == feature?.mlSource) return;
 		this.#onChange(this.#feature, feature);
 		this.#feature = feature
 	}
@@ -31,11 +31,11 @@ export class MapFeatureSelectionState {
 export const toggleHoveredFeatureState = (map: ml.Map | undefined, current: RegionFeature | undefined, updated: RegionFeature | undefined) => {
 	if (!map) return;
 	if (current) {
-		map.setFeatureState({ source: current.source, id: current.id }, { hover: false });
+		map.setFeatureState({ source: current?.mlSource, id: current.id }, { hover: false });
 	}
 
 	if (updated) {
-		map.setFeatureState({ source: updated.source, id: updated.id }, { hover: true });
+		map.setFeatureState({ source: updated?.mlSource, id: updated.id }, { hover: true });
 	}
 }
 
@@ -43,11 +43,11 @@ export const toggleHoveredFeatureState = (map: ml.Map | undefined, current: Regi
 export const toggleSelectedFeatureState = (map: ml.Map | undefined, current: RegionFeature | undefined, updated: RegionFeature | undefined) => {
 	if (!map) return;
 	if (current) {
-		map.setFeatureState({ source: current.source, id: current.id }, { selected: false });
+		map.setFeatureState({ source: current?.mlSource, id: current.id }, { selected: false });
 	}
 
 	if (updated) {
-		map.setFeatureState({ source: updated.source, id: updated.id }, { selected: true });
+		map.setFeatureState({ source: updated?.mlSource, id: updated.id }, { selected: true });
 	}
 }
 

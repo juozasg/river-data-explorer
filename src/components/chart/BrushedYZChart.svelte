@@ -4,7 +4,6 @@
 	import { scaleLinear } from 'd3-scale';
 	import { Html, LayerCake, Svg } from 'layercake';
 
-	import { sitesTables } from '$src/appstate/data/datasets.svelte';
 	import AxisX from '$src/components/chart/layercake/AxisX.svelte';
 	import AxisY from '$src/components/chart/layercake/AxisY.svelte';
 	import AxisYZRight from '$src/components/chart/layercake/AxisYZRight.svelte';
@@ -35,7 +34,6 @@
 		chartHeight: number;
 		site?: Site;
 		region?: RegionFeature;
-
 	};
 
 	const { table, yVar, zVar, chartWidth, chartHeight, site, region }: Props = $props();

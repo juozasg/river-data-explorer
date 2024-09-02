@@ -29,8 +29,10 @@ export type RegionFeature = {
 export type RegionFeatureKey = string;
 export class RegionFeatures {
 	#regionFeatures = new sr.Map<RegionFeatureKey, RegionFeature>();
+	#regionFeatureCollections = new sr.Map<string, RegionFeature[]>();
 
 	addGeoJSONCollection(regionType: string, idField: string, data: GeoJSON.FeatureCollection) {
+		const regionCollection = this.#regionFeatureCollections.get(regionType) || [];
 		data.features.forEach((f: GeoJSON.Feature) => {
 			const id = f.properties?.[idField] || f.id || '';
 			const key = `${regionType}-${id}`;
@@ -46,7 +48,10 @@ export class RegionFeatures {
 			};
 
 			this.#regionFeatures.set(key, rf);
+			regionCollection.push(rf);
 		});
+
+		this.#regionFeatureCollections.set(regionType, regionCollection);
 	}
 
 	get(regionType: string, id: string | number): RegionFeature | undefined {
@@ -57,11 +62,15 @@ export class RegionFeatures {
 		const regionType = source.replace(/^riverapp-/, '');
 		return this.get(regionType, id);
 	}
+
+	getRegionCollection(regionType: string): RegionFeature[] {
+		return this.#regionFeatureCollections.get(regionType) || [];
+	}
 }
 
 export const regionFeatures = new RegionFeatures();
 
-if(typeof window !== 'undefined') {
+if (typeof window !== 'undefined') {
 	(window as any).geometries = geometries;
 	(window as any).geometriesIds = geometriesIds;
 	(window as any).regionFeatures = regionFeatures;

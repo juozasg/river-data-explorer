@@ -1,7 +1,7 @@
 <script lang="ts">
 	import DateYMDSelects from './DateYMDSelects.svelte';
 
-	import { binarySearch, fmtDateYmd, UTCDayDate } from '$src/lib/utils';
+	import { binarySearch, fmtDateDMonY, UTCDayDate } from '$src/lib/utils';
 
 	let {
 		startDate,
@@ -55,8 +55,8 @@
 		}
 	});
 
-	const firstLabel = $derived(fmtDateYmd(startDate));
-	const lastLabel = $derived(fmtDateYmd(endDate));
+	const firstLabel = $derived(fmtDateDMonY(startDate));
+	const lastLabel = $derived(fmtDateDMonY(endDate));
 
 	let firstLabelE = $state<HTMLElement>();
 	let lastLabelE = $state<HTMLElement>();

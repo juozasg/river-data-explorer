@@ -1,5 +1,5 @@
 import type ColumnTable from "arquero/dist/types/table/column-table";
-import { fmtDate } from ".";
+import { fmtDateDMonY } from ".";
 import { chartYColor, chartZDarker } from "./colors";
 import { varlabel, varunits } from './varHelpers';
 
@@ -63,7 +63,7 @@ export function closestPointIndex(arr: number[], x: number, min = true) {
 
 export function formatChartDate(d: number): any {
 	const date = new Date(d);
-	return fmtDate(date);
+	return fmtDateDMonY(date);
 }
 
 export function formatChartTTKey(key: string, yVarname: string, zVarname: string): string {

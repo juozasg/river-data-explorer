@@ -3,7 +3,7 @@
 	import { sites } from "$src/appstate/sites.svelte";
 	import SiteStatsPanel from "$src/components/basin/stats/SiteStatsPanel.svelte";
 	import TestDateIndexSearch from "$src/components/website/debug/TestDateIndexSearch.svelte";
-	import { fmtDate } from "$src/lib/utils";
+	import { fmtMonDY } from "$src/lib/utils";
 
 	// $effect(() => {
 	// 	selectedSite.set(sites.all[40]);
