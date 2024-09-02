@@ -1,55 +1,49 @@
 <script lang="ts">
 	import type { MapFeatureSelectionState } from '$src/appstate/map/featureState.svelte';
+	import { scrollIntoViewRegionMap } from '$src/lib/utils/dom';
 	import Icon from '@iconify/svelte';
 
 	type Props = {
 		selectedRegion: MapFeatureSelectionState;
+		blink?: boolean;
 	};
 
-	let { selectedRegion }: Props = $props();
+	let { selectedRegion, blink = true }: Props = $props();
 
-	const scrollIntoViewRegionMap = () => {
-		const basinRegionsA = window.document.getElementById('basin-regions');
-		basinRegionsA?.scrollIntoView({ behavior: 'instant', block: 'start' });
-	};
+
 </script>
 
 {#if selectedRegion.feature}
 	<div class="basin-workflow-control">
-		<!-- {#if selectedRegion.feature}
-			<div style="width: 100%"><h4>Select site to compare to</h4></div>
-			<div style="width: 100%">
-				<h3 class="region-label">
-					Region: <span style="font-weight: 400">{selectedRegion.name}</span>
-					<span class="subtitle">HUC10:{selectedRegion.id}</span>
-				</h3>
-			</div>
-		{/if} -->
+
 		<div class="change-region-container">
 			<button
 				class="change-region-button"
-				onclick={scrollIntoViewRegionMap}
-				class:blink={selectedRegion.feature}
-				>Change region <Icon inline={true} class="icon" icon="lets-icons:up" />
+				onclick={() => selectedRegion.feature = undefined}
+				class:blink={blink && selectedRegion.feature}
+				><Icon height="none" class="icon icon-left" icon="lets-icons:arrow-drop-up" />Change region <Icon height="none" class="icon" icon="lets-icons:arrow-drop-up" />
 			</button>
 		</div>
 	</div>
 {/if}
 
 <style>
+
+.change-region-container :global(.icon) {
+		height: 56px !important;
+		width: 56px !important;
+		position: absolute;
+		bottom: -26px;
+	}
+
+	.change-region-container :global(.icon-left) {
+
+		left: -56px;
+	}
+
 	.basin-workflow-control {
 		display: flex;
 		flex-direction: row;
-	}
-	h3.region-label {
-		font-size: 100%;
-		border-left: 6px solid #ab00d6;
-		padding-left: 3px;
-
-		.subtitle {
-			font-size: 0.6rem;
-			color: #444;
-		}
 	}
 
 	.change-region-container {
@@ -59,14 +53,16 @@
 	}
 
 	button.change-region-button {
+		position: relative;
 		margin-left: 1rem;
-		font-weight: 400;
+		font-weight: 600;
 
 		background: none !important;
 		border: none;
 		padding: 0 !important;
 
-		font-size: 1.25rem;
+		font-size: 1.75rem;
+		line-height: 1rem;
 		color: #485fc7;
 		cursor: pointer;
 		text-decoration: dotted underline;

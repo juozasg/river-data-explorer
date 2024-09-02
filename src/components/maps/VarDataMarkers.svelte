@@ -32,7 +32,7 @@
 	$effect(() => {
 		const markers = sites.map(s => markerRefs[s.id]);
 		markers.forEach(marker => {
-			marker.setColor(siteVariableColor(marker.siteId, varname, vardate));
+			if(marker) marker.setColor(siteVariableColor(marker.siteId, varname, vardate));
 		});
 	});
 

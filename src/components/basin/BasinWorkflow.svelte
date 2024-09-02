@@ -18,8 +18,8 @@
 	import BasinChart from './BasinChart.svelte';
 	import { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
 	import { UTCDayDate } from '$src/lib/utils';
-	import { data } from '@maptiler/sdk';
 	import { chartYColor, chartZColor } from '$src/lib/utils/colors';
+	import { scrollIntoViewRegionMap } from '$src/lib/utils/dom';
 
 	let regionSelectionMap = $state<VarDataMap>();
 	let detailsMap = $state<VarDataMap>();
@@ -36,6 +36,9 @@
 		if (u) {
 			const regionDetailsA = window.document.getElementById('region-details');
 			regionDetailsA?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			detailsMap?.setInternalDate(regionMapVardate);
+			detailMapVarname = regionMapVarname;
+
 		}
 	};
 
@@ -65,10 +68,17 @@
 
 	const selectedRegion = new MapFeatureSelectionState(updatedRegionSelection);
 
+	$effect(() => {
+		if(!selectedRegion.feature) scrollIntoViewRegionMap();
+	});
+
 	const selectedRiver = new MapFeatureSelectionState((c, u) => {}); // TODO: selecting river does something
 	let selectedSite = $state<Site>();
 
 	const dataSelection = new DataSelectionState();
+
+	let regionMapVarname = $state('temp');
+	let regionMapVardate = $state(UTCDayDate());
 
 	let detailMapVarname = $state('temp');
 	let detailMapVardate = $state(UTCDayDate());
@@ -78,24 +88,6 @@
 			detailMapVarname = dataSelection.yVar || dataSelection.zVar || 'temp';
 		}
 	}
-
-	// TEST
-	const testRegion = $derived(
-		regionFeatures.getRegionCollection('huc10').find((r) => r.id === '0405000118')
-	);
-
-	$effect(() => {
-		if(testRegion && detailsMap?.mlmComponent?.dataLoaded()) selectedRegion.feature = testRegion;
-	});
-
-	const testSite = $derived(sites.findById('sjrbc-18'));
-
-	$effect(() => {
-		if(testSite) {
-			selectedSite = testSite;
-			dataSelection.ySite = testSite;
-		}
-	});
 
 	function regionTableVarClicked(varname: string) {
 		detailMapVarname = varname;
@@ -136,11 +128,13 @@
 	<RegionTypeTabs />
 	<VarDataMap
 		bind:this={regionSelectionMap}
-		zoom={8.35}
+		zoom={8}
 		{selectedSite}
 		{dataSelection}
 		mapClick={regionMapClick}
 		{selectedRegion}
+		bind:varname={regionMapVarname}
+		bind:vardate={regionMapVardate}
 		--map-height="70vh"
 	/>
 </div>
@@ -150,8 +144,8 @@
 
 	<div class="columns" style="height: 100%">
 		<div class="column left-column is-half">
-			<div class="details">
-				<div class="details-top site-selector-map">
+			<div class="details" style="opacity: {selectedRegion.feature ? '1': '0'}">
+				<div class="details-top site-selector-map" >
 					<VarDataMap
 						bind:this={detailsMap}
 						{selectedSite}
@@ -163,10 +157,9 @@
 						bind:vardate={detailMapVardate}
 						showRegionTooltip={false}
 					/>
-					<!-- --map-height="" -->
 				</div>
 				<div class="details-bottom">
-					<BasinChart {dataSelection} {selectedSite} onDateSelected={chartOnDateSelected} />
+					<BasinChart {dataSelection} {selectedSite} {selectedRegion} onDateSelected={chartOnDateSelected} />
 				</div>
 			</div>
 		</div>

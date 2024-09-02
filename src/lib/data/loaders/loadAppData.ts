@@ -21,7 +21,7 @@ export async function loadAppData(manifest: DataManifest) {
 	loadBasinFipsData();
 	loadSitesCsv();
 	loadGeoindexData();
-	// loadDatasetsUsgsWS();
+	loadDatasetsUsgsWS();
 	loadDatasets();
 	loadMarkdown();
 }

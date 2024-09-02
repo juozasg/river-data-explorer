@@ -6,14 +6,18 @@
 	import type { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
 	import Icon from '@iconify/svelte';
 	import type { Site } from '$src/lib/types/site';
+	import type { MapFeatureSelectionState } from '$src/appstate/map/featureState.svelte';
+	import ChangeRegionHeader from './ChangeRegionHeader.svelte';
 
 
 	type Props = {
 		dataSelection: DataSelectionState;
 		selectedSite?: Site;
+		selectedRegion: MapFeatureSelectionState;
+
 		onDateSelected?: (d: Date) => void;
 	};
-	const { dataSelection, onDateSelected, selectedSite }: Props = $props();
+	const { dataSelection, onDateSelected, selectedSite, selectedRegion }: Props = $props();
 
 	// let siteTableName = $state('');
 
@@ -33,7 +37,7 @@
 
 	let chartLayoutElement: HTMLDivElement | undefined = $state();
 
-	const ds = () => {console.log('render!!!!', dataSelection, JSON.stringify(dataSelection)); return JSON.stringify(dataSelection)}
+	// const ds = () => {console.log('render!!!!', dataSelection, JSON.stringify(dataSelection)); return JSON.stringify(dataSelection)}
 </script>
 
 <div bind:this={chartLayoutElement} style="width: 100%; height: 100%;">
@@ -53,13 +57,14 @@
 			{onDateSelected}
 		/>
 	{:else if !selectedSite?.id}
-		<div class="placeholder">
+		<div class="placeholder click-site">
 			<h2>
 				<Icon class="icon" height="none" icon="lets-icons:arrow-drop-up"/>
 				Click a site marker on the map to select
 				<Icon class="icon" height="none" icon="lets-icons:arrow-drop-up"/>
 			</h2>
 		</div>
+		<ChangeRegionHeader blink={false} {selectedRegion} />
 	{:else if (!dataSelection.yVar && !dataSelection.zVar)}
 		<div class="placeholder">
 			<h2>Click a variable to graph  <Icon class="icon" height="none" icon="lets-icons:arrow-drop-right"/></h2>
@@ -78,5 +83,9 @@
 		margin-right: -32px;
 
 		/* line-height: 4rem; */
+	}
+
+	.placeholder.click-site {
+		text-align: center;
 	}
 </style>

@@ -6,14 +6,15 @@
 		toggleDatasetEnable
 	} from '$src/appstate/ui/layers.svelte';
 	import type { MapLayersParams } from '$src/lib/types/mapControls';
+	import { aremove } from '$src/lib/utils';
 	import { onMount } from 'svelte';
 
 	let { layersParams = $bindable() }: { layersParams: MapLayersParams } = $props();
 	const datasets = $derived(sites.allDatasets);
 
 	$effect(() => {
-		// setEnabledDatasets(aremove(datasets, 'invert'));
-		setEnabledDatasets(['sjrbc', 'steuben', 'usgs']);
+		setEnabledDatasets(aremove(datasets, 'invert', 'usgs'));
+		// setEnabledDatasets(['sjrbc', 'steuben', 'usgs']);
 	});
 	const a = 1;
 
