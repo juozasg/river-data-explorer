@@ -17,7 +17,7 @@
 <style>
 	.y-labels {
 		width: 100%;
-		overflow: hidden;
+		overflow: visible;
 		position: absolute;
 		top: -32px;
 
