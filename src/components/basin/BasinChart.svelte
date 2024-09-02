@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
-	import BrushedYzChart from '../chart/BrushedYZChart.svelte';
+	import BrushedYZChart from '../chart/BrushedYZChart.svelte';
 	import ElementResizeObserver from '../website/ElementResizeObserver.svelte';
 	import type { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
 	import Icon from '@iconify/svelte';
 	import type { Site } from '$src/lib/types/site';
 	import type { MapFeatureSelectionState } from '$src/appstate/map/featureState.svelte';
 	import ChangeRegionHeader from './ChangeRegionHeader.svelte';
-	import { table } from 'arquero';
 	import { concatTablesAllColumns } from '$src/lib/data/tableHelpers';
 
 
@@ -71,7 +70,7 @@
 
 
 	{#if combinedTable && (dataSelection.yVar || dataSelection.zVar)}
-		<BrushedYzChart
+		<BrushedYZChart
 			table={combinedTable}
 			{dataSelection}
 			{chartWidth}

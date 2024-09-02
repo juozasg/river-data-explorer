@@ -12,9 +12,8 @@
 	import RegionTypeTabs from '../../routes/basin/RegionTypeTabs.svelte';
 	import VarDataMap from '../maps/VarDataMap.svelte';
 	import RegionStatsPanel from './stats/RegionStatsPanel.svelte';
-	import { regionFeatures, type RegionFeature } from '$src/appstate/data/features.svelte';
+	import { type RegionFeature } from '$src/appstate/data/features.svelte';
 	import SiteStatsPanel from './stats/SiteStatsPanel.svelte';
-	import { sites } from '$src/appstate/sites.svelte';
 	import BasinChart from './BasinChart.svelte';
 	import { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
 	import { UTCDayDate } from '$src/lib/utils';
@@ -23,6 +22,7 @@
 
 	let regionSelectionMap = $state<VarDataMap>();
 	let detailsMap = $state<VarDataMap>();
+	const dataSelection = new DataSelectionState();
 
 	const updatedRegionSelection = (curr?: RegionFeature, u?: RegionFeature) => {
 		toggleSelectedFeatureState(regionSelectionMap?.mlmMap, curr, u);
@@ -38,7 +38,6 @@
 			regionDetailsA?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 			detailsMap?.setInternalDate(regionMapVardate);
 			detailMapVarname = regionMapVarname;
-
 		}
 	};
 
@@ -72,13 +71,11 @@
 	const selectedRegion = new MapFeatureSelectionState(updatedRegionSelection);
 
 	$effect(() => {
-		if(!selectedRegion.feature) scrollIntoViewRegionMap();
+		if (!selectedRegion.feature) scrollIntoViewRegionMap();
 	});
 
 	const selectedRiver = new MapFeatureSelectionState((c, u) => {}); // TODO: selecting river does something
 	let selectedSite = $state<Site>();
-
-	const dataSelection = new DataSelectionState();
 
 	let regionMapVarname = $state('temp');
 	let regionMapVardate = $state(UTCDayDate());
@@ -86,7 +83,7 @@
 	let detailMapVarname = $state('temp');
 	let detailMapVardate = $state(UTCDayDate());
 	function chartOnDateSelected(d: Date) {
-		if(detailsMap) {
+		if (detailsMap) {
 			detailsMap.setInternalDate(d);
 			detailMapVarname = dataSelection.yVar || dataSelection.zVar || 'temp';
 		}
@@ -98,22 +95,24 @@
 
 	let clickAssignsYAxis = $state(true); // or Z axis
 
-	let siteStatsVarHoverColor = $derived(clickAssignsYAxis ? chartYColor + '33' : chartZColor + '33');
+	let siteStatsVarHoverColor = $derived(
+		clickAssignsYAxis ? chartYColor + '33' : chartZColor + '33'
+	);
 
 	function siteTableVarClicked(varname: string) {
-		if(dataSelection.yVar == varname && dataSelection.ySite?.id == selectedSite?.id) {
+		if (dataSelection.yVar == varname && dataSelection.ySite?.id == selectedSite?.id) {
 			dataSelection.yVar = undefined;
 			dataSelection.ySite = undefined;
 			return;
 		}
 
-		if(dataSelection.zVar == varname && dataSelection.zSite?.id == selectedSite?.id) {
+		if (dataSelection.zVar == varname && dataSelection.zSite?.id == selectedSite?.id) {
 			dataSelection.zVar = undefined;
 			dataSelection.zSite = undefined;
 			return;
 		}
 
-		if(clickAssignsYAxis) {
+		if (clickAssignsYAxis) {
 			dataSelection.yVar = varname;
 			dataSelection.ySite = selectedSite;
 		} else {
@@ -147,8 +146,8 @@
 
 	<div class="columns" style="height: 100%">
 		<div class="column left-column is-half">
-			<div class="details" style="opacity: {selectedRegion.feature ? '1': '0'}">
-				<div class="details-top site-selector-map" >
+			<div class="details" style="opacity: {selectedRegion.feature ? '1' : '0'}">
+				<div class="details-top site-selector-map">
 					<VarDataMap
 						bind:this={detailsMap}
 						{selectedSite}
@@ -162,7 +161,12 @@
 					/>
 				</div>
 				<div class="details-bottom">
-					<BasinChart {dataSelection} {selectedSite} {selectedRegion} onDateSelected={chartOnDateSelected} />
+					<BasinChart
+						{dataSelection}
+						{selectedSite}
+						{selectedRegion}
+						onDateSelected={chartOnDateSelected}
+					/>
 				</div>
 			</div>
 		</div>
@@ -176,7 +180,6 @@
 							onVarClicked={regionTableVarClicked}
 						/>
 					{/if}
-
 				</div>
 				<div class="details-bottom">
 					{#if selectedSite}
@@ -191,7 +194,6 @@
 			</div>
 		</div>
 	</div>
-
 </div>
 
 <style>

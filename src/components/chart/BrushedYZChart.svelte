@@ -27,10 +27,7 @@
 
 	type Props = {
 		table: ColumnTable;
-		// yVar?: string;
-		// zVar?: string;
-		// site?: Site;
-		// region?: RegionFeature;
+
 		dataSelection: DataSelectionState;
 		chartWidth: number;
 		chartHeight: number;
