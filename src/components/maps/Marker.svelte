@@ -78,7 +78,7 @@
 	.marker .y-var-site {
 		position: absolute;
 		bottom: calc(50% - 2.5px);
-		left: calc(-4px - 70%);
+		left: calc(-9px - 70%);
 		width: 18px;
 		height: 6px;
 		background-color: #ab00d6;
@@ -89,12 +89,22 @@
 	.marker .z-var-site {
 		position: absolute;
 		bottom: calc(50% - 2.5px);
-		right: calc(-4px - 70%);
+		right: calc(-9px - 70%);
 		width: 18px;
 		height: 6px;
 		background-color: #00d6ab;
 		border: 1px solid #3b084b;
 		border-left: none;
+	}
+
+	.marker.is-selected {
+		.y-var-site {
+				left: calc(2px - 70%);
+			}
+
+			.z-var-site {
+				right: calc(2px - 70%);
+			}
 	}
 
 	.marker {
@@ -104,19 +114,17 @@
 			}
 
 			.z-var-site {
-				z-index: 0;
-
 				right: calc(0px - 70%);
 			}
 		}
 
 		&:hover.is-selected {
 			.y-var-site {
-				left: calc(8px - 70%);
+				left: calc(10px - 70%);
 			}
 
 			.z-var-site {
-				right: calc(8px - 70%);
+				right: calc(10px - 70%);
 			}
 		}
 	}
