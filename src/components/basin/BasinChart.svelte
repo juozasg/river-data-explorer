@@ -4,13 +4,16 @@
 	import BrushedYzChart from '../chart/BrushedYZChart.svelte';
 	import ElementResizeObserver from '../website/ElementResizeObserver.svelte';
 	import type { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
+	import Icon from '@iconify/svelte';
+
 
 	type Props = {
 		dataSelection: DataSelectionState;
+		onDateSelected?: (d: Date) => void;
 	};
-	const { dataSelection }: Props = $props();
+	const { dataSelection, onDateSelected }: Props = $props();
 
-	let siteTableName = $state('');
+	// let siteTableName = $state('');
 
 	let chartWidth = $state(200);
 	let chartHeight = $state(200);
@@ -40,19 +43,36 @@
 	{#if siteTable && (dataSelection.yVar || dataSelection.zVar)}
 		<BrushedYzChart
 			table={siteTable}
-			yVar={dataSelection.yVar}
-			zVar={dataSelection.zVar}
+			{dataSelection}
 			{chartWidth}
 			{chartHeight}
+			{onDateSelected}
 		/>
 	{:else if !dataSelection.ySite?.id}
 		<div class="placeholder">
-			<pre>{ds()}</pre>
-			<h2>Click a site marker on the map to select</h2>
+			<h2>
+				<Icon class="icon" height="none" icon="lets-icons:arrow-drop-up"/>
+				Click a site marker on the map to select
+				<Icon class="icon" height="none" icon="lets-icons:arrow-drop-up"/>
+			</h2>
 		</div>
 	{:else if !dataSelection.yVar}
 		<div class="placeholder">
-			<h2>Click a variable on the data table to graph {'->'}</h2>
+			<h2>Click a variable to graph  <Icon class="icon" height="none" icon="lets-icons:arrow-drop-right"/></h2>
 		</div>
 	{/if}
 </div>
+
+
+<style>
+	.placeholder :global(.icon) {
+		height: 56px;
+		width: 56px;
+		position: relative;
+		top: 18px;
+		left: -16px;
+		margin-right: -32px;
+
+		/* line-height: 4rem; */
+	}
+</style>

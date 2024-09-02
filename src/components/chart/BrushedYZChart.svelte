@@ -11,7 +11,7 @@
 	import Line from '$src/components/chart/layercake/Line.svelte';
 	import Scatter from '$src/components/chart/layercake/Scatter.svelte';
 	import SharedTooltip from '$src/components/chart/layercake/SharedTooltip.svelte';
-	import { isNumber } from '$src/lib/utils';
+	import { fmtDateDMonY, isNumber, UTCDayDate } from '$src/lib/utils';
 	import {
 		formatChartDate,
 		formatChartTTKey,
@@ -21,31 +21,37 @@
 	} from '$src/lib/utils/chart';
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
 
+	import type { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
 	import { YZChartParams } from '$src/lib/utils/YZChartParams';
-	import { chartYColor, chartZDarker, chartZColor } from '$src/lib/utils/colors';
-	import type { Site } from '$src/lib/types/site';
-	import type { RegionFeature } from '$src/appstate/data/features.svelte';
+	import { chartYColor, chartZColor, chartZDarker } from '$src/lib/utils/colors';
 
 	type Props = {
 		table: ColumnTable;
-		yVar?: string;
-		zVar?: string;
+		// yVar?: string;
+		// zVar?: string;
+		// site?: Site;
+		// region?: RegionFeature;
+		dataSelection: DataSelectionState;
 		chartWidth: number;
 		chartHeight: number;
-		site?: Site;
-		region?: RegionFeature;
+		onDateSelected?: (d: Date) => void;
 	};
 
-	const { table, yVar, zVar, chartWidth, chartHeight, site, region }: Props = $props();
+	const { table, dataSelection, chartWidth, chartHeight, onDateSelected }: Props = $props();
+
+	// const { yVar, zVar } = dataSelection;
+
+	const yVar = dataSelection.yVar;
+	const zVar = dataSelection.zVar;
 
 	const yParams = $derived(new YZChartParams('y', yVar, table));
 	const zParams = $derived(new YZChartParams('z', zVar, table));
 
 	const yAxisLabel = $derived(
-		`${yParams.varLabel} <span class="location-label">${region?.name}<span>`
+		`${yParams.varLabel} <span class="location-label">${dataSelection.ySite?.name || ''}<span>`
 	);
 	const zAxisLabel = $derived(
-		`${zParams.varLabel} <span class="location-label">${site?.name}<span>`
+		`${zParams.varLabel} <span class="location-label">${dataSelection.zSite?.name || ''}<span>`
 	);
 
 	let brushMinIndex: number | null = $state(null);
@@ -59,10 +65,10 @@
 		return table?.slice(brushMinIndex || 0, sliceIndex);
 	});
 
-	$effect(() => {
-		console.log('table', table.objects());
-		console.log('brushedTable', brushedTable?.objects());
-	});
+	// $effect(() => {
+	// 	console.log('table', table.objects());
+	// 	console.log('brushedTable', brushedTable?.objects());
+	// });
 
 	let brushedChartContainer = $state<HTMLElement>();
 	let brushContainer: HTMLElement | null = $state(null);
@@ -79,6 +85,23 @@
 		brushContainer!.style.opacity = '0.1';
 		xTickTextElements?.forEach((t) => (t.style.opacity = '1'));
 	};
+
+	// HACKY indeed
+	let dateHovered = $state<Date>();
+	const formatTooltipTitle = (d: number) => {
+		const date = UTCDayDate(d);
+		if (dateHovered?.valueOf() !== date.valueOf()) {
+			dateHovered = date;
+		}
+		return fmtDateDMonY(date);
+	};
+
+	function chartOnclick(e: MouseEvent) {
+		const target = e.target as HTMLElement;
+		if(target.hasAttribute('role') && target.getAttribute('role') === 'tooltip') {
+			if(onDateSelected && dateHovered) onDateSelected(dateHovered);
+		}
+	}
 </script>
 
 <!-- extra chart container nesting makes LayerCake happy -->
@@ -127,13 +150,15 @@
 					{/if}
 				</Svg>
 				<Html>
-					<SharedTooltip
-						formatTitle={formatChartDate}
-						formatKey={(k: string) => formatChartTTKey(k, yVar, zVar)}
-						formatValue={formatChatTTValue}
-						filterKeys={[yVar, zVar].filter((v) => v) as string[]}
-					/>
-					<YZAxisLabels yLabel={yAxisLabel} zLabel={zAxisLabel} />
+					<div onclick={chartOnclick}>
+						<SharedTooltip
+							formatTitle={formatTooltipTitle}
+							formatKey={(k: string) => formatChartTTKey(k, yVar, zVar)}
+							formatValue={formatChatTTValue}
+							filterKeys={[yVar, zVar].filter((v) => v) as string[]}
+						/>
+						<YZAxisLabels yLabel={yAxisLabel} zLabel={zAxisLabel} />
+					</div>
 				</Html>
 			</LayerCake>
 		{/if}

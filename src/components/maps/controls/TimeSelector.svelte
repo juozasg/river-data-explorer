@@ -8,9 +8,18 @@
 		endDate,
 		validDates,
 		vardate = $bindable(UTCDayDate())
-	}: { startDate: Date; endDate: Date; validDates: Date[]; vardate?: Date } = $props();
+	}: { startDate: Date; endDate: Date; validDates: Date[]; vardate: Date } = $props();
 
 	const validDateValues = $derived((validDates || []).map((d) => d.valueOf()));
+
+	// could be cleaner later
+	export function setInternalDate(d: Date) {
+		rangeInputValue = d.valueOf();
+	}
+
+	// $effect(() => {
+	// 	console.log('timeselector vardate NOOW', vardate);
+	// });
 
 	// $effect(() => {
 	// 	console.log(

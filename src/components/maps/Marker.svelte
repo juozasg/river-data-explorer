@@ -74,21 +74,23 @@
 			background-color: var(--color);
 		}
 
+		&:has(.y-var-site, .z-var-site) {
+			z-index: 5 !important;
+		}
+
 		.y-var-site {
-			z-index: 3;
 			position: absolute;
 			bottom: calc(50% - 2.5px);
 			left: calc(-1px - 70%);
 			width: 18px;
 			height: 6px;
 			background-color: #ab00d6;
-			border: 1px solid #3b084b;
+			border: 1px solid #4b084b;
 			border-right: none;
 
 		}
 
 		.z-var-site {
-			z-index: 3;
 			position: absolute;
 			bottom: calc(50% - 2.5px);
 			right: calc(-1px - 70%);

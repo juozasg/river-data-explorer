@@ -17,6 +17,8 @@
 	import { sites } from '$src/appstate/sites.svelte';
 	import BasinChart from './BasinChart.svelte';
 	import { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
+	import { data } from '@maptiler/sdk';
+	import { UTCDayDate } from '$src/lib/utils';
 
 	let regionSelectionMap = $state<VarDataMap>();
 	let detailsMap = $state<VarDataMap>();
@@ -70,11 +72,19 @@
 	// dataSelection.yVar = 'temp';
 	// dataSelection.zVar = 'do';
 
-	setTimeout(() => {
-		dataSelection.zVar = 'do';
-	}, 4000);
+	// setTimeout(() => {
+	// 	dataSelection.zVar = 'do';
+	// }, 4000);
 
 	let detailMapVarname = $state('temp');
+	let detailMapVardate = $state(UTCDayDate());
+	function chartOnDateSelected(d: Date) {
+		if(detailsMap) {
+			detailsMap.setInternalDate(d);
+			detailMapVarname = dataSelection.yVar || dataSelection.zVar || 'temp';
+		}
+	}
+
 
 	// TEST
 	const testRegion = $derived(
@@ -97,6 +107,19 @@
 	$effect(() => {
 		console.log('-- data Selection', dataSelection);
 	});
+
+
+	function regionTableVarClicked(varname: string) {
+		console.log('region data table clicked', varname);
+		detailMapVarname = varname;
+	}
+
+	function siteTableVarClicked(varname: string) {
+		console.log('site data table clicked 111', varname);
+		// detailMapVarname = varname;
+		dataSelection.ySite = selectedSite;
+		dataSelection.yVar = varname;
+	}
 </script>
 
 <div id="basin-regions">
@@ -129,12 +152,13 @@
 						{selectedRegion}
 						addLayers={addSitesDetailsMapLayers}
 						bind:varname={detailMapVarname}
+						bind:vardate={detailMapVardate}
 						showRegionTooltip={false}
 					/>
 					<!-- --map-height="" -->
 				</div>
 				<div class="details-bottom">
-					<BasinChart {dataSelection} />
+					<BasinChart {dataSelection} onDateSelected={chartOnDateSelected} />
 				</div>
 			</div>
 		</div>
@@ -145,23 +169,18 @@
 						<RegionStatsPanel
 							{dataSelection}
 							region={selectedRegion.feature}
-							onVarClicked={(varname: string) => {
-								console.log('region data table clicked', varname);
-								detailMapVarname = varname;
-							}}
+							onVarClicked={regionTableVarClicked}
 						/>
 					{/if}
 
 				</div>
 				<div class="details-bottom">
-					{#if testSite}
+					{#if selectedSite}
 						<SiteStatsPanel
 							{dataSelection}
-							site={testSite! as Site}
-							onVarClicked={(varname: string) => {
-								console.log('sites data table clicked', varname);
-								detailMapVarname = varname;
-							}}
+							site={selectedSite}
+							onVarClicked={siteTableVarClicked}
+
 						/>
 					{/if}
 				</div>

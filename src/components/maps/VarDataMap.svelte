@@ -30,6 +30,7 @@
 		selectedRiver?: MapFeatureSelectionState;
 		showRegionTooltip?: boolean;
 		varname?: string;
+		vardate?: Date;
 
 		mapClick?: (map: ml.Map, p: ml.PointLike) => void;
 	} & Partial<MapLibreMapProps>;
@@ -43,6 +44,7 @@
 		showRegionTooltip = true,
 		dataSelection,
 		varname = $bindable('temp'),
+		vardate = $bindable(UTCDayDate()),
 		...others
 	}: Props = $props();
 
@@ -64,7 +66,6 @@
 		toggleHoveredFeatureState(mlMap, c, u)
 	);
 
-	let vardate = $state(UTCDayDate());
 
 	const startDate = $derived(sitesEarliestDate(sites));
 	const endDate = $derived(sitesLatestDate(sites));
@@ -78,6 +79,14 @@
 	onMount(() => {
 		mlMap!.on('click', (e) => mapClick && mapClick(mlMap!, e.point));
 	});
+
+	let timeSelector = $state<TimeSelector>();
+	export function setInternalDate(d: Date) {
+		if (timeSelector) timeSelector.setInternalDate(d);
+	}
+
+	const yVarSite = $derived(dataSelection.yVar ? dataSelection.ySite : undefined);
+	const zVarSite = $derived(dataSelection.zVar ? dataSelection.zSite : undefined);
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -86,7 +95,7 @@
 		<MapLatLonDebug />
 		<LayerSwitcher bind:layersParams />
 		<VariableSelector bind:varname />
-		<TimeSelector {startDate} {endDate} {validDates} bind:vardate />
+		<TimeSelector {startDate} {endDate} {validDates} bind:vardate bind:this={timeSelector} />
 		<Legend {varname} />
 </div>
 	<MapLibreMap bind:this={_mlmComponent} bind:mlMap {layersParams} zoom={7.9} {...others} />
@@ -109,8 +118,8 @@
 		{varname}
 		{vardate}
 		{sites}
-		yVarSite={dataSelection.ySite}
-		zVarSite={dataSelection.zSite}
+		{yVarSite}
+		{zVarSite}
 		{emphasizedSites}
 		bind:hoveredSite={_hoveredSite}
 		{...others}

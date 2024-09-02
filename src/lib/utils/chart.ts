@@ -1,5 +1,5 @@
 import type ColumnTable from "arquero/dist/types/table/column-table";
-import { fmtDateDMonY } from ".";
+import { fmtDateDMonY, UTCDayDate } from ".";
 import { chartYColor, chartZDarker } from "./colors";
 import { varlabel, varunits } from './varHelpers';
 
@@ -62,7 +62,8 @@ export function closestPointIndex(arr: number[], x: number, min = true) {
 }
 
 export function formatChartDate(d: number): any {
-	const date = new Date(d);
+	const date = UTCDayDate(d);
+	// console.log('formatChartDate', date);
 	return fmtDateDMonY(date);
 }
 
