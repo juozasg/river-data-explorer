@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { onMount } from "svelte";
   import Comp2 from "./Comp2.svelte";
+	import { zz } from "$lib/testpath";
 	// import { loadManifests } from "./lib/data/loaders/loadManifests";
 
   onMount(async () => {
-    console.log('APP MOUNTED', typeof Comp2, Comp2);
+    console.log('APP MOUNTED', zz, typeof Comp2, Comp2);
     // const { dataManifest, variablesMetadata } = await loadManifests();
 
     // console.log('dataManifest', dataManifest, 'variablesMetadata', variablesMetadata);

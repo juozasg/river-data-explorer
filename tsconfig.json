@@ -17,13 +17,11 @@
 		"moduleDetection": "force",
 		// "verbatimModuleSyntax": true,
 
+		"baseUrl": "src",
 		"paths": {
-			"$src": ["./src"],
-			"$src/*": ["./src/*"],
-			"$components": ["./src/components"],
-			"$components/*": ["./src/components/*"],
-			"$lib": ["./src/lib"],
-			"$lib/*": ["./src/lib/*"]
+			"$src/*": ["./*"],
+			"$lib/*": ["lib/*"],
+			"$components/*": ["src/components/*"],
 		},
 		// "rootDirs": ["..", "./types"],
 		"lib": ["esnext", "DOM", "DOM.Iterable"]
