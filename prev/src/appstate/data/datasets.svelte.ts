@@ -1,4 +1,4 @@
-import * as sr from 'svelte/reactivity';
+import { SvelteMap } from 'svelte/reactivity';
 import * as aq from 'arquero';
 
 import { loadDataCsv } from "$lib/data/cachedDataLoad";
@@ -9,7 +9,7 @@ import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import { UTCDayDate } from '$src/lib/utils';
 
 export type SiteId = string;
-export const sitesTables: Map<SiteId, ColumnTable> = new sr.Map();
+export const sitesTables: Map<SiteId, ColumnTable> = new SvelteMap();
 
 
 export async function loadDatasets() {

@@ -1,4 +1,4 @@
-import * as sr from 'svelte/reactivity';
+import { SvelteMap } from 'svelte/reactivity';
 
 import { StateFips, type County, type StateCountyFips, type State } from "$lib/types/fips";
 import { loadDataCsv } from "$lib/data/cachedDataLoad";
@@ -8,8 +8,8 @@ export function countyStateFips(county: StateCountyFips): StateFips {
 	return county.slice(0, 2) as StateFips;
 }
 
-export const basinStates: Map<StateFips, State> = new sr.Map();
-export const basinCounties: Map<StateCountyFips, County> = new sr.Map();
+export const basinStates: Map<StateFips, State> = new SvelteMap();
+export const basinCounties: Map<StateCountyFips, County> = new SvelteMap();
 
 
 export async function loadBasinFipsData() {

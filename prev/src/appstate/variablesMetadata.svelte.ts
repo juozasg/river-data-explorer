@@ -1,4 +1,4 @@
-import * as sr from 'svelte/reactivity';
+import { SvelteMap } from 'svelte/reactivity';
 
 
 export type VariableName = string;
@@ -8,7 +8,7 @@ export type VariablesMetadata = Record<VariableName, {[key: string]: any}>;
 // its loaded in during static site build
 export const variablesMetadata: VariablesMetadata = {};
 
-export const variablesBriefMarkdown = new sr.Map<string, string>();
+export const variablesBriefMarkdown = new SvelteMap<string, string>();
 
 export function isCategoricalVar(varname: VariableName): boolean {
   return !!variablesMetadata[varname]?.categories;

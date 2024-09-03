@@ -15,17 +15,17 @@
 		"checkJs": true,
 		"isolatedModules": true,
 		"moduleDetection": "force",
-		"verbatimModuleSyntax": true,
+		// "verbatimModuleSyntax": true,
 
 		"paths": {
-			"$src": ["../src"],
-			"$src/*": ["../src/*"],
-			"$components": ["../src/components"],
-			"$components/*": ["../src/components/*"],
-			"$lib": ["../src/lib"],
-			"$lib/*": ["../src/lib/*"]
+			"$src": ["./src"],
+			"$src/*": ["./src/*"],
+			"$components": ["./src/components"],
+			"$components/*": ["./src/components/*"],
+			"$lib": ["./src/lib"],
+			"$lib/*": ["./src/lib/*"]
 		},
-		"rootDirs": ["..", "./types"],
+		// "rootDirs": ["..", "./types"],
 		"lib": ["esnext", "DOM", "DOM.Iterable"]
 	},
 	"include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],

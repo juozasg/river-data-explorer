@@ -37,6 +37,7 @@ function usgsTimeseriesToSites(timeSeries: any) {
 		const site: Site = {
 			id: siteId,
 			dataset: 'usgs',
+			num: parseInt(siteCode),
 			name: ts.sourceInfo.siteName,
 			lat: parseFloat(loc.latitude),
 			lon: parseFloat(loc.longitude),
@@ -46,6 +47,7 @@ function usgsTimeseriesToSites(timeSeries: any) {
 			county: StateCountyFips.UnknownCounty,
 			huc10: '',
 			huc12: '',
+			huc8: '',
 		};
 
 		sites.add(site);

@@ -1,8 +1,8 @@
+import { SvelteMap } from "svelte/reactivity";
 import type ColumnTable from "arquero/dist/types/table/column-table";
-import * as sr from "svelte/reactivity";
 
-const geometriesIds = new sr.Map<string, string>();
-const geometries = new sr.Map<string, GeoJSON.FeatureCollection>();
+const geometriesIds = new SvelteMap<string, string>();
+const geometries = new SvelteMap<string, GeoJSON.FeatureCollection>();
 
 export function geomFeatureName(source: string | undefined, id: string | number | undefined): string {
 	if (!source) return !!id ? id.toString() : '';
@@ -32,8 +32,8 @@ export function regionEqual(a: RegionFeature, b: RegionFeature): boolean {
 // 'huc10-123456'
 export type RegionFeatureKey = string;
 export class RegionFeatures {
-	#regionFeatures = new sr.Map<RegionFeatureKey, RegionFeature>();
-	#regionFeatureCollections = new sr.Map<string, RegionFeature[]>();
+	#regionFeatures = new SvelteMap<RegionFeatureKey, RegionFeature>();
+	#regionFeatureCollections = new SvelteMap<string, RegionFeature[]>();
 
 	addGeoJSONCollection(regionType: string, idField: string, data: GeoJSON.FeatureCollection) {
 		const regionCollection = this.#regionFeatureCollections.get(regionType) || [];

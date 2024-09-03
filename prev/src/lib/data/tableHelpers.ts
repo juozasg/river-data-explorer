@@ -26,12 +26,12 @@ export function emptyTable(columnNames: string[]): ColumnTable {
 
 
 export function concatTablesAllColumns(tables: (ColumnTable | undefined)[]): ColumnTable {
-	tables = tables.filter(t => t &&  t.numRows() > 0);
-	if(tables.length === 0) return aq.table([]);
+	let nonEmptyTables = tables.filter(t => t &&  t.numRows() > 0) as ColumnTable[];
+	if(nonEmptyTables.length === 0) return aq.table([]);
 
-	const columns = tablesUniqueColumns(tables);
+	const columns = tablesUniqueColumns(nonEmptyTables);
 	const t0 = emptyTable(columns); // initial table determines result columns
-	return tables.reduce((acc, t) => acc.concat(t), t0).reify();
+	return nonEmptyTables.reduce((acc, t) => acc.concat(t), t0).reify();
 }
 
 
