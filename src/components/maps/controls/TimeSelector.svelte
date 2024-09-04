@@ -32,20 +32,20 @@
 	// });
 
 	let ymdSelector = $state<DateYMDSelects>();
-	export const ymdSelectedDate = $derived(ymdSelector?.selectedDate);
+	export const ymdSelectedDate = () => ymdSelector?.selectedDate();
 
 	let rangeInputValue: number | string = $state(endDate.valueOf());
-	export const selectedDate = $derived(UTCDayDate(parseInt(rangeInputValue as any)));
+	export const selectedDate = () => UTCDayDate(parseInt(rangeInputValue as any));
 	$effect(() => {
-		vardate = selectedDate;
+		vardate = selectedDate();
 	});
 
 	// keep range input value within bounds
 	$effect(() => {
-		if (selectedDate < startDate) {
+		if (selectedDate() < startDate) {
 			rangeInputValue = startDate.valueOf();
 			ymdSelector?.setSelectedDate(startDate);
-		} else if (selectedDate > endDate) {
+		} else if (selectedDate() > endDate) {
 			rangeInputValue = endDate.valueOf();
 			ymdSelector?.setSelectedDate(endDate);
 		}
@@ -53,13 +53,13 @@
 
 	// updated YMD with range input
 	$effect(() => {
-		ymdSelector?.setSelectedDate(selectedDate);
+		ymdSelector?.setSelectedDate(selectedDate());
 	});
 
 	// update range input with YMD
 	$effect(() => {
-		if (ymdSelectedDate) {
-			rangeInputValue = ymdSelectedDate.valueOf();
+		if (ymdSelectedDate()) {
+			rangeInputValue = ymdSelectedDate()!.valueOf();
 			// snapToValidDate();
 		}
 	});

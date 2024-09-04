@@ -49,16 +49,16 @@
 	}: Props = $props();
 
 	let _mlmComponent = $state<MapLibreMap>();
-	export const mlmComponent = $derived(_mlmComponent);
+	export const mlmComponent = () => _mlmComponent;
 
 	const sites = $derived(globalSites.allEnabled);
 	const emphasizedSites = $derived(Sites.forRegionFeature(sites, selectedRegion?.feature));
 
 	let mlMap = $state<ml.Map>();
-	export const mlmMap = $derived(mlMap);
+	export const mlmMap = () => mlMap;
 
 	let _hoveredSite = $state<Site>();
-	export const hoveredSite = $derived(_hoveredSite);
+	export const hoveredSite = () => _hoveredSite;
 	export const hoveredRegion = new MapFeatureSelectionState((c, u) =>
 		toggleHoveredFeatureState(mlMap, c, u)
 	);

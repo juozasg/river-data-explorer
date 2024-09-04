@@ -28,7 +28,7 @@
 	}: Props = $props();
 
 	let color = $state('yellowgreen');
-	export const isGhost = $derived(color == ghost);
+	export const isGhost = () => color == ghost;
 
 	const makeMarker = (node: HTMLElement, site: Site) => {
 		return makeSiteMarker(node, map, site);
@@ -135,9 +135,6 @@
 		height: 10px;
 	}
 
-	.marker .marker-box {
-		/* filter: drop-shadow(2px 2px 3px #00000046); */
-	}
 
 	.marker:has(.marker-box:not(.ghost)) {
 		z-index: 1;

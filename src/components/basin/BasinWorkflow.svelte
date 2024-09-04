@@ -26,11 +26,11 @@
 	const dataSelection = new DataSelectionState();
 
 	const updatedRegionSelection = (curr?: RegionFeature, u?: RegionFeature) => {
-		toggleSelectedFeatureState(regionSelectionMap?.mlmMap, curr, u);
-		toggleSelectedFeatureState(detailsMap?.mlmMap, curr, u);
+		toggleSelectedFeatureState(regionSelectionMap?.mlmMap(), curr, u);
+		toggleSelectedFeatureState(detailsMap?.mlmMap(), curr, u);
 
-		if (u && detailsMap?.mlmMap) {
-			fitFeatureBounds(detailsMap.mlmMap, u);
+		if (u && detailsMap?.mlmMap()) {
+			fitFeatureBounds(detailsMap.mlmMap()!, u);
 		}
 
 		// region selection changed, focus details map
@@ -43,11 +43,8 @@
 	};
 
 	function regionMapClick(map: ml.Map, p: ml.PointLike) {
-		if (regionSelectionMap?.hoveredSite || !regionSelectionMap?.hoveredRegion.feature) {
-			selectedSite = regionSelectionMap?.hoveredSite;
-			// const regionDetailsA = window.document.getElementById('region-details');
-
-			// regionDetailsA?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		if (regionSelectionMap?.hoveredSite() || !regionSelectionMap?.hoveredRegion.feature) {
+			selectedSite = regionSelectionMap?.hoveredSite();
 		}
 		console.log(
 			'selectedSite',
@@ -57,14 +54,14 @@
 			'hoveredRegion',
 			regionSelectionMap?.hoveredRegion.feature
 		);
-		if (!regionSelectionMap?.hoveredSite || !selectedRegion.feature) {
+		if (!regionSelectionMap?.hoveredSite() || !selectedRegion.feature) {
 			selectedRegion.feature = regionSelectionMap?.hoveredRegion.feature;
 		}
 		selectedRiver.feature = regionSelectionMap?.hoveredRiver.feature;
 	}
 
 	function detailsMapClick(map: ml.Map, p: ml.PointLike) {
-		selectedSite = detailsMap?.hoveredSite;
+		selectedSite = detailsMap?.hoveredSite();
 		// selectedRegion.feature = detailsMap?.hoveredRegion.feature;
 		selectedRiver.feature = detailsMap?.hoveredRiver.feature;
 	}

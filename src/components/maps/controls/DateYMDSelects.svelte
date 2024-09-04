@@ -42,9 +42,7 @@
 	let selectedDay: number = $state(endDate.getUTCDate());
 	let daysInSelectedMonth = $derived(daysInMonth(selectedYear, selectedMon));
 
-	export const selectedDate: Date = $derived(
-		new Date(Date.UTC(selectedYear, selectedMon, selectedDay))
-	);
+	export const selectedDate = () =>	new Date(Date.UTC(selectedYear, selectedMon, selectedDay));
 
 	export function setSelectedDate(date: Date) {
 		selectedYear = date.getUTCFullYear();

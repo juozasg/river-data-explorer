@@ -20,7 +20,7 @@
 	}: MapLibreMapProps = $props();
 
 	let mapDiv = $state<HTMLDivElement>();
-	export const mapDivElement = $derived(mapDiv);
+	export const mapDivElement = () => mapDiv;
 
 	const arcgisServicesStyles =
 		// 'cached://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles';
@@ -93,7 +93,7 @@
 	}
 </script>
 
-<div class="map" bind:this={mapDiv} {onmouseleave}></div>
+<div class="map" bind:this={mapDiv} {onmouseleave} role="figure"></div>
 
 <style>
 	.map {

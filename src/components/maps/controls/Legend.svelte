@@ -63,7 +63,7 @@
 <div class="map-control" bind:this={legendControl}>
 	<ElementResizeObserver element={legendControl} bind:width={legendWidth} />
 	<div class="legend">
-		<img class="legend-bar" src={dataUrl} />
+		<img class="legend-bar" src={dataUrl} alt="legend color bar"/>
 
 		<div class="legend-labels">
 			{#each tickValues as label, i}

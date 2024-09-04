@@ -1,19 +1,15 @@
 <script lang="ts">
-	import { sites } from '$src/appstate/sites.svelte';
-	import {
-		isDatasetEnabled,
-		setEnabledDatasets,
-		toggleDatasetEnable
-	} from '$src/appstate/ui/layers.svelte';
-	import type { MapLayersParams } from '$src/lib/types/mapControls';
-	import { aremove } from '$src/lib/utils';
-	import { onMount } from 'svelte';
+	import { sites } from "$src/appstate/sites.svelte";
+	import { isDatasetEnabled, setEnabledDatasets, toggleDatasetEnable } from "$src/appstate/ui/layers.svelte";
+	import type { MapLayersParams } from "$src/lib/types/mapControls";
+	import { aremove } from "$src/lib/utils";
+	import { onMount } from "svelte";
 
 	let { layersParams = $bindable() }: { layersParams: MapLayersParams } = $props();
 	const datasets = $derived(sites.allDatasets);
 
 	$effect(() => {
-		setEnabledDatasets(aremove(datasets, 'usgs'));
+		setEnabledDatasets(aremove(datasets, "usgs"));
 		// setEnabledDatasets(['sjrbc', 'steuben', 'usgs']);
 	});
 	const a = 1;
@@ -25,8 +21,8 @@
 	};
 
 	onMount(() => {
-		document.body.addEventListener('click', (e) => {
-			const checkboxContainer = (e.target as HTMLElement).closest('.dropdown-keep-open');
+		document.body.addEventListener("click", (e) => {
+			const checkboxContainer = (e.target as HTMLElement).closest(".dropdown-keep-open");
 			if (checkboxContainer) return;
 			showLayersDropdown = false;
 		});
@@ -35,12 +31,7 @@
 
 <div class="map-control dropdown" class:is-active={showLayersDropdown}>
 	<div class="dropdown-trigger">
-		<button
-			class="button"
-			aria-haspopup="true"
-			aria-controls="dropdown-menu3"
-			onclick={dropdownToggle}
-		>
+		<button class="button" aria-haspopup="true" aria-controls="dropdown-menu3" onclick={dropdownToggle}>
 			<span class="dropdown-label">Layers</span>
 			<span class="dropdown-arrow"></span>
 		</button>
@@ -50,11 +41,7 @@
 			{#each datasets as dsname}
 				<div class="dropdown-item dropdown-keep-open">
 					<label class="checkbox" style="width: 100%">
-						<input
-							type="checkbox"
-							checked={isDatasetEnabled(dsname)}
-							onclick={() => toggleDatasetEnable(dsname)}
-						/>
+						<input type="checkbox" checked={isDatasetEnabled(dsname)} onclick={() => toggleDatasetEnable(dsname)} />
 						<tt>{dsname}</tt> Sites
 					</label>
 				</div>
@@ -62,17 +49,18 @@
 
 			<hr class="dropdown-divider" />
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
-			<a class="dropdown-item" onclick={() => (layersParams.baseStyleId = 'TOPO')}>
+			<!-- svelte-ignore a11y_click_events_have_key_events-->
+			<button class="dropdown-item" onclick={() => (layersParams.baseStyleId = "TOPO")}>
 				<form>
-					<input type="radio" name="topographic" checked={layersParams.baseStyleId == 'TOPO'} />
+					<input type="radio" name="topographic" checked={layersParams.baseStyleId == "TOPO"} />
 					Topographic
 				</form>
-			</a>
+			</button>
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
-			<a class="dropdown-item" onclick={() => (layersParams.baseStyleId = 'SATELLITE')}>
-				<input type="radio" name="satellite" checked={layersParams.baseStyleId == 'SATELLITE'} />
+			<button class="dropdown-item" onclick={() => (layersParams.baseStyleId = "SATELLITE")}>
+				<input type="radio" name="satellite" checked={layersParams.baseStyleId == "SATELLITE"} />
 				Satellite
-			</a>
+			</button>
 			<hr class="dropdown-divider" />
 			<div class="dropdown-item">
 				<label class="checkbox">
@@ -102,7 +90,7 @@
 		color: hsl(0, 0%, 4%);
 	}
 
-	input[type='checkbox'] {
+	input[type="checkbox"] {
 		margin-right: 4px;
 		position: relative;
 		bottom: -1px;

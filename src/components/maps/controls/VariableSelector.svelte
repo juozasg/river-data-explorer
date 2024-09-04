@@ -44,7 +44,7 @@
 			<form>
 				{#each varnames as vname}
 				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-					<div class="dropdown-item" onclick={() => varname = vname}>
+					<button class="dropdown-item" onclick={() => varname = vname}>
 						<label class="radio" >
 							<input
 								type="radio"
@@ -55,7 +55,7 @@
 								<!-- bind:group={varname} -->
 							<span>{varlabel(vname, true)}</span>
 						</label>
-					</div>
+					</button>
 				{/each}
 			</form>
 		</div>
@@ -92,7 +92,7 @@
 			position: relative;
 		}
 
-		div.dropdown-item:hover {
+		button.dropdown-item:hover {
 			background-color: hsl(0, 0%, 96%);
 			color: hsl(0, 0%, 4%);
 		}
