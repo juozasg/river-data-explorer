@@ -9,7 +9,6 @@
 	import { addSitesDetailsMapLayers } from '$src/lib/data/map/mapData/sitesMapDataLayers';
 	import type { Site } from '$src/lib/types/site';
 	import { fitFeatureBounds } from '$src/lib/utils/maplibre';
-	import RegionTypeTabs from '../../routes/basin/RegionTypeTabs.svelte';
 	import VarDataMap from '../maps/VarDataMap.svelte';
 	import RegionStatsPanel from './stats/RegionStatsPanel.svelte';
 	import { type RegionFeature } from '$src/appstate/data/features.svelte';
@@ -20,7 +19,7 @@
 	import { chartYColor, chartZColor } from '$src/lib/utils/colors';
 	import { scrollIntoViewRegionMap } from '$src/lib/utils/dom';
 	import { isCategoricalVar } from '$src/appstate/variablesMetadata.svelte';
-	import { data } from '@maptiler/sdk';
+	import RegionTypeTabs from './RegionTypeTabs.svelte';
 
 	let regionSelectionMap = $state<VarDataMap>();
 	let detailsMap = $state<VarDataMap>();

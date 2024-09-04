@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ElementResizeObserver from '$src/components/website/ElementResizeObserver.svelte';
+	import ElementResizeObserver from '$src/components/ElementResizeObserver.svelte';
 	import { roundTickValue } from '$src/lib/utils/chart';
 	import { interpolateVarDataURL } from '$src/lib/utils/colors';
 	import {

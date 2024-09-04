@@ -5,8 +5,8 @@
 	import type { VariableStats } from '$src/lib/types/analysis';
 	import type { Site } from '$src/lib/types/site';
 	import { fmtVarNum, varunits } from '$src/lib/utils/varHelpers';
-	import VarValueStandards from '../../tooltips/VarValueStandards.svelte';
-	import StatsDataTable from '../../website/StatsDataTable.svelte';
+	import VarValueStandards from '$src/components/tooltips/VarValueStandards.svelte';
+	import StatsDataTable from '$src/components/StatsDataTable.svelte';
 	import TdStatsVariableLabel from './TdStatsVariableLabel.svelte';
 
 	type Props = {

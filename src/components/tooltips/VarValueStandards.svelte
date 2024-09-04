@@ -23,7 +23,7 @@
 	};
 </script>
 
-<span {onmousemove} {onmouseleave} class:exceeds-min={exceedsMin} class:exceeds-max={exceedsMax}>
+<span {onmousemove} {onmouseleave} class:exceeds-min={exceedsMin} class:exceeds-max={exceedsMax} role="tooltip">
 	{fmtVarNum(v, value)}
 </span>
 

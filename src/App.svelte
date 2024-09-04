@@ -8,6 +8,7 @@
 	import { copyLngLat } from "./lib/copyLngLat";
 	import { toggleHideTooltipsKeydown } from "./appstate/ui/tooltips.svelte";
 	import { loadAppData, type DataManifest } from "./lib/data/loaders/loadAppData";
+	import BasinWorkflow from "./components/basin/BasinWorkflow.svelte";
 	// import { zz } from "$lib/testpath";
 
 	type Props = {
@@ -28,7 +29,7 @@
 </script>
 
 <main>
-	<h2>RIVER TIME</h2>
+	<BasinWorkflow />
 </main>
 
 <style>

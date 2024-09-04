@@ -3,12 +3,12 @@
   Adds a brush component to create a range between 0 and 1. Bind to the `min` and `max` props to use them in other components. See the [brushable example](https://layercake.graphcics/example/Brush) for use.
  -->
 <script>
-	import { getContext } from 'svelte';
+	import { getContext } from "svelte";
 
-	const { data, xGet } = getContext('LayerCake');
+	const { data, xGet } = getContext("LayerCake");
 
-	import { clamp } from '$src/lib/utils';
-	import { closestPointIndex } from '$src/lib/utils/chart';
+	import { clamp } from "$src/lib/utils";
+	import { closestPointIndex } from "$src/lib/utils/chart";
 
 	/** @type {Number|null} min - The brush's min value. Useful to bind to. */
 	export let min;
@@ -21,8 +21,6 @@
 
 	/** @type {Number|null} max - The brush's max value snapped to data index. Useful to bind to. */
 	export let snappedMaxIndex = null;
-
-
 
 	$: snapPoints = $data.map((d) => $xGet(d));
 	$: {
@@ -38,8 +36,8 @@
 				// snappedMinIndex = snapPoints.indexOf(minSnapPoint);
 				snappedMinIndex = closestPointIndex(snapPoints, minX);
 			} else {
-        snappedMinIndex = 0;
-      }
+				snappedMinIndex = 0;
+			}
 			if (max !== null) {
 				const maxX = max * width;
 				// const maxSnapPoint = snapPoints.reduce((prev, curr) =>
@@ -76,7 +74,7 @@
 
 	const handler = (fn) => {
 		return (e) => {
-			if (e.type === 'touchstart') {
+			if (e.type === "touchstart") {
 				if (e.touches.length !== 1) return;
 				e = e.touches[0];
 			}
@@ -85,7 +83,7 @@
 			const start = { min, max, p: p(e.clientX) };
 
 			const handle_move = (e) => {
-				if (e.type === 'touchmove') {
+				if (e.type === "touchmove") {
 					if (e.changedTouches.length !== 1) return;
 					e = e.changedTouches[0];
 					if (e.identifier !== id) return;
@@ -95,25 +93,25 @@
 			};
 
 			const handle_end = (e) => {
-				if (e.type === 'touchend') {
+				if (e.type === "touchend") {
 					if (e.changedTouches.length !== 1) return;
 					if (e.changedTouches[0].identifier !== id) return;
 				} else if (e.target === brush) {
 					clear();
 				}
 
-				window.removeEventListener('mousemove', handle_move);
-				window.removeEventListener('mouseup', handle_end);
+				window.removeEventListener("mousemove", handle_move);
+				window.removeEventListener("mouseup", handle_end);
 
-				window.removeEventListener('touchmove', handle_move);
-				window.removeEventListener('touchend', handle_end);
+				window.removeEventListener("touchmove", handle_move);
+				window.removeEventListener("touchend", handle_end);
 			};
 
-			window.addEventListener('mousemove', handle_move);
-			window.addEventListener('mouseup', handle_end);
+			window.addEventListener("mousemove", handle_move);
+			window.addEventListener("mouseup", handle_end);
 
-			window.addEventListener('touchmove', handle_move);
-			window.addEventListener('touchend', handle_end);
+			window.addEventListener("touchmove", handle_move);
+			window.addEventListener("touchend", handle_end);
 		};
 	};
 
@@ -145,7 +143,6 @@
 
 	$: left = 100 * min;
 	$: right = 100 * (1 - max);
-
 </script>
 
 <div
@@ -157,8 +154,8 @@
 	aria-valuemin={min}
 	aria-valuemax={max}
 	aria-valuetext="{min} to {max}"
-	tabindex="0"
->
+	aria-valuenow="{left}"
+	tabindex="0">
 	{#if min !== null}
 		<div
 			class="brush-inner"
@@ -169,8 +166,9 @@
 			aria-valuemin={min}
 			aria-valuemax={max}
 			aria-valuetext="{min} to {max}"
-			tabindex="0"
-		></div>
+			aria-valuenow={left}
+			tabindex="0">
+		</div>
 		<div
 			class="brush-handle"
 			on:mousedown|stopPropagation={adjust_min}
@@ -180,8 +178,9 @@
 			aria-valuemin={min}
 			aria-valuemax={max}
 			aria-valuetext="{min} to {max}"
-			tabindex="0"
-		></div>
+			aria-valuenow={left}
+			tabindex="0">
+		</div>
 		<div
 			class="brush-handle"
 			on:mousedown|stopPropagation={adjust_max}
@@ -191,8 +190,9 @@
 			aria-valuemin={min}
 			aria-valuemax={max}
 			aria-valuetext="{min} to {max}"
-			tabindex="0"
-		></div>
+			aria-valuenow={right}
+			tabindex="0">
+		</div>
 	{/if}
 </div>
 
@@ -222,7 +222,7 @@
 
 	.brush-handle::before {
 		position: absolute;
-		content: '';
+		content: "";
 		width: 8px;
 		left: -4px;
 		height: 100%;

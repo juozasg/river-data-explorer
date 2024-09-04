@@ -9,8 +9,8 @@
 	import type { VariableStats } from '$src/lib/types/analysis';
 	import { fmtVarNum, varunits } from '$src/lib/utils/varHelpers';
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
-	import VarValueStandards from '../../tooltips/VarValueStandards.svelte';
-	import StatsDataTable from '../../website/StatsDataTable.svelte';
+	import VarValueStandards from '$src/components/tooltips/VarValueStandards.svelte';
+	import StatsDataTable from '$src/components/StatsDataTable.svelte';
 	import type { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
 
 	type Props = {

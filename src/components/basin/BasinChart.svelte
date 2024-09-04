@@ -2,7 +2,7 @@
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
 	import BrushedYZChart from '../chart/BrushedYZChart.svelte';
-	import ElementResizeObserver from '../website/ElementResizeObserver.svelte';
+	import ElementResizeObserver from '../ElementResizeObserver.svelte';
 	import type { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
 	import Icon from '@iconify/svelte';
 	import type { Site } from '$src/lib/types/site';

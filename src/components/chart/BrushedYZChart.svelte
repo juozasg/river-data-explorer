@@ -145,7 +145,9 @@
 					{/if}
 				</Svg>
 				<Html>
-					<div onclick={chartOnclick}>
+					<!-- svelte-ignore a11y_click_events_have_key_events -->
+					<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+					<div onclick={chartOnclick} role="tooltip">
 						<SharedTooltip
 							formatTitle={formatTooltipTitle}
 							formatKey={(k: string) => formatChartTTKey(k, yVar, zVar)}
@@ -161,6 +163,7 @@
 
 	<!-- BRUSH CHART -->
 	<div
+		role="figure"
 		class="brush-container"
 		style="opacity:0.1"
 		onmouseenter={brushHoverOn}
