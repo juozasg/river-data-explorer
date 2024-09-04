@@ -5,16 +5,16 @@
 
 	import { loadManifests } from "./lib/data/loaders/loadManifests";
 
-  const { d } = $props();
+  const { dataManifest, variablesMetadata } = $props();
 
-	console.log("app init d=", d);
-	export const test = async () => {
-    console.log('test func')
-		const r = await fetch("http://localhost:8080/a");
-		console.log("r", r);
-		const j = await r.json();
-		console.log("j", j);
-	};
+	// console.log("app init d=", d);
+	// export const test = async () => {
+  //   console.log('test func')
+	// 	const r = await fetch("http://localhost:8080/a");
+	// 	console.log("r", r);
+	// 	const j = await r.json();
+	// 	console.log("j", j);
+	// };
 
   // test();
 
