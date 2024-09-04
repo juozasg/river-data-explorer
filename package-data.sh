@@ -39,5 +39,5 @@ echo "}" >> data-manifest.json
 cat data-manifest.json
 
 cd ../..
-rm -rf static/data
-mv tmp/data static/data
+rm -rf public/data
+mv tmp/data public/data
