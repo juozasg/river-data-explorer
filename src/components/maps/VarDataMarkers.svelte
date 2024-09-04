@@ -4,6 +4,7 @@
 	import { siteVariableColor } from '$src/lib/data/map/helpers/markerHelpers';
 	import type { Site } from '$src/lib/types/site';
 	import Marker from './Marker.svelte';
+	import { untrack } from 'svelte';
 
 	type Props = {
 		sites: Site[];
@@ -30,13 +31,14 @@
 	};
 
 	$effect(() => {
+		const refs = untrack(() => markerRefs); // dont rerun for each marker change
 		const markers = sites.map(s => markerRefs[s.id]);
 		markers.forEach(marker => {
 			if(marker) marker.setColor(siteVariableColor(marker.siteId, varname, vardate));
 		});
 	});
 
-	const markerRefs: {[key: string]: Marker} = {};
+	const markerRefs: {[key: string]: Marker} = $state({});
 
 </script>
 
