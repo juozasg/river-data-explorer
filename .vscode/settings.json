@@ -84,6 +84,6 @@
         "tsconfig.json": true,
         "tsconfig.vite.json": true,
         "svelte.config.js": true,
-        "vite.config.ts": true,
+        "vite.config.ts": true
     }
 }
