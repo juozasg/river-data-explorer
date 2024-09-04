@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 static
+public/data
 .svelte-kit
 
 # Editor directories and files
