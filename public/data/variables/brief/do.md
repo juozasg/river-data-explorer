@@ -1,0 +1,1 @@
+Dissolved oxygen measures how much oxygen is available to aquatic life. Healthy waters contain between 4 and 12 milligrams per liter of dissolved oxygen; levels outside of this range can be harmful to organisms.

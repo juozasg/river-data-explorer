@@ -1,0 +1,1 @@
+pH measures the activity of hydrogen ions in water. Values of pH occur on a scale between 0 and 14. A pH value of 7 indicates neutral, less than 7 acidic, and greater than 7 basic. Most aquatic life thrives in the pH range of 6.5 - 8.0

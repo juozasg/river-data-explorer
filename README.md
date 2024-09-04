@@ -38,22 +38,3 @@ During runtime, the Cache Web API is used to fetch and/or cache dataset file wit
 
 Part of the data package is `variables.yaml` copied from teh data repository. This file contains metadata for all known variables (i.e. column types or observation types). It includes parameters for how to visualize the variables (color gradients for values), how to label them and etc.
 
-
-
-
-
-## Testing
-
-Inside that directory, you can run several commands:
-
-  yarn run test-ct
-    Runs the component tests.
-
-  yarn run test-ct -- --project=chromium
-    Runs the tests only on Desktop Chrome.
-
-  yarn run test-ct App.test.ts
-    Runs the tests in the specific file.
-
-  yarn run test-ct -- --debug
-    Runs the tests in debug mode.
