@@ -1,1 +1,0 @@
-Nitrates are a nutrient vital to plant growth, but too much of it in aquatic systems can lead to algal blooms that can devastate fish and macroinvertebrate communities.

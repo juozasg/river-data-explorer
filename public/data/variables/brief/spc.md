@@ -1,1 +1,0 @@
-Specific conductance or conductivity measures the ability of water to conduct a current. Dissolved particles in water such as ions (i.e., sodium chloride) contribute to increased conductance. Elevated conductivity can be indicative of runoff that is adding excessive levels of salts and other substances into waterways.

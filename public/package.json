@@ -1,0 +1,13 @@
+{
+  "name": "public",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/experimental-ct-svelte": "^1.46.1",
+    "@types/node": "^22.5.3"
+  },
+  "scripts": {
+    "test-ct": "playwright test -c playwright-ct.config.ts"
+  }
+}
