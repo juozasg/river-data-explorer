@@ -1,0 +1,1 @@
+Chlorophyll-a is a pigment found in plants and algae that can be used as a measure of how productive (i.e., the abundance of algae and plants) an ecosystem is. In aquatic systems, elevated chlorophyll-a levels may suggest high levels of nutrients in the water.

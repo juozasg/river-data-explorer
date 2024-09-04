@@ -1,0 +1,1 @@
+Macroinvertebrates are the small critters that can be seen with the naked eye and that lack a backbone. These include organisms such as snails, mussels, worms, and aquatic insects. Macroinvertebrates tell a story of how healthy a river is based on the number and types of species that vary in their tolerance to pollution.

@@ -6,15 +6,37 @@
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-	<title>St. Joseph River Basin Data</title>
-  <meta name="description" content="St Joseph River (Indiana) watershed water quality information, data and web map. Provided by St. Joseph River Basin Comission" />
+  <title>St. Joseph River Basin Data</title>
+  <meta name="description"
+    content="St Joseph River (Indiana) watershed water quality information, data and web map. Provided by St. Joseph River Basin Comission" />
   <!-- <link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-6.5.2-web/css/all.min.css" /> -->
   <!-- <link rel="stylesheet" href="fontawesome-free-6.5.2-web.all.min.css" /> -->
 </head>
 
 <body>
-  <div id="app"><h1>LOADING RIVER APP...</h1></div>
+  <div id="app">
+    <h1>LOADING RIVER APP...</h1>
+  </div>
   <script type="module" src="/src/main.ts"></script>
 </body>
 
 </html>
+
+
+<style>
+  #app h1 {
+    animation: fadeInAnimation ease 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes fadeInAnimation {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+</style>

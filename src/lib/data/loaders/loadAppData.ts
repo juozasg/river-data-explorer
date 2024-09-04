@@ -4,10 +4,7 @@ import { loadGeoindexData } from "$src/appstate/data/geoindexes.svelte";
 import { loadDatasetsUsgsWS } from "./loadDataUsgsWS";
 import { loadMarkdown } from "./loadMarkdown";
 import { loadSitesCsv } from "./loadSitesCsv";
-// import { dataVariables } from "$src/appstate/dataVariables.svelte";
-// import { loadSitesUsgsWS } from "./loadSitesUsgsWS";
 
-// data-manifest.json
 export type SHA1Digest = string;
 export type DataManifest = { [key: string]: SHA1Digest };
 export const dataManifest: DataManifest = {};

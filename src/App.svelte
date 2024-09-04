@@ -1,45 +1,34 @@
 <script lang="ts">
+	import {
+		variablesMetadata as globalVariablesMetadata,
+		type VariablesMetadata
+	} from "$src/appstate/variablesMetadata.svelte";
+
 	import { onMount } from "svelte";
-	import Comp2 from "./Comp2.svelte";
+	import { copyLngLat } from "./lib/copyLngLat";
+	import { toggleHideTooltipsKeydown } from "./appstate/ui/tooltips.svelte";
+	import { loadAppData, type DataManifest } from "./lib/data/loaders/loadAppData";
 	// import { zz } from "$lib/testpath";
 
-	import { loadManifests } from "./lib/data/loaders/loadManifests";
+	type Props = {
+		dataManifest: DataManifest;
+		variablesMetadata: VariablesMetadata;
+	};
+	const { dataManifest, variablesMetadata }: Props = $props();
 
-  const { dataManifest, variablesMetadata } = $props();
+	Object.assign(globalVariablesMetadata, variablesMetadata);
+	loadAppData(dataManifest);
 
-	// console.log("app init d=", d);
-	// export const test = async () => {
-  //   console.log('test func')
-	// 	const r = await fetch("http://localhost:8080/a");
-	// 	console.log("r", r);
-	// 	const j = await r.json();
-	// 	console.log("j", j);
-	// };
-
-  // test();
+	document.body.addEventListener("keydown", copyLngLat);
+	document.body.addEventListener("keydown", toggleHideTooltipsKeydown);
 
 	onMount(async () => {
-		console.log("APP MOUNTED 1");
-		// // const { dataManifest, variablesMetadata } = await loadManifests();
-		// const r = await fetch('http://localhost:8080/a');
-		// console.log('r', r);
-		// const j = await r.json();
-		// console.log('j', j);
-
-		// console.log('dataManifest', dataManifest, 'variablesMetadata', variablesMetadata);
-
-		// document.body.addEventListener('keydown', copyLngLat);
-		// document.body.addEventListener('keydown', toggleHideTooltipsKeydown);
-
-		// loadAppData(data.dataManifest);
+		console.log("APP MOUNTED");
 	});
-	// const { dataManifest, variablesMetadata } = await loadManifests();
-
-	// console.log('dataManifest', dataManifest, 'variablesMetadata', variablesMetadata);
 </script>
 
 <main>
-	<h1>RIVER TIME</h1>
+	<h2>RIVER TIME</h2>
 </main>
 
 <style>

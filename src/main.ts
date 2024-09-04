@@ -19,19 +19,23 @@ export const loadManifests = async () => {
 	}
 };
 
-const { dataManifest, variablesMetadata } = await loadManifests();
+const initApp = async () => {
+	const { dataManifest, variablesMetadata } = await loadManifests();
 
-const appElement = document.getElementById('app')!;
+	const appElement = document.getElementById('app')!;
 
-console.log('MANIFESTS', dataManifest, variablesMetadata);
-if (!dataManifest || !variablesMetadata) {
-	console.error('Failed to load data manifests');
-	appElement.innerHTML = '<h2 style="color: #FF0029">Failed to load data manifests</h2><p>Try reloading the page. \
+	console.log('MANIFESTS', dataManifest, variablesMetadata);
+	if (!dataManifest || !variablesMetadata) {
+		console.error('Failed to load data manifests');
+		appElement.innerHTML = '<h2 style="color: #FF0029">Failed to load data manifests</h2><p>Try reloading the page. \
 	Contact juozasgaigalas@gmail.com for support.</p> <a href="https://github.com/juozasg/river-data-explorer/">Report bugs at GitHub</a>';
-} else {
-	appElement.innerHTML = '';
-	// TODO fix the App type error on kitless setup when svelte 5 is released
-	const app = mount(App as any, { target: appElement, props: { dataManifest, variablesMetadata } })
+	} else {
+		appElement.innerHTML = '';
+		// TODO fix the App type error on kitless setup when svelte 5 is released
+		const app = mount(App as any, { target: appElement, props: { dataManifest, variablesMetadata } })
+	}
 }
+
+initApp();
 
 export default {}

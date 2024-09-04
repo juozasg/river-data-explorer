@@ -1,0 +1,1 @@
+Phosphorus is a key nutrient that controls plant growth. Too much phosphorus in rivers and lakes can contribute to algal blooms that create unhospitable conditions for fish and macroinvertebrates.
