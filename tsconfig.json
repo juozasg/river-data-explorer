@@ -24,7 +24,8 @@
 			"$components/*": ["src/components/*"],
 		},
 		// "rootDirs": ["..", "./types"],
-		"lib": ["esnext", "DOM", "DOM.Iterable"]
+		"lib": ["esnext", "DOM", "DOM.Iterable"],
+		"types": ["@testing-library/jest-dom"],
 	},
 	"include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],
 	"references": [{ "path": "./tsconfig.vite.json" }]
