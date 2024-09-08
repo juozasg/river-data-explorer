@@ -2,7 +2,7 @@ import {render, screen} from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
 import {expect, test} from 'vitest'
 
-import Greeter from './greeter.svelte'
+import Greeter from '../greeter.svelte'
 
 test('no initial greeting', () => {
   render(Greeter, {name: 'World'})

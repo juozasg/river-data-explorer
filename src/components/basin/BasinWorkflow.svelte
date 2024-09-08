@@ -20,6 +20,11 @@
 	import { scrollIntoViewRegionMap } from '$src/lib/utils/dom';
 	import { isCategoricalVar } from '$src/appstate/variablesMetadata.svelte';
 	import RegionTypeTabs from './RegionTypeTabs.svelte';
+	import { toggleHideTooltipsKeydown } from '$src/appstate/ui/tooltips.svelte';
+	import { copyLngLat } from '$src/lib/copyLngLat';
+
+	document.body.addEventListener("keydown", copyLngLat);
+	document.body.addEventListener("keydown", toggleHideTooltipsKeydown);
 
 	let regionSelectionMap = $state<VarDataMap>();
 	let detailsMap = $state<VarDataMap>();

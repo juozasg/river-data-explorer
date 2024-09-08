@@ -3,3 +3,8 @@ export type MapLayersParams = {
 	riverLayerVisible: boolean;
 	baseStyleId: 'SATELLITE' | 'TOPO';
 };
+
+export const defaultLayersParams: MapLayersParams = {
+	riverLayerVisible: true,
+	baseStyleId: 'TOPO',
+};

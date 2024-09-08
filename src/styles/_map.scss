@@ -1,0 +1,22 @@
+.map-control.dropdown {
+	.dropdown-trigger {
+		width: 10rem;
+		.dropdown-label {
+			padding-right: 1rem;
+			font-weight: 600;
+			// font-size: 1.2rem;
+
+		}
+
+		.dropdown-arrow {
+			@include mixins.arrow(rgb(74, 74, 74));
+			right: 0.8rem;
+			top: 52%;
+		}
+	}
+
+	.dropdown-menu {
+		width: 20rem;
+		.dropdown-item {font-size: 1rem;}
+	}
+}

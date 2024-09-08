@@ -10,12 +10,13 @@
 	import { addMlmSources } from '$src/lib/data/map/mapData/mapSources';
 	import { addMapLayers } from '$src/lib/data/map/mapData/regionsMapLayers';
 	import { toggleRiverLayerVisibility } from '$src/lib/data/map/mapData/riverLayers';
+	import { defaultLayersParams } from '$src/lib/types/mapControls';
 
 	let {
 		mlMap = $bindable(),
 		zoom = 7.9,
 		center = [-85.5, 41.825],
-		layersParams,
+		layersParams = defaultLayersParams,
 		addLayers = addMapLayers
 	}: MapLibreMapProps = $props();
 

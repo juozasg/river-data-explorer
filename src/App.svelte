@@ -9,6 +9,7 @@
 	import { toggleHideTooltipsKeydown } from "./appstate/ui/tooltips.svelte";
 	import { loadAppData, type DataManifest } from "./lib/data/loaders/loadAppData";
 	import BasinWorkflow from "./components/basin/BasinWorkflow.svelte";
+	import { routeTestComponent } from "./test/routeTestComponent";
 	// import { zz } from "$lib/testpath";
 
 	type Props = {
@@ -20,8 +21,14 @@
 	Object.assign(globalVariablesMetadata, variablesMetadata);
 	loadAppData(dataManifest);
 
-	document.body.addEventListener("keydown", copyLngLat);
-	document.body.addEventListener("keydown", toggleHideTooltipsKeydown);
+	const pathname = window.location.pathname
+
+	let Component: any = $state(BasinWorkflow);
+	if (pathname === "/") {
+		Component = BasinWorkflow;
+	} else {
+		Component = routeTestComponent(pathname.replace("/test/", ""));
+	}
 
 	onMount(async () => {
 		console.log("APP MOUNTED");
@@ -29,7 +36,9 @@
 </script>
 
 <main>
-	<BasinWorkflow />
+	<!-- <BasinWorkflow /> -->
+	 <!-- howdy -->
+		<Component/>
 </main>
 
 <style>

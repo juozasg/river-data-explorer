@@ -14,8 +14,7 @@ export interface MapLibreMapProps {
 	zoom?: number;
 	center?: LngLatLike;
 
-	layersParams: MapLayersParams;
-	divElement?: HTMLDivElement;
+	layersParams?: MapLayersParams;
 	mlMap?: ml.Map;
 	addLayers?: (map: ml.Map) => Promise<void>;
 }
