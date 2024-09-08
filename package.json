@@ -8,12 +8,10 @@
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tsconfig.node.json",
-    "format": "prettier --write .",
-    "test-ct": "playwright test -c playwright-ct.config.ts"
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
-    "@playwright/experimental-ct-svelte": "^1.46.1",
     "@sveltejs/vite-plugin-svelte": "^4.0.0-next.6",
     "@tsconfig/svelte": "^5.0.4",
     "@types/node": "^22.5.3",
