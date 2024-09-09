@@ -55,7 +55,7 @@
 		<div class="z-var-site"></div>
 	{/if}
 
-	<div style="--color: {color}" class="marker-box" class:ghost={isGhost}></div>
+	<div style="--color: {color}" class="marker-box" class:ghost={isGhost()}></div>
 </div>
 
 <style>

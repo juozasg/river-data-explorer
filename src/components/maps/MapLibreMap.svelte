@@ -1,6 +1,8 @@
 <script lang="ts">
 	import * as ml from 'maplibre-gl';
 
+	import 'maplibre-gl/dist/maplibre-gl.css';
+
 	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
 	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 	import { transformStyle } from '$src/lib/data/map/helpers/transformMapStyle';
@@ -103,6 +105,10 @@
 		z-index: 1;
 		& :global(.maplibregl-ctrl-bottom-right  .maplibregl-ctrl-group) {
 			margin-bottom: 3rem;
+		}
+
+		:global(.maplibregl-ctrl-group button+button) {
+			border-radius: 0;
 		}
 	}
 </style>

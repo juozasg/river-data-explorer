@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { SvelteToast } from "@zerodevx/svelte-toast";
+
 	import {
 		variablesMetadata as globalVariablesMetadata,
 		type VariablesMetadata
@@ -18,7 +20,7 @@
 	Object.assign(globalVariablesMetadata, variablesMetadata);
 	loadAppData(dataManifest);
 
-	const pathname = window.location.pathname
+	const pathname = window.location.pathname;
 
 	let MainComponent: any = $state(BasinWorkflow);
 	if (pathname === "/") {
@@ -29,11 +31,16 @@
 
 	onMount(async () => {
 		console.log("APP MOUNTED");
+
+
 	});
+
+
 </script>
 
-<main >
-		<MainComponent/>
+<SvelteToast/>
+<main>
+	<MainComponent />
 </main>
 
 <style>
