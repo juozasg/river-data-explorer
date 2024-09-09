@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { bin } from 'arquero';
+	// TODO: this is not necessary
 	import { onMount } from 'svelte';
 
 	let {

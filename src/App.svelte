@@ -5,12 +5,9 @@
 	} from "$src/appstate/variablesMetadata.svelte";
 
 	import { onMount } from "svelte";
-	import { copyLngLat } from "./lib/copyLngLat";
-	import { toggleHideTooltipsKeydown } from "./appstate/ui/tooltips.svelte";
-	import { loadAppData, type DataManifest } from "./lib/data/loaders/loadAppData";
 	import BasinWorkflow from "./components/basin/BasinWorkflow.svelte";
+	import { loadAppData, type DataManifest } from "./lib/data/loaders/loadAppData";
 	import { routeTestComponent } from "./test/routeTestComponent";
-	// import { zz } from "$lib/testpath";
 
 	type Props = {
 		dataManifest: DataManifest;
@@ -23,11 +20,11 @@
 
 	const pathname = window.location.pathname
 
-	let Component: any = $state(BasinWorkflow);
+	let MainComponent: any = $state(BasinWorkflow);
 	if (pathname === "/") {
-		Component = BasinWorkflow;
+		MainComponent = BasinWorkflow;
 	} else {
-		Component = routeTestComponent(pathname.replace("/test/", ""));
+		MainComponent = routeTestComponent(pathname.replace("/test/", ""));
 	}
 
 	onMount(async () => {
@@ -35,10 +32,8 @@
 	});
 </script>
 
-<main>
-	<!-- <BasinWorkflow /> -->
-	 <!-- howdy -->
-		<Component/>
+<main >
+		<MainComponent/>
 </main>
 
 <style>
