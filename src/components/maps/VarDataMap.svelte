@@ -1,28 +1,26 @@
 <script lang="ts">
-	import * as ml from 'maplibre-gl';
-	import MapLatLonDebug from './MapLatLonDebug.svelte';
-	import VarDataMarkers from './VarDataMarkers.svelte';
+	import * as ml from "maplibre-gl";
+	import MapLatLonDebug from "./MapLatLonDebug.svelte";
+	import VarDataMarkers from "./VarDataMarkers.svelte";
 
-	import type { MapLibreMapProps } from '$src/lib/types/components';
-	import MapLibreMap from './MapLibreMap.svelte';
+	import type { MapLibreMapProps } from "$src/lib/types/components";
+	import MapLibreMap from "./MapLibreMap.svelte";
 
-	import {
-		MapFeatureSelectionState,
-		toggleHoveredFeatureState
-	} from '$src/appstate/map/featureState.svelte';
-	import { sites as globalSites, Sites } from '$src/appstate/sites.svelte';
-	import { sitesEarliestDate, sitesLatestDate, sitesValidDates } from '$src/lib/data/dateStats';
-	import type { MapLayersParams } from '$src/lib/types/mapControls';
-	import type { Site } from '$src/lib/types/site';
-	import { aremove, UTCDayDate } from '$src/lib/utils';
-	import { onMount } from 'svelte';
-	import LayerSwitcher from './controls/LayerSwitcher.svelte';
-	import Legend from './controls/Legend.svelte';
-	import TimeSelector from './controls/TimeSelector.svelte';
-	import VariableSelector from './controls/VariableSelector.svelte';
-	import VarDataHoveredFeatures from './VarDataHoveredFeatures.svelte';
-	import type { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
-	import { setEnabledDatasets } from '$src/appstate/ui/layers.svelte';
+	import { MapFeatureSelectionState, toggleHoveredFeatureState } from "$src/appstate/map/featureState.svelte";
+	import { sites as globalSites, Sites } from "$src/appstate/sites.svelte";
+	import { sitesEarliestDate, sitesLatestDate, sitesValidDates } from "$src/lib/data/dateStats";
+	import type { MapLayersParams } from "$src/lib/types/mapControls";
+	import type { Site } from "$src/lib/types/site";
+	import { aremove, UTCDayDate } from "$src/lib/utils";
+	import { onMount } from "svelte";
+	import LayerSwitcher from "./controls/LayerSwitcher.svelte";
+	import Legend from "./controls/Legend.svelte";
+	import TimeSelector from "./controls/TimeSelector.svelte";
+	import VariableSelector from "./controls/VariableSelector.svelte";
+	import VarDataHoveredFeatures from "./VarDataHoveredFeatures.svelte";
+	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
+	import { setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
+	import LayerOptions from "./controls/LayerOptions.svelte";
 
 	type Props = {
 		selectedSite?: Site;
@@ -44,7 +42,7 @@
 		mapClick,
 		showRegionTooltip = true,
 		dataSelection,
-		varname = $bindable('temp'),
+		varname = $bindable("temp"),
 		vardate = $bindable(UTCDayDate()),
 		...others
 	}: Props = $props();
@@ -65,25 +63,20 @@
 
 	let _hoveredSite = $state<Site>();
 	export const hoveredSite = () => _hoveredSite;
-	export const hoveredRegion = new MapFeatureSelectionState((c, u) =>
-		toggleHoveredFeatureState(mlMap, c, u)
-	);
-	export const hoveredRiver = new MapFeatureSelectionState((c, u) =>
-		toggleHoveredFeatureState(mlMap, c, u)
-	);
-
+	export const hoveredRegion = new MapFeatureSelectionState((c, u) => toggleHoveredFeatureState(mlMap, c, u));
+	export const hoveredRiver = new MapFeatureSelectionState((c, u) => toggleHoveredFeatureState(mlMap, c, u));
 
 	const startDate = $derived(sitesEarliestDate(sites));
 	const endDate = $derived(sitesLatestDate(sites));
 	let validDates: Date[] = $derived(sitesValidDates(sites, varname));
 
 	let layersParams = $state<MapLayersParams>({
-		baseStyleId: 'TOPO',
+		baseStyleId: "TOPO",
 		riverLayerVisible: true
 	});
 
 	onMount(() => {
-		mlMap!.on('click', (e) => mapClick && mapClick(mlMap!, e.point));
+		mlMap!.on("click", (e) => mapClick && mapClick(mlMap!, e.point));
 	});
 
 	let timeSelector = $state<TimeSelector>();
@@ -97,13 +90,14 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div style="position: relative; height: 100%">
-<div class="controls">
+	<div class="controls">
 		<MapLatLonDebug />
-		<LayerSwitcher bind:layersParams />
+		<!-- <LayerSwitcher bind:layersParams /> -->
+		<LayerOptions />
 		<VariableSelector bind:varname />
 		<TimeSelector {startDate} {endDate} {validDates} bind:vardate bind:this={timeSelector} />
 		<Legend {varname} />
-</div>
+	</div>
 	<MapLibreMap bind:this={_mlmComponent} bind:mlMap {layersParams} zoom={7.9} {...others} />
 </div>
 
@@ -116,8 +110,7 @@
 		{hoveredRiver}
 		{varname}
 		{vardate}
-		{sites}
-	/>
+		{sites} />
 
 	<VarDataMarkers
 		{mlMap}
@@ -128,8 +121,7 @@
 		{zVarSite}
 		{emphasizedSites}
 		bind:hoveredSite={_hoveredSite}
-		{...others}
-	/>
+		{...others} />
 {/if}
 
 <style>

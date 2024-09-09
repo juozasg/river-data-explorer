@@ -31,17 +31,16 @@
 
 	onMount(async () => {
 		console.log("APP MOUNTED");
-
-
 	});
-
-
 </script>
 
-<SvelteToast/>
+<SvelteToast />
 <main>
 	<MainComponent />
 </main>
 
 <style>
+	:global(.u-high) {
+		box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1) !important;
+	}
 </style>
