@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '$src/styles/time-slider.scss';
 	import DateYMDSelects from './DateYMDSelects.svelte';
 
 	import { binarySearch, fmtDateDMonY, UTCDayDate } from '$src/lib/utils';

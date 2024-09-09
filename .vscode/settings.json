@@ -86,6 +86,6 @@
         "svelte.config.js": true,
         "vite.config.ts": true,
         "vitest-setup.js": true,
-        "vitest.config.js": true,
+        "vitest.config.js": true
     }
 }
