@@ -26,8 +26,6 @@
     "@zerodevx/svelte-toast": "^0.9.5",
     "eslint": "^9.9.1",
     "eslint-plugin-svelte": "^2.43.0",
-    "flowbite": "^2.5.1",
-    "flowbite-svelte": "^0.46.16",
     "globals": "^15.9.0",
     "jsdom": "^25.0.0",
     "prettier": "^3.3.3",
