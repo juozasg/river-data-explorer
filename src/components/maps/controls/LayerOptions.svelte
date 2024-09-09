@@ -2,103 +2,190 @@
 <!-- svelte-ignore a11y_invalid_attribute -->
 
 <script lang="ts">
+	// import ArrowDropRight from '$src/components/icons/ArrowDropRight.svelte';
+	import DetailsOpenIcon from "$src/components/icons/DetailsOpenIcon.svelte";
+	import Icon from "@iconify/svelte";
+
+	let open = $state(false);
+	let datasetsOpen = $state(false);
+
+	let small = $state(false);
+
+	// $effect(() => {if(!open) open = true;});
+
+	// $effect(() => {
+	// 	console.log('open', open);
+	// });
 </script>
 
-<div class="map-control pico">
+<div class="map-control" onmouseleave={() => (open = datasetsOpen = false)}>
+	<div class="hover-target"></div>
 
-	<details class="dropdown">
-		<summary>Dropdown</summary>
-		<ul>
-			<li>
-				<label>
-					<input type="checkbox" name="elkhart" />
-					elkhart
-				</label>
-			</li>
-			<li>
-				<label>
-					<input type="checkbox" name="usgs" />
-					usgs
-				</label>
-			</li>
-			<li>
-				<label>
-					<input type="checkbox" checked name="sjrbc" />
-					sjrbc
-				</label>
-			</li>
-			<li><hr/></li>
-			<li><span class='caption'>Basemaps</span></li>
-			<li>
-				<label>
-					<input type="radio" name="basemap" value="TOPO" checked/>
-					Topographic
-				</label>
-			</li>
-			<li>
-				<label>
-					<input type="radio" name="basemap" value="SATALLITE" />
-					Satellite
-				</label>
-			</li>
-		</ul>
-		Hey there
-	</details>
-<!--
-	<form>
-		<fieldset>
-			<legend>Basemap</legend>
-			<label>
-				<input type="radio" name="basemap" checked />
+	<details bind:open class="dropdown mainmenu" onmouseenter={() => (open = true)}>
+		<!-- <summary class="button outline">Layers<ArrowDropRight class="icon"/></summary> -->
+		<summary class="button outline">
+			<div class="icon-spacer"><Icon height="none" width="none" icon="solar:layers-outline" /></div>
+
+			{small ? "" : "Layers"}
+			<DetailsOpenIcon {open} /></summary>
+		<div class="card">
+			<!-- DATASETS SUBMENU -->
+			<details
+				bind:open={datasetsOpen}
+				onmouseenter={() => (datasetsOpen = true)}
+				onmouseleave={() => (datasetsOpen = false)}
+				class="dropdown submenu">
+				<summary class="outline">Datasets<DetailsOpenIcon open={datasetsOpen} /></summary>
+				<div class="card">
+					<label for="usgs">
+						<input type="checkbox" id="usgs" />
+						elkhart
+					</label>
+					<label for="elkhart">
+						<input type="checkbox" id="elkhart" />
+						usgs
+					</label>
+					<label for="elkhart">
+						<input type="checkbox" id="elkhart" />
+						usgs
+					</label>
+					<label for="elkhart">
+						<input type="checkbox" id="elkhart" />
+						usgs
+					</label>
+					<label for="elkhart">
+						<input type="checkbox" id="elkhart" />
+						usgs
+					</label>
+				</div>
+			</details>
+			<hr />
+			<span class="basemaps-heading">Basemap</span>
+			<label for="topo">
+				<input type="radio" id="topo" name="basemap" value="TOPO" />
 				Topographic
 			</label>
-			<label>
-				<input type="radio" name="basemap" />
+			<label for="satellite">
+				<input type="radio" id="satellite" name="basemap" value="SATELLITE" />
 				Satellite
 			</label>
-
-		</fieldset>
-	</form> -->
+			<hr />
+			<label for="river">
+				<input type="checkbox" id="river" />
+				Mainstem and tributaries
+			</label>
+		</div>
+	</details>
 </div>
 
 <style>
 	.map-control {
+		border-radius: 4px;
 		position: absolute;
 		top: 10px;
 		left: 10px;
 		z-index: 1002;
-		background-color: white;
+		font-weight: 300;
 
-		/* font-size: 0.8rem; */
+		--padding: 0.75rem;
 
-		summary {
-			color: var(--pico-color) !important;
+		.hover-target {
+			height: 60px;
+			width: 100%;
+			top: 0;
+			right: 0;
+			position: absolute;
+			/* background-color: aqua; */
+			opacity: 0;
 		}
 
-		details {
-			margin-bottom: 0;
+		details.dropdown {
+			border-radius: inherit;
+			summary {
+				font-weight: 500;
+				padding: 0.75rem 2rem 1rem 2rem;
+			}
 		}
 
-		details[open] {
-			margin-bottom: 1rem;
+		.mainmenu > .card {
+			margin-top: 4px;
 		}
-		/* fieldset legend {
-			font-weight: 600;
-		} */
-	}
 
-	/* .dropdown-menu {
-		width: 16rem !important;
-	}
+		.card > label {
+			display: block;
+			padding: var(--padding);
+		}
 
-	div.dropdown-item:hover {
-		background-color: hsl(0, 0%, 96%);
-		color: hsl(0, 0%, 4%);
-	}
+		.card,
+		details.submenu {
+			margin: 0;
+			padding: 0;
 
-	input[type="checkbox"] {
-		margin-right: 4px;
-		position: relative;
-		bottom: -1px;
-	} */
+			.card {
+				position: absolute;
+				left: 12rem;
+				top: -2rem;
+			}
+		}
+
+		details.submenu {
+			width: 100%;
+			summary {
+				font-weight: 500;
+				padding: var(--padding);
+				padding-left: 2rem;
+			}
+		}
+
+		.basemaps-heading {
+			padding-left: 2rem;
+			margin-top: 0.5rem;
+			font-weight: 500;
+			display: inline-block;
+		}
+
+		hr {
+			margin: 0;
+			padding: 0;
+		}
+
+		label:hover,
+		details.submenu:hover {
+			background-color: rgb(0 0 0/5%);
+		}
+
+		:global(.details-open-icon, .details-closed-icon) {
+			position: relative;
+			top: 3px;
+			left: 2px;
+		}
+
+		.icon-spacer {
+			width: 1rem;
+			height: 1px;
+			position: relative;
+			display: inline-block;
+			:global(.iconify) {
+				position: absolute;
+				/* top: 4px; */
+				/* left: -2px; */
+				top: -15px;
+				left: -12px;
+				width: 2rem;
+				height: 2rem;
+				margin-right: 0.5rem;
+			}
+		}
+
+		details.submenu {
+			summary {
+				cursor: pointer;
+				list-style: none;
+			}
+		}
+
+		.dropdown {
+			background-color: white;
+		}
+	}
 </style>

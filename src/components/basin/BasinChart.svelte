@@ -96,7 +96,7 @@
 		<ChangeRegionHeader blink={false} {selectedRegion} />
 	{:else if (!dataSelection.yVar && !dataSelection.zVar)}
 		<div class="placeholder">
-			<h2>Click a variable to graph  <Icon class="icon" height="none" icon="lets-icons:arrow-drop-right"/></h2>
+			<h2>Click a variable to graph <Icon class="icon" height="none" icon="lets-icons:arrow-drop-right"/></h2>
 		</div>
 	{/if}
 </div>

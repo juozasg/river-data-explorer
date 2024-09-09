@@ -146,7 +146,7 @@
 		.marker-box {
 			width: 22px;
 			height: 22px;
-			border-radius: 11px;
+			border-radius: 13px;
 			border-width: 2px;
 		}
 	}
