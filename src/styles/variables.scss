@@ -1,2 +1,8 @@
-$stjoe-green: rgb(61,156,119);
-$stjoe-blue: rgb(61,156,190);
+:root {
+	--stjoe-green: rgb(61,156,119);
+	--stjoe-blue: rgb(61,156,190);
+
+	--pico-font-size: 90%;
+	// --pico-color: #333;
+	--pico-font-weight: 500;
+}

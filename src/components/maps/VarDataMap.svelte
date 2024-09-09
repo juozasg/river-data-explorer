@@ -94,9 +94,9 @@
 		<MapLatLonDebug />
 		<!-- <LayerSwitcher bind:layersParams /> -->
 		<LayerOptions />
-		<VariableSelector bind:varname />
-		<TimeSelector {startDate} {endDate} {validDates} bind:vardate bind:this={timeSelector} />
-		<Legend {varname} />
+		<!-- <VariableSelector bind:varname /> -->
+		<!-- <TimeSelector {startDate} {endDate} {validDates} bind:vardate bind:this={timeSelector} /> -->
+		<!-- <Legend {varname} /> -->
 	</div>
 	<MapLibreMap bind:this={_mlmComponent} bind:mlMap {layersParams} zoom={7.9} {...others} />
 </div>

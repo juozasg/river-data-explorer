@@ -1,9 +1,50 @@
 <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
+<!-- svelte-ignore a11y_invalid_attribute -->
 
 <script lang="ts">
 </script>
 
 <div class="map-control pico">
+
+	<details class="dropdown">
+		<summary>Dropdown</summary>
+		<ul>
+			<li>
+				<label>
+					<input type="checkbox" name="elkhart" />
+					elkhart
+				</label>
+			</li>
+			<li>
+				<label>
+					<input type="checkbox" name="usgs" />
+					usgs
+				</label>
+			</li>
+			<li>
+				<label>
+					<input type="checkbox" checked name="sjrbc" />
+					sjrbc
+				</label>
+			</li>
+			<li><hr/></li>
+			<li><span class='caption'>Basemaps</span></li>
+			<li>
+				<label>
+					<input type="radio" name="basemap" value="TOPO" checked/>
+					Topographic
+				</label>
+			</li>
+			<li>
+				<label>
+					<input type="radio" name="basemap" value="SATALLITE" />
+					Satellite
+				</label>
+			</li>
+		</ul>
+		Hey there
+	</details>
+<!--
 	<form>
 		<fieldset>
 			<legend>Basemap</legend>
@@ -17,7 +58,7 @@
 			</label>
 
 		</fieldset>
-	</form>
+	</form> -->
 </div>
 
 <style>
@@ -28,11 +69,22 @@
 		z-index: 1002;
 		background-color: white;
 
-		font-size: 0.8rem;
+		/* font-size: 0.8rem; */
 
-		fieldset legend {
-			font-weight: 600;
+		summary {
+			color: var(--pico-color) !important;
 		}
+
+		details {
+			margin-bottom: 0;
+		}
+
+		details[open] {
+			margin-bottom: 1rem;
+		}
+		/* fieldset legend {
+			font-weight: 600;
+		} */
 	}
 
 	/* .dropdown-menu {
