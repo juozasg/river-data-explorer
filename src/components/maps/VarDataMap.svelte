@@ -14,7 +14,7 @@
 	import { sitesEarliestDate, sitesLatestDate, sitesValidDates } from '$src/lib/data/dateStats';
 	import type { MapLayersParams } from '$src/lib/types/mapControls';
 	import type { Site } from '$src/lib/types/site';
-	import { UTCDayDate } from '$src/lib/utils';
+	import { aremove, UTCDayDate } from '$src/lib/utils';
 	import { onMount } from 'svelte';
 	import LayerSwitcher from './controls/LayerSwitcher.svelte';
 	import Legend from './controls/Legend.svelte';
@@ -22,6 +22,7 @@
 	import VariableSelector from './controls/VariableSelector.svelte';
 	import VarDataHoveredFeatures from './VarDataHoveredFeatures.svelte';
 	import type { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
+	import { setEnabledDatasets } from '$src/appstate/ui/layers.svelte';
 
 	type Props = {
 		selectedSite?: Site;
@@ -50,6 +51,11 @@
 
 	let _mlmComponent = $state<MapLibreMap>();
 	export const mlmComponent = () => _mlmComponent;
+
+	$effect(() => {
+		setEnabledDatasets(aremove(globalSites.allDatasets, "usgs"));
+		// setEnabledDatasets(['sjrbc', 'steuben', 'usgs']);
+	});
 
 	const sites = $derived(globalSites.allEnabled);
 	const emphasizedSites = $derived(Sites.forRegionFeature(sites, selectedRegion?.feature));

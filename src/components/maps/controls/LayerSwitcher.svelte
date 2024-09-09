@@ -8,12 +8,6 @@
 	let { layersParams = $bindable() }: { layersParams: MapLayersParams } = $props();
 	const datasets = $derived(sites.allDatasets);
 
-	$effect(() => {
-		setEnabledDatasets(aremove(datasets, "usgs"));
-		// setEnabledDatasets(['sjrbc', 'steuben', 'usgs']);
-	});
-	const a = 1;
-
 	let showLayersDropdown = $state(false);
 	const dropdownToggle = (e: Event) => {
 		e.stopPropagation();
