@@ -10,6 +10,7 @@
 	import BasinWorkflow from "./components/basin/BasinWorkflow.svelte";
 	import { loadAppData, type DataManifest } from "./lib/data/loaders/loadAppData";
 	import { routeTestComponent } from "./test/routeTestComponent";
+	import { copyLngLat } from "./lib/copyLngLat";
 
 	type Props = {
 		dataManifest: DataManifest;
@@ -28,6 +29,9 @@
 	} else {
 		MainComponent = routeTestComponent(pathname.replace("/test/", ""));
 	}
+
+	document.body.addEventListener("keydown", copyLngLat);
+
 
 	onMount(async () => {
 		console.log("APP MOUNTED");

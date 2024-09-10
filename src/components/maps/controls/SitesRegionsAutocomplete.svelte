@@ -5,10 +5,10 @@
 	import type { Site } from "$src/lib/types/site";
 
 	let {
-		mapWidth = "100%",
-		selectedSite = $bindable(),
-		hoveredSite = $bindable()
-	}: { mapWidth?: string; selectedSite?: Site; hoveredSite?: Site } = $props();
+		maxWidth = "100%",
+		selectedSite,
+		searchItemSelect
+	}: { maxWidth?: string; selectedSite?: Site; searchItemSelect?: (item: Site) => void } = $props();
 
 	let containerDiv = $state<HTMLDivElement>();
 	const inputElement = $derived(
@@ -29,7 +29,16 @@
 
 	$effect(() => {
 		console.log("autocomplete selected item", selectedSite);
+		if (searchItemSelect && selectedSite) {
+			searchItemSelect(selectedSite);
+		}
 	});
+
+	const itemSortFunction = (a: Site, b: Site) => {
+		const dsComp = a.dataset.localeCompare(b.dataset)
+		if(dsComp !== 0) return dsComp;
+		return a.num - b.num;
+	};
 </script>
 
 <div
@@ -37,12 +46,12 @@
 	{onmouseleave}
 	{onmouseenter}
 	bind:this={containerDiv}
-	style="--mapWidth: {mapWidth}">
+	style="--maxWidth: {maxWidth}">
 	<AutoComplete
-		items={sites.allEnabled}
-		labelFieldName='id'
-		valueFieldName='id'
-		keywordsFunction={(s: Site) => s.name + " " + s.dataset + " " + s.num + " site"}
+		items={sites.allEnabled.sort(itemSortFunction)}
+		labelFieldName="id"
+		valueFieldName="id"
+		keywordsFunction={(s: Site) => s.name + " " + s.dataset + " " + s.num + " " + s.id + " site"}
 		bind:selectedItem={selectedSite}
 		placeholder="Search sites..."
 		hideArrow={true}>
@@ -57,6 +66,21 @@
 <style>
 	.sites-regions-autocomplete {
 		:global(.autocomplete.select) {
+			:global(::-webkit-scrollbar) {
+				-webkit-appearance: none;
+			}
+
+			:global(::-webkit-scrollbar:vertical) {
+				width: 10px;
+			}
+
+
+			:global(::-webkit-scrollbar-thumb) {
+				border-radius: 8px;
+				border: 2px solid white; /* should match background, can't be transparent */
+				background-color: rgba(0, 0, 0, 0.5);
+			}
+
 			margin-left: 14px;
 			padding-top: 1rem;
 			padding-right: 1rem;
@@ -68,7 +92,7 @@
 			:global(.autocomplete-list) {
 				position: absolute;
 				width: auto;
-				max-width: calc(var(--mapWidth, 100%) - 68px);
+				max-width: calc(var(--maxWidth, 100%) - 68px);
 				top: 48px !important;
 
 				padding: 0;
@@ -84,6 +108,10 @@
 					:global(p) {
 						margin: 0;
 						padding: 0;
+
+						:global(strong) {
+							font-size: 14px;
+						}
 
 						:global(.siteid) {
 							font-size: 0.8em;

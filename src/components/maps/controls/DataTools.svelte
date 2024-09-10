@@ -11,22 +11,19 @@
 	import { sites } from "$src/appstate/sites.svelte";
 	import { setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
 
-	let { mapWidth = "100%", selectedSite = $bindable() }: { mapWidth?: string; selectedSite?: Site } = $props();
+	let {
+		maxWidth = "100%",
+		selectedSite,
+		searchItemSelect
+	}: { maxWidth?: string; selectedSite?: Site; searchItemSelect?: (item: Site) => void } = $props();
 	// let mapControl = $state<HTMLDivElement>();
 	let open = $state(false);
 	let datasetsOpen = $state(false);
 
 	let small = $state(false);
 
-	$effect(() => {
-		if (!open) open = true;
-	});
 	// $effect(() => {
-	// 	if (!open && mapControl) mapControl.querySelector(".autocomplete-list")?.classList.toggle("hidden", true);
-	// });
-
-	// $effect(() => {
-	// 	console.log('open', open);
+	// 	if (!open) open = true;
 	// });
 
 	const colors = ["White", "Red", "Yellow", "Green", "Blue", "Black"];
@@ -109,7 +106,7 @@
 			</label>
 
 			<hr />
-			<SitesRegionsAutocomplete {mapWidth} bind:selectedSite />
+			<SitesRegionsAutocomplete {maxWidth} {selectedSite} {searchItemSelect} />
 		</div>
 	</details>
 </div>
@@ -202,15 +199,6 @@
 			}
 		}
 
-		/* .all-button,
-		.none-button {
-			display: inline-block;
-			margin: 0;
-			padding: 0;
-			text-align: center;
-			width: 50%;
-		} */
-
 		label:hover,
 		details.submenu:hover,
 		.dataset-buttons a:hover {
@@ -249,6 +237,13 @@
 
 		.dropdown {
 			background-color: white;
+		}
+
+		details > summary {
+			list-style: none;
+		}
+		details > summary::-webkit-details-marker {
+			display: none;
 		}
 	}
 </style>

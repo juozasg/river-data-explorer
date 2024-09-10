@@ -22,10 +22,18 @@
 
 <!-- <div style="height: 1000px;"></div> -->
 <div style="position: relative; height: 500px; width: 500px">
-	<VarDataMap {selectedSite} dataSelection={{}} bind:this={varDataMap} mapClick={()=> {
-		console.log("Map clicked", varDataMap?.hoveredSite());
-		if(varDataMap?.hoveredSite()) {
-			selectedSite = varDataMap?.hoveredSite();
-		}
-	}}/>
+	<VarDataMap
+		{selectedSite}
+		dataSelection={{}}
+		bind:this={varDataMap}
+		mapClick={() => {
+			console.log("Map clicked", varDataMap?.hoveredSite());
+			if (varDataMap?.hoveredSite()) {
+				selectedSite = varDataMap?.hoveredSite();
+			}
+		}}
+		searchItemSelect={(item: Site) => {
+			console.log("TEST Search item selected", item);
+			selectedSite = item;
+		}} />
 </div>

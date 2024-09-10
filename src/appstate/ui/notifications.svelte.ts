@@ -37,8 +37,8 @@ export const notify = (message: string, level: NotificationLevel = 'info', durat
 		theme: {
 			...theme,
 			'--toastBarHeight': 0,
-			duration: duration
-		}
+		},
+		duration: duration,
 	})
 
 	// const id = nextId++;

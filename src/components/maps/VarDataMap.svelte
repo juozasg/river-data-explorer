@@ -20,7 +20,7 @@
 	import VarDataHoveredFeatures from "./VarDataHoveredFeatures.svelte";
 	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
 	import { setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
-	import LayerOptions from "./controls/LayerOptions.svelte";
+	import DataTools from "./controls/DataTools.svelte";
 
 	type Props = {
 		dataSelection: DataSelectionState;
@@ -32,6 +32,7 @@
 		vardate?: Date;
 
 		mapClick?: (map: ml.Map, p: ml.PointLike) => void;
+		searchItemSelect?: (item: Site) => void;
 	} & Partial<MapLibreMapProps>;
 
 	// export function
@@ -41,6 +42,7 @@
 		selectedRiver,
 		selectedSite,
 		mapClick,
+		searchItemSelect,
 		showRegionTooltip = true,
 		dataSelection,
 		varname = $bindable("temp"),
@@ -52,7 +54,9 @@
 	export const mlmComponent = () => _mlmComponent;
 
 	let clientWidth = $state(0);
-	$effect(() => {console.log('CW', clientWidth)});
+	// $effect(() => {
+	// 	console.log("CW", clientWidth);
+	// });
 
 	$effect(() => {
 		setEnabledDatasets(aremove(globalSites.allDatasets, "usgs"));
@@ -93,11 +97,11 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div style="position: relative; height: 100%" bind:clientWidth>
+<div style="position: relative; height:100%" bind:clientWidth>
 	<div class="controls">
 		<MapLatLonDebug />
 		<!-- <LayerSwitcher bind:layersParams /> -->
-		<LayerOptions mapWidth={clientWidth + 'px'} />
+		<DataTools maxWidth={clientWidth + "px"} {selectedSite} {searchItemSelect} />
 		<!-- <VariableSelector bind:varname /> -->
 		<!-- <TimeSelector {startDate} {endDate} {validDates} bind:vardate bind:this={timeSelector} /> -->
 		<!-- <Legend {varname} /> -->

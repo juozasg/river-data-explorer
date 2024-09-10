@@ -26,7 +26,7 @@
 	export const mapDivElement = () => mapDiv;
 
 	let clientWidth = $state(0);
-	$effect(() => {console.log('CW', clientWidth)});
+	// $effect(() => {console.log('CW', clientWidth)});
 
 	const arcgisServicesStyles =
 		// 'cached://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles';
@@ -75,6 +75,7 @@
 
 		// only fires for the initial style, not for map.setStyle
 		mlMap.once('idle', () => {
+			mlMap!.resize();
 			addMlmSources(mlMap!).then(() => {
 				addLayers(mlMap!);
 				const style = basemapStyles[layersParams.baseStyleId];
@@ -104,7 +105,7 @@
 <style>
 	.map {
 		height: var(--map-height, 100%);
-		width: var(--map-width, 100%);
+		/* width: var(--map-width, 100%); */
 		z-index: 1;
 		& :global(.maplibregl-ctrl-bottom-right  .maplibregl-ctrl-group) {
 			margin-bottom: 3rem;

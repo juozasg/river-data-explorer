@@ -9,7 +9,7 @@
 
 </script>
 
-<div style="position: relative; height: 500px; width: 500px">
+<div style="position: relative; height: 1000px; width: 500px">
 
 	<MapLibreMap />
 </div>
