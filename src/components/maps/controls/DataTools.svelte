@@ -3,6 +3,7 @@
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 
 <script lang="ts">
+	import "$src/styles/map-dropdown.scss";
 	import SitesRegionsAutocomplete from "./SitesRegionsAutocomplete.svelte";
 
 	// import ArrowDropRight from '$src/components/icons/ArrowDropRight.svelte';
@@ -40,7 +41,7 @@
 	<div class="hover-target"></div>
 
 	<details bind:open class="dropdown mainmenu" onmouseenter={() => (open = true)}>
-		<summary class="button outline">
+		<summary class:small class="button outline">
 			<div class="icon-spacer"><Icon height="none" width="none" icon="solar:layers-outline" /></div>
 
 			{small ? "" : "Data"}
@@ -74,7 +75,7 @@
 				</div>
 			</details>
 			<hr />
-			<span class="basemaps-heading">Basemap</span>
+			<span class="section-heading">Basemap</span>
 			<label for="topo" onclick={() => (layersParams.baseStyleId = "TOPO")}>
 				<input type="radio" id="topo" name="basemap" value="TOPO" checked={layersParams.baseStyleId == "TOPO"} />
 				Topographic
@@ -102,103 +103,6 @@
 
 <style>
 	.map-control {
-		border-radius: 4px;
-		position: absolute;
-		top: 10px;
-		left: 10px;
-		z-index: 1002;
-		font-weight: 300;
-
-		--padding: 0.75rem;
-
-		.hover-target {
-			height: 60px;
-			width: 100%;
-			top: 0;
-			right: 0;
-			position: absolute;
-			/* background-color: aqua; */
-			opacity: 0;
-		}
-
-		details.dropdown {
-			border-radius: inherit;
-			summary {
-				font-weight: 500;
-				padding: 0.75rem 2rem 1rem 2rem;
-			}
-		}
-
-		.mainmenu > .card {
-			margin-top: 4px;
-		}
-
-		.card > label {
-			display: block;
-			padding: var(--padding);
-		}
-
-		.card,
-		details.submenu {
-			margin: 0;
-			padding: 0;
-			z-index: 1005;
-
-			.card {
-				position: absolute;
-				left: 12rem;
-				top: -2rem;
-			}
-		}
-
-		details.submenu {
-			width: 100%;
-			summary {
-				font-weight: 500;
-				padding: var(--padding);
-				padding-left: 2rem;
-			}
-		}
-
-		.basemaps-heading {
-			padding-left: 2rem;
-			margin-top: 0.5rem;
-			font-weight: 500;
-			display: inline-block;
-		}
-
-		hr {
-			margin: 0;
-			padding: 0;
-		}
-
-		.dataset-buttons {
-			width: 120px;
-			margin: 0;
-			padding: 0;
-			a {
-				display: inline-block;
-				margin: 0;
-				padding: 0;
-				padding-top: 1rem;
-				padding-bottom: 1rem;
-
-				text-align: center;
-				width: 60px;
-			}
-
-			a:hover {
-				text-decoration: underline;
-				cursor: pointer;
-			}
-		}
-
-		label:hover,
-		details.submenu:hover,
-		.dataset-buttons a:hover {
-			background-color: rgb(0 0 0/5%);
-		}
-
 		:global(.details-open-icon, .details-closed-icon) {
 			position: relative;
 			top: 3px;
@@ -220,24 +124,6 @@
 				height: 2rem;
 				margin-right: 0.5rem;
 			}
-		}
-
-		details.submenu {
-			summary {
-				cursor: pointer;
-				list-style: none;
-			}
-		}
-
-		.dropdown {
-			background-color: white;
-		}
-
-		details > summary {
-			list-style: none;
-		}
-		details > summary::-webkit-details-marker {
-			display: none;
 		}
 	}
 </style>

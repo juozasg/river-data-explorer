@@ -51,7 +51,7 @@
 		<DataTools small maxWidth={mapWidth} {selectedSite} {searchItemSelect} bind:layersParams />
 		<VariableSelector bind:varname />
 		<Legend {varname} />
-		<TimeSelector {startDate} {endDate} {validDates} bind:vardate bind:this={timeSelector} />
+		<!-- <TimeSelector {startDate} {endDate}	 {validDates} bind:vardate bind:this={timeSelector} /> -->
 	</div>
 
 <style>

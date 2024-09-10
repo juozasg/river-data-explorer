@@ -15,7 +15,6 @@
 	import type { Site } from "$src/lib/types/site";
 	import { aremove, UTCDayDate } from "$src/lib/utils";
 	import { onMount } from "svelte";
-	import LayerSwitcher from "./controls/LayerSwitcher.svelte";
 	import Legend from "./controls/Legend.svelte";
 	import TimeSelector from "./controls/TimeSelector.svelte";
 	import VariableSelector from "./controls/VariableSelector.svelte";
