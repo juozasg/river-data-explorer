@@ -23,10 +23,10 @@
 	import LayerOptions from "./controls/LayerOptions.svelte";
 
 	type Props = {
-		selectedSite?: Site;
 		dataSelection: DataSelectionState;
 		selectedRegion?: MapFeatureSelectionState;
 		selectedRiver?: MapFeatureSelectionState;
+		selectedSite?: Site;
 		showRegionTooltip?: boolean;
 		varname?: string;
 		vardate?: Date;
@@ -39,6 +39,7 @@
 	let {
 		selectedRegion,
 		selectedRiver,
+		selectedSite,
 		mapClick,
 		showRegionTooltip = true,
 		dataSelection,
@@ -123,6 +124,7 @@
 		{yVarSite}
 		{zVarSite}
 		{emphasizedSites}
+		{selectedSite}
 		bind:hoveredSite={_hoveredSite}
 		{...others} />
 {/if}

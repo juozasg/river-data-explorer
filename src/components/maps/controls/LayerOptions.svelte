@@ -7,8 +7,11 @@
 	// import ArrowDropRight from '$src/components/icons/ArrowDropRight.svelte';
 	import DetailsOpenIcon from "$src/components/icons/DetailsOpenIcon.svelte";
 	import Icon from "@iconify/svelte";
+	import type { Site } from "$src/lib/types/site";
+	import { sites } from "$src/appstate/sites.svelte";
+	import { setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
 
-	const { mapWidth = "100%" }: { mapWidth?: string } = $props();
+	let { mapWidth = "100%", selectedSite = $bindable() }: { mapWidth?: string; selectedSite?: Site } = $props();
 	// let mapControl = $state<HTMLDivElement>();
 	let open = $state(false);
 	let datasetsOpen = $state(false);
@@ -70,9 +73,23 @@
 						<input type="checkbox" id="elkhart4" />
 						usgs
 					</label>
+					<label for="elkhart">
+						<input type="checkbox" id="elkhart4" />
+						usgs
+					</label>
+					<label for="elkhart">
+						<input type="checkbox" id="elkhart4" />
+						usgs
+					</label>
+					<label for="elkhart">
+						<input type="checkbox" id="elkhart4" />
+						usgs
+					</label>
 					<hr />
-					<!-- <button class="">None</button>
-					<button class="">All</button> -->
+					<div class="dataset-buttons">
+						<a class="all-button" onclick={() => setEnabledDatasets(sites.allDatasets)}>None</a>
+						<a class="none-button" onclick={() => setEnabledDatasets([])}>All</a>
+					</div>
 				</div>
 			</details>
 			<hr />
@@ -92,7 +109,7 @@
 			</label>
 
 			<hr />
-			<SitesRegionsAutocomplete {mapWidth}/>
+			<SitesRegionsAutocomplete {mapWidth} bind:selectedSite />
 		</div>
 	</details>
 </div>
@@ -139,6 +156,7 @@
 		details.submenu {
 			margin: 0;
 			padding: 0;
+			z-index: 2;
 
 			.card {
 				position: absolute;
@@ -168,8 +186,34 @@
 			padding: 0;
 		}
 
+		.dataset-buttons {
+			width: 120px;
+			a {
+				display: inline-block;
+				margin: 0;
+
+				text-align: center;
+				width: 50%;
+			}
+
+			a:hover {
+				text-decoration: underline;
+				cursor: pointer;
+			}
+		}
+
+		/* .all-button,
+		.none-button {
+			display: inline-block;
+			margin: 0;
+			padding: 0;
+			text-align: center;
+			width: 50%;
+		} */
+
 		label:hover,
-		details.submenu:hover {
+		details.submenu:hover,
+		.dataset-buttons a:hover {
 			background-color: rgb(0 0 0/5%);
 		}
 

@@ -4,9 +4,11 @@
 	import { sites } from "$src/appstate/sites.svelte";
 	import type { Site } from "$src/lib/types/site";
 
-	const { mapWidth = "100%" }: { mapWidth?: string } = $props();
-
-	let selectedItem = $state<Site>();
+	let {
+		mapWidth = "100%",
+		selectedSite = $bindable(),
+		hoveredSite = $bindable()
+	}: { mapWidth?: string; selectedSite?: Site; hoveredSite?: Site } = $props();
 
 	let containerDiv = $state<HTMLDivElement>();
 	const inputElement = $derived(
@@ -17,16 +19,16 @@
 		let esc = new KeyboardEvent("keydown", {
 			key: "Escape"
 		});
-		// inputElement?.dispatchEvent(esc);
+		inputElement?.dispatchEvent(esc);
 	};
 
 	const onmouseenter = (e: MouseEvent) => {
-		console.log("Mouse enter", e);
+		// console.log("Mouse enter", e);
 		inputElement?.click();
 	};
 
 	$effect(() => {
-		console.log("autocomplete selected item", selectedItem);
+		console.log("autocomplete selected item", selectedSite);
 	});
 </script>
 
@@ -38,9 +40,11 @@
 	style="--mapWidth: {mapWidth}">
 	<AutoComplete
 		items={sites.allEnabled}
-		keywordsFunction={(s: Site) => s.name + " " + s.dataset + " " + s.num + ' site'}
-		bind:selectedItem
-		placeholder="Search sites and regions"
+		labelFieldName='id'
+		valueFieldName='id'
+		keywordsFunction={(s: Site) => s.name + " " + s.dataset + " " + s.num + " site"}
+		bind:selectedItem={selectedSite}
+		placeholder="Search sites..."
 		hideArrow={true}>
 		<div slot="item" let:item={s}>
 			<p><strong>Site</strong> <i class="siteid">{s.id}</i></p>
