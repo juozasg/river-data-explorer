@@ -28,7 +28,8 @@
 </script>
 
 <div class="map-control dropdown" class:is-active={showVarsDropdown}>
-	<div class="dropdown-trigger">
+	<button class="button">Tempssss</button>
+	<!-- <div class="dropdown-trigger">
 		<button
 			class="button"
 			aria-haspopup="true"
@@ -43,7 +44,6 @@
 		<div class="dropdown-content">
 			<form>
 				{#each varnames as vname}
-				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 					<button class="dropdown-item" onclick={() => varname = vname}>
 						<label class="radio" >
 							<input
@@ -52,21 +52,20 @@
 								value={vname}
 								checked={varname == vname}
 								/>
-								<!-- bind:group={varname} -->
 							<span>{varlabel(vname, true)}</span>
 						</label>
 					</button>
 				{/each}
 			</form>
 		</div>
-	</div>
+	</div> -->
 </div>
 
 <style>
 	.map-control {
 		height: 40px;
 
-		z-index: 1002;
+		z-index: 1001;
 		position: absolute;
 		top: 10px;
 		left: 130px;

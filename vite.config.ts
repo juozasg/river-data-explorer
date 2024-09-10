@@ -11,7 +11,15 @@ import checker from 'vite-plugin-checker'
 export default defineConfig({
   plugins: [
 		tsconfigPaths(),
-    svelte(),
+    svelte({
+			onwarn(warning, defaultHandler) {
+        // don't warn on <marquee> elements, cos they're cool
+        if (warning.code === 'a11y-distracting-elements') return;
+        if (warning.code === 'a11y-click-events-have-key-events') return;
+        if (warning.code === 'a11y_invalid_attribute') return;
+        if (warning.code === 'a11y_no_noninteractive_element_to_interactive_role') return;
+			}
+		}),
 		svelteTesting(),
     checker({
       // e.g. use TypeScript check

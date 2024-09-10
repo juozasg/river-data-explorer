@@ -1,5 +1,6 @@
 <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
 <!-- svelte-ignore a11y_invalid_attribute -->
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 
 <script lang="ts">
 	import SitesRegionsAutocomplete from "./SitesRegionsAutocomplete.svelte";
@@ -9,33 +10,37 @@
 	import Icon from "@iconify/svelte";
 	import type { Site } from "$src/lib/types/site";
 	import { sites } from "$src/appstate/sites.svelte";
-	import { setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
+	import { isDatasetEnabled, setEnabledDatasets, toggleDatasetEnable } from "$src/appstate/ui/layers.svelte";
+	import { type MapLayersParams, defaultLayersParams } from "$src/lib/types/mapControls";
 
 	let {
-		maxWidth = "100%",
+		maxWidth = 500,
+		small = false,
 		selectedSite,
-		searchItemSelect
-	}: { maxWidth?: string; selectedSite?: Site; searchItemSelect?: (item: Site) => void } = $props();
+		searchItemSelect,
+		layersParams = $bindable(defaultLayersParams)
+	}: {
+		small?: boolean;
+		maxWidth?: number;
+		selectedSite?: Site;
+		searchItemSelect?: (item: Site) => void;
+		layersParams: MapLayersParams;
+	} = $props();
 	// let mapControl = $state<HTMLDivElement>();
 	let open = $state(false);
 	let datasetsOpen = $state(false);
 
-	let small = $state(false);
 
 	// $effect(() => {
 	// 	if (!open) open = true;
+	// 	datasetsOpen = true;
 	// });
-
-	const colors = ["White", "Red", "Yellow", "Green", "Blue", "Black"];
-	let selectedColor = $state<string>();
 </script>
 
 <div class="map-control" onmouseleave={() => (open = datasetsOpen = false)}>
-	<!-- onmouseenter={() => {mapControl!.querySelector(".autocomplete-list")?.classList.toggle("hidden", false);}} -->
 	<div class="hover-target"></div>
 
 	<details bind:open class="dropdown mainmenu" onmouseenter={() => (open = true)}>
-		<!-- <summary class="button outline">Layers<ArrowDropRight class="icon"/></summary> -->
 		<summary class="button outline">
 			<div class="icon-spacer"><Icon height="none" width="none" icon="solar:layers-outline" /></div>
 
@@ -50,63 +55,47 @@
 				class="dropdown submenu">
 				<summary class="outline">Datasets<DetailsOpenIcon open={datasetsOpen} /></summary>
 				<div class="card">
-					<label for="usgs">
-						<input type="checkbox" id="usgs" />
-						elkhart
-					</label>
-					<label for="elkhart">
-						<input type="checkbox" id="elkhart" />
-						usgs
-					</label>
-					<label for="elkhart">
-						<input type="checkbox" id="elkhart2" />
-						usgs
-					</label>
-					<label for="elkhart">
-						<input type="checkbox" id="elkhart3" />
-						usgs
-					</label>
-					<label for="elkhart">
-						<input type="checkbox" id="elkhart4" />
-						usgs
-					</label>
-					<label for="elkhart">
-						<input type="checkbox" id="elkhart4" />
-						usgs
-					</label>
-					<label for="elkhart">
-						<input type="checkbox" id="elkhart4" />
-						usgs
-					</label>
-					<label for="elkhart">
-						<input type="checkbox" id="elkhart4" />
-						usgs
-					</label>
+					{#each sites.allDatasets as dsname}
+						<label for={dsname}>
+							<input
+								type="checkbox"
+								id={dsname}
+								checked={isDatasetEnabled(dsname)}
+								onclick={() => toggleDatasetEnable(dsname)} />
+							<tt>{dsname}</tt>
+						</label>
+					{/each}
+
 					<hr />
 					<div class="dataset-buttons">
-						<a class="all-button" onclick={() => setEnabledDatasets(sites.allDatasets)}>None</a>
-						<a class="none-button" onclick={() => setEnabledDatasets([])}>All</a>
+						<a class="all-button" onclick={() => setEnabledDatasets(sites.allDatasets)}>All</a>
+						<a class="none-button" onclick={() => setEnabledDatasets([])}>None</a>
 					</div>
 				</div>
 			</details>
 			<hr />
 			<span class="basemaps-heading">Basemap</span>
-			<label for="topo">
-				<input type="radio" id="topo" name="basemap" value="TOPO" />
+			<label for="topo" onclick={() => (layersParams.baseStyleId = "TOPO")}>
+				<input type="radio" id="topo" name="basemap" value="TOPO" checked={layersParams.baseStyleId == "TOPO"} />
 				Topographic
 			</label>
-			<label for="satellite">
-				<input type="radio" id="satellite" name="basemap" value="SATELLITE" />
+			<label for="satellite" onclick={() => (layersParams.baseStyleId = "SATELLITE")}>
+				<input
+					type="radio"
+					id="satellite"
+					name="basemap"
+					value="SATELLITE"
+					checked={layersParams.baseStyleId == "SATELLITE"} />
 				Satellite
 			</label>
 			<hr />
 			<label for="river">
-				<input type="checkbox" id="river" />
+				<input type="checkbox" id="river" bind:checked={layersParams.riverLayerVisible} />
 				Mainstem and tributaries
 			</label>
 
 			<hr />
-			<SitesRegionsAutocomplete {maxWidth} {selectedSite} {searchItemSelect} />
+			<SitesRegionsAutocomplete maxWidth={maxWidth + 'px'} {selectedSite} {searchItemSelect} />
 		</div>
 	</details>
 </div>
@@ -153,7 +142,7 @@
 		details.submenu {
 			margin: 0;
 			padding: 0;
-			z-index: 2;
+			z-index: 1005;
 
 			.card {
 				position: absolute;
@@ -188,6 +177,8 @@
 			a {
 				display: inline-block;
 				margin: 0;
+				padding-top: 1rem;
+				padding-bottom: 1rem;
 
 				text-align: center;
 				width: 50%;

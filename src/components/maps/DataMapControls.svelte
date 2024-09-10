@@ -1,0 +1,67 @@
+<script lang="ts">
+	import * as ml from "maplibre-gl";
+	import MapLatLonDebug from "./MapLatLonDebug.svelte";
+	import VarDataMarkers from "./VarDataMarkers.svelte";
+
+	import type { MapLibreMapProps } from "$src/lib/types/components";
+	import MapLibreMap from "./MapLibreMap.svelte";
+
+	import { MapFeatureSelectionState, toggleHoveredFeatureState } from "$src/appstate/map/featureState.svelte";
+	import { sites as globalSites, Sites } from "$src/appstate/sites.svelte";
+	import { sitesEarliestDate, sitesLatestDate, sitesValidDates } from "$src/lib/data/dateStats";
+	import { defaultLayersParams, type MapLayersParams } from "$src/lib/types/mapControls";
+	import type { Site } from "$src/lib/types/site";
+	import { aremove, UTCDayDate } from "$src/lib/utils";
+	import LayerSwitcher from "./controls/LayerSwitcher.svelte";
+	import Legend from "./controls/Legend.svelte";
+	import TimeSelector from "./controls/TimeSelector.svelte";
+	import VariableSelector from "./controls/VariableSelector.svelte";
+	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
+	import { setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
+	import DataTools from "./controls/DataTools.svelte";
+
+	type Props = {
+		sites: Site[];
+		selectedSite?: Site;
+		layersParams: MapLayersParams;
+		varname?: string;
+		vardate?: Date;
+		mapWidth?: number
+
+		searchItemSelect?: (item: Site) => void;
+	} & Partial<MapLibreMapProps>;
+
+	// export function
+
+	let {
+		sites,
+		selectedSite,
+		searchItemSelect,
+		mapWidth = 400,
+		layersParams = $bindable(defaultLayersParams),
+		varname = $bindable("temp"),
+		vardate = $bindable(UTCDayDate()),
+	}: Props = $props();
+
+	const startDate = $derived(sitesEarliestDate(sites));
+	const endDate = $derived(sitesLatestDate(sites));
+	let validDates: Date[] = $derived(sitesValidDates(sites, varname));
+
+	let timeSelector = $state<TimeSelector>();
+	export function setInternalDate(d: Date) {
+		if (timeSelector) timeSelector.setInternalDate(d);
+	}
+
+</script>
+
+	<div class="controls">
+		<MapLatLonDebug />
+		<DataTools small maxWidth={mapWidth} {selectedSite} {searchItemSelect} bind:layersParams />
+		<VariableSelector bind:varname />
+		<Legend {varname} />
+		<TimeSelector {startDate} {endDate} {validDates} bind:vardate bind:this={timeSelector} />
+	</div>
+
+<style>
+</style>
+

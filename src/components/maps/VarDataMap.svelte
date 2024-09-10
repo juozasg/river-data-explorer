@@ -1,4 +1,6 @@
 <script lang="ts">
+	import DataMapControls from "./DataMapControls.svelte";
+
 	import * as ml from "maplibre-gl";
 	import MapLatLonDebug from "./MapLatLonDebug.svelte";
 	import VarDataMarkers from "./VarDataMarkers.svelte";
@@ -9,7 +11,7 @@
 	import { MapFeatureSelectionState, toggleHoveredFeatureState } from "$src/appstate/map/featureState.svelte";
 	import { sites as globalSites, Sites } from "$src/appstate/sites.svelte";
 	import { sitesEarliestDate, sitesLatestDate, sitesValidDates } from "$src/lib/data/dateStats";
-	import type { MapLayersParams } from "$src/lib/types/mapControls";
+	import { defaultLayersParams, type MapLayersParams } from "$src/lib/types/mapControls";
 	import type { Site } from "$src/lib/types/site";
 	import { aremove, UTCDayDate } from "$src/lib/utils";
 	import { onMount } from "svelte";
@@ -54,9 +56,6 @@
 	export const mlmComponent = () => _mlmComponent;
 
 	let clientWidth = $state(0);
-	// $effect(() => {
-	// 	console.log("CW", clientWidth);
-	// });
 
 	$effect(() => {
 		setEnabledDatasets(aremove(globalSites.allDatasets, "usgs"));
@@ -74,38 +73,30 @@
 	export const hoveredRegion = new MapFeatureSelectionState((c, u) => toggleHoveredFeatureState(mlMap, c, u));
 	export const hoveredRiver = new MapFeatureSelectionState((c, u) => toggleHoveredFeatureState(mlMap, c, u));
 
-	const startDate = $derived(sitesEarliestDate(sites));
-	const endDate = $derived(sitesLatestDate(sites));
-	let validDates: Date[] = $derived(sitesValidDates(sites, varname));
-
-	let layersParams = $state<MapLayersParams>({
-		baseStyleId: "TOPO",
-		riverLayerVisible: true
-	});
+	let layersParams = $state<MapLayersParams>(defaultLayersParams);
 
 	onMount(() => {
 		mlMap!.on("click", (e) => mapClick && mapClick(mlMap!, e.point));
 	});
 
-	let timeSelector = $state<TimeSelector>();
+	let dataMapControls = $state<DataMapControls>();
 	export function setInternalDate(d: Date) {
-		if (timeSelector) timeSelector.setInternalDate(d);
+		dataMapControls?.setInternalDate(d);
 	}
 
-	const yVarSite = $derived(dataSelection.yVar ? dataSelection.ySite : undefined);
-	const zVarSite = $derived(dataSelection.zVar ? dataSelection.zSite : undefined);
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div style="position: relative; height:100%" bind:clientWidth>
-	<div class="controls">
-		<MapLatLonDebug />
-		<!-- <LayerSwitcher bind:layersParams /> -->
-		<DataTools maxWidth={clientWidth + "px"} {selectedSite} {searchItemSelect} />
-		<!-- <VariableSelector bind:varname /> -->
-		<!-- <TimeSelector {startDate} {endDate} {validDates} bind:vardate bind:this={timeSelector} /> -->
-		<!-- <Legend {varname} /> -->
-	</div>
+	<DataMapControls
+		bind:this={dataMapControls}
+		{sites}
+		{selectedSite}
+		{searchItemSelect}
+		bind:layersParams
+		bind:varname
+		bind:vardate
+		mapWidth={clientWidth} />
 	<MapLibreMap bind:this={_mlmComponent} bind:mlMap {layersParams} zoom={7.9} {...others} />
 </div>
 
@@ -125,8 +116,8 @@
 		{varname}
 		{vardate}
 		{sites}
-		{yVarSite}
-		{zVarSite}
+		yVarSite={dataSelection.yVar ? dataSelection.ySite : undefined}
+		zVarSite={dataSelection.zVar ? dataSelection.zSite : undefined}
 		{emphasizedSites}
 		{selectedSite}
 		bind:hoveredSite={_hoveredSite}
