@@ -5,6 +5,7 @@
 
 </script>
 
+<!-- <div style="height: 1000px;"></div> -->
 <div style="position: relative; height: 500px; width: 500px">
 
 	<VarDataMap dataSelection={{}} />

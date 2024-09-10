@@ -25,6 +25,9 @@
 	let mapDiv = $state<HTMLDivElement>();
 	export const mapDivElement = () => mapDiv;
 
+	let clientWidth = $state(0);
+	$effect(() => {console.log('CW', clientWidth)});
+
 	const arcgisServicesStyles =
 		// 'cached://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles';
 		'https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles';
@@ -96,7 +99,7 @@
 	}
 </script>
 
-<div class="map" bind:this={mapDiv} {onmouseleave} role="figure"></div>
+<div class="map" bind:this={mapDiv} {onmouseleave} role="figure" bind:clientWidth></div>
 
 <style>
 	.map {

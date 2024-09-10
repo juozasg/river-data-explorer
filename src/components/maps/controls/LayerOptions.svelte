@@ -2,23 +2,36 @@
 <!-- svelte-ignore a11y_invalid_attribute -->
 
 <script lang="ts">
+	import SitesRegionsAutocomplete from "./SitesRegionsAutocomplete.svelte";
+
 	// import ArrowDropRight from '$src/components/icons/ArrowDropRight.svelte';
 	import DetailsOpenIcon from "$src/components/icons/DetailsOpenIcon.svelte";
 	import Icon from "@iconify/svelte";
 
+	const { mapWidth = "100%" }: { mapWidth?: string } = $props();
+	// let mapControl = $state<HTMLDivElement>();
 	let open = $state(false);
 	let datasetsOpen = $state(false);
 
 	let small = $state(false);
 
-	// $effect(() => {if(!open) open = true;});
+	$effect(() => {
+		if (!open) open = true;
+	});
+	// $effect(() => {
+	// 	if (!open && mapControl) mapControl.querySelector(".autocomplete-list")?.classList.toggle("hidden", true);
+	// });
 
 	// $effect(() => {
 	// 	console.log('open', open);
 	// });
+
+	const colors = ["White", "Red", "Yellow", "Green", "Blue", "Black"];
+	let selectedColor = $state<string>();
 </script>
 
 <div class="map-control" onmouseleave={() => (open = datasetsOpen = false)}>
+	<!-- onmouseenter={() => {mapControl!.querySelector(".autocomplete-list")?.classList.toggle("hidden", false);}} -->
 	<div class="hover-target"></div>
 
 	<details bind:open class="dropdown mainmenu" onmouseenter={() => (open = true)}>
@@ -26,7 +39,7 @@
 		<summary class="button outline">
 			<div class="icon-spacer"><Icon height="none" width="none" icon="solar:layers-outline" /></div>
 
-			{small ? "" : "Layers"}
+			{small ? "" : "Data"}
 			<DetailsOpenIcon {open} /></summary>
 		<div class="card">
 			<!-- DATASETS SUBMENU -->
@@ -46,17 +59,20 @@
 						usgs
 					</label>
 					<label for="elkhart">
-						<input type="checkbox" id="elkhart" />
+						<input type="checkbox" id="elkhart2" />
 						usgs
 					</label>
 					<label for="elkhart">
-						<input type="checkbox" id="elkhart" />
+						<input type="checkbox" id="elkhart3" />
 						usgs
 					</label>
 					<label for="elkhart">
-						<input type="checkbox" id="elkhart" />
+						<input type="checkbox" id="elkhart4" />
 						usgs
 					</label>
+					<hr />
+					<!-- <button class="">None</button>
+					<button class="">All</button> -->
 				</div>
 			</details>
 			<hr />
@@ -74,6 +90,9 @@
 				<input type="checkbox" id="river" />
 				Mainstem and tributaries
 			</label>
+
+			<hr />
+			<SitesRegionsAutocomplete {mapWidth}/>
 		</div>
 	</details>
 </div>

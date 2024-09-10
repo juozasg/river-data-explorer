@@ -50,6 +50,9 @@
 	let _mlmComponent = $state<MapLibreMap>();
 	export const mlmComponent = () => _mlmComponent;
 
+	let clientWidth = $state(0);
+	$effect(() => {console.log('CW', clientWidth)});
+
 	$effect(() => {
 		setEnabledDatasets(aremove(globalSites.allDatasets, "usgs"));
 		// setEnabledDatasets(['sjrbc', 'steuben', 'usgs']);
@@ -89,11 +92,11 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div style="position: relative; height: 100%">
+<div style="position: relative; height: 100%" bind:clientWidth>
 	<div class="controls">
 		<MapLatLonDebug />
 		<!-- <LayerSwitcher bind:layersParams /> -->
-		<LayerOptions />
+		<LayerOptions mapWidth={clientWidth + 'px'} />
 		<!-- <VariableSelector bind:varname /> -->
 		<!-- <TimeSelector {startDate} {endDate} {validDates} bind:vardate bind:this={timeSelector} /> -->
 		<!-- <Legend {varname} /> -->
