@@ -26,10 +26,9 @@
 		searchItemSelect?: (item: Site) => void;
 		layersParams: MapLayersParams;
 	} = $props();
-	// let mapControl = $state<HTMLDivElement>();
+
 	let open = $state(false);
 	let datasetsOpen = $state(false);
-
 
 	// $effect(() => {
 	// 	if (!open) open = true;
@@ -68,8 +67,9 @@
 
 					<hr />
 					<div class="dataset-buttons">
-						<a class="all-button" onclick={() => setEnabledDatasets(sites.allDatasets)}>All</a>
-						<a class="none-button" onclick={() => setEnabledDatasets([])}>None</a>
+						<a class="all-button" onclick={() => setEnabledDatasets(sites.allDatasets)}>All</a><a
+							class="none-button"
+							onclick={() => setEnabledDatasets([])}>None</a>
 					</div>
 				</div>
 			</details>
@@ -95,7 +95,7 @@
 			</label>
 
 			<hr />
-			<SitesRegionsAutocomplete maxWidth={maxWidth + 'px'} {selectedSite} {searchItemSelect} />
+			<SitesRegionsAutocomplete maxWidth={maxWidth + "px"} {selectedSite} {searchItemSelect} />
 		</div>
 	</details>
 </div>
@@ -174,14 +174,17 @@
 
 		.dataset-buttons {
 			width: 120px;
+			margin: 0;
+			padding: 0;
 			a {
 				display: inline-block;
 				margin: 0;
+				padding: 0;
 				padding-top: 1rem;
 				padding-bottom: 1rem;
 
 				text-align: center;
-				width: 50%;
+				width: 60px;
 			}
 
 			a:hover {

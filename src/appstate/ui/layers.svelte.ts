@@ -11,11 +11,11 @@ export function enabledDatasets() {
 }
 
 export function isDatasetEnabled(dataset: string) {
-	return _enabledDatasetLayers.includes(dataset);
+	return [..._enabledDatasetLayers].includes(dataset);
 }
 
 export function toggleDatasetEnable(dataset: string) {
-	if (_enabledDatasetLayers.includes(dataset)) {
+	if ([..._enabledDatasetLayers].includes(dataset)) {
 		_enabledDatasetLayers = aremove(_enabledDatasetLayers, dataset);
 	} else {
 		_enabledDatasetLayers.push(dataset);
