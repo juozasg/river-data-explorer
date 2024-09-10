@@ -38,12 +38,12 @@
 	style="--mapWidth: {mapWidth}">
 	<AutoComplete
 		items={sites.allEnabled}
-		keywordsFunction={(s: Site) => s.name + " " + s.dataset + " " + s.num}
+		keywordsFunction={(s: Site) => s.name + " " + s.dataset + " " + s.num + ' site'}
 		bind:selectedItem
 		placeholder="Search sites and regions"
 		hideArrow={true}>
 		<div slot="item" let:item={s}>
-			<p><strong>Site</strong> <i>{s.id}</i></p>
+			<p><strong>Site</strong> <i class="siteid">{s.id}</i></p>
 			<p>{s.name}</p>
 			<!-- <span style="color:{item.code}">{item.code}</span> -->
 		</div>
@@ -63,9 +63,35 @@
 
 			:global(.autocomplete-list) {
 				position: absolute;
-				top: 48px !important;
-				max-width: calc(var(--mapWidth, 100%) - 68px);
 				width: auto;
+				max-width: calc(var(--mapWidth, 100%) - 68px);
+				top: 48px !important;
+
+				padding: 0;
+
+				font-size: 1em;
+
+				:global(.autocomplete-list-item) {
+					padding: 0.6rem 0.7rem;
+					margin: 0;
+					/* margin-left: 0./5rem; */
+					/* margin-right: 0.5rem; */
+
+					:global(p) {
+						margin: 0;
+						padding: 0;
+
+						:global(.siteid) {
+							font-size: 0.8em;
+							color: #666;
+						}
+					}
+				}
+
+				:global(.autocomplete-list-item.selected) {
+					background-color: #f0f0f0;
+					color: black;
+				}
 			}
 		}
 	}
