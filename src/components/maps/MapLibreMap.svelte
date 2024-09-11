@@ -116,6 +116,7 @@
 
 		:global(.maplibregl-ctrl-group:not(:empty)) {
 			box-shadow: var(--box-shadow);
+			border-radius: var(--border-radius);
 		}
 	}
 </style>
