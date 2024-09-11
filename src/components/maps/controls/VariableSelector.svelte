@@ -11,13 +11,24 @@
 	let open = $state(false);
 
 	const label = $derived(small ? varlabelabbrev(varname) : varlabel(varname));
+
+	const onmouseleave = () => (open = false);
+	const openDetails = (e: MouseEvent | any) => {
+		if (e.sourceCapabilities?.firesTouchEvents) return;
+		open = true;
+	};
+
+	$effect(() => {
+		console.log("open", open);
+	});
 </script>
 
-<div class="map-control" onmouseleave={() => (open = false)}>
+<div class="map-control" {onmouseleave}>
 	<div class="invisible-hover-target"></div>
 
-	<details bind:open class="dropdown mainmenu" onmouseenter={() => (open = true)}>
-		<summary class:small class="button outline">
+	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+	<details {open} class="dropdown mainmenu">
+		<summary class:small class="button outline" onmouseenter={openDetails}>
 			<div class="summary-flex">
 				<InlineBlockIconify icon="gridicons:line-graph" size="1.2rem" />
 
@@ -27,7 +38,13 @@
 		</summary>
 		<div class="card">
 			{#each varnames as vn}
-				<a class:bg-primary={varname === vn} onclick={() => (varname = vn)}>{varlabel(vn, true)}</a>
+				<a
+					class:bg-primary={varname === vn}
+					onclick={() => {
+						varname = vn;
+						open = false;
+					}}>
+					{varlabel(vn, true)}</a>
 			{/each}
 		</div>
 	</details>

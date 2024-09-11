@@ -30,7 +30,10 @@ export function varlabelabbrev(varname: string) {
 	const label = varlabel(varname).replace(/-/g, '');
 	const words = label.split(/\s+/)
 	const wordLetters = Math.max(2, 6 - words.length);
-	return words.map((w: string) => w.slice(0, wordLetters)).join('');
+	const result = words.map((w: string) => w.slice(0, wordLetters)).join('');
+
+	if(result === 'Tempe') return 'Temp';
+	return result;
 }
 
 export function varmin(varname: string) {

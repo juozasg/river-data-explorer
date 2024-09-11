@@ -33,17 +33,26 @@
 	let open = $state(false);
 	let datasetsOpen = $state(false);
 
-	// $effect(() => {
-	// 	if (!open) open = true;
-	// 	datasetsOpen = true;
-	// });
+	const onmouseleave = () => (open = false);
+	const openDetails = (e: MouseEvent | any) => {
+		if (e.sourceCapabilities?.firesTouchEvents) return;
+		open = true;
+	};
+
+	const openDatasets = (e: MouseEvent | any) => {
+		if (e.sourceCapabilities?.firesTouchEvents) {
+			// console.log('ignore touch')
+			return;
+		}
+		datasetsOpen = true;
+	};
 </script>
 
-<div class="map-control" onmouseleave={() => (open = datasetsOpen = false)}>
+<div class="map-control" {onmouseleave}>
 	<div class="invisible-hover-target"></div>
 
-	<details bind:open class="dropdown mainmenu" onmouseenter={() => (open = true)}>
-		<summary class:small class="button outline">
+	<details {open} class="dropdown mainmenu">
+		<summary class:small class="button outline" onmouseenter={openDetails}>
 			<div class="summary-flex">
 				<InlineBlockIconify icon="solar:layers-outline" size="1.2rem" />
 
@@ -53,11 +62,10 @@
 		</summary>
 		<div class="card">
 			<!-- DATASETS SUBMENU -->
-			<details
-				bind:open={datasetsOpen}
-				onmouseenter={() => (datasetsOpen = true)}
-				onmouseleave={() => (datasetsOpen = false)}
-				class="dropdown submenu">
+			<details open={datasetsOpen} class="dropdown submenu"
+			onmouseenter={openDatasets}
+			onmouseleave={() => (datasetsOpen = false)}
+			>
 				<summary class="outline">Datasets<DetailsOpenIcon open={datasetsOpen} /></summary>
 				<div class="card">
 					{#each sites.allDatasets as dsname}
