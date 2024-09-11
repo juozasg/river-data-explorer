@@ -32,5 +32,7 @@
 <style>
 	.details-icon {
 		display: inline-block;
+		position: relative;
+		top: 1px;
 	}
 </style>

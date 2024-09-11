@@ -10,14 +10,11 @@
 	} = $props();
 </script>
 
-<div class="icon" style="width: {size}; height: {size}"><Icon height={size} width={size} {icon} /></div>
+<div class="icon inline-block-iconify" style="width: {size}; height: {size}"><Icon height={size} width={size} {icon} /></div>
 
 <style>
 	.icon {
 		display: inline-block;
-		/* border: 1px solid red; */
 		position: relative;
-		/* :global(.iconify) {
-		} */
 	}
 </style>

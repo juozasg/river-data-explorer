@@ -23,17 +23,17 @@
 		searchItemSelect?: (item: Site) => void;
 	} & Partial<MapLibreMapProps>;
 
-	// export function
-
 	let {
 		sites,
 		selectedSite,
 		searchItemSelect,
 		mapWidth = 400,
 		layersParams = $bindable(defaultLayersParams),
-		varname = $bindable("temp"),
+		varname = $bindable("ecoli"),
 		vardate = $bindable(UTCDayDate())
 	}: Props = $props();
+
+	const small = $derived(mapWidth < 500);
 
 	const startDate = $derived(sitesEarliestDate(sites));
 	const endDate = $derived(sitesLatestDate(sites));
@@ -48,15 +48,14 @@
 <div class="controls">
 	<MapLatLonDebug />
 	<div class="top-controls">
-		<DataTools  maxWidth={mapWidth} {selectedSite} {searchItemSelect} bind:layersParams />
-		<VariableSelector bind:varname />
+		<DataTools {small} maxWidth={mapWidth} {selectedSite} {searchItemSelect} bind:layersParams />
+		<VariableSelector {small} bind:varname />
 		<Legend {varname} />
 	</div>
 	<!-- <TimeSelector {startDate} {endDate}	 {validDates} bind:vardate bind:this={timeSelector} /> -->
 </div>
 
 <style>
-
 	.top-controls {
 		position: absolute;
 		padding: 10px;

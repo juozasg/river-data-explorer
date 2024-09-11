@@ -1,5 +1,4 @@
 <script lang="ts">
-	import ElementResizeObserver from '$src/components/ElementResizeObserver.svelte';
 	import { roundTickValue } from '$src/lib/utils/chart';
 	import { interpolateVarDataURL } from '$src/lib/utils/colors';
 	import {
@@ -30,10 +29,10 @@
 		}
 		const maxValueNumChars = varmax(varname).toString().length;
 		const unitNumChars = varunits(varname).length;
-		return (maxValueNumChars + unitNumChars + 3) * 12;
+		return (maxValueNumChars + unitNumChars + 3) * 7;
 	});
 
-	let legendWidth = $state(200);
+	let legendWidth = $state(0);
 
 	const numTicks = $derived.by(() => {
 		const calculatedTicks = Math.max(Math.floor(legendWidth / maxLegendTextWidth), 2);
@@ -92,8 +91,8 @@
 
 
 		z-index: 1000;
-		padding-left: 1rem;
-		padding-right: 1rem;
+		padding-left: 0.5rem;
+		padding-right: 0.5rem;
 
 		box-shadow: var(--box-shadow);
 
@@ -111,7 +110,7 @@
 				display: inline-block;
 				bottom: -12px;
 				width: 1px;
-				height: 14px;
+				height: 12px;
 				/* background-color: #62B3C6; */
 				background-color: #232323;
 			}
@@ -120,9 +119,9 @@
 		.legend-labels {
 			width: 100%;
 			position: absolute;
-			top: 0;
-			left: 0;
-			font-size: 0.8rem;
+			top: 2px;
+			left: 0px;
+			font-size: 0.7rem;
 
 			.tick-label {
 				position: absolute;
@@ -131,10 +130,10 @@
 
 		.legend-bar {
 			display: block;
-			height: 10px;
+			height: 6px;
 			width: 100%;
 			position: absolute;
-			bottom: 6px;
+			bottom: 3px;
 		}
 	}
 </style>

@@ -51,6 +51,10 @@
 			padding-left: 10px !important;
 		}
 
+		.submenu > summary {
+			padding-top: 8px !important;
+		}
+
 		.all-button, .none-button {
 			padding: 6px !important;
 			padding-left: 10px !important;
@@ -84,9 +88,6 @@
 			width: auto;
 			height: 100%;
 		}
-
-
-
 	}
 
 	details.submenu {

@@ -82,17 +82,16 @@
 			max-width: calc(var(--maxWidth, 100%) - 60px);
 			top: 2rem !important;
 			border: none !important;
-			border-top: 1px solid #ccc !important;
+			border: 1px solid #ccc !important;
 
 			padding: 0;
 
 			font-size: 1rem;
 
 			:global(.autocomplete-list-item) {
-				padding: 0.6rem 0.7rem;
+				padding: 0.3rem 0.4rem;
 				margin: 0;
-				/* margin-left: 0./5rem; */
-				/* margin-right: 0.5rem; */
+				border-bottom: 1px dotted #ddd;
 
 				:global(p) {
 					margin: 0;
@@ -104,9 +103,14 @@
 
 					:global(.siteid) {
 						font-size: 0.8em;
-						color: #666;
+						color: var(--font-color) / 0.8;
 					}
 				}
+			}
+
+			:global(.autocomplete-list-item.confirmed) {
+				background-color: var(--color-primary) !important;
+				color: var(--font-color);
 			}
 
 			:global(.autocomplete-list-item.selected) {

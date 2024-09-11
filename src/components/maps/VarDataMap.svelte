@@ -46,7 +46,7 @@
 		searchItemSelect,
 		showRegionTooltip = true,
 		dataSelection,
-		varname = $bindable("temp"),
+		varname = $bindable("ecoli"),
 		vardate = $bindable(UTCDayDate()),
 		...others
 	}: Props = $props();

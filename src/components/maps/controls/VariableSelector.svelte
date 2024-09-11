@@ -1,21 +1,16 @@
 <script lang="ts">
-
 	import { variablesMetadata } from "$src/appstate/variablesMetadata.svelte";
 	import DetailsOpenIcon from "$src/components/icons/DetailsOpenIcon.svelte";
 	import { aremove } from "$src/lib/utils";
-	import { varlabel } from "$src/lib/utils/varHelpers";
-	import Icon from "@iconify/svelte";
+	import { varlabel, varlabelabbrev } from "$src/lib/utils/varHelpers";
+	import InlineBlockIconify from "./InlineBlockIconify.svelte";
 
 	const varnames = aremove(Object.keys(variablesMetadata), "default");
-	let { varname = $bindable("temp"), small = false }: { varname: string; small?: boolean } = $props();
+	let { varname = $bindable("ecoli"), small = false }: { varname: string; small?: boolean } = $props();
 
 	let open = $state(false);
 
-
-	// const onclick = (e: Event) => {
-	// 	console.log(e);
-	// 	e.stopPropagation();
-	// };
+	const label = $derived(small ? varlabelabbrev(varname) : varlabel(varname));
 </script>
 
 <div class="map-control" onmouseleave={() => (open = false)}>
@@ -23,16 +18,17 @@
 
 	<details bind:open class="dropdown mainmenu" onmouseenter={() => (open = true)}>
 		<summary class:small class="button outline">
-			<!-- <div class="icon-spacer"><Icon height="none" width="none" icon="gridicons:line-graph" /></div> -->
+			<div class="summary-flex">
+				<InlineBlockIconify icon="gridicons:line-graph" size="1.2rem" />
 
-			{small ? "" : "Temperature"}
-			<DetailsOpenIcon {open} /></summary>
+				{label}
+				<DetailsOpenIcon {open} />
+			</div>
+		</summary>
 		<div class="card">
-			<!-- <ul> -->
-			<a> Ecoli </a>
-			<a> ph </a>
-			<a> Dissolved Oxygen </a>
-			<!-- </ul> -->
+			{#each varnames as vn}
+				<a class:bg-primary={varname === vn} onclick={() => (varname = vn)}>{varlabel(vn, true)}</a>
+			{/each}
 		</div>
 	</details>
 </div>
@@ -40,6 +36,10 @@
 <style>
 	.map-control {
 		z-index: 1001;
+		.card {
+			max-height: 500px;
+			overflow: auto;
+		}
 
 		.card a {
 			padding: 0.5rem 1rem;

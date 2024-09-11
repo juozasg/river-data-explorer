@@ -10,12 +10,11 @@
 	import SitesRegionsAutocomplete from "./SitesRegionsAutocomplete.svelte";
 
 	// import ArrowDropRight from '$src/components/icons/ArrowDropRight.svelte';
-	import DetailsOpenIcon from "$src/components/icons/DetailsOpenIcon.svelte";
-	import Icon from "@iconify/svelte";
-	import type { Site } from "$src/lib/types/site";
 	import { sites } from "$src/appstate/sites.svelte";
 	import { isDatasetEnabled, setEnabledDatasets, toggleDatasetEnable } from "$src/appstate/ui/layers.svelte";
+	import DetailsOpenIcon from "$src/components/icons/DetailsOpenIcon.svelte";
 	import { type MapLayersParams, defaultLayersParams } from "$src/lib/types/mapControls";
+	import type { Site } from "$src/lib/types/site";
 
 	let {
 		maxWidth = 500,
@@ -111,13 +110,21 @@
 	.map-control {
 		z-index: 1002;
 
+		:global(.inline-block-iconify) {
+			position: relative;
+			top: 1px;
+			left: 2px;
+			margin-right: 2px;
+		}
+
 		tt {
 			font-size: 0.85em;
 		}
 
 		.submenu :global(.details-icon) {
 			position: relative;
-			top: 2px;
+			top: 3px;
+			left: 3px;
 		}
 	}
 </style>
