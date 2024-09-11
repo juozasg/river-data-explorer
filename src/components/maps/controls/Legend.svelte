@@ -88,17 +88,8 @@
 
 <style>
 	.map-control {
-		/* position: absolute;
-		top: 10px;
-		right: 10px; */
-		/* width: calc(100% - 460px); */
-		/* width: 100%; */
 		flex-grow: 1;
-		height: 36px;
-		color: hsl(0, 0%, 21%);
-		background-color: hsl(0, 0%, 100%);
-		border: 1px solid hsl(0, 0%, 86%);
-		border-radius: 4px;
+
 
 		z-index: 1000;
 		padding-left: 1rem;
@@ -107,6 +98,7 @@
 		box-shadow: var(--box-shadow);
 
 		.legend {
+			box-sizing: border-box;
 			position: relative;
 			height: 100%;
 			width: 100%;
