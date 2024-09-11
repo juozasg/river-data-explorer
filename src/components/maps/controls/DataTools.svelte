@@ -4,6 +4,7 @@
 
 <script lang="ts">
 	import "$src/styles/map-controls.scss";
+
 	import SitesRegionsAutocomplete from "./SitesRegionsAutocomplete.svelte";
 
 	// import ArrowDropRight from '$src/components/icons/ArrowDropRight.svelte';
@@ -31,10 +32,10 @@
 	let open = $state(false);
 	let datasetsOpen = $state(false);
 
-	// $effect(() => {
-	// 	if (!open) open = true;
-	// 	datasetsOpen = true;
-	// });
+	$effect(() => {
+		if (!open) open = true;
+		datasetsOpen = true;
+	});
 </script>
 
 <div class="map-control" onmouseleave={() => (open = datasetsOpen = false)}>

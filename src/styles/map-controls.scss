@@ -9,19 +9,9 @@
 	color: hsl(0, 0%, 21%);
 	background-color: hsl(0, 0%, 100%);
 
-
 	--padding: 0.75rem;
 
-	.invisible-hover-target {
-		height: 60px;
-		width: 100%;
-		top: 0;
-		right: 0;
-		position: absolute;
-		opacity: 0;
-	}
-
-	details.dropdown {
+	details {
 		display: block;
 		border-radius: var(--border-radius);
 		padding: 0;
@@ -30,55 +20,67 @@
 
 		summary {
 			display: block;
+			list-style: none;
+
 			height: 33px;
+			font-size: 0.9rem;
+			font-weight: 300;
 			box-sizing: border-box;
 			border-radius: var(--border-radius);
 			font-weight: 500;
-			padding: 0.75rem 2rem 1rem 2rem;
+			// padding: 0.75rem 2rem 1rem 2rem;
 			border: none;
 			padding: 0;
 			margin: 0;
 		}
 
+		summary::-webkit-details-marker {
+			display: none;
+		}
+
 		summary.small {
 			padding-right: 1rem;
 		}
+
+		.card {
+			box-shadow: var(--box-shadow);
+			border-radius: var(--border-radius);
+			padding-bottom: 16px;
+		}
+
+		.card > label {
+			display: block;
+			padding: var(--padding);
+		}
 	}
 
-	.card {
-		box-shadow: var(--box-shadow);
-		border-radius: var(--border-radius);
-	}
-
-	.mainmenu > .card {
+	details.mainmenu > .card {
 		margin-top: 4px;
 	}
 
-	.card > label {
-		display: block;
-		padding: var(--padding);
-	}
-
-	.card,
 	details.submenu {
 		margin: 0;
 		padding: 0;
 		padding-bottom: 6px;
 		z-index: 1005;
 
-		.card {
-			position: absolute;
-			left: 12rem;
-			top: -2rem;
-		}
-	}
-
-	details.submenu {
 		width: 100%;
+		padding-bottom: 12px;
+
+
 		summary {
 			font-weight: 500;
 			padding: var(--padding);
 			padding-left: 2rem;
+			padding-bottom: 0.5rem;
+			cursor: pointer;
+			list-style: none;
+		}
+
+		.card {
+			position: absolute;
+			left: 140px;
+			top: -20px;
 		}
 	}
 
@@ -121,21 +123,13 @@
 		background-color: rgb(0 0 0/5%);
 	}
 
-	details.submenu {
-		summary {
-			cursor: pointer;
-			list-style: none;
-		}
-	}
 
-	.dropdown {
-		background-color: white;
-	}
-
-	details > summary {
-		list-style: none;
-	}
-	details > summary::-webkit-details-marker {
-		display: none;
+	.invisible-hover-target {
+		height: 60px;
+		width: 100%;
+		top: 0;
+		right: 0;
+		position: absolute;
+		opacity: 0;
 	}
 }

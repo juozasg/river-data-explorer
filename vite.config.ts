@@ -33,13 +33,13 @@ export default defineConfig({
 	// 	// environment: 'jsdom'
 	// },
 
-	css: {
-		preprocessorOptions: {
-			scss: {
-				additionalData: `
-				@use "src/styles/variables.scss" as *;
-				`
-			}
-		}
-	}
+	// css: {
+	// 	preprocessorOptions: {
+	// 		scss: {
+	// 			additionalData: `
+	// 			@use "src/styles/variables.scss" as *;
+	// 			`
+	// 		}
+	// 	}
+	// }
 })

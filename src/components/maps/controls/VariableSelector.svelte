@@ -1,5 +1,4 @@
 <script lang="ts">
-	import "$src/styles/map-controls.scss";
 
 	import { variablesMetadata } from "$src/appstate/variablesMetadata.svelte";
 	import DetailsOpenIcon from "$src/components/icons/DetailsOpenIcon.svelte";
@@ -35,7 +34,7 @@
 
 	<details bind:open class="dropdown mainmenu" onmouseenter={() => (open = true)}>
 		<summary class:small class="button outline">
-			<div class="icon-spacer"><Icon height="none" width="none" icon="solar:layers-outline" /></div>
+			<div class="icon-spacer"><Icon height="none" width="none" icon="gridicons:line-graph" /></div>
 
 			{small ? "" : "Temperature"}
 			<DetailsOpenIcon {open} /></summary>

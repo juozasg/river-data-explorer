@@ -1,4 +1,6 @@
 <script lang="ts">
+	import "$src/styles/variables.scss";
+	import "$src/styles/app.scss";
 	import { SvelteToast } from "@zerodevx/svelte-toast";
 
 	import {
