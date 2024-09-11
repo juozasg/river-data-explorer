@@ -38,7 +38,7 @@
 </script>
 
 <div class="map-control" onmouseleave={() => (open = datasetsOpen = false)}>
-	<div class="hover-target"></div>
+	<div class="invisible-hover-target"></div>
 
 	<details bind:open class="dropdown mainmenu" onmouseenter={() => (open = true)}>
 		<summary class:small class="button outline">

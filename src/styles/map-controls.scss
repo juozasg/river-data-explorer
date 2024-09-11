@@ -4,13 +4,10 @@
 	position: relative;
 	box-shadow: var(--box-shadow);
 	border-radius: var(--border-radius);
-	// height: 33px;
-
-
 
 	--padding: 0.75rem;
 
-	.hover-target {
+	.invisible-hover-target {
 		height: 60px;
 		width: 100%;
 		top: 0;
@@ -20,8 +17,10 @@
 	}
 
 	details.dropdown {
-		border-radius: inherit;
+		border-radius: var(--border-radius);
+
 		summary {
+			border-radius: var(--border-radius);
 			font-weight: 500;
 			padding: 0.75rem 2rem 1rem 2rem;
 		}
@@ -29,6 +28,11 @@
 		summary.small {
 			padding-right: 1rem;
 		}
+	}
+
+	.card {
+		box-shadow: var(--box-shadow);
+		border-radius: var(--border-radius);
 	}
 
 	.mainmenu > .card {
@@ -67,14 +71,12 @@
 		padding: 0;
 	}
 
-
 	.section-heading {
 		padding-left: 2rem;
 		margin-top: 0.5rem;
 		font-weight: 500;
 		display: inline-block;
 	}
-
 
 	.dataset-buttons {
 		width: 120px;

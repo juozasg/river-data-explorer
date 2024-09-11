@@ -64,7 +64,6 @@
 		left: 0;
 		display: flex;
 		gap: 10px;
-		border: 3px solid plum;
 		width: 100%;
 	}
 </style>
