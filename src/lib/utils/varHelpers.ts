@@ -26,12 +26,19 @@ export function varlabel(varname: string, units = false) {
 	return unit ? `${label} (${unit})` : label;
 }
 
+export function varlabelabbrev(varname: string) {
+	const label = varlabel(varname).replace(/-/g, '');
+	const words = label.split(/\s+/)
+	const wordLetters = Math.max(2, 6 - words.length);
+	return words.map((w: string) => w.slice(0, wordLetters)).join('');
+}
+
 export function varmin(varname: string) {
 	return variablesMetadata[varname]?.scale?.min ?? variablesMetadata['default']?.scale?.min ?? 0;
 }
 
 export function varmax(varname: string) {
-	if(varcategories(varname)) {
+	if (varcategories(varname)) {
 		return varcategories(varname)!.length - 1;
 	}
 	return variablesMetadata[varname]?.scale?.max ?? variablesMetadata['default']?.scale?.max ?? 10;
