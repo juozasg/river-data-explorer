@@ -1,103 +1,89 @@
 <script lang="ts">
-	import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
-	import { aremove } from '$src/lib/utils';
-	import { varlabel } from '$src/lib/utils/varHelpers';
-	import { onMount } from 'svelte';
+	import "$src/styles/map-controls.scss";
 
-	const varnames = aremove(Object.keys(variablesMetadata), 'default');
-	let { varname = $bindable('temp') }: { varname: string } = $props();
+	import { variablesMetadata } from "$src/appstate/variablesMetadata.svelte";
+	import DetailsOpenIcon from "$src/components/icons/DetailsOpenIcon.svelte";
+	import { aremove } from "$src/lib/utils";
+	import { varlabel } from "$src/lib/utils/varHelpers";
+	import Icon from "@iconify/svelte";
+	import { onMount } from "svelte";
 
+	const varnames = aremove(Object.keys(variablesMetadata), "default");
+	let { varname = $bindable("temp"), small = false }: { varname: string; small?: boolean } = $props();
 
-	let showVarsDropdown = $state(false);
+	let open = $state(false);
 
-	onMount(() => {
-		document.body.addEventListener('click', (e) => {
-			showVarsDropdown = false;
-		});
-	});
+	// onMount(() => {
+	// 	document.body.addEventListener('click', (e) => {
+	// 		showVarsDropdown = false;
+	// 	});
+	// });
 
-	const dropdownToggle = (e: Event) => {
-		e.stopPropagation();
-		showVarsDropdown = !showVarsDropdown;
-	};
+	// const dropdownToggle = (e: Event) => {
+	// 	e.stopPropagation();
+	// 	showVarsDropdown = !showVarsDropdown;
+	// };
 
-	const onclick = (e: Event) => {
-		console.log(e);
-		e.stopPropagation();
-	};
+	// const onclick = (e: Event) => {
+	// 	console.log(e);
+	// 	e.stopPropagation();
+	// };
 </script>
 
-<div class="map-control dropdown" class:is-active={showVarsDropdown}>
-	<button class="button">Tempssss</button>
-	<!-- <div class="dropdown-trigger">
-		<button
-			class="button"
-			aria-haspopup="true"
-			aria-controls="dropdown-menu3"
-			onclick={dropdownToggle}
-		>
-			<span class="dropdown-label">{varlabel(varname, false)}</span>
-			<span class="dropdown-arrow"></span>
-		</button>
-	</div>
-	<div class="dropdown-menu" id="dropdown-menu3" role="menu">
-		<div class="dropdown-content">
-			<form>
-				{#each varnames as vname}
-					<button class="dropdown-item" onclick={() => varname = vname}>
-						<label class="radio" >
-							<input
-								type="radio"
-								name="variable"
-								value={vname}
-								checked={varname == vname}
-								/>
-							<span>{varlabel(vname, true)}</span>
-						</label>
-					</button>
-				{/each}
-			</form>
+<div class="map-control" onmouseleave={() => (open = false)}>
+	<div class="hover-target"></div>
+
+	<details bind:open class="dropdown mainmenu" onmouseenter={() => (open = true)}>
+		<summary class:small class="button outline">
+			<div class="icon-spacer"><Icon height="none" width="none" icon="solar:layers-outline" /></div>
+
+			{small ? "" : "Temperature"}
+			<DetailsOpenIcon {open} /></summary>
+		<div class="card">
+			<!-- <ul> -->
+			<a> Ecoli </a>
+			<a> ph </a>
+			<a> Dissolved Oxygen </a>
+			<!-- </ul> -->
 		</div>
-	</div> -->
+	</details>
 </div>
 
 <style>
 	.map-control {
-		height: 40px;
-
 		z-index: 1001;
-		position: absolute;
-		top: 10px;
-		left: 130px;
 
-		&.is-active {
-			height: 100%;
-		}
-
-		.dropdown-trigger {
-			height: 40px;
-		}
-
-		.dropdown-menu {
-			height: 100%;
-			top: 40px;
-			width: 24rem !important;
-		}
-
-		.dropdown-content {
-			height: calc(100% - 60px);
-			overflow-y: scroll;
-			z-index: 10002;
-			position: relative;
-		}
-
-		button.dropdown-item:hover {
-			background-color: hsl(0, 0%, 96%);
-			color: hsl(0, 0%, 4%);
-		}
-
-		.dropdown-item {
+		.card a {
+			padding: 0.5rem 1rem;
+			display: block;
 			cursor: pointer;
+			color: var(--font-color);
+			&:hover {
+				background-color: rgb(0 0 0/5%);
+			}
+		}
+
+		:global(.details-open-icon, .details-closed-icon) {
+			position: relative;
+			top: 3px;
+			left: 2px;
+		}
+
+		.icon-spacer {
+			width: 1rem;
+			height: 1px;
+			position: relative;
+			display: inline-block;
+			:global(.iconify) {
+				position: absolute;
+				/* top: 4px; */
+				/* left: -2px; */
+				top: -15px;
+				left: -12px;
+				width: 2rem;
+				height: 2rem;
+				margin-right: 0.5rem;
+			}
 		}
 	}
 </style>

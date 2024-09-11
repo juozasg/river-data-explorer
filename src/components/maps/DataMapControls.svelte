@@ -18,7 +18,7 @@
 		layersParams: MapLayersParams;
 		varname?: string;
 		vardate?: Date;
-		mapWidth?: number
+		mapWidth?: number;
 
 		searchItemSelect?: (item: Site) => void;
 	} & Partial<MapLibreMapProps>;
@@ -32,7 +32,7 @@
 		mapWidth = 400,
 		layersParams = $bindable(defaultLayersParams),
 		varname = $bindable("temp"),
-		vardate = $bindable(UTCDayDate()),
+		vardate = $bindable(UTCDayDate())
 	}: Props = $props();
 
 	const startDate = $derived(sitesEarliestDate(sites));
@@ -43,17 +43,28 @@
 	export function setInternalDate(d: Date) {
 		if (timeSelector) timeSelector.setInternalDate(d);
 	}
-
 </script>
 
-	<div class="controls">
-		<MapLatLonDebug />
+<div class="controls">
+	<MapLatLonDebug />
+	<div class="top-controls">
 		<DataTools small maxWidth={mapWidth} {selectedSite} {searchItemSelect} bind:layersParams />
 		<VariableSelector bind:varname />
 		<Legend {varname} />
-		<!-- <TimeSelector {startDate} {endDate}	 {validDates} bind:vardate bind:this={timeSelector} /> -->
 	</div>
+	<!-- <TimeSelector {startDate} {endDate}	 {validDates} bind:vardate bind:this={timeSelector} /> -->
+</div>
 
 <style>
-</style>
 
+	.top-controls {
+		position: absolute;
+		padding: 10px;
+		top: 0;
+		left: 0;
+		display: flex;
+		gap: 10px;
+		border: 3px solid plum;
+		width: 100%;
+	}
+</style>

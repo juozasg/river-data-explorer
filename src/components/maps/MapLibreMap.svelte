@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as ml from 'maplibre-gl';
-
 	import 'maplibre-gl/dist/maplibre-gl.css';
 
 	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
@@ -113,6 +112,10 @@
 
 		:global(.maplibregl-ctrl-group button+button) {
 			border-radius: 0;
+		}
+
+		:global(.maplibregl-ctrl-group:not(:empty)) {
+			box-shadow: var(--box-shadow);
 		}
 	}
 </style>

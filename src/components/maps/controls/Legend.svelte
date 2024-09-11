@@ -33,7 +33,6 @@
 		return (maxValueNumChars + unitNumChars + 3) * 12;
 	});
 
-	let legendControl = $state<HTMLDivElement>();
 	let legendWidth = $state(200);
 
 	const numTicks = $derived.by(() => {
@@ -60,8 +59,7 @@
 	nt: {numTicks} {tickValues}
 </pre> -->
 
-<div class="map-control" bind:this={legendControl}>
-	<ElementResizeObserver element={legendControl} bind:width={legendWidth} />
+<div class="map-control" bind:clientWidth={legendWidth}>
 	<div class="legend">
 		<img class="legend-bar" src={dataUrl} alt="legend color bar"/>
 
@@ -90,11 +88,13 @@
 
 <style>
 	.map-control {
-		position: absolute;
+		/* position: absolute;
 		top: 10px;
-		right: 10px;
-		width: calc(100% - 460px);
-		height: 2.5rem;
+		right: 10px; */
+		/* width: calc(100% - 460px); */
+		/* width: 100%; */
+		flex-grow: 1;
+		height: 36px;
 		color: hsl(0, 0%, 21%);
 		background-color: hsl(0, 0%, 100%);
 		border: 1px solid hsl(0, 0%, 86%);
@@ -103,6 +103,8 @@
 		z-index: 1000;
 		padding-left: 1rem;
 		padding-right: 1rem;
+
+		box-shadow: var(--box-shadow);
 
 		.legend {
 			position: relative;

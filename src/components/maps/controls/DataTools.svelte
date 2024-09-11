@@ -3,7 +3,7 @@
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 
 <script lang="ts">
-	import "$src/styles/map-dropdown.scss";
+	import "$src/styles/map-controls.scss";
 	import SitesRegionsAutocomplete from "./SitesRegionsAutocomplete.svelte";
 
 	// import ArrowDropRight from '$src/components/icons/ArrowDropRight.svelte';
@@ -103,6 +103,8 @@
 
 <style>
 	.map-control {
+		z-index: 1002;
+
 		:global(.details-open-icon, .details-closed-icon) {
 			position: relative;
 			top: 3px;
