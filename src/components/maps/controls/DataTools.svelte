@@ -3,6 +3,8 @@
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 
 <script lang="ts">
+	import InlineBlockIconify from "./InlineBlockIconify.svelte";
+
 	import "$src/styles/map-controls.scss";
 
 	import SitesRegionsAutocomplete from "./SitesRegionsAutocomplete.svelte";
@@ -32,10 +34,10 @@
 	let open = $state(false);
 	let datasetsOpen = $state(false);
 
-	$effect(() => {
-		if (!open) open = true;
-		datasetsOpen = true;
-	});
+	// $effect(() => {
+	// 	if (!open) open = true;
+	// 	datasetsOpen = true;
+	// });
 </script>
 
 <div class="map-control" onmouseleave={() => (open = datasetsOpen = false)}>
@@ -43,10 +45,13 @@
 
 	<details bind:open class="dropdown mainmenu" onmouseenter={() => (open = true)}>
 		<summary class:small class="button outline">
-			<div class="icon-spacer"><Icon height="none" width="none" icon="solar:layers-outline" /></div>
+			<div class="summary-flex">
+				<InlineBlockIconify icon="solar:layers-outline" size="1.2rem" />
 
-			{small ? "" : "Data"}
-			<DetailsOpenIcon {open} /></summary>
+				{small ? "" : "Data"}
+				<DetailsOpenIcon {open} />
+			</div>
+		</summary>
 		<div class="card">
 			<!-- DATASETS SUBMENU -->
 			<details
@@ -106,27 +111,13 @@
 	.map-control {
 		z-index: 1002;
 
-		:global(.details-open-icon, .details-closed-icon) {
-			position: relative;
-			top: 3px;
-			left: 2px;
+		tt {
+			font-size: 0.85em;
 		}
 
-		.icon-spacer {
-			width: 1rem;
-			height: 1px;
+		.submenu :global(.details-icon) {
 			position: relative;
-			display: inline-block;
-			:global(.iconify) {
-				position: absolute;
-				/* top: 4px; */
-				/* left: -2px; */
-				top: -15px;
-				left: -12px;
-				width: 2rem;
-				height: 2rem;
-				margin-right: 0.5rem;
-			}
+			top: 2px;
 		}
 	}
 </style>

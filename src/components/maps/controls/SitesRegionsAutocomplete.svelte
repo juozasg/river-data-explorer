@@ -35,8 +35,8 @@
 	});
 
 	const itemSortFunction = (a: Site, b: Site) => {
-		const dsComp = a.dataset.localeCompare(b.dataset)
-		if(dsComp !== 0) return dsComp;
+		const dsComp = a.dataset.localeCompare(b.dataset);
+		if (dsComp !== 0) return dsComp;
 		return a.num - b.num;
 	};
 </script>
@@ -65,7 +65,61 @@
 
 <style>
 	.sites-regions-autocomplete {
+		padding: 0;
+		margin: 0;
+
+		:global(input.autocomplete-input) {
+			padding: 0.5rem !important;
+			margin: 0 !important;
+			font-size: 1rem !important;
+			border: none !important;
+
+		}
+
+		:global(.autocomplete-list) {
+			position: absolute;
+			width: auto;
+			max-width: calc(var(--maxWidth, 100%) - 60px);
+			top: 2rem !important;
+			border: none !important;
+			border-top: 1px solid #ccc !important;
+
+			padding: 0;
+
+			font-size: 1rem;
+
+			:global(.autocomplete-list-item) {
+				padding: 0.6rem 0.7rem;
+				margin: 0;
+				/* margin-left: 0./5rem; */
+				/* margin-right: 0.5rem; */
+
+				:global(p) {
+					margin: 0;
+					padding: 0;
+
+					:global(strong) {
+						font-size: 14px;
+					}
+
+					:global(.siteid) {
+						font-size: 0.8em;
+						color: #666;
+					}
+				}
+			}
+
+			:global(.autocomplete-list-item.selected) {
+				background-color: #f0f0f0;
+				color: black;
+			}
+		}
+
 		:global(.autocomplete.select) {
+			width: 100%;
+			max-width: 24rem;
+			position: relative;
+
 			:global(::-webkit-scrollbar) {
 				-webkit-appearance: none;
 			}
@@ -74,56 +128,10 @@
 				width: 10px;
 			}
 
-
 			:global(::-webkit-scrollbar-thumb) {
 				border-radius: 8px;
 				border: 2px solid white; /* should match background, can't be transparent */
 				background-color: rgba(0, 0, 0, 0.5);
-			}
-
-			margin-left: 14px;
-			padding-top: 1rem;
-			padding-right: 1rem;
-			padding-bottom: 0.5rem;
-
-			max-width: 24rem;
-			position: relative;
-
-			:global(.autocomplete-list) {
-				position: absolute;
-				width: auto;
-				max-width: calc(var(--maxWidth, 100%) - 68px);
-				top: 48px !important;
-
-				padding: 0;
-
-				font-size: 1em;
-
-				:global(.autocomplete-list-item) {
-					padding: 0.6rem 0.7rem;
-					margin: 0;
-					/* margin-left: 0./5rem; */
-					/* margin-right: 0.5rem; */
-
-					:global(p) {
-						margin: 0;
-						padding: 0;
-
-						:global(strong) {
-							font-size: 14px;
-						}
-
-						:global(.siteid) {
-							font-size: 0.8em;
-							color: #666;
-						}
-					}
-				}
-
-				:global(.autocomplete-list-item.selected) {
-					background-color: #f0f0f0;
-					color: black;
-				}
 			}
 		}
 	}

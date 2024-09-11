@@ -48,7 +48,7 @@
 <div class="controls">
 	<MapLatLonDebug />
 	<div class="top-controls">
-		<DataTools small maxWidth={mapWidth} {selectedSite} {searchItemSelect} bind:layersParams />
+		<DataTools  maxWidth={mapWidth} {selectedSite} {searchItemSelect} bind:layersParams />
 		<VariableSelector bind:varname />
 		<Legend {varname} />
 	</div>

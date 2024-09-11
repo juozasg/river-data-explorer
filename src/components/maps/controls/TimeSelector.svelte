@@ -173,7 +173,7 @@
 		bottom: 0px;
 		left: 0px;
 		width: calc(100% - 26px);
-		height: 36px;
+		height: 29px;
 		margin: 1rem;
 
 		margin-bottom: 18px;
@@ -184,6 +184,7 @@
 		background-color: hsl(0, 0%, 100%);
 		border-color: hsl(0, 0%, 86%);
 		border-width: 1px;
+		border: none !important;
 		color: hsl(0, 0%, 21%);
 
 		&:hover {

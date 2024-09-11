@@ -1,34 +1,33 @@
 .map-control {
 	display: block;
+	font-size: 1rem;
 	font-weight: 300;
 	position: relative;
 	box-shadow: var(--box-shadow);
 	border-radius: var(--border-radius);
 	border: none;
-	height: 33px;
+	height: 29px;
 	color: hsl(0, 0%, 21%);
 	background-color: hsl(0, 0%, 100%);
 
-	--padding: 0.75rem;
-
 	details {
+		height: 100%;;
 		display: block;
 		border-radius: var(--border-radius);
 		padding: 0;
 		margin: 0;
 		border: none;
+		cursor: pointer;
+
 
 		summary {
 			display: block;
 			list-style: none;
 
-			height: 33px;
-			font-size: 0.9rem;
 			font-weight: 300;
 			box-sizing: border-box;
 			border-radius: var(--border-radius);
 			font-weight: 500;
-			// padding: 0.75rem 2rem 1rem 2rem;
 			border: none;
 			padding: 0;
 			margin: 0;
@@ -38,24 +37,56 @@
 			display: none;
 		}
 
-		summary.small {
-			padding-right: 1rem;
-		}
 
 		.card {
+			padding: 0;
+			margin: 0;
 			box-shadow: var(--box-shadow);
 			border-radius: var(--border-radius);
-			padding-bottom: 16px;
 		}
 
-		.card > label {
+		.card > label, .card > .section-heading, .submenu > summary {
 			display: block;
-			padding: var(--padding);
+			padding: 6px !important;
+			padding-left: 10px !important;
+		}
+
+		.all-button, .none-button {
+			padding: 6px !important;
+			padding-left: 10px !important;
+			box-sizing: border-box;
+		}
+
+		.section-heading {
+			font-weight: 500;
 		}
 	}
 
-	details.mainmenu > .card {
-		margin-top: 4px;
+	details.mainmenu {
+		.card {
+			top: 36px;
+		}
+
+		& > summary {
+			height: 100%;
+		}
+
+
+		.summary-flex {
+			display: flex;
+			padding-left: 6px;
+			padding-right: 6px;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+			gap: 6px;
+			// border: 3px solid rgb(234, 15, 15);
+			width: auto;
+			height: 100%;
+		}
+
+
+
 	}
 
 	details.submenu {
@@ -65,22 +96,19 @@
 		z-index: 1005;
 
 		width: 100%;
-		padding-bottom: 12px;
 
 
 		summary {
 			font-weight: 500;
 			padding: var(--padding);
-			padding-left: 2rem;
-			padding-bottom: 0.5rem;
+
 			cursor: pointer;
 			list-style: none;
 		}
 
 		.card {
-			position: absolute;
-			left: 140px;
-			top: -20px;
+			left: 120px;
+			top: -40px;
 		}
 	}
 
@@ -89,12 +117,7 @@
 		padding: 0;
 	}
 
-	.section-heading {
-		padding-left: 2rem;
-		margin-top: 0.5rem;
-		font-weight: 500;
-		display: inline-block;
-	}
+
 
 	.dataset-buttons {
 		width: 120px;
@@ -104,9 +127,6 @@
 			display: inline-block;
 			margin: 0;
 			padding: 0;
-			padding-top: 1rem;
-			padding-bottom: 1rem;
-
 			text-align: center;
 			width: 60px;
 		}
@@ -122,7 +142,6 @@
 	.dataset-buttons a:hover {
 		background-color: rgb(0 0 0/5%);
 	}
-
 
 	.invisible-hover-target {
 		height: 60px;

@@ -5,23 +5,12 @@
 	import { aremove } from "$src/lib/utils";
 	import { varlabel } from "$src/lib/utils/varHelpers";
 	import Icon from "@iconify/svelte";
-	import { onMount } from "svelte";
 
 	const varnames = aremove(Object.keys(variablesMetadata), "default");
 	let { varname = $bindable("temp"), small = false }: { varname: string; small?: boolean } = $props();
 
 	let open = $state(false);
 
-	// onMount(() => {
-	// 	document.body.addEventListener('click', (e) => {
-	// 		showVarsDropdown = false;
-	// 	});
-	// });
-
-	// const dropdownToggle = (e: Event) => {
-	// 	e.stopPropagation();
-	// 	showVarsDropdown = !showVarsDropdown;
-	// };
 
 	// const onclick = (e: Event) => {
 	// 	console.log(e);
@@ -34,7 +23,7 @@
 
 	<details bind:open class="dropdown mainmenu" onmouseenter={() => (open = true)}>
 		<summary class:small class="button outline">
-			<div class="icon-spacer"><Icon height="none" width="none" icon="gridicons:line-graph" /></div>
+			<!-- <div class="icon-spacer"><Icon height="none" width="none" icon="gridicons:line-graph" /></div> -->
 
 			{small ? "" : "Temperature"}
 			<DetailsOpenIcon {open} /></summary>
@@ -59,29 +48,6 @@
 			color: var(--font-color);
 			&:hover {
 				background-color: rgb(0 0 0/5%);
-			}
-		}
-
-		:global(.details-open-icon, .details-closed-icon) {
-			position: relative;
-			top: 3px;
-			left: 2px;
-		}
-
-		.icon-spacer {
-			width: 1rem;
-			height: 1px;
-			position: relative;
-			display: inline-block;
-			:global(.iconify) {
-				position: absolute;
-				/* top: 4px; */
-				/* left: -2px; */
-				top: -15px;
-				left: -12px;
-				width: 2rem;
-				height: 2rem;
-				margin-right: 0.5rem;
 			}
 		}
 	}
