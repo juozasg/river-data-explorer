@@ -36,11 +36,14 @@
 
 	const small = $derived(mapWidth <= 550);
 
-	const startDate = $derived(sitesEarliestDate(sites));
-	const endDate = $derived(sitesLatestDate(sites));
+	// const startDate = $derived(sitesEarliestDate(sites));
+	// const endDate = $derived(sitesLatestDate(sites));
 	let validDates: Date[] = $derived.by(() => {
 		return sitesValidDates(sites, varname);
 	});
+
+	const startDate = $derived(validDates[0] || UTCDayDate('1990-01-01'));
+	const endDate = $derived(validDates[validDates.length - 1] || UTCDayDate());
 
 	let timeSelector = $state<TimeSelector>();
 	export function setInternalDate(d: Date) {

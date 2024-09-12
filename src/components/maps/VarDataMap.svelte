@@ -1,7 +1,7 @@
 <script lang="ts">
+	import * as ml from "maplibre-gl";
 	import DataMapControls from "./DataMapControls.svelte";
 
-	import * as ml from "maplibre-gl";
 	import VarDataMarkers from "./VarDataMarkers.svelte";
 
 	import type { MapLibreMapProps } from "$src/lib/types/components";

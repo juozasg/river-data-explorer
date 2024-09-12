@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { daysInMonth, seqid } from "$src/lib/utils";
+	import { daysInMonth, UTCDayDate } from "$src/lib/utils";
+	import { closestTo } from "date-fns";
 
-	export function setYMD(year: number, mon: number, day: number) {
-		console.log("setYMD", year, mon, day);
-		selectedYear = year;
-		selectedMon = mon;
-		selectedDay = day;
+	export function setSelectedDate(date: Date) {
+		selectedYear = date.getUTCFullYear();
+		selectedMon = date.getUTCMonth();
+		selectedDay = date.getUTCDate();
 	}
 
-	const { startDate, endDate, validDates }: { startDate: Date; endDate: Date; validDates: Date[] } = $props();
+	const { validDates }: { validDates: Date[] } = $props();
 
 	const validYears = $derived(Array.from(new Set(validDates.map((d) => d.getUTCFullYear()))));
 
@@ -23,27 +23,23 @@
 		);
 	};
 
-	$effect(() => {
-		// console.log(" ---> DateYMDSelects startDate ", startDate.toISOString(), "endDate", endDate.toISOString());
-		console.log(" ---> DateYMDSelects validDates ", validDates.length);
+	const yearsArray = $derived.by(() => {
+		if (validDates.length === 0) return [1990];
+		return [...new Set(validDates.map((d) => d.getUTCFullYear()))].sort();
 	});
 
-	const startYear = $derived(startDate.getUTCFullYear());
-	const endYear = $derived(endDate.getUTCFullYear());
-	const yearsArray = $derived(Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i));
-
-	let selectedYear: number = $state(endDate.getUTCFullYear());
-	let selectedMon: number = $state(endDate.getUTCMonth());
-	let selectedDay: number = $state(endDate.getUTCDate());
+	let selectedYear: number = $state(UTCDayDate().getUTCFullYear());
+	let selectedMon: number = $state(UTCDayDate().getUTCMonth());
+	let selectedDay: number = $state(UTCDayDate().getUTCDate());
 	let daysInSelectedMonth = $derived(daysInMonth(selectedYear, selectedMon));
 
-	export const selectedDate = () => new Date(Date.UTC(selectedYear, selectedMon, selectedDay));
+	$effect(() => {
+		const closestValid = closestTo(selectedDate(), validDates);
+		console.log("closestValid", closestValid);
+		if (closestValid) setSelectedDate(closestValid);
+	});
 
-	export function setSelectedDate(date: Date) {
-		selectedYear = date.getUTCFullYear();
-		selectedMon = date.getUTCMonth();
-		selectedDay = date.getUTCDate();
-	}
+	export const selectedDate = () => new Date(Date.UTC(selectedYear, selectedMon, selectedDay));
 
 	$effect(() => {
 		if (selectedDay > daysInSelectedMonth) {
@@ -55,17 +51,18 @@
 	let daysSelectEl = $state<HTMLSelectElement>();
 
 	const validateUserChange = () => {
-		const selectedMonthOption = monthsSelectEl?.querySelector(
-			'option[value="' + selectedMon + '"]'
-		) as HTMLOptionElement;
-		const selectedDayOption = daysSelectEl?.querySelector('option[value="' + selectedDay + '"]') as HTMLOptionElement;
-		// console.log('monsEl', monthsSelectEl, selectedMonthOption);
-		if (selectedMonthOption?.disabled || selectedDayOption?.disabled) {
-			const validDate = validDates.find((d) => d.getUTCFullYear() === selectedYear);
-			if (validDate) {
-				setSelectedDate(validDate);
-			}
-		}
+		// closestValid = validDates.find((d) => d.getUTCFullYear() === selectedYear);
+		// const selectedMonthOption = monthsSelectEl?.querySelector(
+		// 	'option[value="' + selectedMon + '"]'
+		// ) as HTMLOptionElement;
+		// const selectedDayOption = daysSelectEl?.querySelector('option[value="' + selectedDay + '"]') as HTMLOptionElement;
+		// // console.log('monsEl', monthsSelectEl, selectedMonthOption);
+		// if (selectedMonthOption?.disabled || selectedDayOption?.disabled) {
+		// 	const validDate = validDates.find((d) => d.getUTCFullYear() === selectedYear);
+		// 	if (validDate) {
+		// 		setSelectedDate(validDate);
+		// 	}
+		// }
 	};
 
 	const monthThreeLetterNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

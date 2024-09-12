@@ -113,7 +113,7 @@
 		step={86400000}
 		onchange={snapToValidDate} /> -->
 
-	<DateYMDSelects {startDate} {endDate} {validDates} bind:this={ymdSelector} />
+	<DateYMDSelects {validDates} bind:this={ymdSelector} />
 </div>
 
 <style>
