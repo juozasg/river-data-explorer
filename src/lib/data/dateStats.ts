@@ -1,12 +1,9 @@
-import * as aq from 'arquero';
 
 import { sitesTables } from "$src/appstate/data/datasets.svelte";
-import { sites } from "$src/appstate/sites.svelte";
-import type Column from "arquero/dist/types/table/column";
-import type { Site } from "../types/site";
-import { fmtDateISO, UTCDayDate } from "../utils";
-import { concatTablesAllColumns } from "./tableHelpers";
 import type ColumnTable from "arquero/dist/types/table/column-table";
+import type { Site } from "../types/site";
+import { UTCDayDate } from "../utils";
+import { all } from "arquero";
 
 export function sitesEarliestDate(sites: Site[]): Date {
 	const tables = sites.map((s) => sitesTables.get(s.id)).filter((t) => t);
@@ -32,19 +29,24 @@ export function sitesValidDates(sites: Site[], varname: string): Date[] {
 	const fullTables = sites.map((s) => sitesTables.get(s.id))
 		.filter((t) => t)
 		.filter((t) => t?.columnNames().includes(varname) && t?.columnNames().includes('date') && t?.numRows() > 0) as ColumnTable[];
+
 	const allDatesSet = new Set<number>();
 
+	let totalRows = 0;
 	fullTables.forEach((t) => {
+		totalRows += t.numRows();
+		// console.log(first)
 		const data = t.data() as any;
 		for (let i = 0; i < t.numRows(); i++) {
 			const val = t.get(varname, i);
 			if (val !== undefined && val !== null && val !== '') {
-					allDatesSet.add(t.get('date', i).valueOf());
+				allDatesSet.add(t.get('date', i).valueOf());
 			}
 		}
 	});
 
 	const allDates = [...allDatesSet];
+
 	allDates.sort((a, b) => a - b);
 
 	return allDates.map((d) => new Date(d));

@@ -112,6 +112,11 @@ export function oneMonthAgo() {
 
 
 export function dateEqualYMD(date1: Date, date2: Date): boolean {
+	if (!date1 || !date2) return false;
+	if(!date1.getUTCFullYear || !date2.getUTCFullYear) {
+		console.warn('messed up dates', date1, date2);
+		return false;
+	}
 	return date1.getUTCFullYear() === date2.getUTCFullYear() &&
 		date1.getUTCMonth() === date2.getUTCMonth() &&
 		date1.getUTCDate() === date2.getUTCDate();

@@ -18,9 +18,9 @@
 		open = true;
 	};
 
-	$effect(() => {
-		console.log("open", open);
-	});
+	// $effect(() => {
+	// 	console.log("open", open);
+	// });
 </script>
 
 <div class="map-control" {onmouseleave}>

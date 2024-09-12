@@ -1,3 +1,5 @@
+import { toDate } from 'date-fns'
+
 import { SvelteMap } from 'svelte/reactivity';
 import * as aq from 'arquero';
 
@@ -10,6 +12,8 @@ import { UTCDayDate } from '$src/lib/utils';
 
 export type SiteId = string;
 export const sitesTables: Map<SiteId, ColumnTable> = new SvelteMap();
+
+export const totalRecords = () => [...sitesTables.values()].reduce((acc, tbl) => acc + tbl.numRows(), 0);
 
 
 export async function loadDatasets() {
@@ -34,6 +38,10 @@ export async function loadDatasets() {
 		r.date = r.date.trim();
 		// no siteTables with empty basic data will be produced
 		if (!r.siteId || !r.date) {
+			continue;
+		}
+
+		if(r.siteId !== 'ecoli-1') {
 			continue;
 		}
 
@@ -67,7 +75,7 @@ export async function loadDatasets() {
 
 	(window as any)['aq'] = aq;
 	(window as any)['tables'] = sitesTables;
-	console.log('window.aq', aq);
+	// console.log('window.aq', aq);
 	console.log('window.tables', sitesTables);
 
 	// multi site stats same as this but s1tbl.concat(s2tbl).orderby('date') -- for all sites using reduce
@@ -78,8 +86,8 @@ export async function loadDatasets() {
 function parseValue(key: string, value: string): number | Date | string | undefined {
 	value = value.trim();
 	if (key == 'date') {
-		return UTCDayDate(value);
-		// return new Date(Date.UTC(tzd.getUTCFullYear(), tzd.getUTCMonth(), tzd.getUTCDate()));
+		const d = UTCDayDate(toDate(value));
+		return d;
 	}
 
 	const isCategorical = !!(variablesMetadata[key]?.categories);

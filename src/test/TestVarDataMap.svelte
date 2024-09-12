@@ -9,7 +9,7 @@
 	let varDataMap = $state<VarDataMap>();
 
 	$effect(() => {
-		console.log("TEST selectedSite", selectedSite);
+		// console.log("TEST selectedSite", selectedSite);
 	});
 
 	$effect(() => {
@@ -21,7 +21,7 @@
 </script>
 
 <!-- <div style="height: 1000px;"></div> -->
-<div style="position: relative; height: 500px; width: 360px; margin: 2rem">
+<div style="position: relative; height: 500px; width: 550px; margin: 2rem">
 	<VarDataMap
 		{selectedSite}
 		dataSelection={{}}
@@ -37,3 +37,23 @@
 			selectedSite = item;
 		}} />
 </div>
+
+
+<span class="map-attribution"> Map Sources: Esri, TomTom, Garmin, FAO, NOAA, USGS, © OpenStreetMap contributors, and the GIS User Community</span>
+
+<style>
+	.map-attribution {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		font-size: 0.8rem;
+		background-color: white;
+		color: #555;
+		/* padding: 0.5rem; */
+		margin: 0;
+		padding: 0;
+		margin-left: 0.5rem;
+		/* overflow: scroll; */
+
+	}
+</style>

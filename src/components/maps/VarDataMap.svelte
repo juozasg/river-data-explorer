@@ -2,26 +2,20 @@
 	import DataMapControls from "./DataMapControls.svelte";
 
 	import * as ml from "maplibre-gl";
-	import MapLatLonDebug from "./MapLatLonDebug.svelte";
 	import VarDataMarkers from "./VarDataMarkers.svelte";
 
 	import type { MapLibreMapProps } from "$src/lib/types/components";
 	import MapLibreMap from "./MapLibreMap.svelte";
 
+	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
 	import { MapFeatureSelectionState, toggleHoveredFeatureState } from "$src/appstate/map/featureState.svelte";
 	import { sites as globalSites, Sites } from "$src/appstate/sites.svelte";
-	import { sitesEarliestDate, sitesLatestDate, sitesValidDates } from "$src/lib/data/dateStats";
+	import { setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
 	import { defaultLayersParams, type MapLayersParams } from "$src/lib/types/mapControls";
 	import type { Site } from "$src/lib/types/site";
 	import { aremove, UTCDayDate } from "$src/lib/utils";
 	import { onMount } from "svelte";
-	import Legend from "./controls/Legend.svelte";
-	import TimeSelector from "./controls/TimeSelector.svelte";
-	import VariableSelector from "./controls/VariableSelector.svelte";
 	import VarDataHoveredFeatures from "./VarDataHoveredFeatures.svelte";
-	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
-	import { setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
-	import DataTools from "./controls/DataTools.svelte";
 
 	type Props = {
 		dataSelection: DataSelectionState;

@@ -11,6 +11,7 @@
 	import Legend from "./controls/Legend.svelte";
 	import TimeSelector from "./controls/TimeSelector.svelte";
 	import VariableSelector from "./controls/VariableSelector.svelte";
+	import { totalRecords } from "$src/appstate/data/datasets.svelte";
 
 	type Props = {
 		sites: Site[];
@@ -33,11 +34,13 @@
 		vardate = $bindable(UTCDayDate())
 	}: Props = $props();
 
-	const small = $derived(mapWidth < 500);
+	const small = $derived(mapWidth <= 550);
 
 	const startDate = $derived(sitesEarliestDate(sites));
 	const endDate = $derived(sitesLatestDate(sites));
-	let validDates: Date[] = $derived(sitesValidDates(sites, varname));
+	let validDates: Date[] = $derived.by(() => {
+		return sitesValidDates(sites, varname);
+	});
 
 	let timeSelector = $state<TimeSelector>();
 	export function setInternalDate(d: Date) {
@@ -52,7 +55,7 @@
 		<VariableSelector {small} bind:varname />
 		<Legend {varname} />
 	</div>
-	<!-- <TimeSelector {startDate} {endDate}	 {validDates} bind:vardate bind:this={timeSelector} /> -->
+	<TimeSelector {startDate} {endDate} {validDates} bind:vardate bind:this={timeSelector} />
 </div>
 
 <style>

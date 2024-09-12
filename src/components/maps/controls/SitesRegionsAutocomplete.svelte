@@ -28,7 +28,7 @@
 	};
 
 	$effect(() => {
-		console.log("autocomplete selected item", selectedSite);
+		// console.log("autocomplete selected item", selectedSite);
 		if (searchItemSelect && selectedSite) {
 			searchItemSelect(selectedSite);
 		}
@@ -123,24 +123,6 @@
 			width: 100%;
 			max-width: 24rem;
 			position: relative;
-
-			/* :global(::-webkit-scrollbar) {
-				-webkit-appearance: none;
-				width: 22px;
-			} */
-
-			/* :global(::-webkit-scrollbar:vertical) {
-				width: 4px;
-			}
-			:global(::-webkit-scrollbar:horizontal) {
-				width: 4px;
-			} */
-
-			/* :global(::-webkit-scrollbar-thumb) {
-				border-radius: 1px;
-				border: 2px solid white;
-				background-color: rgba(0, 0, 0, 0.5);
-			} */
 		}
 	}
 </style>

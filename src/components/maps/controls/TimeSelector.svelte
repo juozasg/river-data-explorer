@@ -1,8 +1,8 @@
 <script lang="ts">
-	import '$src/styles/time-slider.scss';
-	import DateYMDSelects from './DateYMDSelects.svelte';
+	// import '$src/styles/time-slider.scss';
+	import DateYMDSelects from "./DateYMDSelects.svelte";
 
-	import { binarySearch, fmtDateDMonY, UTCDayDate } from '$src/lib/utils';
+	import { binarySearch, fmtDateDMonY, UTCDayDate } from "$src/lib/utils";
 
 	let {
 		startDate,
@@ -15,98 +15,93 @@
 
 	// could be cleaner later
 	export function setInternalDate(d: Date) {
-		rangeInputValue = d.valueOf();
+		// rangeInputValue = d.valueOf();
 	}
 
 	// $effect(() => {
 	// 	console.log('timeselector vardate NOOW', vardate);
 	// });
 
-	// $effect(() => {
-	// 	console.log(
-	// 		' ---> TimeSelector startDate ',
-	// 		startDate.toISOString(),
-	// 		'endDate',
-	// 		endDate.toISOString()
-	// 	);
-	// 	// console.log(' ---> TimeSelector validDates ', validDates);
-	// });
+	$effect(() => {
+		// console.log(
+		// 	' ---> TimeSelector startDate ',
+		// 	startDate.toISOString(),
+		// 	'endDate',
+		// 	endDate.toISOString()
+		// );
+		// console.log(' ---> TimeSelector validDates ', validDates.length);
+	});
 
 	let ymdSelector = $state<DateYMDSelects>();
 	export const ymdSelectedDate = () => ymdSelector?.selectedDate();
 
-	let rangeInputValue: number | string = $state(endDate.valueOf());
-	export const selectedDate = () => UTCDayDate(parseInt(rangeInputValue as any));
-	$effect(() => {
-		vardate = selectedDate();
-	});
+	// let rangeInputValue: number | string = $state(endDate.valueOf());
+	// export const selectedDate = () => UTCDayDate(parseInt(rangeInputValue as any));
+	// $effect(() => {
+	// 	vardate = selectedDate();
+	// });
 
 	// keep range input value within bounds
-	$effect(() => {
-		if (selectedDate() < startDate) {
-			rangeInputValue = startDate.valueOf();
-			ymdSelector?.setSelectedDate(startDate);
-		} else if (selectedDate() > endDate) {
-			rangeInputValue = endDate.valueOf();
-			ymdSelector?.setSelectedDate(endDate);
-		}
-	});
+	// $effect(() => {
+	// 	if (selectedDate() < startDate) {
+	// 		rangeInputValue = startDate.valueOf();
+	// 		ymdSelector?.setSelectedDate(startDate);
+	// 	} else if (selectedDate() > endDate) {
+	// 		rangeInputValue = endDate.valueOf();
+	// 		ymdSelector?.setSelectedDate(endDate);
+	// 	}
+	// });
 
 	// updated YMD with range input
-	$effect(() => {
-		ymdSelector?.setSelectedDate(selectedDate());
-	});
+	// $effect(() => {
+	// 	ymdSelector?.setSelectedDate(selectedDate());
+	// });
 
-	// update range input with YMD
-	$effect(() => {
-		if (ymdSelectedDate()) {
-			rangeInputValue = ymdSelectedDate()!.valueOf();
-			// snapToValidDate();
-		}
-	});
+	// // update range input with YMD
+	// $effect(() => {
+	// 	if (ymdSelectedDate()) {
+	// 		rangeInputValue = ymdSelectedDate()!.valueOf();
+	// 		// snapToValidDate();
+	// 	}
+	// });
 
-	const firstLabel = $derived(fmtDateDMonY(startDate));
-	const lastLabel = $derived(fmtDateDMonY(endDate));
+	// const firstLabel = $derived(fmtDateDMonY(startDate));
+	// const lastLabel = $derived(fmtDateDMonY(endDate));
 
-	let firstLabelE = $state<HTMLElement>();
-	let lastLabelE = $state<HTMLElement>();
+	// let firstLabelE = $state<HTMLElement>();
+	// let lastLabelE = $state<HTMLElement>();
 
-	$effect(() => {
-		const rangeFraction =
-			(parseInt(rangeInputValue as any) - startDate.valueOf()) /
-			(endDate.valueOf() - startDate.valueOf());
+	// $effect(() => {
+	// 	const rangeFraction =
+	// 		(parseInt(rangeInputValue as any) - startDate.valueOf()) / (endDate.valueOf() - startDate.valueOf());
 
-		if (firstLabelE) {
-			firstLabelE.style.opacity = `${rangeFraction ** 0.7 * 1}`;
-		}
-		if (lastLabelE) {
-			lastLabelE.style.opacity = `${(1 - rangeFraction) ** 0.7 * 1}`;
-		}
-	});
+	// 	if (firstLabelE) {
+	// 		firstLabelE.style.opacity = `${rangeFraction ** 0.7 * 1}`;
+	// 	}
+	// 	if (lastLabelE) {
+	// 		lastLabelE.style.opacity = `${(1 - rangeFraction) ** 0.7 * 1}`;
+	// 	}
+	// });
 
-	$effect(() => {
-		if (validDateValues.length === 0) return;
-	});
+	// const snapToValidDate = () => {
+	// 	if (validDateValues.length === 0) return;
+	// 	const closestValue = binarySearch(validDateValues, parseInt(rangeInputValue as any));
+	// 	rangeInputValue = closestValue;
+	// };
 
-	const snapToValidDate = () => {
-		if (validDateValues.length === 0) return;
-		const closestValue = binarySearch(validDateValues, parseInt(rangeInputValue as any));
-		rangeInputValue = closestValue;
-	};
-
-	const dateToFraction = (date: Date) => {
-		return (date.valueOf() - startDate.valueOf()) / (endDate.valueOf() - startDate.valueOf());
-	};
+	// const dateToFraction = (date: Date) => {
+	// 	return (date.valueOf() - startDate.valueOf()) / (endDate.valueOf() - startDate.valueOf());
+	// };
 </script>
 
 <div class="map-control">
-	<div class="slider-labels">
+	<!-- <div class="slider-labels">
 		<span class="first-label" bind:this={firstLabelE}>{firstLabel}</span>
 		<span class="last-label" bind:this={lastLabelE}>{lastLabel}</span>
 	</div>
 	<div class="slider-ticks">
 		{#each validDates || [] as date}
-			<div class="tick" style="left: {dateToFraction(date) * 100}%"></div>
+			<div class="tick" style="left: {dat	eToFraction(date) * 100}%"></div>
 		{/each}
 	</div>
 	<input
@@ -116,93 +111,89 @@
 		min={startDate.valueOf()}
 		max={endDate.valueOf()}
 		step={86400000}
-		onchange={snapToValidDate}
-	/>
+		onchange={snapToValidDate} /> -->
 
 	<DateYMDSelects {startDate} {endDate} {validDates} bind:this={ymdSelector} />
 </div>
 
 <style>
-	.slider-ticks {
-		position: absolute;
-		top: 0;
-		left: 6px;
-		width: calc(100% - 189px);
-		height: 100%;
-
-		.tick {
-			position: absolute;
-			bottom: 4px;
-			width: 2px;
-			height: 12px;
-			background-color: #ababab;
-		}
-	}
-	.slider-labels {
-		position: absolute;
-		top: 0;
-		left: 12px;
-		width: calc(100% - 160px);
-		height: 16px;
-
-		span {
-			display: block;
-			position: absolute;
-			font-size: 0.8rem;
-			top: -5px;
-			padding: 0.25rem;
-			opacity: 1;
-			z-index: 1000;
-			pointer-events: none;
-		}
-
-		.first-label {
-			left: -10px;
-		}
-
-		.last-label {
-			right: 30px;
-		}
-	}
-
 	.map-control {
-		/* opacity: 0.5; */
 
 		z-index: 1000;
 		position: absolute;
 		bottom: 0px;
 		left: 0px;
-		width: calc(100% - 26px);
+		width: calc(100% - 20px);
 		height: 29px;
-		margin: 1rem;
 
-		margin-bottom: 18px;
 		padding: 4px;
 		padding-top: 8px;
+		margin: 10px;
 
-		border-radius: 4px;
+		border-radius: var(--border-radius);
 		background-color: hsl(0, 0%, 100%);
 		border-color: hsl(0, 0%, 86%);
-		border-width: 1px;
+		/* border-width: 1px; */
 		border: none !important;
 		color: hsl(0, 0%, 21%);
+
+		.slider-ticks {
+			display: none;
+			position: absolute;
+			top: 0;
+			left: 6px;
+			width: calc(100% - 189px);
+			height: 100%;
+
+			.tick {
+				position: absolute;
+				bottom: 4px;
+				width: 2px;
+				height: 12px;
+				background-color: #ababab;
+			}
+		}
+		.slider-labels {
+			display: none;
+			position: absolute;
+			top: 0;
+			left: 12px;
+			width: calc(100% - 160px);
+			height: 16px;
+
+			span {
+				display: block;
+				position: absolute;
+				font-size: 0.8rem;
+				top: -5px;
+				padding: 0.25rem;
+				opacity: 1;
+				z-index: 1000;
+				pointer-events: none;
+			}
+
+			.first-label {
+				left: -10px;
+			}
+
+			.last-label {
+				right: 30px;
+			}
+		}
 
 		&:hover {
 			opacity: 1;
 		}
 
 		input.range {
+			display: none !important;
 			width: calc(100% - 187px);
 			position: absolute;
 			bottom: 3px;
 			left: 6px;
 			cursor: col-resize !important;
-		}
-
-		input {
+			border: none !important;
 			font-size: 1.2rem;
-
-			border: none;
 		}
 	}
 </style>

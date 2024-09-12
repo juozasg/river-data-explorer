@@ -6,10 +6,9 @@
 	// 	baseStyleId: 'TOPO',
 	// 	riverLayerVisible: true
 	// } as MapLayersParams;
-
 </script>
 
 <div style="position: relative; height: 1000px; width: 500px">
-
 	<MapLibreMap />
 </div>
+

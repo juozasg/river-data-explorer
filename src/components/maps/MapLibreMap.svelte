@@ -68,7 +68,7 @@
 			attributionControl: false
 		});
 
-		mlMap.addControl(new ml.AttributionControl(), 'bottom-right');
+		// mlMap.addControl(new ml.AttributionControl(), 'bottom-right');
 		mlMap.addControl(new ml.NavigationControl(), 'bottom-right');
 
 

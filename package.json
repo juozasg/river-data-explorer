@@ -24,6 +24,7 @@
     "@types/node": "^22.5.3",
     "@vitest/ui": "^2.0.5",
     "@zerodevx/svelte-toast": "^0.9.5",
+    "date-fns": "^3.6.0",
     "eslint": "^9.9.1",
     "eslint-plugin-svelte": "^2.43.0",
     "globals": "^15.9.0",

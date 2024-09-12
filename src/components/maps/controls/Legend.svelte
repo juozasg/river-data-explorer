@@ -29,7 +29,7 @@
 		}
 		const maxValueNumChars = varmax(varname).toString().length;
 		const unitNumChars = varunits(varname).length;
-		return (maxValueNumChars + unitNumChars + 3) * 7;
+		return (maxValueNumChars + unitNumChars + 3) * 8;
 	});
 
 	let legendWidth = $state(0);
