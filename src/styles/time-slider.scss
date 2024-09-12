@@ -1,9 +1,9 @@
 /* fancy slider */
 input.date-slider-range {
 	--c: var(--color-primary);  /* active color */
-	--l: 4px; /* line thickness*/
+	--l: 5px; /* line thickness*/
 	--h: 28px; /* thumb height */
-	--w: 3px; /* thumb width */
+	--w: 5px; /* thumb width */
 
 	/* width: 400px; */
 	height: var(--h); /* needed for Firefox*/

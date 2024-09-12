@@ -111,7 +111,7 @@
 				bottom: 1px;
 				width: 0.5px;
 				height: 27px;
-				background-color: #ababab;
+				background-color: #d6d6d6;
 			}
 		}
 		.slider-labels {
