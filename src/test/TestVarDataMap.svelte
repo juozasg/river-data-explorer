@@ -26,13 +26,13 @@
 		{selectedSite}
 		dataSelection={{}}
 		bind:this={varDataMap}
-		mapClick={() => {
+		onMapClick={() => {
 			console.log("Map clicked", varDataMap?.hoveredSite());
 			if (varDataMap?.hoveredSite()) {
 				selectedSite = varDataMap?.hoveredSite();
 			}
 		}}
-		searchItemSelect={(item: Site) => {
+		onSearchItemSelect={(item: Site) => {
 			console.log("TEST Search item selected", item);
 			selectedSite = item;
 		}} />

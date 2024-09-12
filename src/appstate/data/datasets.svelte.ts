@@ -41,9 +41,9 @@ export async function loadDatasets() {
 			continue;
 		}
 
-		if(r.siteId !== 'ecoli-1') {
-			continue;
-		}
+		// if(r.siteId !== 'ecoli-1') {
+		// 	continue;
+		// }
 
 
 		const record: Record<string, any> = {};

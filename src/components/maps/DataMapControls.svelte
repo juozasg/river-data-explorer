@@ -9,7 +9,7 @@
 	import { UTCDayDate } from "$src/lib/utils";
 	import DataTools from "./controls/DataTools.svelte";
 	import Legend from "./controls/Legend.svelte";
-	import TimeSelector from "./controls/TimeSelector.svelte";
+	import DateMultiInput from "./controls/DateMultiInput.svelte";
 	import VariableSelector from "./controls/VariableSelector.svelte";
 	import { totalRecords } from "$src/appstate/data/datasets.svelte";
 
@@ -21,13 +21,13 @@
 		vardate?: Date;
 		mapWidth?: number;
 
-		searchItemSelect?: (item: Site) => void;
+		onSearchItemSelect?: (item: Site) => void;
 	} & Partial<MapLibreMapProps>;
 
 	let {
 		sites,
 		selectedSite,
-		searchItemSelect,
+		onSearchItemSelect,
 		mapWidth = 400,
 		layersParams = $bindable(defaultLayersParams),
 		varname = $bindable("ecoli"),
@@ -36,29 +36,24 @@
 
 	const small = $derived(mapWidth <= 550);
 
-	// const startDate = $derived(sitesEarliestDate(sites));
-	// const endDate = $derived(sitesLatestDate(sites));
 	let validDates: Date[] = $derived.by(() => {
 		return sitesValidDates(sites, varname);
 	});
 
-	const startDate = $derived(validDates[0] || UTCDayDate('1990-01-01'));
-	const endDate = $derived(validDates[validDates.length - 1] || UTCDayDate());
-
-	let timeSelector = $state<TimeSelector>();
+	let dateMultiInput = $state<DateMultiInput>();
 	export function setInternalDate(d: Date) {
-		if (timeSelector) timeSelector.setInternalDate(d);
+		if (dateMultiInput) dateMultiInput.setInternalDate(d);
 	}
 </script>
 
 <div class="controls">
 	<MapLatLonDebug />
 	<div class="top-controls">
-		<DataTools {small} maxWidth={mapWidth} {selectedSite} {searchItemSelect} bind:layersParams />
+		<DataTools {small} maxWidth={mapWidth} {selectedSite} {onSearchItemSelect} bind:layersParams />
 		<VariableSelector {small} bind:varname />
 		<Legend {varname} />
 	</div>
-	<TimeSelector {startDate} {endDate} {validDates} bind:vardate bind:this={timeSelector} />
+	<DateMultiInput {validDates} bind:vardate bind:this={dateMultiInput} />
 </div>
 
 <style>

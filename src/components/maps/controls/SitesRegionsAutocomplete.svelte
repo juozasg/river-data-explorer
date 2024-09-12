@@ -7,8 +7,8 @@
 	let {
 		maxWidth = "100%",
 		selectedSite,
-		searchItemSelect
-	}: { maxWidth?: string; selectedSite?: Site; searchItemSelect?: (item: Site) => void } = $props();
+		onSearchItemSelect
+	}: { maxWidth?: string; selectedSite?: Site; onSearchItemSelect?: (item: Site) => void } = $props();
 
 	let containerDiv = $state<HTMLDivElement>();
 	const inputElement = $derived(
@@ -29,8 +29,8 @@
 
 	$effect(() => {
 		// console.log("autocomplete selected item", selectedSite);
-		if (searchItemSelect && selectedSite) {
-			searchItemSelect(selectedSite);
+		if (onSearchItemSelect && selectedSite) {
+			onSearchItemSelect(selectedSite);
 		}
 	});
 

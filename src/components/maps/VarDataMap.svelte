@@ -26,8 +26,8 @@
 		varname?: string;
 		vardate?: Date;
 
-		mapClick?: (map: ml.Map, p: ml.PointLike) => void;
-		searchItemSelect?: (item: Site) => void;
+		onMapClick?: (map: ml.Map, p: ml.PointLike) => void;
+		onSearchItemSelect?: (item: Site) => void;
 	} & Partial<MapLibreMapProps>;
 
 	// export function
@@ -36,8 +36,8 @@
 		selectedRegion,
 		selectedRiver,
 		selectedSite,
-		mapClick,
-		searchItemSelect,
+		onMapClick,
+		onSearchItemSelect,
 		showRegionTooltip = true,
 		dataSelection,
 		varname = $bindable("ecoli"),
@@ -69,7 +69,7 @@
 	let layersParams = $state<MapLayersParams>(defaultLayersParams);
 
 	onMount(() => {
-		mlMap!.on("click", (e) => mapClick && mapClick(mlMap!, e.point));
+		mlMap!.on("click", (e) => onMapClick?.(mlMap!, e.point));
 	});
 
 	let dataMapControls = $state<DataMapControls>();
@@ -85,7 +85,7 @@
 		bind:this={dataMapControls}
 		{sites}
 		{selectedSite}
-		{searchItemSelect}
+		{onSearchItemSelect}
 		bind:layersParams
 		bind:varname
 		bind:vardate

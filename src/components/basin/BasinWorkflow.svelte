@@ -156,7 +156,7 @@
 		zoom={8}
 		{selectedSite}
 		{dataSelection}
-		mapClick={regionMapClick}
+		onMapClick={regionMapClick}
 		{selectedRegion}
 		bind:varname={regionMapVarname}
 		bind:vardate={regionMapVardate}
@@ -175,7 +175,7 @@
 						bind:this={detailsMap}
 						{selectedSite}
 						{dataSelection}
-						mapClick={detailsMapClick}
+						onMapClick={detailsMapClick}
 						{selectedRegion}
 						addLayers={addSitesDetailsMapLayers}
 						bind:varname={detailMapVarname}

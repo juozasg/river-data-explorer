@@ -20,13 +20,13 @@
 		maxWidth = 500,
 		small = false,
 		selectedSite,
-		searchItemSelect,
+		onSearchItemSelect,
 		layersParams = $bindable(defaultLayersParams)
 	}: {
 		small?: boolean;
 		maxWidth?: number;
 		selectedSite?: Site;
-		searchItemSelect?: (item: Site) => void;
+		onSearchItemSelect?: (item: Site) => void;
 		layersParams: MapLayersParams;
 	} = $props();
 
@@ -109,7 +109,7 @@
 			</label>
 
 			<hr />
-			<SitesRegionsAutocomplete maxWidth={maxWidth + "px"} {selectedSite} {searchItemSelect} />
+			<SitesRegionsAutocomplete maxWidth={maxWidth + "px"} {selectedSite} {onSearchItemSelect} />
 		</div>
 	</details>
 </div>

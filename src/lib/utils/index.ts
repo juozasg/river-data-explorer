@@ -19,6 +19,14 @@ export const getMarkdownPages = async (allMdPages: ImportGlobRecord): Promise<Ma
 };
 
 
+export function binaryClosestTo(target: Date, dates: Date[]): Date | undefined {
+	if(!dates.length) return undefined;
+	if(dates.length === 1) return dates[0];
+
+	const dateVals = dates.map(d => d.valueOf());
+	return new Date(binarySearch(dateVals, target.valueOf()));
+}
+
 export function binarySearch(arr: number[], target: number, lo = 0, hi = arr.length - 1): number {
 	if (target < arr[lo]) {return arr[0]}
 	if (target > arr[hi]) {return arr[hi]}
