@@ -1,29 +1,25 @@
 <script lang="ts">
-	import YZAxisLabels from './YZAxisLabels.svelte';
+	import YZAxisLabels from "./YZAxisLabels.svelte";
 
-	import { scaleLinear } from 'd3-scale';
-	import { Html, LayerCake, Svg } from 'layercake';
+	import { scaleLinear } from "d3-scale";
+	import { Html, LayerCake, Svg } from "layercake";
 
-	import AxisX from '$src/components/chart/layercake/AxisX.svelte';
-	import AxisY from '$src/components/chart/layercake/AxisY.svelte';
-	import AxisYZRight from '$src/components/chart/layercake/AxisYZRight.svelte';
-	import Brush from '$src/components/chart/layercake/Brush.html.svelte';
-	import Line from '$src/components/chart/layercake/Line.svelte';
-	import Scatter from '$src/components/chart/layercake/Scatter.svelte';
-	import ChartTooltip from '$src/components/chart/layercake/ChartTooltip.svelte';
-	import { fmtDateDMonY, isNumber, UTCDayDate } from '$src/lib/utils';
-	import {
-		formatChartDate,
-		formatChartTTKey,
-		formatChatTTValue,
-		genXDateTicks,
-		genYTicks
-	} from '$src/lib/utils/chart';
-	import type ColumnTable from 'arquero/dist/types/table/column-table';
+	import AxisX from "$src/components/chart/layercake/AxisX.svelte";
+	import AxisY from "$src/components/chart/layercake/AxisY.svelte";
+	import AxisYZRight from "$src/components/chart/layercake/AxisYZRight.svelte";
+	import Brush from "$src/components/chart/layercake/Brush.html.svelte";
+	import Line from "$src/components/chart/layercake/Line.svelte";
+	import Scatter from "$src/components/chart/layercake/Scatter.svelte";
+	import ChartTooltip from "$src/components/chart/layercake/ChartTooltip.svelte";
+	import { fmtDateDMonY, isNumber, UTCDayDate } from "$src/lib/utils";
+	import { formatChartDate, formatChartTTKey, formatChatTTValue, genXDateTicks, genYTicks } from "$src/lib/utils/chart";
+	import type ColumnTable from "arquero/dist/types/table/column-table";
 
-	import type { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
-	import { YZChartParams } from '$src/lib/utils/YZChartParams';
-	import { chartYColor, chartZColor, chartZDarker } from '$src/lib/utils/colors';
+	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
+	import { YZChartParams } from "$src/lib/utils/YZChartParams";
+	import { chartYColor, chartZColor, chartZDarker } from "$src/lib/utils/colors";
+	import MinMaxLines from "./layercake/MinMaxLines.svelte";
+	import { varstdmax, varstdmin } from "$src/lib/utils/varHelpers";
 
 	type Props = {
 		yzTable: ColumnTable;
@@ -37,13 +33,13 @@
 
 	const { yzTable, yParams, zParams, chartWidth, chartHeight, onDateSelected }: Props = $props();
 
-
-	const yAxisLabel = $derived(yParams.stats.count > 0 ?
-		`${yParams.varLabel} <span class="location-label">${yParams.locationName}<span>` : ''
+	const yAxisLabel = $derived(
+		yParams.stats.count > 0 ? `${yParams.varLabel} <span class="location-label">${yParams.locationName}<span>` : ""
 	);
 	const zAxisLabel = $derived(
-		zParams.stats.count > 0 ?
-		`${zParams.varLabel} <span class="location-label">${zParams.locationName || ''}<span>` : ''
+		zParams.stats.count > 0
+			? `${zParams.varLabel} <span class="location-label">${zParams.locationName || ""}<span>`
+			: ""
 	);
 
 	let brushMinIndex: number | null = $state(null);
@@ -64,17 +60,17 @@
 	let brushedChartContainer = $state<HTMLElement>();
 	let brushContainer: HTMLElement | null = $state(null);
 	const xTickTextElements: NodeListOf<HTMLElement> | undefined = $derived(
-		brushedChartContainer?.querySelectorAll('.x-axis .tick text')
+		brushedChartContainer?.querySelectorAll(".x-axis .tick text")
 	);
 
 	const brushHoverOn = () => {
-		brushContainer!.style.opacity = '1';
-		xTickTextElements?.forEach((t) => (t.style.opacity = '0'));
+		brushContainer!.style.opacity = "1";
+		xTickTextElements?.forEach((t) => (t.style.opacity = "0"));
 	};
 
 	const brushHoverOff = () => {
-		brushContainer!.style.opacity = '0.1';
-		xTickTextElements?.forEach((t) => (t.style.opacity = '1'));
+		brushContainer!.style.opacity = "0.1";
+		xTickTextElements?.forEach((t) => (t.style.opacity = "1"));
 	};
 
 	// HACKY indeed
@@ -89,8 +85,8 @@
 
 	function chartOnclick(e: MouseEvent) {
 		const target = e.target as HTMLElement;
-		if(target.hasAttribute('role') && target.getAttribute('role') === 'tooltip') {
-			if(onDateSelected && dateHovered) onDateSelected(dateHovered);
+		if (target.hasAttribute("role") && target.getAttribute("role") === "tooltip") {
+			if (onDateSelected && dateHovered) onDateSelected(dateHovered);
 		}
 	}
 </script>
@@ -109,22 +105,19 @@
 				z="z"
 				zDomain={zParams.domain}
 				zScale={scaleLinear()}
-				zRange={({ height }: any) => [height, 0]}
-			>
+				zRange={({ height }: any) => [height, 0]}>
 				<Svg>
 					<AxisX
 						tickMarks={true}
 						snapLabels={false}
 						format={formatChartDate}
-						ticks={(ts: number[]) => genXDateTicks(brushedTable, ts)}
-					/>
+						ticks={(ts: number[]) => genXDateTicks(brushedTable, ts)} />
 					{#if yParams.stats.count > 0 && yParams.domain}
 						<AxisY
 							gridlines={false}
 							tickMarks={true}
 							ticks={(ts: number[]) => genYTicks(yParams.domain!, ts)}
-							color={chartYColor}
-						/>
+							color={chartYColor} />
 
 						<Line stroke={chartYColor} />
 						<Scatter r={yParams.radius} fill={chartYColor} />
@@ -134,10 +127,18 @@
 							gridlines={false}
 							tickMarks={true}
 							ticks={(ts: number[]) => genYTicks(zParams.domain!, ts)}
-							color={chartZDarker}
-						/>
+							color={chartZDarker} />
 						<Line stroke={chartZColor} dataSource="z" />
 						<Scatter r={zParams.radius} fill={chartZColor} dataSource="z" />
+					{/if}
+
+					{#if yParams.stats.count > 0 && yParams.varname}
+						<MinMaxLines
+							label="wtf ECOLI?"
+							domain={yParams.domain!}
+							min={varstdmin(yParams.varname)}
+							max={varstdmax(yParams.varname)}
+							color={chartYColor} />
 					{/if}
 				</Svg>
 				<Html>
@@ -147,9 +148,8 @@
 						<ChartTooltip
 							formatTitle={formatTooltipTitle}
 							formatKey={(k: string) => formatChartTTKey(k, yParams, zParams)}
-							formatValue={(k:string, v:string) => formatChatTTValue(k, v, yParams, zParams)}
-							filterKeys={['y', 'z']}
-						/>
+							formatValue={(k: string, v: string) => formatChatTTValue(k, v, yParams, zParams)}
+							filterKeys={["y", "z"]} />
 						<YZAxisLabels yLabel={yAxisLabel} zLabel={zAxisLabel} />
 					</div>
 				</Html>
@@ -166,46 +166,34 @@
 		onmouseleave={brushHoverOff}
 		ontouchmove={brushHoverOn}
 		ontouchmovecapture={brushHoverOn}
-		bind:this={brushContainer}
-	>
-			<LayerCake
-				data={yzTable.objects()}
-				x="date"
-				y="y"
-				yDomain={yParams.domain}
-				z="z"
-				zDomain={zParams.domain}
-				zScale={scaleLinear()}
-				zRange={({ height }: any) => [height, 0]}
-			>
-				<Svg>
-					{#if yParams.stats.count > 0}
-						<Line stroke={chartYColor} />
-						<Scatter
-							r={yParams.radius - 1}
-							fill={chartYColor}
-							filterIndexRange={[brushMinIndex, brushMaxIndex]}
-						/>
-					{/if}
-					{#if zParams.stats.count > 0}
-						<Line stroke={chartZColor} dataSource="z" />
-						<Scatter
-							r={zParams.radius - 1}
-							fill={chartZColor}
-							dataSource="z"
-							filterIndexRange={[brushMinIndex, brushMaxIndex]}
-						/>
-					{/if}
-				</Svg>
-				<Html>
-					<Brush
-						min={null}
-						max={null}
-						bind:snappedMinIndex={brushMinIndex}
-						bind:snappedMaxIndex={brushMaxIndex}
-					/>
-				</Html>
-			</LayerCake>
+		bind:this={brushContainer}>
+		<LayerCake
+			data={yzTable.objects()}
+			x="date"
+			y="y"
+			yDomain={yParams.domain}
+			z="z"
+			zDomain={zParams.domain}
+			zScale={scaleLinear()}
+			zRange={({ height }: any) => [height, 0]}>
+			<Svg>
+				{#if yParams.stats.count > 0}
+					<Line stroke={chartYColor} />
+					<Scatter r={yParams.radius - 1} fill={chartYColor} filterIndexRange={[brushMinIndex, brushMaxIndex]} />
+				{/if}
+				{#if zParams.stats.count > 0}
+					<Line stroke={chartZColor} dataSource="z" />
+					<Scatter
+						r={zParams.radius - 1}
+						fill={chartZColor}
+						dataSource="z"
+						filterIndexRange={[brushMinIndex, brushMaxIndex]} />
+				{/if}
+			</Svg>
+			<Html>
+				<Brush min={null} max={null} bind:snappedMinIndex={brushMinIndex} bind:snappedMaxIndex={brushMaxIndex} />
+			</Html>
+		</LayerCake>
 	</div>
 </div>
 

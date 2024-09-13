@@ -68,3 +68,12 @@ export function varcatilegend(varname: string, catIndex: number) {
 	console.log('catkey', catkey, variablesMetadata[varname]?.categories?.[catkey], variablesMetadata[varname]?.categories?.[catkey]?.legend)
 	return variablesMetadata[varname]?.categories?.[catkey]?.legend || catkey
 }
+
+
+export function varstdmin(varname: string): number | undefined {
+	return variablesMetadata[varname]?.standards?.min;
+}
+
+export function varstdmax(varname: string): number | undefined {
+	return variablesMetadata[varname]?.standards?.max;
+}

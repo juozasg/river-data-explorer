@@ -38,10 +38,6 @@
 		return;
 	});
 
-	$effect(() => {
-		console.log('force domain', forceDomain);
-	});
-
 	function locationName(site?: Site) {
 		if(!site) return '';
 		return site.name + ` (${site.id.replace(/-/, '&#8209;')})`; // non-breaking hyphen
@@ -53,7 +49,7 @@
 </script>
 
 {#if yzTable && yParams && zParams}
-	<BrushedYzChart {yzTable} {yParams} {zParams} chartWidth={500} chartHeight={500} {onDateSelected} />
+	<BrushedYzChart {yzTable} {yParams} {zParams} chartWidth={555} chartHeight={500} {onDateSelected} />
 {:else}
 	<p>No data</p>
 {/if}
