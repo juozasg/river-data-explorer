@@ -13,7 +13,7 @@
 	import RegionStatsPanel from './stats/RegionStatsPanel.svelte';
 	import { type RegionFeature } from '$src/appstate/data/features.svelte';
 	import SiteStatsPanel from './stats/SiteStatsPanel.svelte';
-	import BasinChart from './BasinChart.svelte';
+	import BasinDetails from './BasinDetails.svelte';
 	import { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
 	import { UTCDayDate } from '$src/lib/utils';
 	import { chartYColor, chartZColor } from '$src/lib/utils/colors';
@@ -21,7 +21,6 @@
 	import { isCategoricalVar } from '$src/appstate/variablesMetadata.svelte';
 	import RegionTypeTabs from './RegionTypeTabs.svelte';
 	import { toggleHideTooltipsKeydown } from '$src/appstate/ui/tooltips.svelte';
-	import { copyLngLat } from '$src/lib/copyLngLat';
 
 	document.body.addEventListener("keydown", toggleHideTooltipsKeydown);
 
@@ -184,7 +183,7 @@
 					/>
 				</div>
 				<div class="details-bottom">
-					<BasinChart
+					<BasinDetails
 						{dataSelection}
 						{selectedSite}
 						{selectedRegion}

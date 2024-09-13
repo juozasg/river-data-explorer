@@ -26,27 +26,26 @@
 	import { chartYColor, chartZColor, chartZDarker } from '$src/lib/utils/colors';
 
 	type Props = {
-		table: ColumnTable;
+		yzTable: ColumnTable;
+		yParams: YZChartParams;
+		zParams: YZChartParams;
 
-		dataSelection: DataSelectionState;
 		chartWidth: number;
 		chartHeight: number;
 		onDateSelected?: (d: Date) => void;
 	};
 
-	const { table, dataSelection, chartWidth, chartHeight, onDateSelected }: Props = $props();
+	const { yzTable, yParams, zParams, chartWidth, chartHeight, onDateSelected }: Props = $props();
 
-	const yVar = $derived(dataSelection.yVar);
-	const zVar = $derived(dataSelection.zVar);
 
-	const yParams = $derived(new YZChartParams('y', yVar, table));
-	const zParams = $derived(new YZChartParams('z', zVar, table));
+	// const yParams = $derived(new YZChartParams('y', yVar, table));
+	// const zParams = $derived(new YZChartParams('z', zVar, table));
 
 	const yAxisLabel = $derived(
-		`${yParams.varLabel} <span class="location-label">${dataSelection.ySite?.name || ''}<span>`
+		`${yParams.varLabel} <span class="location-label">${yParams.locationName}<span>`
 	);
 	const zAxisLabel = $derived(
-		`${zParams.varLabel} <span class="location-label">${dataSelection.zSite?.name || ''}<span>`
+		`${zParams.varLabel} <span class="location-label">${zParams.locationName || ''}<span>`
 	);
 
 	let brushMinIndex: number | null = $state(null);
@@ -54,10 +53,9 @@
 
 	// brushedTable is full table sliced with min,max from the Brush component
 	const brushedTable = $derived.by(() => {
-		if (!table) return;
 		const sliceIndex = isNumber(brushMaxIndex) ? brushMaxIndex! + 1 : undefined;
 
-		return table?.slice(brushMinIndex || 0, sliceIndex);
+		return yzTable.slice(brushMinIndex || 0, sliceIndex);
 	});
 
 	// $effect(() => {
@@ -108,9 +106,9 @@
 			<LayerCake
 				data={brushedTable.objects()}
 				x="date"
-				y={yVar}
+				y="y"
 				yDomain={yParams.domain}
-				z={zVar}
+				z="z"
 				zDomain={zParams.domain}
 				zScale={scaleLinear()}
 				zRange={({ height }: any) => [height, 0]}
@@ -133,7 +131,7 @@
 						<Line stroke={chartYColor} />
 						<Scatter r={yParams.radius} fill={chartYColor} />
 					{/if}
-					{#if zParams.stats.count > 0 && zVar !== yVar}
+					{#if zParams.stats.count > 0}
 						<AxisYZRight
 							gridlines={false}
 							tickMarks={true}
@@ -150,9 +148,9 @@
 					<div onclick={chartOnclick} role="tooltip">
 						<SharedTooltip
 							formatTitle={formatTooltipTitle}
-							formatKey={(k: string) => formatChartTTKey(k, yVar, zVar)}
+							formatKey={(k: string) => formatChartTTKey(k)}
 							formatValue={formatChatTTValue}
-							filterKeys={[yVar, zVar].filter((v) => v) as string[]}
+							filterKeys={['y', 'z']}
 						/>
 						<YZAxisLabels yLabel={yAxisLabel} zLabel={zAxisLabel} />
 					</div>
@@ -172,13 +170,12 @@
 		ontouchmovecapture={brushHoverOn}
 		bind:this={brushContainer}
 	>
-		{#if table && table.numRows() > 0}
 			<LayerCake
-				data={table.objects()}
+				data={yzTable.objects()}
 				x="date"
-				y={yVar}
+				y="y"
 				yDomain={yParams.domain}
-				z={zVar}
+				z="z"
 				zDomain={zParams.domain}
 				zScale={scaleLinear()}
 				zRange={({ height }: any) => [height, 0]}
@@ -192,7 +189,7 @@
 							filterIndexRange={[brushMinIndex, brushMaxIndex]}
 						/>
 					{/if}
-					{#if zParams.stats.count > 0 && zVar !== yVar}
+					{#if zParams.stats.count > 0}
 						<Line stroke={chartZColor} dataSource="z" />
 						<Scatter
 							r={zParams.radius - 1}
@@ -211,7 +208,6 @@
 					/>
 				</Html>
 			</LayerCake>
-		{/if}
 	</div>
 </div>
 
@@ -220,14 +216,10 @@
 		width: 100%;
 		height: 100%;
 		overflow: visible;
-		/* width: 480px; */
-		/* height: 440px; */
-		/* border: 1.5px dotted blue; */
+
 		position: relative;
 
 		.chart-container {
-			/* border: 1px solid red; */
-			/* margin-left: 2rem; */
 			position: absolute;
 			top: 24px;
 
@@ -244,10 +236,6 @@
 					translate: -18px 0px;
 				}
 			}
-			/*
-		.chart-container :global(.x-axis .tick:nth-child(even) text) {
-			translate: 0px 14px;
-		} */
 		}
 
 		.brush-container {

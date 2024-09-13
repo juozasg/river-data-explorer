@@ -11,6 +11,7 @@ export class YZChartParams {
 	axis: string;
 	varname?: string;
 	table?: ColumnTable;
+	locationName: string;
 
 	// calculated in constructor
 	stats: SimpleStats;
@@ -23,12 +24,14 @@ export class YZChartParams {
 	constructor(
 		axis: "y" | "z", // "y" or "z"
 		varname?: string,
-		table?: ColumnTable
+		table?: ColumnTable,
+		locationName?: string
 	) {
 
 		this.axis = axis;
 		this.varname = varname;
 		this.table = table;
+		this.locationName = locationName || '';
 
 		if (varname && table) {
 			this.units = varunits(varname);
