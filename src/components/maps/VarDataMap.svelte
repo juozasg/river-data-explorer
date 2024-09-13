@@ -101,7 +101,7 @@
 	<VarDataHoveredFeatures
 		{showRegionTooltip}
 		{mlMap}
-		hoveredSite={_hoveredSite}
+		site={_hoveredSite}
 		{hoveredRegion}
 		{hoveredRiver}
 		{varname}

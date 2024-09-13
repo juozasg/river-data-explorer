@@ -89,7 +89,9 @@
 	.hover-tooltip {
 		background-color: white;
 		border: 1px solid #222;
+		border-radius: var(--border-radius);
 		padding: 5px;
+		padding-top: 1px;
 		/* padding-bottom: 1.5rem; */
 		font-size: 80%;
 		min-width: 200px;
@@ -117,7 +119,10 @@
 	:global(.hover-tooltip p) {
 		margin-top: 0px !important;
 		margin-bottom: 0px !important;
+		padding: 2px 1px !important;
 	}
+
+
 
 	:global(h5.tooltip-section) {
 		border-top: 1px solid #ccc;
@@ -130,11 +135,13 @@
 		/* position: absolute;	 */
 		/* bottom: 2px; */
 		/* right: 6px; */
-		font-size: 12px;
+		font-size: 0.8rem;
 		text-align: right;
+		margin-top: 5px;
 
 		kbd {
-			font-size: 12px;
+			font-size: 0.7rem;
+			font-family: monospace;
 		}
 	}
 </style>

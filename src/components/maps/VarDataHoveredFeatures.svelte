@@ -15,7 +15,7 @@
 
 	type Props = {
 		sites: Site[];
-		hoveredSite?: Site;
+		site?: Site;
 		mlMap: ml.Map;
 		varname: string;
 		vardate: Date;
@@ -25,7 +25,7 @@
 	};
 
 	let {
-		hoveredSite,
+		site,
 		mlMap,
 		sites,
 		varname,
@@ -35,7 +35,7 @@
 		hoveredRegion
 	}: Props = $props();
 
-	const siteStats = $derived(hoveredSite ? sitesDataStats([hoveredSite]) : undefined);
+	const siteStats = $derived(site ? sitesDataStats([site]) : undefined);
 
 	const regionSites = $derived(Sites.forRegionFeature(sites, hoveredRegion.feature));
 	// $effect(() => {
@@ -48,8 +48,8 @@
 			hoveredRiver.feature = queryMouseMoveHover(e, ['riverapp-river'], 10);
 			hoveredRegion.feature = queryMouseMoveHover(e, ['riverapp-huc10']);
 
-			if (hoveredRiver.feature || (showRegionTooltip && hoveredRegion.feature) || hoveredSite) {
-				// console.log('show tooltuip', e.originalEvent.x, e.originalEvent.y, hoveredSite, hoveredRegion.feature, hoveredRiver.feature);
+			if (hoveredRiver.feature || (showRegionTooltip && hoveredRegion.feature) || site) {
+				// console.log('show tooltuip', e.originalEvent.x, e.originalEvent.y, site, hoveredRegion.feature, hoveredRiver.feature);
 				tooltip.show(e.originalEvent.x, e.originalEvent.y, true);
 				tooltip.content = tooltipContent;
 			} else {
@@ -89,23 +89,23 @@ fmtMonDY
 		<h5 class="region" class:tooltip-section={!!hoveredRiver.feature}>
 			Region: {hoveredRegion.name}
 		</h5>
-		<i>HUC10: {hoveredRegion.feature.id}</i>
+		<p><i>HUC10: {hoveredRegion.feature.id}</i></p>
 		<p><b>{regionSites.length}</b> sites</p>
 		{#if regionStats}
 			<TooltipSiteStats stats={regionStats} />
 		{/if}
 	{/if}
 
-	{#if hoveredSite}
+	{#if site}
 		<h5
 			class="site"
 			class:tooltip-section={!!hoveredRiver.feature ||
 				!!(showRegionTooltip && hoveredRegion.feature)}
 		>
-			Site: {hoveredSite.name || ''}
+			Site: {site.name || ''}
 		</h5>
-		<i>Site ID: {hoveredSite.id}</i>
-		{@render variableValueBeforeDate(hoveredSite)}
+		<i>Site ID: {site.id}</i>
+		{@render variableValueBeforeDate(site)}
 		{#if siteStats}
 			<TooltipSiteStats stats={siteStats} />
 		{/if}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import "$src/styles/kbd.scss";
 	import "$src/styles/variables.scss";
 	import "$src/styles/app.scss";
 	import { SvelteToast } from "@zerodevx/svelte-toast";
@@ -13,12 +14,16 @@
 	import { loadAppData, type DataManifest } from "./lib/data/loaders/loadAppData";
 	import { routeTestComponent } from "./test/routeTestComponent";
 	import { copyLngLat } from "./lib/copyLngLat";
+	import { toggleHideTooltipsKeydown, tooltip } from "./appstate/ui/tooltips.svelte";
+	import WebsiteTooltip from "./components/tooltips/WebsiteTooltip.svelte";
 
 	type Props = {
 		dataManifest: DataManifest;
 		variablesMetadata: VariablesMetadata;
 	};
 	const { dataManifest, variablesMetadata }: Props = $props();
+
+	let websiteTooltip = $state<WebsiteTooltip>();
 
 	Object.assign(globalVariablesMetadata, variablesMetadata);
 	loadAppData(dataManifest);
@@ -33,6 +38,12 @@
 	}
 
 	document.body.addEventListener("keydown", copyLngLat);
+	document.body.addEventListener('keydown', toggleHideTooltipsKeydown);
+
+
+	$effect(() => {
+		if(websiteTooltip) tooltip.component = websiteTooltip;
+	});
 
 
 	onMount(async () => {
@@ -41,6 +52,8 @@
 </script>
 
 <SvelteToast />
+<WebsiteTooltip bind:this={websiteTooltip} />
+
 <main>
 	<MainComponent />
 </main>

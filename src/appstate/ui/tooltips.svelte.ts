@@ -17,15 +17,15 @@ export const tooltip = {
 	// },
 
 	show(x: number, y: number, toggleable = false) {
-		if(_tooltip) _tooltip.show(x, y, toggleable);
+		_tooltip?.show(x, y, toggleable);
 	},
 
 	hide() {
-		if(_tooltip) _tooltip.hide();
+		_tooltip?.hide();
 	},
 
 	set content(c: Snippet) {
-		if(_tooltip) _tooltip.setContentSnippet(c);
+		_tooltip?.setContentSnippet(c);
 	},
 
 	get toggledHidden() {
