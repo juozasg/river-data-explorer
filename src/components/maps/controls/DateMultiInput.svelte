@@ -1,9 +1,11 @@
 <script lang="ts">
 	import DateSliderInput from "./DateSliderInput.svelte";
 	import DateYMDSelects from "./DateYMDSelects.svelte";
-	import { UTCDayDate } from "$src/lib/utils";
+	import {  binaryClosestSearch, UTCDayDate } from "$src/lib/utils";
 
 	let { validDates, vardate = $bindable(UTCDayDate()) }: { validDates: Date[]; vardate: Date } = $props();
+	const validValues = $derived((validDates || []).map((d) => d.valueOf()));
+
 
 	// const validDateValues = $derived((validDates || []).map((d) => d.valueOf()));
 
@@ -19,13 +21,23 @@
 	let ymdSelects = $state<DateYMDSelects>();
 
 	const onYmdDateSelect = (date: Date) => {
-		// rangeInputValue = date.valueOf();
-		console.log("multiinput ymdDateSelect", date);
+		console.log("multinput ymdDateSelect", date);
+		const closestValue = binaryClosestSearch(validValues, date.valueOf());
+
+		if(date.valueOf() === closestValue) {
+			console.log('set slider date', date.toISOString());
+			dateSliderInput?.setDate(date);
+		}
 	};
 
 	const onRangeDateSelect = (date: Date) => {
-		// rangeInputValue = date.valueOf();
 		console.log("multinput rangeDateSelect", date);
+		const closestValue = binaryClosestSearch(validValues, date.valueOf());
+
+		if(date.valueOf() === closestValue) {
+			console.log('set ymd date', date.toISOString());
+			ymdSelects?.setDate(date);
+		}
 	};
 </script>
 

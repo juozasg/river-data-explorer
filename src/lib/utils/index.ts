@@ -24,10 +24,10 @@ export function binaryClosestTo(target: Date, dates: Date[]): Date | undefined {
 	if(dates.length === 1) return dates[0];
 
 	const dateVals = dates.map(d => d.valueOf());
-	return new Date(binarySearch(dateVals, target.valueOf()));
+	return new Date(binaryClosestSearch(dateVals, target.valueOf()));
 }
 
-export function binarySearch(arr: number[], target: number, lo = 0, hi = arr.length - 1): number {
+export function binaryClosestSearch(arr: number[], target: number, lo = 0, hi = arr.length - 1): number {
 	if (target < arr[lo]) {return arr[0]}
 	if (target > arr[hi]) {return arr[hi]}
 
@@ -36,14 +36,14 @@ export function binarySearch(arr: number[], target: number, lo = 0, hi = arr.len
 	return hi - lo < 2
 		? (target - arr[lo]) < (arr[hi] - target) ? arr[lo] : arr[hi]
 		: target < arr[mid]
-			? binarySearch(arr, target, lo, mid)
+			? binaryClosestSearch(arr, target, lo, mid)
 			: target > arr[mid]
-				? binarySearch(arr, target, mid, hi)
+				? binaryClosestSearch(arr, target, mid, hi)
 				: arr[mid]
 }
 
 if (typeof window !== 'undefined') {
-	(window as any).binarySearch = binarySearch;
+	(window as any).binaryClosestSearch = binaryClosestSearch;
 }
 
 export function getRandomColor() {

@@ -1,15 +1,16 @@
 <script lang="ts">
 	import "$src/styles/time-slider.scss";
 
-	import { binaryClosestTo, binarySearch, fmtDateDMonY, UTCDayDate } from "$src/lib/utils";
+	import { binaryClosestTo, binaryClosestSearch, fmtDateDMonY, UTCDayDate } from "$src/lib/utils";
 	import { closestTo } from "date-fns";
 
 	let { validDates, onDateSelect }: { validDates: Date[]; onDateSelect: (d: Date) => void } = $props();
 
-	let vardate = $state<Date>(UTCDayDate());
 
 	export function setDate(date: Date) {
-		vardate = closestTo(date, validDates) || UTCDayDate();
+		// vardate = closestTo(date, validDates) || UTCDayDate();
+		value = date.valueOf();
+		snapToValidDate();
 	}
 
 	const validValues = $derived((validDates || []).map((d) => d.valueOf()));
@@ -18,10 +19,7 @@
 	const endDate = $derived(validDates[validDates.length - 1] || UTCDayDate());
 
 	let value: number = $state(UTCDayDate().valueOf());
-	// export const selectedDate = () => UTCDayDate(parseInt(value as any));
-	// $effect(() => {
-	// vardate = selectedDate();
-	// });
+
 
 	const firstLabel = $derived(fmtDateDMonY(startDate));
 	const lastLabel = $derived(fmtDateDMonY(endDate));
@@ -42,10 +40,15 @@
 
 	const snapToValidDate = () => {
 		if (validValues.length === 0) return;
-		const closestValue = binarySearch(validValues, value);
+		const closestValue = binaryClosestSearch(validValues, value);
 
 		value = closestValue;
+		// console.log('SNAP TO VALID DATE', new Date(value).toISOString());
 	};
+
+	$effect(() => {
+		onDateSelect(new Date(value));
+	});
 
 	$effect(() => {
 		// console.log('SLIDER startDate', startDate.toISOString(), 'endDate', endDate.toISOString(), '. SLIDER value', value, 'value Date = ', new Date(value).toISOString());
@@ -125,17 +128,11 @@
 			span {
 				display: block;
 				position: absolute;
-				/* text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; */
-				/* text-shadow:
-					-2px -2px 0 #fff,
-					2px -2px 0 #fff,
-					-2px 2px 0 #fff,
-					2px 2px 0 #fff; */
 
 				background-color: white;
 				font-size: 0.7rem;
 				padding-bottom: 1px;
-				top: -2px;
+				top: -1px;
 				/* padding: 0.25rem; */
 				opacity: 1;
 				z-index: 1000;
@@ -143,13 +140,13 @@
 			}
 
 			.first-label {
-				left: -1px;
+				left: 0px;
 				padding-right: 3px;
 			}
 
 			.last-label {
 				padding-left: 3px;
-				right: -4px;
+				right: 0px;
 			}
 		}
 

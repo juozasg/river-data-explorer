@@ -35,8 +35,10 @@
 
 	$effect(() => {
 		const closestValid = binaryClosestTo(selectedDate(), validDates);
-		// console.log("closestValid", closestValid);
 		if (closestValid) setDate(closestValid);
+	});
+
+	$effect(() => {
 		onDateSelect?.(selectedDate());
 	});
 
