@@ -23,6 +23,7 @@ export function genYTicks(domain: [number, number], ts: number[]): number[] {
 	const ticks = [min, min + q, min + 2 * q, min + 3 * q, max];
 	const numTicks = ts.length;
 	// return [0, 1, 2]
+	// console.log('generated ticks from ts', ts, 'to', ticks);
 	return ticks.map((n) => roundTickValue(n, range, n == max || n == min));
 }
 

@@ -40,7 +40,7 @@
 <g class="scatter-group">
 	{#each $data as d, i}
 		{#if (filterMinIndex == null || i >= filterMinIndex) && (filterMaxIndex == null || i <= filterMaxIndex)}
-			{#if typeof dataGet(d) == 'number'}
+			{#if typeof dataGet(d) == 'number' && typeof $xGet(d) == 'number'}
 				<circle
 					cx={$xGet(d) + ($xScale.bandwidth ? $xScale.bandwidth() / 2 : 0)}
 					cy={dataGet(d) + (dataBandwidth ? dataBandwidth() / 2 : 0)}

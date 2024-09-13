@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
 	import { sitesTables } from "$src/appstate/data/datasets.svelte";
-	import { MapFeatureSelectionState } from "$src/appstate/map/featureState.svelte";
 	import { sites } from "$src/appstate/sites.svelte";
 	import BasinChart from "$src/components/basin/BasinChart.svelte";
 
@@ -10,8 +9,11 @@
 	$effect(() => {
 		console.log('sites', sites.all.length);
 		dataSelection.ySite = sites.findById('sjrbc-1');
-		dataSelection.yVar = 'temp';
+		dataSelection.yVar = 'ecoli';
+		// dataSelection.yVar = 'ecoli';
 		dataSelection.zSite = sites.findById('elkhart-1');
+		// dataSelection.zVar = 'ecoli';
+		// dataSelection.zSite = sites.findById('sjrbc-2');
 		dataSelection.zVar = 'ecoli';
 	});
 
@@ -26,7 +28,7 @@
 </script>
 
 
-<div style="position: absolute; top: 1rem; left: 1rem; width: 500px; height:500px">
+<div style="position: absolute; top: 3rem; left: 3rem; width: 500px; height:500px">
 	<BasinChart
 		{dataSelection}
 		{onDateSelected}

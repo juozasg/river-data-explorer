@@ -10,7 +10,7 @@
 	import Brush from '$src/components/chart/layercake/Brush.html.svelte';
 	import Line from '$src/components/chart/layercake/Line.svelte';
 	import Scatter from '$src/components/chart/layercake/Scatter.svelte';
-	import SharedTooltip from '$src/components/chart/layercake/SharedTooltip.svelte';
+	import ChartTooltip from '$src/components/chart/layercake/ChartTooltip.svelte';
 	import { fmtDateDMonY, isNumber, UTCDayDate } from '$src/lib/utils';
 	import {
 		formatChartDate,
@@ -37,9 +37,6 @@
 
 	const { yzTable, yParams, zParams, chartWidth, chartHeight, onDateSelected }: Props = $props();
 
-
-	// const yParams = $derived(new YZChartParams('y', yVar, table));
-	// const zParams = $derived(new YZChartParams('z', zVar, table));
 
 	const yAxisLabel = $derived(
 		`${yParams.varLabel} <span class="location-label">${yParams.locationName}<span>`
@@ -120,22 +117,22 @@
 						format={formatChartDate}
 						ticks={(ts: number[]) => genXDateTicks(brushedTable, ts)}
 					/>
-					{#if yParams.stats.count > 0}
+					{#if yParams.stats.count > 0 && yParams.domain}
 						<AxisY
 							gridlines={false}
 							tickMarks={true}
-							ticks={(ts: number[]) => genYTicks(yParams.domain, ts)}
+							ticks={(ts: number[]) => genYTicks(yParams.domain!, ts)}
 							color={chartYColor}
 						/>
 
 						<Line stroke={chartYColor} />
 						<Scatter r={yParams.radius} fill={chartYColor} />
 					{/if}
-					{#if zParams.stats.count > 0}
+					{#if zParams.stats.count > 0 && zParams.domain}
 						<AxisYZRight
 							gridlines={false}
 							tickMarks={true}
-							ticks={(ts: number[]) => genYTicks(zParams.domain, ts)}
+							ticks={(ts: number[]) => genYTicks(zParams.domain!, ts)}
 							color={chartZDarker}
 						/>
 						<Line stroke={chartZColor} dataSource="z" />
@@ -146,7 +143,7 @@
 					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 					<div onclick={chartOnclick} role="tooltip">
-						<SharedTooltip
+						<ChartTooltip
 							formatTitle={formatTooltipTitle}
 							formatKey={(k: string) => formatChartTTKey(k)}
 							formatValue={formatChatTTValue}
