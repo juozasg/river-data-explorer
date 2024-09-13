@@ -146,8 +146,8 @@
 					<div onclick={chartOnclick} role="tooltip">
 						<ChartTooltip
 							formatTitle={formatTooltipTitle}
-							formatKey={(k: string) => formatChartTTKey(k)}
-							formatValue={formatChatTTValue}
+							formatKey={(k: string) => formatChartTTKey(k, yParams, zParams)}
+							formatValue={(k:string, v:string) => formatChatTTValue(k, v, yParams, zParams)}
 							filterKeys={['y', 'z']}
 						/>
 						<YZAxisLabels yLabel={yAxisLabel} zLabel={zAxisLabel} />

@@ -2,6 +2,7 @@ import type ColumnTable from "arquero/dist/types/table/column-table";
 import { fmtDateDMonY, UTCDayDate } from ".";
 import { chartYColor, chartZDarker } from "./colors";
 import { varlabel, varunits } from './varHelpers';
+import type { YZChartParams } from "./YZChartParams";
 
 
 // based on how big the range is, round the tick value to a reasonable number
@@ -68,16 +69,26 @@ export function formatChartDate(d: number): any {
 	return fmtDateDMonY(date);
 }
 
-export function formatChartTTKey(key: string): string {
+export function formatChartTTKey(key: string, yParams: YZChartParams, zParams: YZChartParams): string {
 	const keycolor = key == "y" ? chartYColor : key == "z" ? chartZDarker : '#444';
 	// const label = varlabel(key, false);
-	const label = key;
+	let label = key;
+	if(key == 'y' && yParams.varname) {
+		label = yParams.locationName + " " + varlabel(yParams.varname, false);
+	} else if(key == 'z' && zParams.varname) {
+		label = zParams.locationName + " " +  varlabel(zParams.varname, false);
+	}
 
 	return `<span style="font-weight: 600; color: ${keycolor}">${label}</bold>`;
 }
 
-export function formatChatTTValue(key: string, value: any): string {
-	const unit = `varunits('${key}')`;
+export function formatChatTTValue(key: string, value: any, yParams: YZChartParams, zParams: YZChartParams): string {
+	let unit = '';
+	if(key == 'y' && yParams.varname) {
+		unit = varunits(yParams.varname);
+	} else if(key == 'z' && zParams.varname) {
+		unit = varunits(zParams.varname);
+	}
 	return `${value} ${unit}`;
 }
 

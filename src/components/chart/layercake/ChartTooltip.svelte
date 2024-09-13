@@ -111,7 +111,8 @@
 				<div class="title">{formatTitle(found[$config.x])}</div>
 				{#each dataWithPositions as row}
 					<div class="row">
-						<span class="key">{@html formatKey(row.key)}:</span>
+						<span class="key">{@html formatKey(row.key)}:&nbsp; </span>
+
 						{formatValue(row.key, row.value)}
 					</div>
 				{/each}
@@ -131,6 +132,8 @@
 		padding: 5px;
 		z-index: 15;
 		pointer-events: none;
+		border-radius: var(--border-radius);
+		margin-left: 1rem;
 
 		filter: drop-shadow(3px 3px 4px #00000046);
 
@@ -156,6 +159,7 @@
 	}
 	.row {
 		line-height: 1.1;
+		margin: 0.5rem 0;
 	}
 
 	.key {

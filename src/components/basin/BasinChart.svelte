@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
 	import { selectSiteTableVar } from "$src/lib/data/tableHelpers";
+	import type { Site } from "$src/lib/types/site";
 	import { varChartDomain, YZChartParams } from "$src/lib/utils/YZChartParams";
 	import BrushedYzChart from "../chart/BrushedYZChart.svelte";
 
@@ -24,15 +25,6 @@
 		return yTable ?? zTable;
 	});
 
-	// $effect(() => {
-	// 	console.log("yTable", yTable?.objects());
-	// 	console.log("zTable", zTable?.objects());
-	// 	console.log("yzTable", yzTable?.objects());
-
-	// 	console.log("yParams", yParams);
-	// 	console.log("zParams", zParams);
-	// });
-
 	const yDomain = $derived(varChartDomain("y", dataSelection.yVar, yzTable));
 	const zDomain = $derived(varChartDomain("z", dataSelection.zVar, yzTable));
 
@@ -50,8 +42,13 @@
 		console.log('force domain', forceDomain);
 	});
 
-	let yParams = $derived(new YZChartParams("y", dataSelection.yVar, yzTable, dataSelection.ySite?.name, forceDomain ?? yDomain));
-	let zParams = $derived(new YZChartParams("z", dataSelection.zVar, yzTable, dataSelection.zSite?.name, forceDomain ?? zDomain));
+	function locationName(site?: Site) {
+		if(!site) return '';
+		return site.name + ` (${site.id.replace(/-/, '&#8209;')})`; // non-breaking hyphen
+	}
+
+	let yParams = $derived(new YZChartParams("y", dataSelection.yVar, yzTable, locationName(dataSelection.ySite), forceDomain ?? yDomain));
+	let zParams = $derived(new YZChartParams("z", dataSelection.zVar, yzTable, locationName(dataSelection.zSite), forceDomain ?? zDomain));
 
 </script>
 
