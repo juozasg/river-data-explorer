@@ -49,6 +49,7 @@
 			hoveredRegion.feature = queryMouseMoveHover(e, ['riverapp-huc10']);
 
 			if (hoveredRiver.feature || (showRegionTooltip && hoveredRegion.feature) || hoveredSite) {
+				// console.log('show tooltuip', e.originalEvent.x, e.originalEvent.y, hoveredSite, hoveredRegion.feature, hoveredRiver.feature);
 				tooltip.show(e.originalEvent.x, e.originalEvent.y, true);
 				tooltip.content = tooltipContent;
 			} else {

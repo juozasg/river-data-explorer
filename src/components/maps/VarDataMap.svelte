@@ -78,7 +78,7 @@
 	}
 
 	$effect(() => {
-		console.log('VDM vardate', vardate)
+		// console.log('VDM vardate', vardate)
 	});
 
 </script>

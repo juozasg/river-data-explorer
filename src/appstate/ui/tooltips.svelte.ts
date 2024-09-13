@@ -12,9 +12,9 @@ export const tooltip = {
 		_tooltip = t;
 	},
 
-	set(value: WebsiteTooltip | undefined) {
-		_tooltip = value;
-	},
+	// set(value: WebsiteTooltip | undefined) {
+	// 	_tooltip = value;
+	// },
 
 	show(x: number, y: number, toggleable = false) {
 		if(_tooltip) _tooltip.show(x, y, toggleable);

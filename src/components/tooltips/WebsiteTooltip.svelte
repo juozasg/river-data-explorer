@@ -13,6 +13,7 @@
 
 	// map div top corner = (0,0)
 	export const show = (x: number, y: number, _toggleable = false) => {
+		console.log('tt show')
 		if(_toggleable == false) {
 			showToggleHint = false;
 			tooltip.toggledHidden = false;

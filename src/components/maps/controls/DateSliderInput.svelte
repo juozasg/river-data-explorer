@@ -42,11 +42,9 @@
 		const closestValue = binaryClosestSearch(validValues, value);
 
 		value = closestValue;
-		// console.log('SNAP TO VALID DATE', new Date(value).toISOString());
 	};
 
 	$effect(() => {
-		console.log('DateSliderInput value', value, 'Date = ', new Date(value).toISOString());
 		onDateSelect(new Date(value));
 	});
 
