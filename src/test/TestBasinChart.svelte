@@ -11,9 +11,9 @@
 		dataSelection.ySite = sites.findById('sjrbc-1');
 		dataSelection.yVar = 'ecoli';
 		// dataSelection.yVar = 'ecoli';
-		dataSelection.zSite = sites.findById('elkhart-1');
+		// dataSelection.zSite = sites.findById('elkhart-1');
 		// dataSelection.zVar = 'ecoli';
-		// dataSelection.zSite = sites.findById('sjrbc-2');
+		dataSelection.zSite = sites.findById('sjrbc-2');
 		dataSelection.zVar = 'ecoli';
 	});
 

@@ -38,11 +38,12 @@
 	const { yzTable, yParams, zParams, chartWidth, chartHeight, onDateSelected }: Props = $props();
 
 
-	const yAxisLabel = $derived(
-		`${yParams.varLabel} <span class="location-label">${yParams.locationName}<span>`
+	const yAxisLabel = $derived(yParams.stats.count > 0 ?
+		`${yParams.varLabel} <span class="location-label">${yParams.locationName}<span>` : ''
 	);
 	const zAxisLabel = $derived(
-		`${zParams.varLabel} <span class="location-label">${zParams.locationName || ''}<span>`
+		zParams.stats.count > 0 ?
+		`${zParams.varLabel} <span class="location-label">${zParams.locationName || ''}<span>` : ''
 	);
 
 	let brushMinIndex: number | null = $state(null);
