@@ -3,15 +3,14 @@
 
 	import type { MapLibreMapProps } from "$src/lib/types/components";
 
-	import { sitesEarliestDate, sitesLatestDate, sitesValidDates } from "$src/lib/data/dateStats";
+	import { sitesValidDates } from "$src/lib/data/dateStats";
 	import { defaultLayersParams, type MapLayersParams } from "$src/lib/types/mapControls";
 	import type { Site } from "$src/lib/types/site";
 	import { UTCDayDate } from "$src/lib/utils";
 	import DataTools from "./controls/DataTools.svelte";
-	import Legend from "./controls/Legend.svelte";
 	import DateMultiInput from "./controls/DateMultiInput.svelte";
+	import Legend from "./controls/Legend.svelte";
 	import VariableSelector from "./controls/VariableSelector.svelte";
-	import { totalRecords } from "$src/appstate/data/datasets.svelte";
 
 	type Props = {
 		sites: Site[];
@@ -41,8 +40,8 @@
 	});
 
 	let dateMultiInput = $state<DateMultiInput>();
-	export function setInternalDate(d: Date) {
-		if (dateMultiInput) dateMultiInput.setInternalDate(d);
+	export function setDate(d: Date) {
+		if (dateMultiInput) dateMultiInput.setDate(d);
 	}
 </script>
 

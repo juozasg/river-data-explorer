@@ -1,8 +1,7 @@
 <script lang="ts">
 	import "$src/styles/time-slider.scss";
 
-	import { binaryClosestTo, binaryClosestSearch, fmtDateDMonY, UTCDayDate } from "$src/lib/utils";
-	import { closestTo } from "date-fns";
+	import { binaryClosestSearch, fmtDateDMonY, UTCDayDate } from "$src/lib/utils";
 
 	let { validDates, onDateSelect }: { validDates: Date[]; onDateSelect: (d: Date) => void } = $props();
 
@@ -47,6 +46,7 @@
 	};
 
 	$effect(() => {
+		console.log('DateSliderInput value', value, 'Date = ', new Date(value).toISOString());
 		onDateSelect(new Date(value));
 	});
 

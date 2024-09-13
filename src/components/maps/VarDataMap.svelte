@@ -73,9 +73,13 @@
 	});
 
 	let dataMapControls = $state<DataMapControls>();
-	export function setInternalDate(d: Date) {
-		dataMapControls?.setInternalDate(d);
+	export function setDate(d: Date) {
+		dataMapControls?.setDate(d);
 	}
+
+	$effect(() => {
+		console.log('VDM vardate', vardate)
+	});
 
 </script>
 

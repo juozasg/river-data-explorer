@@ -1,43 +1,45 @@
 <script lang="ts">
 	import DateSliderInput from "./DateSliderInput.svelte";
 	import DateYMDSelects from "./DateYMDSelects.svelte";
-	import {  binaryClosestSearch, UTCDayDate } from "$src/lib/utils";
+	import { binaryClosestSearch, UTCDayDate } from "$src/lib/utils";
+	import { untrack } from "svelte";
 
 	let { validDates, vardate = $bindable(UTCDayDate()) }: { validDates: Date[]; vardate: Date } = $props();
 	const validValues = $derived((validDates || []).map((d) => d.valueOf()));
 
-
-	// const validDateValues = $derived((validDates || []).map((d) => d.valueOf()));
-
-	// const startDate = $derived(validDates[0] || UTCDayDate("1990-01-01"));
-	// const endDate = $derived(validDates[validDates.length - 1] || UTCDayDate());
-
-	// could be cleaner later
-	export function setInternalDate(d: Date) {
-		// rangeInputValue = d.valueOf();
-	}
+	const isValidDate = (date: Date) =>
+		validValues.length > 0 && binaryClosestSearch(validValues, date.valueOf()).valueOf() === date.valueOf();
 
 	let dateSliderInput = $state<DateSliderInput>();
 	let ymdSelects = $state<DateYMDSelects>();
 
-	const onYmdDateSelect = (date: Date) => {
-		console.log("multinput ymdDateSelect", date);
-		const closestValue = binaryClosestSearch(validValues, date.valueOf());
+	export function setDate(d: Date) {
+		if (isValidDate(d)) dateSliderInput?.setDate(d);
+	}
 
-		if(date.valueOf() === closestValue) {
-			console.log('set slider date', date.toISOString());
-			dateSliderInput?.setDate(date);
+	// works great - do not touch!
+	const onYmdDateSelect = (date: Date) => {
+		// console.log('onYmdDateSelect', date.toISOString());
+		if (isValidDate(date)) {
+			untrack(() => {
+				// console.log('set data slider input date', date.toISOString());
+				dateSliderInput?.setDate(date);
+			});
+			vardate = date;
 		}
 	};
 
 	const onRangeDateSelect = (date: Date) => {
-		console.log("multinput rangeDateSelect", date);
-		const closestValue = binaryClosestSearch(validValues, date.valueOf());
+		// console.log('onRangeDateSelect', date.toISOString());
 
-		if(date.valueOf() === closestValue) {
-			console.log('set ymd date', date.toISOString());
-			ymdSelects?.setDate(date);
+		const closestValid = binaryClosestSearch(validValues, date.valueOf());
+		if (closestValid) {
+			untrack(() => {
+				// console.log('set YMD date', new Date(closestValid).toISOString());
+				ymdSelects?.setDate(new Date(closestValid));
+			});
 		}
+
 	};
 </script>
 

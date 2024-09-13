@@ -41,7 +41,7 @@
 		if (u) {
 			const regionDetailsA = window.document.getElementById('region-details');
 			regionDetailsA?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-			detailsMap?.setInternalDate(regionMapVardate);
+			detailsMap?.setDate(regionMapVardate);
 			detailMapVarname = regionMapVarname;
 		}
 	};
@@ -86,7 +86,7 @@
 	let detailMapVardate = $state(UTCDayDate());
 	function chartOnDateSelected(d: Date) {
 		if (detailsMap) {
-			detailsMap.setInternalDate(d);
+			detailsMap.setDate(d);
 			detailMapVarname = dataSelection.yVar || dataSelection.zVar || 'temp';
 		}
 	}

@@ -3,6 +3,7 @@
 	import VarDataMap from "$src/components/maps/VarDataMap.svelte";
 	import type { Site } from "$src/lib/types/site";
 	import { hover } from "@testing-library/user-event/dist/cjs/convenience/hover.js";
+	import { onMount } from "svelte";
 
 	let selectedSite = $state<Site>();
 
@@ -17,6 +18,11 @@
 		if (s) {
 			// selectedSite = s;
 		}
+	});
+
+	onMount(() => {
+		(window as any).varDataMap = varDataMap;
+		console.log('TEST varDataMap', varDataMap);
 	});
 </script>
 
