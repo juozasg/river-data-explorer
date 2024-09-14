@@ -3,8 +3,6 @@
 
 	import { sitesTables } from "$src/appstate/data/datasets.svelte";
 	import type ColumnTable from "arquero/dist/types/table/column-table";
-	import BrushedYZChart from "../chart/BrushedYZChart.svelte";
-	import ElementResizeObserver from "../ElementResizeObserver.svelte";
 	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
 	import Icon from "@iconify/svelte";
 	import type { Site } from "$src/lib/types/site";
@@ -64,13 +62,11 @@
 	// 	console.log('BASIN CHART dataSelection', dataSelection.yVar, JSON.stringify(dataSelection));
 	// });
 
-	let chartLayoutElement: HTMLDivElement | undefined = $state();
 
 	// const ds = () => {console.log('render!!!!', dataSelection, JSON.stringify(dataSelection)); return JSON.stringify(dataSelection)}
 </script>
 
-<div bind:this={chartLayoutElement} style="width: 100%; height: 100%;">
-	<ElementResizeObserver element={chartLayoutElement} bind:width={chartWidth} bind:height={chartHeight} />
+<div bind:clientHeight={chartHeight} style="width: 100%; height: 100%;">
 
 	{#if combinedTable && (dataSelection.yVar || dataSelection.zVar)}
 		<BasinChart {dataSelection} {selectedRegion} />
