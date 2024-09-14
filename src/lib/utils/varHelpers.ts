@@ -51,7 +51,7 @@ export function varrange(varname: string) {
 	return varmax(varname) - varmin(varname);
 }
 
-
+// returns
 export function varcategories(varname: string) {
 	return !!variablesMetadata[varname]?.categories && Object.keys(variablesMetadata[varname]?.categories).length > 0 ? Object.keys(variablesMetadata[varname]?.categories) : undefined;
 }
@@ -76,4 +76,28 @@ export function varstdmin(varname: string): number | undefined {
 
 export function varstdmax(varname: string): number | undefined {
 	return variablesMetadata[varname]?.standards?.max;
+}
+
+export function catvarOutsideStandards(varname: string, value: string): boolean {
+	const cats = varcategories(varname);
+	if (!cats) return false;
+	const catIndex = cats.indexOf(value);
+	if(catIndex  == -1) return false;
+
+	const frac = catIndex / cats.length;
+	return frac < 0.3;
+}
+
+export function varoutsidestandard(varname: string, value: number | string) {
+	if(typeof value === 'string') return catvarOutsideStandards(varname, value);
+
+	const min = varstdmin(varname);
+	const max = varstdmax(varname);
+
+	console.log('varoutsidestandard', varname, value, min, max);
+
+	if(min !== undefined && value < min) return true;
+	if(max !== undefined && value > max) return true;
+
+	return false;
 }

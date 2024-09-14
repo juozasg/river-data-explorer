@@ -29,6 +29,9 @@
 
 	let color = $state('yellowgreen');
 	export const isGhost = () => color == ghost;
+	let stdbad = $state(false);
+
+
 
 	const makeMarker = (node: HTMLElement, site: Site) => {
 		return makeSiteMarker(node, map, site);
@@ -36,6 +39,7 @@
 
 	export const siteId = site.id;
 	export const setColor = (c: string) => (color = c);
+	export const setStdBad = (bad: boolean) => (stdbad = bad);
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -46,6 +50,7 @@
 	onmouseleave={(e) => markerMouseLeave(e, site)}
 	class:is-selected={selected}
 	class:emphasized
+	class:stdbad
 	use:makeMarker={site}
 >
 	{#if isYVar}
@@ -55,20 +60,24 @@
 		<div class="z-var-site"></div>
 	{/if}
 
-	<div style="--color: {color}" class="marker-box" class:ghost={isGhost()}></div>
+	<div style="--color: {color}" class="marker-box" class:ghost={isGhost()} ></div>
 </div>
 
 <style>
 	.marker {
 		.marker-box {
 			opacity: 1;
-			border: 1px solid #3b084b;
+			border: 1px solid black;
 			border-radius: 0px;
 			transform: rotateY(0deg) rotate(45deg);
 
 			width: 12.5px;
 			height: 12.5px;
 			background-color: var(--color);
+		}
+
+		&.stdbad .marker-box {
+			border: 2px solid red;
 		}
 
 		&:has(.y-var-site, .z-var-site) {

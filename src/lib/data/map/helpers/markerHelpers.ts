@@ -3,18 +3,16 @@ import { ghost, interpolateVarColor } from "$src/lib/utils/colors";
 import { tableGetBeforeDate } from "../../tableHelpers";
 
 
-export function siteVariableColor(siteid: string, varname: string, beforeDate?: Date) {
+export function siteBeforeVardateValue(siteid: string, varname: string, beforeDate?: Date): number | string| undefined {
 	try {
 		// return ghost;
 		const table = sitesTables.get(siteid);
-		if (!table) return ghost;
+		if (!table) return ;
 
 		const value = tableGetBeforeDate(table, varname, beforeDate);
-		if (value === undefined) return ghost;
-
-		return interpolateVarColor(varname, value as number);
+		if (typeof value === 'number' || typeof value == 'string') return value;
 	} catch (e) {
-		console.error('siteVariableColor', e);
-		return ghost;
+		console.error('siteBeforeVardateValue', e);
+		return ;
 	}
 }
