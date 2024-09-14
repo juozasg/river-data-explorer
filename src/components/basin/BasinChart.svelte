@@ -49,7 +49,7 @@
 </script>
 
 {#if yzTable && yParams && zParams}
-	<BrushedYzChart {yzTable} {yParams} {zParams} chartWidth={555} chartHeight={500} {onDateSelected} />
+	<BrushedYzChart {yzTable} {yParams} {zParams} chartWidth={500} chartHeight={500} {onDateSelected} />
 {:else}
 	<p>No data</p>
 {/if}

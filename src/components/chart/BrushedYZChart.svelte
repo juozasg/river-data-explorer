@@ -154,7 +154,7 @@
 		{/if}
 	</div>
 
-	<!-- BRUSH CHART -->
+	<!-- BRUSHER CHART -->
 	<div
 		role="figure"
 		class="brush-container"
