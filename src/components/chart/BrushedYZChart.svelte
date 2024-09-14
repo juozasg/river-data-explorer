@@ -8,18 +8,16 @@
 	import AxisY from "$src/components/chart/layercake/AxisY.svelte";
 	import AxisYZRight from "$src/components/chart/layercake/AxisYZRight.svelte";
 	import Brush from "$src/components/chart/layercake/Brush.html.svelte";
+	import ChartTooltip from "$src/components/chart/layercake/ChartTooltip.svelte";
 	import Line from "$src/components/chart/layercake/Line.svelte";
 	import Scatter from "$src/components/chart/layercake/Scatter.svelte";
-	import ChartTooltip from "$src/components/chart/layercake/ChartTooltip.svelte";
 	import { fmtDateDMonY, isNumber, UTCDayDate } from "$src/lib/utils";
 	import { formatChartDate, formatChartTTKey, formatChatTTValue, genXDateTicks, genYTicks } from "$src/lib/utils/chart";
 	import type ColumnTable from "arquero/dist/types/table/column-table";
 
-	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
 	import { YZChartParams } from "$src/lib/utils/YZChartParams";
 	import { chartYColor, chartZColor, chartZDarker } from "$src/lib/utils/colors";
 	import MinMaxLines from "./layercake/MinMaxLines.svelte";
-	import { varstdmax, varstdmin } from "$src/lib/utils/varHelpers";
 
 	type Props = {
 		yzTable: ColumnTable;
@@ -120,7 +118,7 @@
 							color={chartYColor} />
 
 						<Line stroke={chartYColor} />
-						<Scatter r={yParams.radius} fill={chartYColor} />
+						<Scatter r={yParams.radius} fill={chartYColor} min={zParams.stdmin} max={zParams.stdmax} badcolor="orange" />
 					{/if}
 					{#if zParams.stats.count > 0 && zParams.domain}
 						<AxisYZRight
@@ -129,13 +127,15 @@
 							ticks={(ts: number[]) => genYTicks(zParams.domain!, ts)}
 							color={chartZDarker} />
 						<Line stroke={chartZColor} dataSource="z" />
-						<Scatter r={zParams.radius} fill={chartZColor} dataSource="z" />
+						<Scatter r={zParams.radius} fill={chartZColor} min={zParams.stdmin} max={zParams.stdmax} badcolor="red" dataSource="z" />
 					{/if}
 
 					{#if yParams.stats.count > 0 && yParams.varname}
-						<MinMaxLines
-							varname={yParams.varname}
-							color={chartYColor} />
+						<MinMaxLines varParams={yParams} color={chartYColor} />
+					{/if}
+
+					{#if zParams.stats.count > 0 && zParams.varname && zParams.varname !== yParams.varname}
+						<MinMaxLines varParams={zParams} color={chartZColor} />
 					{/if}
 				</Svg>
 				<Html>

@@ -134,8 +134,9 @@
 		pointer-events: none;
 		border-radius: var(--border-radius);
 		margin-left: 1rem;
+		box-shadow: var(--box-shadow);
 
-		filter: drop-shadow(3px 3px 4px #00000046);
+		/* filter: drop-shadow(3px 3px 4px #00000046); */
 
 	}
 	.line {

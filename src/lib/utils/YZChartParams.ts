@@ -1,6 +1,6 @@
 import type ColumnTable from "arquero/dist/types/table/column-table";
 import { isNumber } from ".";
-import { varunits } from './varHelpers';
+import { varstdmax, varstdmin, varunits } from './varHelpers';
 import { variablesMetadata } from "$src/appstate/variablesMetadata.svelte";
 import { simpleStats, type SimpleStats } from "../data/stats";
 import { roundTickValue } from "./chart";
@@ -22,7 +22,7 @@ export function varChartDomain(axis: "y" | "z", varname?: string, yzTable?: Colu
 
 export class YZChartParams {
 	axis: string;
-	varname?: string;
+	varname: string;
 	yzTable?: ColumnTable;
 	locationName: string;
 
@@ -33,10 +33,13 @@ export class YZChartParams {
 	radius: number = 4;
 	domain?: [number, number];
 
+	stdmin?: number;
+	stdmax?: number;
+
 
 	constructor(
 		axis: "y" | "z",
-		varname?: string,
+		varname: string,
 		yzTable?: ColumnTable,
 		locationName?: string,
 		domain?: [number, number]
@@ -55,21 +58,15 @@ export class YZChartParams {
 			this.stats = simpleStats(axis, yzTable);
 			this.radius = this.stats.count > 2 ? 4 : 7;
 
-			// const metadataMin: number = variablesMetadata[varname]?.scale?.min ?? 0;
-			// const metadataMax: number = variablesMetadata[varname]?.scale?.max ?? 100;
-
-			// const domainMin = isNumber(this.stats.min) ? Math.min(metadataMin, this.stats.min!) : metadataMin;
-			// const domainMax = this.stats.count < 2 ? metadataMax : roundTickValue(this.stats.max! + (this.stats.range! * 0.25), this.stats.range! * 10);
-
-			// this.domain = [domainMin, domainMax];
+			this.stdmin = varstdmin(varname);
+			this.stdmax = varstdmax(varname);
 		} else {
-			// this.domain = [0, 100];
-			this.stats = {count: 0}
+			this.stats = { count: 0 }
 			this.varLabel = '';
 
 		}
 
-		if(domain) this.domain = domain;
+		if (domain) this.domain = domain;
 
 	}
 }

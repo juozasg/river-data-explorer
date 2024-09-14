@@ -43,8 +43,8 @@
 		return site.name + ` (${site.id.replace(/-/, '&#8209;')})`; // non-breaking hyphen
 	}
 
-	let yParams = $derived(new YZChartParams("y", dataSelection.yVar, yzTable, locationName(dataSelection.ySite), forceDomain ?? yDomain));
-	let zParams = $derived(new YZChartParams("z", dataSelection.zVar, yzTable, locationName(dataSelection.zSite), forceDomain ?? zDomain));
+	let yParams = $derived(new YZChartParams("y", dataSelection.yVar || '', yzTable, locationName(dataSelection.ySite), forceDomain ?? yDomain));
+	let zParams = $derived(new YZChartParams("z", dataSelection.zVar || '', yzTable, locationName(dataSelection.zSite), forceDomain ?? zDomain));
 
 </script>
 

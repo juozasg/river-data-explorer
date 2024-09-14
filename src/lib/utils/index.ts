@@ -153,6 +153,7 @@ export function findAncestor(el: HTMLElement | null, cls: any) {
 }
 
 export function isNumber(n: any) {
+	if (n === undefined || n === null) return false;
 	return typeof n === 'number' && !isNaN(n);
 }
 
