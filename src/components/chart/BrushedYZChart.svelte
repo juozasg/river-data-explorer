@@ -134,10 +134,7 @@
 
 					{#if yParams.stats.count > 0 && yParams.varname}
 						<MinMaxLines
-							label="wtf ECOLI?"
-							domain={yParams.domain!}
-							min={varstdmin(yParams.varname)}
-							max={varstdmax(yParams.varname)}
+							varname={yParams.varname}
 							color={chartYColor} />
 					{/if}
 				</Svg>
