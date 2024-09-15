@@ -18,6 +18,7 @@
 	import { YZChartParams } from "$src/lib/utils/YZChartParams";
 	import { chartYColor, chartZColor, chartZDarker } from "$src/lib/utils/colors";
 	import MinMaxLines from "./layercake/MinMaxLines.svelte";
+	import { varcategories, varcatilegend } from "$src/lib/utils/varHelpers";
 
 	type Props = {
 		yzTable: ColumnTable;
@@ -50,6 +51,16 @@
 		return yzTable.slice(brushMinIndex || 0, sliceIndex);
 	});
 
+
+	function formatYTick(v: number, varParams: YZChartParams) {
+		if (varcategories(varParams.varname)) {
+			return varcatilegend(varParams.varname, v) || v.toString();
+		}
+
+		return v.toString();
+	}
+
+
 	// $effect(() => {
 	// 	console.log('table', table.objects());
 	// 	console.log('brushedTable', brushedTable?.objects());
@@ -78,7 +89,7 @@
 		if (dateHovered?.valueOf() !== date.valueOf()) {
 			dateHovered = date;
 		}
-		return fmtDateDMonY(date);
+		return fmtDateDMonY(date) + "<i><small>(click to select)</small></i>";
 	};
 
 	function chartOnclick(e: MouseEvent) {
@@ -115,16 +126,18 @@
 							gridlines={false}
 							tickMarks={true}
 							ticks={(ts: number[]) => genYTicks(yParams.domain!, ts)}
+							format={(v: number) => formatYTick(v, yParams)}
 							color={chartYColor} />
 
 						<Line stroke={chartYColor} />
-						<Scatter r={yParams.radius} fill={chartYColor} min={zParams.stdmin} max={zParams.stdmax} badcolor="orange" />
+						<Scatter r={yParams.radius} fill={chartYColor} min={yParams.stdmin} max={yParams.stdmax} badcolor="orange" />
 					{/if}
 					{#if zParams.stats.count > 0 && zParams.domain}
 						<AxisYZRight
 							gridlines={false}
 							tickMarks={true}
 							ticks={(ts: number[]) => genYTicks(zParams.domain!, ts)}
+							format={(v: number) => formatYTick(v, zParams)}
 							color={chartZDarker} />
 						<Line stroke={chartZColor} dataSource="z" />
 						<Scatter r={zParams.radius} fill={chartZColor} min={zParams.stdmin} max={zParams.stdmax} badcolor="red" dataSource="z" />

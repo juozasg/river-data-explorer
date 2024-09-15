@@ -71,6 +71,7 @@ export function varcatilegend(varname: string, catIndex: number) {
 
 
 export function varstdmin(varname: string): number | undefined {
+	if(varname == 'invertNarrative') return 3;
 	return variablesMetadata[varname]?.standards?.min;
 }
 

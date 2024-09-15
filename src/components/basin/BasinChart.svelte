@@ -46,6 +46,12 @@
 	let yParams = $derived(new YZChartParams("y", dataSelection.yVar || '', yzTable, locationName(dataSelection.ySite), forceDomain ?? yDomain));
 	let zParams = $derived(new YZChartParams("z", dataSelection.zVar || '', yzTable, locationName(dataSelection.zSite), forceDomain ?? zDomain));
 
+
+$effect(() => {
+	console.log('yParams', yParams);
+	console.log('zParams', zParams);
+	console.log('yzTable', yzTable?.objects());
+});
 </script>
 
 {#if yzTable && yParams && zParams}

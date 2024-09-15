@@ -10,11 +10,11 @@
 <style>
 	pre.copy-debug {
 		position: absolute;
-		right: 0;
-		top: -20px;
+		right: -6px;
+		bottom: -26px;
 		z-index: 2;
 		background: none;
-		font-size: 70%;
+		font-size: 60%;
 		pointer-events: none;
 	}
 </style>

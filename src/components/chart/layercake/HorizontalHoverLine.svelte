@@ -23,7 +23,7 @@
 	});
 
 	function mousemove(event: MouseEvent) {
-		hovered = Math.abs(event.layerY - y) < 5;
+		hovered = Math.abs(event.layerY - y) < 6;
 	}
 
 </script>

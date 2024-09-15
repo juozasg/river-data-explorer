@@ -12,6 +12,7 @@ import type ColumnTable from 'arquero/dist/types/table/column-table';
 import { dateEqualYMD, fmtMonDY } from '../utils';
 import { sitesTables } from '$src/appstate/data/datasets.svelte';
 import type { Site } from '../types/site';
+import { varcategories } from '../utils/varHelpers';
 
 export function tablesUniqueColumns(tables: ColumnTable[]): string[] {
 	const cols = tables.flatMap(t => t.columnNames());
@@ -104,7 +105,7 @@ export function selectSiteTableVar(site: Site | undefined, varname: string | und
 
 	const renamedTable = siteTable.select(['date', varname]).rename({ [varname]: 'var' })
 
-	const filteredTable = renamedTable
+	let filteredTable = renamedTable
 	.filter(d => aq.op.is_nan(d!.var) == false)
 	.filter(aq.escape((d: any) => d!.var !== undefined && d!.var !== null && d!.var !== ''))
 	.reify();
@@ -114,5 +115,8 @@ export function selectSiteTableVar(site: Site | undefined, varname: string | und
 	}
 
 	// const renamedTable = siteTable.select(['date', varname]).rename({ [varname]: renameVar ?? varname })
+	if(varcategories(varname)) {
+		filteredTable = filteredTable.derive({ 'var': aq.escape((d: any) => varcategories(varname)!.indexOf(d.var)) });
+	}
 	return filteredTable.rename({ 'var': renameVar ?? varname });
 }

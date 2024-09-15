@@ -7,7 +7,7 @@ import { fmtDateDMonY } from "$lib/utils";
 import { sitesTables } from '$src/appstate/data/datasets.svelte';
 import { concatTablesAllColumns } from './tableHelpers';
 import { isCategoricalVar, variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
-import { varlabel } from '../utils/varHelpers';
+import { varcategories, varlabel } from '../utils/varHelpers';
 
 
 export function columnMeans(table: ColumnTable): any {
@@ -141,19 +141,25 @@ function calculateVarStats(table: ColumnTable) {
 }
 
 
-export function simpleStats(varname: string, table?: ColumnTable): SimpleStats {
-	if (!table || !table.numRows() || !table.columnNames().includes(varname)) {
+export function simpleStats(colname: string, table?: ColumnTable, varname?: string): SimpleStats {
+	if (!table || !table.numRows() || !table.columnNames().includes(colname)) {
 		return { count: 0 };
 	}
 
 	const tsTable = table
-		.select('date', varname).rename({ [varname]: 'var' })
+		.select('date', colname).rename({ [colname]: 'var' })
 		.filter(d => aq.op.is_nan(d!.var) == false)
 		.filter(aq.escape((d: any) => d!.var !== undefined && d!.var !== null && d!.var !== ''))
 		.reify();
 
 	if (tsTable.numRows() === 0) {
 		return { count: 0 };
+	}
+
+	if (varname && varcategories(varname)) {
+		console.log('vcats', varname, varcategories(varname))
+		const max = varcategories(varname)!.length - 1;
+		return { count: tsTable.numRows(), min: 0, max: max, range: max };
 	}
 
 	const stats = tsTable.rollup({

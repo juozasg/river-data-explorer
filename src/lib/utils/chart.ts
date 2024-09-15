@@ -1,8 +1,9 @@
 import type ColumnTable from "arquero/dist/types/table/column-table";
 import { fmtDateDMonY, UTCDayDate } from ".";
 import { chartYColor, chartZDarker } from "./colors";
-import { varlabel, varunits } from './varHelpers';
+import { varcategories, varlabel, varunits } from './varHelpers';
 import type { YZChartParams } from "./YZChartParams";
+import { variablesMetadata } from "$src/appstate/variablesMetadata.svelte";
 
 
 // based on how big the range is, round the tick value to a reasonable number
@@ -18,6 +19,14 @@ export function roundTickValue(n: number, range: number, extraDecimals = false) 
 export function genYTicks(domain: [number, number], ts: number[]): number[] {
 	const min = domain[0] || ts[0];
 	const max = domain[1] || ts[ts.length - 1];
+
+	if(Number.isInteger(min) && Number.isInteger(max)) {
+		const range = max - min;
+		if(range < 9) {
+			// return integers from min to max inclusive
+			return Array.from({length: range + 1}, (_, i) => min + i);
+		}
+	}
 	const range = max - min;
 	const q = range / 4;
 	// console.log('yTicks', ts, 'min', min, 'max', max);
@@ -73,10 +82,10 @@ export function formatChartTTKey(key: string, yParams: YZChartParams, zParams: Y
 	const keycolor = key == "y" ? chartYColor : key == "z" ? chartZDarker : '#444';
 	// const label = varlabel(key, false);
 	let label = key;
-	if(key == 'y' && yParams.varname) {
+	if (key == 'y' && yParams.varname) {
 		label = yParams.locationName + " " + varlabel(yParams.varname, false);
-	} else if(key == 'z' && zParams.varname) {
-		label = zParams.locationName + " " +  varlabel(zParams.varname, false);
+	} else if (key == 'z' && zParams.varname) {
+		label = zParams.locationName + " " + varlabel(zParams.varname, false);
 	}
 
 	return `<span style="font-weight: 600; color: ${keycolor}">${label}</bold>`;
@@ -84,10 +93,15 @@ export function formatChartTTKey(key: string, yParams: YZChartParams, zParams: Y
 
 export function formatChatTTValue(key: string, value: any, yParams: YZChartParams, zParams: YZChartParams): string {
 	let unit = '';
-	if(key == 'y' && yParams.varname) {
-		unit = varunits(yParams.varname);
-	} else if(key == 'z' && zParams.varname) {
-		unit = varunits(zParams.varname);
+	const params = key == 'y' ? yParams : zParams;
+	if (varcategories(params.varname)) {
+		const catId = varcategories(params.varname)![value];
+		if (catId) {
+			return variablesMetadata[params.varname]?.categories[catId]?.label || catId;
+		}
+	}
+	if (key == 'y' || key == 'z') {
+		unit = varunits(params.varname);
 	}
 	return `${value} ${unit}`;
 }

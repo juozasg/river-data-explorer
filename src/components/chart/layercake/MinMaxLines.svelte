@@ -1,17 +1,5 @@
 <script lang="ts">
-	// $xScale.range() = [0,555]
-	// $yScale.range() = [448, 0]
-	// $yScale.domain() = [0, 151214]
-	// $yScale((151200) = 0.04 //px from the top
-
-	// $effect(() => {
-	// console.log('xScale', $xScale.range(), $xScale.domain());
-	// console.log('yScale',   $yScale.range(), $yScale.domain(), $yScale);
-
-	// console.log('min', min, 'max', max, 'y', y);
-	// });
-
-	import { varlabel, varunits } from "$src/lib/utils/varHelpers";
+	import { varcategories, varlabel, varunits } from "$src/lib/utils/varHelpers";
 	import type { YZChartParams } from "$src/lib/utils/YZChartParams";
 	import { getContext } from "svelte";
 	import HorizontalHoverLine from "./HorizontalHoverLine.svelte";
@@ -23,7 +11,7 @@
 
 	const { color, varParams }: Props = $props();
 
-	console.log("varParams", varParams);
+	// console.log("varParams", varParams);
 
 	const min = $derived(varParams.stdmin);
 	const max = $derived(varParams.stdmax);
@@ -37,6 +25,10 @@
 
 	const minLabel = $derived.by(() => {
 		if (min) {
+			if(varcategories(varParams.varname)) {
+				const minlabel = varcategories(varParams.varname)![min];
+				return `${varlabel(varParams.varname)} safe minimum is '${minlabel}'`;
+			}
 			return `${varlabel(varParams.varname)} safe minimum = ${min} ${varunits(varParams.varname)}`;
 		}
 		return "";
@@ -70,9 +62,6 @@
 		return 0;
 	});
 
-	$effect(() => {
-		console.log("boxsize", maxLabelBoxsize);
-	});
 </script>
 
 {#if max}

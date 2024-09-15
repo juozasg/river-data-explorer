@@ -108,7 +108,7 @@
         top:{getClosestToMouse(dataWithPositions).top + offset}px;
         left:{Math.min(Math.max(w2, x), $width - w2)}px;"
 			>
-				<div class="title">{formatTitle(found[$config.x])}</div>
+				<div class="title">{@html formatTitle(found[$config.x])}</div>
 				{#each dataWithPositions as row}
 					<div class="row">
 						<span class="key">{@html formatKey(row.key)}:&nbsp; </span>
@@ -135,6 +135,11 @@
 		border-radius: var(--border-radius);
 		margin-left: 1rem;
 		box-shadow: var(--box-shadow);
+
+		:global(i small) {
+			font-weight: 300;
+			padding-left: 3px;
+		}
 
 		/* filter: drop-shadow(3px 3px 4px #00000046); */
 
