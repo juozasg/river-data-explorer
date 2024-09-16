@@ -9,7 +9,7 @@
 	import type { Site } from "$src/lib/types/site";
 	import { fmtDateDMonY, fmtMonDY } from "$src/lib/utils";
 	import { queryMouseMoveHover } from "$src/lib/utils/maplibre";
-	import { varlabel, varunits } from "$src/lib/utils/varHelpers";
+	import { varlabel, varstdmax, varstdmin, varunits } from "$src/lib/utils/varHelpers";
 	import TooltipSiteStats from "../tooltips/TooltipContentSiteStats.svelte";
 	import { Sites } from "$src/appstate/sites.svelte";
 	import { mapMouseLocation } from "$src/appstate/map/mapMouse.svelte";
@@ -74,7 +74,7 @@
 				tooltip.show(e.originalEvent.x, e.originalEvent.y, true);
 				tooltip.content = tooltipContent;
 				mapMouseLocation.onHover(site, hoveredRegion.feature);
-				console.log(hoveredRegion.feature);
+				// console.log(hoveredRegion.feature);
 			} else {
 				tooltip.hide();
 			}
@@ -95,8 +95,14 @@
 		{#if val}
 			{varlabel(varname)}: <u><b>{val}</b></u>
 			{varunits(varname)} ({selectedDateClosestBeforeDate(site)})
+			{#if typeof val == 'number' && varstdmin(varname) !== undefined && varstdmin(varname)! > val}
+				<span class="stdbad" style="display: block; color: red">&lt; safe minimum {varstdmin(varname)} {varunits(varname)}</span>
+			{/if}
+			{#if typeof val == 'number' && varstdmax(varname) !== undefined && varstdmax(varname)! < val}
+				<span class="stdbad" style="display: block; color: red"> &gt; safe maximum {varstdmax(varname)} {varunits(varname)}</span>
+			{/if}
 		{:else}
-			{varlabel(varname)}: <span style="color: #888">N/A</span>
+			{varlabel(varname)}: <span style="color: #777">N/A</span>
 		{/if}
 	</p>
 {/snippet}
@@ -133,4 +139,10 @@
 	h5 {
 		font-weight: 500;
 	}
+
+	.stdbad  {
+		padding-top: 3px;
+		/* font-size: 0.7rem; */
+	}
+
 </style>
