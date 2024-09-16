@@ -83,7 +83,7 @@
 
 	let detailMapVarname = $state('temp');
 	let detailMapVardate = $state(UTCDayDate());
-	function chartOnDateSelected(d: Date) {
+	function chartOnDateSelect(d: Date) {
 		if (detailsMap) {
 			detailsMap.setDate(d);
 			detailMapVarname = dataSelection.yVar || dataSelection.zVar || 'temp';
@@ -187,7 +187,7 @@
 						{dataSelection}
 						{selectedSite}
 						{selectedRegion}
-						onDateSelected={chartOnDateSelected}
+						onDateSelect={chartOnDateSelect}
 					/>
 				</div>
 			</div>

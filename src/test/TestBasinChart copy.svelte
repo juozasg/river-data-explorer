@@ -20,7 +20,7 @@
 		dataSelection.zVar = 'invertNarrative';
 	});
 
-	const onDateSelected = (d: Date) => {
+	const onDateSelect = (d: Date) => {
 		console.log('date selected', d);
 	};
 
@@ -34,6 +34,6 @@
 <div style="position: absolute; top: 3rem; left: 3rem; width: 500px; height:500px">
 	<BasinChart
 		{dataSelection}
-		{onDateSelected}
+		{onDateSelect}
 	/>
 </div>

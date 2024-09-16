@@ -16,9 +16,9 @@
 		selectedSite?: Site;
 		selectedRegion: MapFeatureSelectionState;
 
-		onDateSelected?: (d: Date) => void;
+		onDateSelect?: (d: Date) => void;
 	};
-	const { dataSelection, onDateSelected, selectedSite, selectedRegion }: Props = $props();
+	const { dataSelection, onDateSelect, selectedSite, selectedRegion }: Props = $props();
 
 	// let siteTableName = $state('');
 

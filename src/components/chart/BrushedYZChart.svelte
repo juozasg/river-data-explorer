@@ -27,10 +27,10 @@
 
 		chartWidth: number;
 		chartHeight: number;
-		onDateSelected?: (d: Date) => void;
+		onDateSelect?: (d: Date) => void;
 	};
 
-	const { yzTable, yParams, zParams, chartWidth, chartHeight, onDateSelected }: Props = $props();
+	const { yzTable, yParams, zParams, chartWidth, chartHeight, onDateSelect }: Props = $props();
 
 	const yAxisLabel = $derived(
 		yParams.stats.count > 0 ? `${yParams.varLabel} <span class="location-label">${yParams.locationName}<span>` : ""
@@ -93,7 +93,7 @@
 	function chartOnclick(e: MouseEvent) {
 		const target = e.target as HTMLElement;
 		if (target.hasAttribute("role") && target.getAttribute("role") === "tooltip") {
-			if (onDateSelected && dateHovered) onDateSelected(dateHovered);
+			if (onDateSelect && dateHovered) onDateSelect(dateHovered);
 		}
 	}
 </script>

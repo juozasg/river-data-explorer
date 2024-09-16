@@ -8,10 +8,10 @@
 	type Props = {
 		dataSelection: DataSelectionState;
 
-		onDateSelected?: (d: Date) => void;
+		onDateSelect?: (d: Date) => void;
 	};
 
-	const { dataSelection, onDateSelected }: Props = $props();
+	const { dataSelection, onDateSelect }: Props = $props();
 
 	const yTable = $derived(selectSiteTableVar(dataSelection.ySite, dataSelection.yVar, "y"));
 	const zTable = $derived(selectSiteTableVar(dataSelection.zSite, dataSelection.zVar, "z"));
@@ -55,7 +55,7 @@ $effect(() => {
 </script>
 
 {#if yzTable && yParams && zParams}
-	<BrushedYzChart {yzTable} {yParams} {zParams} chartWidth={500} chartHeight={500} {onDateSelected} />
+	<BrushedYzChart {yzTable} {yParams} {zParams} chartWidth={500} chartHeight={500} {onDateSelect} />
 {:else}
 	<p>No data</p>
 {/if}

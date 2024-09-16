@@ -16,6 +16,7 @@
 	import { aremove, UTCDayDate } from "$src/lib/utils";
 	import { onMount } from "svelte";
 	import VarDataHoveredFeatures from "./VarDataHoveredFeatures.svelte";
+	import type { RegionFeature } from "$src/appstate/data/features.svelte";
 
 	type Props = {
 		dataSelection: DataSelectionState;
@@ -26,7 +27,7 @@
 		varname?: string;
 		vardate?: Date;
 
-		onMapClick?: (map: ml.Map, p: ml.PointLike) => void;
+		onMapClick?: (map: ml.Map, p: ml.PointLike, site?: Site, region?: RegionFeature, river?: RegionFeature) => void;
 		onSearchItemSelect?: (item: Site) => void;
 	} & Partial<MapLibreMapProps>;
 
@@ -69,7 +70,7 @@
 	let layersParams = $state<MapLayersParams>(defaultLayersParams);
 
 	onMount(() => {
-		mlMap!.on("click", (e) => onMapClick?.(mlMap!, e.point));
+		mlMap!.on("click", (e) => onMapClick?.(mlMap!, e.point, _hoveredSite, hoveredRegion.feature, hoveredRiver.feature));
 	});
 
 	let dataMapControls = $state<DataMapControls>();
