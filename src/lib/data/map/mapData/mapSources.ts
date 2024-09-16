@@ -6,6 +6,9 @@ import { regionFeatures } from '$src/appstate/data/features.svelte';
 
 export async function addMlmSources(map: ml.Map): Promise<void> {
 	await Promise.all([
+		addDataSourceGeoJSON(map, 'state', 'statefp'),
+		addDataSourceGeoJSON(map, 'county', 'countyfp'),
+		addDataSourceGeoJSON(map, 'huc12', 'huc12'),
 		addDataSourceGeoJSON(map, 'huc10', 'huc10'),
 		addDataSourceGeoJSON(map, 'huc8', 'huc8'),
 		addDataSourceGeoJSON(map, 'river', 'id')

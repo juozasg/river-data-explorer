@@ -26,11 +26,13 @@
 		showRegionTooltip?: boolean;
 		varname?: string;
 		vardate?: Date;
+		layersParams?: MapLayersParams;
 
 		onMapClick?: (map: ml.Map, p: ml.PointLike, site?: Site, region?: RegionFeature, river?: RegionFeature) => void;
 		onSearchItemSelect?: (item: Site) => void;
 	} & Partial<MapLibreMapProps>;
 
+		// let layersParams = $state<MapLayersParams>(defaultLayersParams);
 	// export function
 
 	let {
@@ -43,6 +45,7 @@
 		dataSelection,
 		varname = $bindable("ecoli"),
 		vardate = $bindable(UTCDayDate()),
+		layersParams = $bindable(defaultLayersParams),
 		...others
 	}: Props = $props();
 
@@ -67,7 +70,6 @@
 	export const hoveredRegion = new MapFeatureSelectionState((c, u) => toggleHoveredFeatureState(mlMap, c, u));
 	export const hoveredRiver = new MapFeatureSelectionState((c, u) => toggleHoveredFeatureState(mlMap, c, u));
 
-	let layersParams = $state<MapLayersParams>(defaultLayersParams);
 
 	onMount(() => {
 		mlMap!.on("click", (e) => onMapClick?.(mlMap!, e.point, _hoveredSite, hoveredRegion.feature, hoveredRiver.feature));

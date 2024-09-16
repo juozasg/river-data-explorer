@@ -4,19 +4,30 @@
 	type Props = {
 		regionFeature?: RegionFeature;
 		onClickRegionType?: (regionType: string) => void;
+		regionType?: string;
 	};
 
-	const { regionFeature, onClickRegionType }: Props = $props();
+	const { regionFeature, onClickRegionType, regionType }: Props = $props();
 </script>
 
 <div class="basin-header">
 	<!-- <h5 class='select-label'>Select</h5> -->
 	<div class="select-choices">
-		<a onclick={() => onClickRegionType?.("huc8")}>Basin <small>HUC8</small></a>
-		<a onclick={() => onClickRegionType?.("state")}><span>State</span></a>
-		<a onclick={() => onClickRegionType?.("county")}><span>County</span></a>
-		<a onclick={() => onClickRegionType?.("huc10")}>River <small>HUC10</small></a>
-		<a onclick={() => onClickRegionType?.("huc12")}>Stream <small>HUC12</small></a>
+		<a onclick={() => onClickRegionType?.("huc8")} class:bg-primary={regionType == "huc8"}>
+			Basin <small>HUC8</small>
+		</a>
+		<a onclick={() => onClickRegionType?.("state")} class:bg-primary={regionType == "state"}>
+			<span>State</span>
+		</a>
+		<a onclick={() => onClickRegionType?.("county")} class:bg-primary={regionType == "county"}>
+			<span>County</span>
+		</a>
+		<a onclick={() => onClickRegionType?.("huc10")} class:bg-primary={regionType == "huc10"}>
+			River <small>HUC10</small>
+		</a>
+		<a onclick={() => onClickRegionType?.("huc12")} class:bg-primary={regionType == "huc12"}>
+			Stream <small>HUC12</small>
+		</a>
 	</div>
 	{#if regionFeature}
 		<div class="selected-details">
@@ -29,39 +40,33 @@
 <style>
 	.basin-header {
 		padding: 0 0rem;
-		margin-bottom: 0.5rem;
+		margin-bottom: 0rem;
 
-		/* .select-label {
-			margin-right: 1rem;
-		} */
-		/* background-color: #f0f0f0; */
-		/* padding: 1rem; */
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-/*
-		.select-huc-12 {
-			border-right: none; */
-		/* } */
 
 		.select-choices {
-			/* flex-grow: 0; */
 			display: flex;
 			justify-content: space-between;
 			align-items: stretch;
-			/* gap: 1.5rem; */
 			flex-grow: 1;
 			align-items: top;
+			min-width: 50%;
 
 			& > a {
-				padding: 3px 3px;
+				padding: 5px 3px;
 				text-align: center;
 				/* height: 100%; */
 				line-height: 100%;
 				display: block;
 				&:hover {
-					background-color: #ccc;
-					text-decoration: none;
+					background-color: rgb(0 0 0/5%);
+					/* text-decoration: none; */
+				}
+
+				&.bg-primary {
+					color: white;
 				}
 
 				span {

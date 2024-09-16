@@ -3,14 +3,14 @@ import * as ml from 'maplibre-gl';
 import { addRiverLayers } from './riverLayers';
 
 export async function addSitesDetailsMapLayers(map: ml.Map): Promise<void> {
-	addLayersHuc10(map);
+	['huc8', 'huc10', 'huc12', 'state', 'county'].forEach(regionType => addLayersRegionType(map, regionType));
+
 	addRiverLayers(map);
 }
 
-
-function addLayersHuc10(map: ml.Map): void {
-	if(map.getLayer('riverapp-sites-huc10-outline')) map.removeLayer('riverapp-sites-huc10-outline');
-	if(map.getLayer('riverapp-sites-huc10')) map.removeLayer('riverapp-sites-huc10');
+function addLayersRegionType(map: ml.Map, regionType: string): void {
+	if (map.getLayer('riverapp-sites-huc10-outline')) map.removeLayer('riverapp-sites-huc10-outline');
+	if (map.getLayer('riverapp-sites-huc10')) map.removeLayer('riverapp-sites-huc10');
 
 	map.addLayer({
 		id: 'riverapp-sites-huc10',

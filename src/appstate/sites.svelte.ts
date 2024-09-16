@@ -4,7 +4,7 @@ import type { Site } from "$lib/types/site";
 import { sitesTables } from "./data/datasets.svelte";
 import { sitesGeoindex } from "./data/geoindexes.svelte";
 import { enabledDatasets } from './ui/layers.svelte';
-import type { RegionFeature } from './data/features.svelte';
+import { regionTypes, type RegionFeature } from './data/features.svelte';
 
 export class Sites {
 	private sites: Site[] = $state([]);
@@ -52,10 +52,10 @@ export class Sites {
 
 	reindexGeometries() {
 		for (const site of this.sites) {
-			if (!site.huc10) {
-				site.huc10 = sitesGeoindex[site.id]?.huc10 || '';
+			regionTypes.forEach((rt) => {
+				(site[rt] as any) = sitesGeoindex[site.id]?.[rt] as string || '';
+			});
 				// console.log('set index', site.id, site.huc10);
-			}
 		}
 	}
 }

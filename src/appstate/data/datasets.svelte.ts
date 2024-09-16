@@ -9,6 +9,7 @@ import { dataPathsStartingWith } from '$src/lib/data/loaders/loadAppData';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
 import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import { UTCDayDate } from '$src/lib/utils';
+import { sites } from '../sites.svelte';
 
 export type SiteId = string;
 export const sitesTables: Map<SiteId, ColumnTable> = new SvelteMap();
@@ -75,6 +76,7 @@ export async function loadDatasets() {
 
 	(window as any)['aq'] = aq;
 	(window as any)['tables'] = sitesTables;
+	(window as any)['sites'] = sites;
 	// console.log('window.aq', aq);
 	console.log('window.tables', sitesTables);
 

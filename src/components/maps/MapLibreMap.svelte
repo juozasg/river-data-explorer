@@ -12,6 +12,7 @@
 	import { addMapLayers } from '$src/lib/data/map/mapData/regionsMapLayers';
 	import { toggleRiverLayerVisibility } from '$src/lib/data/map/mapData/riverLayers';
 	import { defaultLayersParams } from '$src/lib/types/mapControls';
+	import { selectRegionTypeLayers } from '$src/lib/data/map/mapData/mapLayers';
 
 	let {
 		mlMap = $bindable(),
@@ -42,6 +43,15 @@
 	$effect(() => {
 		if (!mlMap) return;
 		toggleRiverLayerVisibility(mlMap, layersParams.riverLayerVisible);
+	});
+
+
+
+	$effect(() => {
+		if (!mlMap) return;
+		console.log('layers regionType', layersParams.regionType);
+		const regionType = layersParams.regionType;
+		selectRegionTypeLayers(mlMap, layersParams.regionType);
 	});
 
 	let _dataLoaded = $state(false);
@@ -80,6 +90,8 @@
 				const style = basemapStyles[layersParams.baseStyleId];
 				mlMap!.setStyle(style, { transformStyle }); // force transformStyle to reorder layers
 				toggleRiverLayerVisibility(mlMap!, layersParams.riverLayerVisible);
+				selectRegionTypeLayers(mlMap!, layersParams.regionType);
+
 				mlMap!.once('idle', () => (_dataLoaded = true));
 			});
 		});

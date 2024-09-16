@@ -1,8 +1,10 @@
 import { startedLoading } from "../ui/loadingItem.svelte";
 import { loadDataCsv } from "$src/lib/data/cachedDataLoad";
 import { sites } from "../sites.svelte";
+import { regionTypes, type RegionType } from "./features.svelte";
 
-export const sitesGeoindex: { [key: string]: {huc10: string }} = {};
+export type RegionsIndex = {[key in RegionType]: string };
+export const sitesGeoindex: { [key: string]: RegionsIndex} = {};
 
 export async function loadGeoindexData() {
 	const finishedLoading = startedLoading("Geodata Indexes");
@@ -11,8 +13,12 @@ export async function loadGeoindexData() {
 	const sitesRows = await loadDataCsv(path);
 	sitesRows.forEach((row) => {
 		const key = row.siteId as string;
-		sitesGeoindex[key] = {huc10: row.huc10 as string};
-		// sitesGeoindex[row.siteId as string] = {huc10: row.huc10 as string};
+		const regionsIndex: RegionsIndex = {} as RegionsIndex;
+		regionTypes.forEach((rt) => {
+			regionsIndex[rt] = row[rt] as string;
+		});
+
+		sitesGeoindex[key] = regionsIndex;
 	});
 
 	finishedLoading();

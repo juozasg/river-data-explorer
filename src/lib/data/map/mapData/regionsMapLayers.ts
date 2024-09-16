@@ -1,18 +1,19 @@
 
 import * as ml from 'maplibre-gl';
 import { addRiverLayers } from './riverLayers';
+import { regionTypes } from '$src/appstate/data/features.svelte';
 
 
 export async function addMapLayers(map: ml.Map): Promise<void> {
-	addLayersHuc10(map);
+	regionTypes.forEach(regionType => addLayersRegionType(map, regionType));
 	addRiverLayers(map);
 }
 
-function addLayersHuc10(map: ml.Map): void {
+function addLayersRegionType(map: ml.Map, regionType: string): void {
 	map.addLayer({
-		id: 'riverapp-huc10',
+		id: `riverapp-${regionType}`,
 		type: 'fill',
-		source: 'riverapp-huc10',
+		source: `riverapp-${regionType}`,
 		layout: {},
 		paint: {
 			'fill-color': [
@@ -33,9 +34,9 @@ function addLayersHuc10(map: ml.Map): void {
 	});
 
 	map.addLayer({
-		'id': 'riverapp-huc10-outline',
+		'id': `riverapp-${regionType}-outline`,
 		'type': 'line',
-		'source': 'riverapp-huc10',
+		source: `riverapp-${regionType}`,
 		'layout': {},
 		'paint': {
 			'line-color': '#584070',

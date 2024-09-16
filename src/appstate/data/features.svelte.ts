@@ -12,8 +12,12 @@ export function geomFeatureName(source: string | undefined, id: string | number 
 	return feature?.properties?.name || id?.toString() || '';
 }
 
+export const regionTypes = [ 'huc8', 'huc10', 'huc12', 'state', 'county' ] as const;
+
+export type RegionType = typeof regionTypes[number];
+
 export type RegionFeature = {
-	regionType: string;
+	regionType: RegionType;
 	id: string | number;
 	name: string;
 	mlSource: string;
@@ -35,7 +39,7 @@ export class RegionFeatures {
 	#regionFeatures = new SvelteMap<RegionFeatureKey, RegionFeature>();
 	#regionFeatureCollections = new SvelteMap<string, RegionFeature[]>();
 
-	addGeoJSONCollection(regionType: string, idField: string, data: GeoJSON.FeatureCollection) {
+	addGeoJSONCollection(regionType: RegionType | string, idField: string, data: GeoJSON.FeatureCollection) {
 		const regionCollection = this.#regionFeatureCollections.get(regionType) || [];
 		data.features.forEach((f: GeoJSON.Feature) => {
 			const id = f.properties?.[idField] || f.id || '';
@@ -43,7 +47,7 @@ export class RegionFeatures {
 			const mlSource = `riverapp-${regionType}`;
 
 			const rf: RegionFeature = {
-				regionType,
+				regionType: regionType as RegionType,
 				id,
 				name: f.properties?.name || id.toString(),
 				mlSource,
