@@ -26,6 +26,10 @@
 </script>
 
 <h5>Test basin workflow</h5>
+
+<div class="header-test" style="width: 100%">
+	<!-- <BasinHeader /> -->
+</div>
 <div class="test-container" style="margin: 1rem; width:800px; height: 1000px">
 	<BasinHeader />
 	<VarDataMap {dataSelection} />
