@@ -65,7 +65,7 @@ export function varcatilabel(varname: string, catIndex: number) {
 export function varcatilegend(varname: string, catIndex: number) {
 	const catkey = varcategories(varname)?.[catIndex];
 	if (!catkey) return '';
-	console.log('catkey', catkey, variablesMetadata[varname]?.categories?.[catkey], variablesMetadata[varname]?.categories?.[catkey]?.legend)
+	// console.log('catkey', catkey, variablesMetadata[varname]?.categories?.[catkey], variablesMetadata[varname]?.categories?.[catkey]?.legend)
 	return variablesMetadata[varname]?.categories?.[catkey]?.legend || catkey
 }
 
@@ -95,7 +95,7 @@ export function varoutsidestandard(varname: string, value: number | string) {
 	const min = varstdmin(varname);
 	const max = varstdmax(varname);
 
-	console.log('varoutsidestandard', varname, value, min, max);
+	// console.log('varoutsidestandard', varname, value, min, max);
 
 	if(min !== undefined && value < min) return true;
 	if(max !== undefined && value > max) return true;

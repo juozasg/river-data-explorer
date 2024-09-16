@@ -5,6 +5,12 @@ blockquote {
 	padding: 0.9375rem 1.25rem;
 }
 
+a:hover {
+	text-decoration: underline;
+	cursor: pointer;
+	color: inherit;
+}
+
 // choda 16px=1rem reset
 [type="checkbox"],
 [type="radio"] {

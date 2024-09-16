@@ -56,7 +56,7 @@
 				marker.setColor(color);
 
 				const stdbad = varoutsidestandard(varname, val)
-				console.log('stdbad', stdbad, marker.siteId, val);
+				// console.log('stdbad', stdbad, marker.siteId, val);
 				marker.setStdBad(stdbad);
 				// marker.class
 

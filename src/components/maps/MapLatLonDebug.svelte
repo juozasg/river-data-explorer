@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
-	import { formatLngLat } from '$src/lib/copyLngLat';
+	import { formatLngLat } from '$src/lib/copyMouseLocationData';
 </script>
 
 {#if mapMouseLocation.lngLat}

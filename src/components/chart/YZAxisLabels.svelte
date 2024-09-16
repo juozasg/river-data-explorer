@@ -19,7 +19,7 @@
 		width: 100%;
 		overflow: visible;
 		position: absolute;
-		top: -32px;
+		top: -1rem;
 
 		font-weight: 500;
 		font-size: 0.9rem;
@@ -34,6 +34,7 @@
 		.y-label {
 			height: 1.4rem;
 			background-color: white;
+			padding-left: 3px;
 		}
 
 		.y-axis-label {
@@ -43,6 +44,7 @@
 		.z-axis-label {
 			margin-right: 0.1rem;
 			text-align: right;
+			padding-right: 3px;
 		}
 	}
 

@@ -13,7 +13,7 @@
 	import BasinWorkflow from "./components/basin/BasinWorkflow.svelte";
 	import { loadAppData, type DataManifest } from "./lib/data/loaders/loadAppData";
 	import { routeTestComponent } from "./test/routeTestComponent";
-	import { copyLngLat } from "./lib/copyLngLat";
+	import { copyMouseLocationData } from "./lib/copyMouseLocationData";
 	import { toggleHideTooltipsKeydown, tooltip } from "./appstate/ui/tooltips.svelte";
 	import WebsiteTooltip from "./components/tooltips/WebsiteTooltip.svelte";
 
@@ -37,8 +37,15 @@
 		MainComponent = routeTestComponent(pathname.replace("/test/", ""));
 	}
 
-	document.body.addEventListener("keydown", copyLngLat);
-	document.body.addEventListener('keydown', toggleHideTooltipsKeydown);
+	onMount(() => {
+		document.body.addEventListener("keydown", copyMouseLocationData);
+		document.body.addEventListener('keydown', toggleHideTooltipsKeydown);
+		return () => {
+			document.body.removeEventListener("keydown", copyMouseLocationData);
+			document.body.removeEventListener('keydown', toggleHideTooltipsKeydown);
+		};
+	});
+
 
 
 	$effect(() => {
@@ -62,4 +69,14 @@
 	:global(.u-high) {
 		box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1) !important;
 	}
+
+	:global(._toastMsg pre) {
+		background: none;
+    font-size: 0.6rem;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+		max-width: 16rem;
+	}
+
 </style>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
 	import { sites } from "$src/appstate/sites.svelte";
 	import VarDataMap from "$src/components/maps/VarDataMap.svelte";
 	import type { Site } from "$src/lib/types/site";
@@ -30,7 +31,7 @@
 <div style="position: relative; height: 500px; width: 550px; margin: 2rem">
 	<VarDataMap
 		{selectedSite}
-		dataSelection={{}}
+		dataSelection={new DataSelectionState()}
 		bind:this={varDataMap}
 		onMapClick={() => {
 			console.log("Map clicked", varDataMap?.hoveredSite());

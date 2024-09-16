@@ -12,6 +12,7 @@
 	import { varlabel, varunits } from '$src/lib/utils/varHelpers';
 	import TooltipSiteStats from '../tooltips/TooltipContentSiteStats.svelte';
 	import { Sites } from '$src/appstate/sites.svelte';
+	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
 
 	type Props = {
 		sites: Site[];
@@ -52,6 +53,7 @@
 				// console.log('show tooltuip', e.originalEvent.x, e.originalEvent.y, site, hoveredRegion.feature, hoveredRiver.feature);
 				tooltip.show(e.originalEvent.x, e.originalEvent.y, true);
 				tooltip.content = tooltipContent;
+				mapMouseLocation.onHover(site, hoveredRegion.feature);
 			} else {
 				tooltip.hide();
 			}

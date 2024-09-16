@@ -134,5 +134,9 @@
 			top: 3px;
 			left: 3px;
 		}
+
+		label {
+			cursor: pointer;
+		}
 	}
 </style>

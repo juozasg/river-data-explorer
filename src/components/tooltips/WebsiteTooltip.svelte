@@ -77,11 +77,9 @@
 	 {#if content}
 		{@render content()}
 		{#if showToggleHint}
-			<span class="hint"><i><kbd>T</kbd> to hide</i></span>
+			<span class="hint"><i><kbd>C</kbd> to copy <kbd>T</kbd> to hide</i></span>
 		{/if}
 	 {/if}
-
-
 </div>
 
 <style>

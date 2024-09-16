@@ -51,7 +51,6 @@
 		return yzTable.slice(brushMinIndex || 0, sliceIndex);
 	});
 
-
 	function formatYTick(v: number, varParams: YZChartParams) {
 		if (varcategories(varParams.varname)) {
 			return varcatilegend(varParams.varname, v) || v.toString();
@@ -59,7 +58,6 @@
 
 		return v.toString();
 	}
-
 
 	// $effect(() => {
 	// 	console.log('table', table.objects());
@@ -101,8 +99,9 @@
 </script>
 
 <!-- extra chart container nesting makes LayerCake happy -->
-<div class="yz-chart-container" bind:this={brushedChartContainer as HTMLElement}>
-	<div class="chart-container" style={`width: ${chartWidth}px; height: ${chartHeight - 52}px;`}>
+<div class="yz-chart-container" bind:this={brushedChartContainer as HTMLElement} style={`width: ${chartWidth}px; height: ${chartHeight + 20}px;`} >
+	<div class="chart-container" style={`width: ${chartWidth}px; height: ${chartHeight - 42}px;`}>
+		<YZAxisLabels yLabel={yAxisLabel} zLabel={zAxisLabel} />
 		<!-- MAIN CHART -->
 		<!-- brushedTable is full table sliced with min,max from the Brush component -->
 		{#if brushedTable && brushedTable.numRows() > 0}
@@ -130,7 +129,12 @@
 							color={chartYColor} />
 
 						<Line stroke={chartYColor} />
-						<Scatter r={yParams.radius} fill={chartYColor} min={yParams.stdmin} max={yParams.stdmax} badcolor="orange" />
+						<Scatter
+							r={yParams.radius}
+							fill={chartYColor}
+							min={yParams.stdmin}
+							max={yParams.stdmax}
+							badcolor="orange" />
 					{/if}
 					{#if zParams.stats.count > 0 && zParams.domain}
 						<AxisYZRight
@@ -140,7 +144,13 @@
 							format={(v: number) => formatYTick(v, zParams)}
 							color={chartZDarker} />
 						<Line stroke={chartZColor} dataSource="z" />
-						<Scatter r={zParams.radius} fill={chartZColor} min={zParams.stdmin} max={zParams.stdmax} badcolor="red" dataSource="z" />
+						<Scatter
+							r={zParams.radius}
+							fill={chartZColor}
+							min={zParams.stdmin}
+							max={zParams.stdmax}
+							badcolor="red"
+							dataSource="z" />
 					{/if}
 
 					{#if yParams.stats.count > 0 && yParams.varname}
@@ -160,7 +170,6 @@
 							formatKey={(k: string) => formatChartTTKey(k, yParams, zParams)}
 							formatValue={(k: string, v: string) => formatChatTTValue(k, v, yParams, zParams)}
 							filterKeys={["y", "z"]} />
-						<YZAxisLabels yLabel={yAxisLabel} zLabel={zAxisLabel} />
 					</div>
 				</Html>
 			</LayerCake>
@@ -209,8 +218,8 @@
 
 <style>
 	.yz-chart-container {
-		width: 100%;
-		height: 100%;
+		/* width: fit-content; */
+		/* height: fit-content; */
 		overflow: visible;
 
 		position: relative;
