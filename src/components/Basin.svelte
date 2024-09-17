@@ -31,15 +31,9 @@
 		layersParams.regionType = regionType as RegionType;
 	}
 
-	$effect(() => {
-		dataSelection.ySite = sites.findById("sjrbc-1");
-		dataSelection.yVar = "ph";
-		dataSelection.zSite = sites.findById("invert-5");
-		dataSelection.zVar = "invertNarrative";
-	});
-
 	const onDateSelect = (d: Date) => {
 		console.log("date selected", d);
+		varDataMap?.setDate(d);
 	};
 	const onMapClick = (map: ml.Map, p: ml.PointLike, site?: Site, region?: RegionFeature, river?: RegionFeature) => {
 		console.log("map clicked", map, p, site, region, river);
@@ -56,11 +50,14 @@
 	const onSearchItemSelect = (item: Site) => {
 		// console.log("search ÷item selected", item);
 		selectedSite = item;
+		if (!selectedRegion.feature) {
+			const rt = layersParams.regionType;
+			selectedRegion.feature = regionFeatures.get(rt, selectedSite[rt]);
+		}
 	};
 
 	const onHeaderClose = () => {
 		selectedRegion.feature = undefined;
-		varDataMap;
 	};
 
 	$effect(() => {
@@ -80,13 +77,7 @@
 			}, 300);
 		}
 
-		// console.log("mapWidth", mapWidth);
 	});
-
-	// $effect(() => {
-	// 	console.log("ySite full Table", sitesTables.get(dataSelection.ySite?.id || "")?.objects());
-	// 	console.log("zSite full Table", sitesTables.get(dataSelection.zSite?.id || "")?.objects());
-	// });
 
 	let mapWidth = $state("calc(100vw - 3rem)");
 	let mapHeight = $state("calc(100vh - 5rem)");
@@ -101,18 +92,21 @@
 	function regionTableVarClicked(vn: string) {
 		varname = vn;
 	}
-	function siteTableVarClicked(varname: string, axis: "y" | "z") {
+	function siteTableVarClicked(vn: string, axis?: "y" | "z") {
 		if (axis === "y") {
-			dataSelection.yVar = varname;
+			dataSelection.yVar = vn;
 			dataSelection.ySite = selectedSite;
-		} else {
-			dataSelection.zVar = varname;
+			console.log('select y', vn, selectedSite);
+		} else if(axis === "z") {
+			dataSelection.zVar = vn;
 			dataSelection.zSite = selectedSite;
+			console.log('select Z', vn, selectedSite);
+		} else {
+			varname = vn;
 		}
 	}
 </script>
 
-<!-- <h5>Test basin workflow</h5> -->
 
 <div class="workflow-header">
 	<BasinHeader
@@ -152,11 +146,13 @@
 </div>
 
 <span class="map-attribution">
-	Map Sources: Esri, TomTom, Garmin, FAO, NOAA, USGS, © OpenStreetMap contributors, and the GIS User Community. Date
-	sources: USGS, <a href='https://sjrbc.com'>St. Joseph River Basin Commission.</a>
-	<a class="github" target="_blank" href="https://github.com/Limnogirl90/SJRBC-web-map-data/tree/webapp/datasets"
-		>Download Datasets <InlineBlockIconify icon="uiw:github" size="0.9rem" /></a>
+	<span class="long-text">
+		Map Sources: Esri, TomTom, Garmin, FAO, NOAA, USGS, © OpenStreetMap contributors, and the GIS User Community. Data
+		sources: USGS, <a href="https://sjrbc.com">St. Joseph River Basin Commission</a>
+	</span>
 </span>
+<a class="github" target="_blank" href="https://github.com/Limnogirl90/SJRBC-web-map-data/tree/webapp/datasets"
+	>Download Datasets <InlineBlockIconify icon="uiw:github" size="0.9rem" /></a>
 
 <style>
 	.workflow-header {
@@ -201,23 +197,24 @@
 		position: fixed;
 		height: 1.2rem;
 		overflow: hidden;
-		bottom: 0;
-		right: 22px;
+		bottom: -4px;
+		left: 1.5rem;
 		font-size: 0.9rem;
 		background-color: white;
 		color: #acacac;
-		/* padding: 0.5rem; */
 		margin: 0;
 		padding: 0;
-		margin-left: 0.5rem;
-		/* overflow: scroll; */
-		a.github {
-			position: relative;
-			bottom: -1px;
-			font-size: 0.9rem;
-			background-color: var(--color-primary);
-			color: white;
-			padding: 0 6px;
-		}
+		width: calc(100vw - 10rem);
+
+	}
+
+	a.github {
+		position: fixed;
+		right: 1.5rem;
+		bottom: 2px;
+		font-size: 0.9rem;
+		background-color: var(--color-primary);
+		color: white;
+		padding: 0 6px;
 	}
 </style>

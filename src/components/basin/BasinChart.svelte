@@ -17,6 +17,9 @@
 	const zTable = $derived(selectSiteTableVar(dataSelection.zSite, dataSelection.zVar, "z"));
 
 	const yzTable = $derived.by(() => {
+		// react to changes in yTable or zTable
+		yTable?.objects();
+		zTable?.objects();
 		if (yTable && zTable) {
 			// console.log("joining tables");
 			return yTable.join_full(zTable, "date").orderby("date").reify();

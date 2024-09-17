@@ -15,7 +15,7 @@
 		dataSelection: DataSelectionState;
 		hoverColor?: string;
 
-		onVarClicked: (name: string, axis: "y" | "z") => void;
+		onVarClicked: (name: string, axis?: "y" | "z") => void;
 	};
 
 	const { onVarClicked, dataSelection, site, hoverColor }: Props = $props();
@@ -64,9 +64,9 @@
 				zSelected={dataSelection.zVar === r.varname && dataSelection.zSite && dataSelection.zSite.id == site.id}
 				yHinted={!!r.varname && dataSelection.yVar === r.varname}
 				zHinted={!!r.varname && dataSelection.zVar === r.varname}
-				varname={r.varname}>
+				varname={r.varname}
+				onclick={() => onVarClicked(r.varname)}>
 				<!-- {hoverColor} -->
-				<!-- onclick={() => onVarClicked(r.varname, "y")} -->
 				{r.label}
 				{varunits(r.varname, true)}
 				<a onclick={() => onVarClicked(r.varname, "y")}>Y</a>
