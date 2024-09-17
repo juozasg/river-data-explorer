@@ -10,12 +10,12 @@
 	} from "$src/appstate/variablesMetadata.svelte";
 
 	import { onMount } from "svelte";
-	import BasinWorkflow from "./components/basin/BasinWorkflow.svelte";
 	import { loadAppData, type DataManifest } from "./lib/data/loaders/loadAppData";
 	import { routeTestComponent } from "./test/routeTestComponent";
 	import { copyMouseLocationData } from "./lib/copyMouseLocationData";
 	import { toggleHideTooltipsKeydown, tooltip } from "./appstate/ui/tooltips.svelte";
 	import WebsiteTooltip from "./components/tooltips/WebsiteTooltip.svelte";
+	import Basin from "./components/Basin.svelte";
 
 	type Props = {
 		dataManifest: DataManifest;
@@ -30,9 +30,9 @@
 
 	const pathname = window.location.pathname;
 
-	let MainComponent: any = $state(BasinWorkflow);
+	let MainComponent: any = $state(Basin);
 	if (pathname === "/") {
-		MainComponent = BasinWorkflow;
+		MainComponent = Basin;
 	} else {
 		MainComponent = routeTestComponent(pathname.replace("/test/", ""));
 	}

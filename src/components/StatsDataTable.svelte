@@ -27,6 +27,14 @@
 </div>
 
 <style>
+	table {
+		/* TODO: fix them scrollybars */
+		/* scrollbar-width: 30; */
+		scrollbar-width:initial;
+		/* scrollbar-height: 20; */
+
+	}
+
 
 	table :global(td.date) {
 		min-width: 6rem;
@@ -89,7 +97,7 @@
 	}
 
 	.table-container :global(.table.is-narrow td), .table-container  :global(.table.is-narrow th) {
-		padding: 0.2em 0.4em !important;
+		padding: 0.25em 0.4em !important;
 	}
 
 	/* hide the fade */

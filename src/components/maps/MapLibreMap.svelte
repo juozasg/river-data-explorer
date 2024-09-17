@@ -16,8 +16,9 @@
 
 	let {
 		mlMap = $bindable(),
-		zoom = 7.9,
-		center = [-85.5, 41.825],
+		zoom = 11,
+		center = [-86.25021043251849, 41.70553587789678],
+
 		layersParams = defaultLayersParams,
 		addLayers = addMapLayers
 	}: MapLibreMapProps = $props();
@@ -80,6 +81,8 @@
 
 		// mlMap.addControl(new ml.AttributionControl(), 'bottom-right');
 		mlMap.addControl(new ml.NavigationControl(), 'bottom-right');
+		console.log('map', mlMap)
+
 
 
 		// only fires for the initial style, not for map.setStyle

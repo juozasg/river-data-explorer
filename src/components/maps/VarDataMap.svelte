@@ -97,7 +97,7 @@
 		bind:varname
 		bind:vardate
 		mapWidth={clientWidth} />
-	<MapLibreMap bind:this={_mlmComponent} bind:mlMap {layersParams} zoom={7.9} {...others} />
+	<MapLibreMap bind:this={_mlmComponent} bind:mlMap {layersParams} {...others} />
 </div>
 
 {#if mlMap}
