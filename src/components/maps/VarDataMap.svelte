@@ -67,8 +67,8 @@
 
 	let _hoveredSite = $state<Site>();
 	export const hoveredSite = () => _hoveredSite;
-	export const hoveredRegion = new MapFeatureSelectionState((c, u) => toggleHoveredFeatureState(mlMap, c, u));
-	export const hoveredRiver = new MapFeatureSelectionState((c, u) => toggleHoveredFeatureState(mlMap, c, u));
+	export const hoveredRegion = new MapFeatureSelectionState((c, u) => toggleHoveredFeatureState(mlMap, c, u, selectedRegion?.feature, _hoveredSite));
+	export const hoveredRiver = new MapFeatureSelectionState((c, u) => toggleHoveredFeatureState(mlMap, c, u, undefined, undefined));
 
 
 	onMount(() => {
@@ -102,6 +102,7 @@
 
 {#if mlMap}
 	<VarDataHoveredFeatures
+		{selectedRegion}
 		{showRegionTooltip}
 		{mlMap}
 		site={_hoveredSite}

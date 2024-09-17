@@ -1,4 +1,4 @@
-<script lang="ts">
+								<script lang="ts">
 	import type { MapFeatureSelectionState } from '$src/appstate/map/featureState.svelte';
 	import { scrollIntoViewRegionMap } from '$src/lib/utils/dom';
 	import Icon from '@iconify/svelte';

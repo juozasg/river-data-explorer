@@ -1,13 +1,15 @@
 <script lang="ts">
 	import type { RegionFeature } from "$src/appstate/data/features.svelte";
+	import InlineBlockIconify from "../maps/controls/InlineBlockIconify.svelte";
 
 	type Props = {
 		regionFeature?: RegionFeature;
 		onClickRegionType?: (regionType: string) => void;
+		onClickClose?: () => void;
 		regionType?: string;
 	};
 
-	const { regionFeature, onClickRegionType, regionType }: Props = $props();
+	const { regionFeature, onClickRegionType, regionType, onClickClose }: Props = $props();
 </script>
 
 <div class="basin-header">
@@ -31,8 +33,19 @@
 	</div>
 	{#if regionFeature}
 		<div class="selected-details">
-			<strong>{regionFeature.name}</strong>
-			<small>{regionFeature.regionType}&nbsp;{regionFeature.id}</small>
+			<div class="label">
+				<strong>{regionFeature.name}</strong>
+				<small>{regionFeature.regionType}&nbsp;{regionFeature.id}</small>
+			</div>
+			<div class="close" onclick={onClickClose}><InlineBlockIconify icon="lets-icons:close-ring" size="2rem"/></div>
+		</div>
+	{:else}
+		<div class="selected-cue">
+			<h4>
+				<!-- <InlineBlockIconify icon="lets-icons:arrow-drop-down" size="2rem" /> -->
+				Click map region to select
+				<InlineBlockIconify icon="lets-icons:arrow-drop-down" size="2rem" />
+			</h4>
 		</div>
 	{/if}
 </div>
@@ -50,9 +63,10 @@
 			display: flex;
 			justify-content: space-between;
 			align-items: stretch;
-			flex-grow: 1;
+			flex-grow: 0;
+			flex-shrink: 0;
 			align-items: top;
-			min-width: 50%;
+			width: 360px;
 
 			& > a {
 				padding: 5px 3px;
@@ -61,7 +75,7 @@
 				line-height: 100%;
 				display: block;
 				&:hover {
-					background-color: rgb(0 0 0/5%);
+					background-color: var(--color-hover);
 					/* text-decoration: none; */
 				}
 
@@ -80,20 +94,44 @@
 					display: block;
 				}
 				flex-grow: 1;
-				/* margin: 0 3px; */
-				/* padding-right: 6px; */
-				/* border-right: 1px solid #ccc; */
+
 			}
 		}
 
 		.selected-details {
-			/* margin-left: auto; */
-			/* flex-grow: 1; */
-			flex-basis: content;
-			text-align: right;
-			padding-right: 0;
-			padding-left: 1rem;
-			margin-right: 0;
+			display: flex;
+			.label {
+				flex-basis: content;
+				text-align: right;
+				padding-right: 0;
+				padding-left: 1rem;
+				margin-right: 0;
+
+				display: flex;
+				flex-direction: column;
+				justify-content: right;
+				gap: 4px;
+			}
+
+			.close {
+				margin-left: 0.5rem;
+				:global(path) {
+					stroke: var(--color-lightGrey);
+				}
+			}
+			.close:hover {
+				cursor: pointer;
+				/* background-color: var(--color-hover); */
+				:global(path) {
+					stroke: var(--font-color);
+				}
+			}
+		}
+
+		.selected-cue h4 {
+			display: inline-flex;
+			line-height: 1.8rem;
+			margin: 0;
 		}
 	}
 </style>

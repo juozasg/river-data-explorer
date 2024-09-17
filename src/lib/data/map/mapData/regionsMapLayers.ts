@@ -37,10 +37,24 @@ function addLayersRegionType(map: ml.Map, regionType: string): void {
 		'id': `riverapp-${regionType}-outline`,
 		'type': 'line',
 		source: `riverapp-${regionType}`,
-		'layout': {},
+		'layout': {
+		},
 		'paint': {
-			'line-color': '#584070',
-			'line-width': 1
+			// 'line-color': '#584070',
+			'line-color': [
+				'case',
+				['boolean', ['feature-state', 'willbeselected'], false],
+				'#d7ed12',
+				'#584070'
+			],
+
+			// TODO add another layer to make selections more clean
+			'line-width': [
+				'case',
+				['boolean', ['feature-state', 'willbeselected'], false],
+				4,
+				1
+			],
 		}
 	});
 

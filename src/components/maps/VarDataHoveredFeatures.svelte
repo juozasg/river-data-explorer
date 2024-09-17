@@ -13,7 +13,7 @@
 	import TooltipSiteStats from "../tooltips/TooltipContentSiteStats.svelte";
 	import { Sites } from "$src/appstate/sites.svelte";
 	import { mapMouseLocation } from "$src/appstate/map/mapMouse.svelte";
-	import { regionTypes, type RegionFeature } from "$src/appstate/data/features.svelte";
+	import { regionEqual, regionTypes, type RegionFeature } from "$src/appstate/data/features.svelte";
 
 	type Props = {
 		sites: Site[];
@@ -24,6 +24,7 @@
 		showRegionTooltip?: boolean;
 		hoveredRegion: MapFeatureSelectionState;
 		hoveredRiver: MapFeatureSelectionState;
+		selectedRegion?: MapFeatureSelectionState;
 	};
 
 	let {
@@ -34,7 +35,8 @@
 		vardate,
 		showRegionTooltip = false,
 		hoveredRiver,
-		hoveredRegion
+		hoveredRegion,
+		selectedRegion
 	}: Props = $props();
 
 	const siteStats = $derived(site ? sitesDataStats([site]) : undefined);
@@ -78,6 +80,19 @@
 			} else {
 				tooltip.hide();
 			}
+
+			if((hoveredRegion.feature && !selectedRegion?.feature) ||
+			(!site && hoveredRegion.feature && selectedRegion?.feature && !regionEqual(hoveredRegion?.feature, selectedRegion?.feature)))
+			 {
+				console.log('make hovered region yellow')
+				mlMap.setFeatureState({ source: hoveredRegion?.feature.mlSource, id: hoveredRegion.feature.id }, { willbeselected: true });
+
+				// selectedRegion.feature = hoveredRegion.feature;
+			} else if(hoveredRegion.feature) {
+				console.log('not yellow!')
+				mlMap.setFeatureState({ source: hoveredRegion?.feature.mlSource, id: hoveredRegion.feature.id }, { willbeselected: false });
+			}
+
 		});
 	});
 	function selectedDateClosestBeforeDate(site: Site) {
