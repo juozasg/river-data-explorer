@@ -3,6 +3,8 @@
 	import AutoComplete from "simple-svelte-autocomplete";
 	import { sites } from "$src/appstate/sites.svelte";
 	import type { Site } from "$src/lib/types/site";
+	import { onMount } from "svelte";
+	import InlineBlockIconify from "./InlineBlockIconify.svelte";
 
 	let {
 		maxWidth = "100%",
@@ -14,6 +16,17 @@
 	const inputElement = $derived(
 		containerDiv && (containerDiv.querySelector("input.autocomplete-input") as HTMLInputElement)
 	);
+
+	onMount(() => {
+		console.log("autocomplete mounted", containerDiv, inputElement);
+		const selectOnFocus = () => inputElement?.select()
+		inputElement?.addEventListener(`focus`, selectOnFocus);
+
+		return () => {
+			inputElement?.removeEventListener(`focus`, selectOnFocus);
+		};
+	});
+
 
 	const onmouseleave = (e: MouseEvent) => {
 		let esc = new KeyboardEvent("keydown", {
@@ -61,19 +74,28 @@
 			<!-- <span style="color:{item.code}">{item.code}</span> -->
 		</div>
 	</AutoComplete>
+	<div class="bgicon"><InlineBlockIconify icon="gridicons:search" size="1.5rem" /></div>
 </div>
 
 <style>
 	.sites-regions-autocomplete {
 		padding: 0;
 		margin: 0;
+		position: relative;
+
+		.bgicon {
+			position: absolute;
+			bottom: 5px;
+			right: 10px;
+			pointer-events: none;
+			color: var(--color-lightGrey);
+		}
 
 		:global(input.autocomplete-input) {
 			padding: 0.5rem !important;
 			margin: 0 !important;
 			font-size: 1rem !important;
 			border: none !important;
-
 		}
 
 		:global(.autocomplete-list) {
