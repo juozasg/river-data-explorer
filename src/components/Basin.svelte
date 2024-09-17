@@ -95,8 +95,20 @@
 	// );
 
 	let siteStatsVarHoverColor = chartYColor + "33";
-	function siteTableVarClicked(varname: string) {}
-	function regionTableVarClicked(varname: string) {}
+
+	let varname = $state("ecoli");
+	function regionTableVarClicked(vn: string) {
+		varname = vn;
+	}
+	function siteTableVarClicked(varname: string, axis: "y" | "z") {
+		if (axis === "y") {
+			dataSelection.yVar = varname;
+			dataSelection.ySite = selectedSite;
+		} else {
+			dataSelection.zVar = varname;
+			dataSelection.zSite = selectedSite;
+		}
+	}
 </script>
 
 <!-- <h5>Test basin workflow</h5> -->
@@ -110,6 +122,7 @@
 </div>
 <div class="workflow" style="width: {mapWidth}; height: {mapHeight}">
 	<VarDataMap
+		{varname}
 		{selectedRegion}
 		{selectedSite}
 		{dataSelection}

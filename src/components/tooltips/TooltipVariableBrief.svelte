@@ -21,3 +21,9 @@
 {#snippet tooltipContent()}
 	<p>{tooltipText(hoveredVariable || ' ')}</p>
 {/snippet}
+
+<style>
+	p {
+		line-height: 1.1;
+	}
+</style>
