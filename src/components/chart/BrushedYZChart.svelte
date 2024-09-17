@@ -25,12 +25,12 @@
 		yParams: YZChartParams;
 		zParams: YZChartParams;
 
-		chartWidth: number;
-		chartHeight: number;
+		// chartWidth: number;
+		// chartHeight: number;
 		onDateSelect?: (d: Date) => void;
 	};
 
-	const { yzTable, yParams, zParams, chartWidth, chartHeight, onDateSelect }: Props = $props();
+	const { yzTable, yParams, zParams, onDateSelect }: Props = $props();
 
 	const yAxisLabel = $derived(
 		yParams.stats.count > 0 ? `${yParams.varLabel} <span class="location-label">${yParams.locationName}<span>` : ""
@@ -99,9 +99,8 @@
 </script>
 
 <!-- extra chart container nesting makes LayerCake happy -->
-<div class="yz-chart-container" bind:this={brushedChartContainer as HTMLElement} style={`width: ${chartWidth}px; height: ${chartHeight + 20}px;`} >
-	<div class="chart-container" style={`width: ${chartWidth}px; height: ${chartHeight - 42}px;`}>
-		<YZAxisLabels yLabel={yAxisLabel} zLabel={zAxisLabel} />
+<div class="yz-chart-container" bind:this={brushedChartContainer as HTMLElement} style={`width: calc(50vw - 4rem); height: calc(50vh - 1rem)`}>
+	<div class="chart-container" style={`width: calc(50vw - 4rem); height: calc(50vh - 5rem)`}>
 		<!-- MAIN CHART -->
 		<!-- brushedTable is full table sliced with min,max from the Brush component -->
 		{#if brushedTable && brushedTable.numRows() > 0}
@@ -174,6 +173,7 @@
 				</Html>
 			</LayerCake>
 		{/if}
+		<YZAxisLabels yLabel={yAxisLabel} zLabel={zAxisLabel} />
 	</div>
 
 	<!-- BRUSHER CHART -->

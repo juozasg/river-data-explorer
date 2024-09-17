@@ -55,7 +55,7 @@ $effect(() => {
 </script>
 
 {#if yzTable && yParams && zParams}
-	<BrushedYzChart {yzTable} {yParams} {zParams} chartWidth={500} chartHeight={500} {onDateSelect} />
+	<BrushedYzChart {yzTable} {yParams} {zParams} {onDateSelect} />
 {:else}
 	<p>No data</p>
 {/if}

@@ -52,6 +52,10 @@
 		border-collapse: separate;
 	}
 
+	:global(table.is-striped tr:nth-child(even)) {
+		background-color: var(--color-hover);
+	}
+
 	table :global(tr td:first-child), table :global(tr th:first-child) {
 		border-right: 1px dashed #ccc;
 	}
@@ -85,7 +89,7 @@
 	}
 
 	.table-container :global(.table.is-narrow td), .table-container  :global(.table.is-narrow th) {
-		padding: 0.125em 0.4em !important;
+		padding: 0.2em 0.4em !important;
 	}
 
 	/* hide the fade */

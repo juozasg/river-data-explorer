@@ -46,7 +46,7 @@ export function toggleHoveredFeatureState(map: ml.Map | undefined,
 		map.setFeatureState({ source: updated?.mlSource, id: updated.id }, { hover: true });
 		if (updated.regionType as any !== 'river') {
 			if (!selected || !hoveredSite) {
-				console.log('show yellow outline', selected, hoveredSite);
+				// console.log('show yellow outline', selected, hoveredSite);
 				map.setFeatureState({ source: updated?.mlSource, id: updated.id }, { willbeselected: true });
 			}
 		}

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { RegionFeature } from "$src/appstate/data/features.svelte";
+	import { regionIdLabel } from "$src/lib/utils";
 	import InlineBlockIconify from "../maps/controls/InlineBlockIconify.svelte";
 
 	type Props = {
@@ -10,6 +11,7 @@
 	};
 
 	const { regionFeature, onClickRegionType, regionType, onClickClose }: Props = $props();
+
 </script>
 
 <div class="basin-header">
@@ -34,15 +36,16 @@
 	{#if regionFeature}
 		<div class="selected-details">
 			<div class="label">
+				<div class="pill">{regionFeature.regionType}</div>
 				<strong>{regionFeature.name}</strong>
-				<small>{regionFeature.regionType}&nbsp;{regionFeature.id}</small>
+				<small>{regionIdLabel(regionFeature)} {regionFeature.id}</small>
 			</div>
 			<div class="close" onclick={onClickClose}><InlineBlockIconify icon="lets-icons:close-ring" size="2rem"/></div>
 		</div>
 	{:else}
 		<div class="selected-cue">
 			<h4>
-				<!-- <InlineBlockIconify icon="lets-icons:arrow-drop-down" size="2rem" /> -->
+				<InlineBlockIconify icon="lets-icons:arrow-drop-down" size="2rem" />
 				Click map region to select
 				<InlineBlockIconify icon="lets-icons:arrow-drop-down" size="2rem" />
 			</h4>
@@ -59,14 +62,17 @@
 		justify-content: space-between;
 		align-items: center;
 
+		.pill {
+			display: inline;
+		}
+
 		.select-choices {
 			display: flex;
 			justify-content: space-between;
 			align-items: stretch;
 			flex-grow: 0;
 			flex-shrink: 0;
-			align-items: top;
-			width: 360px;
+			width: 340px;
 
 			& > a {
 				padding: 5px 3px;
@@ -106,15 +112,20 @@
 				padding-right: 0;
 				padding-left: 1rem;
 				margin-right: 0;
+				line-height: 32px;
 
-				display: flex;
-				flex-direction: column;
+				/* display: flex; */
+				/* flex-direction: column; */
 				justify-content: right;
-				gap: 4px;
+				gap: 2px;
+
+				strong {
+					font-size: 1.2rem;
+				}
 			}
 
 			.close {
-				margin-left: 0.5rem;
+				margin-left: 0.3rem;
 				:global(path) {
 					stroke: var(--color-lightGrey);
 				}
@@ -126,6 +137,11 @@
 					stroke: var(--font-color);
 				}
 			}
+		}
+
+		.selected-cue {
+			flex-grow: 1;
+			text-align: left;
 		}
 
 		.selected-cue h4 {

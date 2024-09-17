@@ -17,7 +17,7 @@ export function fitFeatureBounds(map: ml.Map, feature: RegionFeature) {
 	const coordinates: GeoJSON.Position[] = geometry.coordinates[0];
 
 	map.fitBounds(bounds(coordinates), {
-		padding: 40
+		padding: 60
 	});
 }
 

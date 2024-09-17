@@ -7,7 +7,7 @@
 	import { sitesDataStats } from "$src/lib/data/stats";
 	import { siteGetBeforeDate } from "$src/lib/data/tableHelpers";
 	import type { Site } from "$src/lib/types/site";
-	import { fmtDateDMonY, fmtMonDY } from "$src/lib/utils";
+	import { fmtDateDMonY, regionIdLabel } from "$src/lib/utils";
 	import { queryMouseMoveHover } from "$src/lib/utils/maplibre";
 	import { varlabel, varstdmax, varstdmin, varunits } from "$src/lib/utils/varHelpers";
 	import TooltipSiteStats from "../tooltips/TooltipContentSiteStats.svelte";
@@ -47,12 +47,7 @@
 	// });
 	const regionStats = $derived(regionSites.length > 0 ? sitesDataStats(regionSites) : undefined);
 
-	const regionIdLabel = (feature: RegionFeature) => {
-		const rt = feature.regionType;
-		if (rt == "county") return "County FIPS";
-		if (rt == "state") return "State FIPS";
-		else return rt.toUpperCase();
-	};
+
 
 	const regionNameLabel = (feature: RegionFeature) => {
 		const rt = feature.regionType;

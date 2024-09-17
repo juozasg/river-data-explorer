@@ -44,12 +44,12 @@
 
 
 <div id="region-stats-panel">
-	{#if region}
+	<!-- {#if region}
 		<h3 class="region-label">
 			Region: <span style="font-weight: 400">{region.name}</span>
 			<span class="subtitle">{region.regionType}:{region.id}</span>
 		</h3>
-	{/if}
+	{/if} -->
 	<div class="flex stats-summary">
 		<div class="cell"><p><b>{sitesStats.numSites}</b> sites</p></div>
 		<div class="cell"><p><b>{sitesStats.numVariables}</b> variables</p></div>
@@ -100,7 +100,7 @@
 	#region-stats-panel {
 		height: 100%;
 
-		font-size: 80%;
+		font-size: 90%;
 		display: flex;
 		flex-direction: column;
 	}

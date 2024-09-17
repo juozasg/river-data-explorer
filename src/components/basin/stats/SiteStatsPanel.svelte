@@ -39,9 +39,11 @@
 			{/if}
 		</div>
 
-		<span>Site:</span>
-		<span style="font-weight: 400">{site.name}</span>
-		<span class="subtitle">{site.id}</span>
+		<span class="pill">site</span>
+	<span class="label">
+			<span style="font-weight: 400">{site.name}</span>
+			<span class="subtitle">{site.id}</span>
+	</span>
 	</h3>
 	<StatsDataTable data={rows}>
 		<th>Variable</th>
@@ -91,20 +93,23 @@
 	#site-stats-panel {
 		height: 100%;
 
-		font-size: 80%;
+		font-size: 90%;
 		display: flex;
 		flex-direction: column;
 	}
 
 	h3 {
-		margin-bottom: 3px;
+		margin-bottom: 6px;
 		margin-top: 0.5rem;
+		text-align: right;
 
 		.subtitle {
 			font-size: 0.9rem;
+			font-weight: 300;
 			color: #444;
 		}
 	}
+
 
 	#site-stats-panel  {
 		td.date {

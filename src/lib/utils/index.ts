@@ -2,6 +2,7 @@ import sprintfpkg from 'sprintf';
 const { sprintf } = sprintfpkg;
 
 import type { ImportGlobRecord, MarkdownPage, MarkdownComponent } from '../types/page';
+import type { RegionFeature } from '$src/appstate/data/features.svelte';
 
 export const getMarkdownPages = async (allMdPages: ImportGlobRecord): Promise<MarkdownPage[]> => {
 	const allPages = await Promise.all(
@@ -162,3 +163,10 @@ export function seqid() {
 	return (++n).toString(36);
 
 }
+
+export const regionIdLabel = (feature: RegionFeature) => {
+	const rt = feature.regionType;
+	if (rt == "county") return "County FIPS";
+	if (rt == "state") return "State FIPS";
+	else return rt.toUpperCase();
+};
