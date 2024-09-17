@@ -3,7 +3,7 @@
 
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
 	import { regionEqual, type RegionFeature } from '$src/appstate/data/features.svelte';
-	import { sites } from '$src/appstate/sites.svelte';
+	import { Sites, sites } from '$src/appstate/sites.svelte';
 	import { allVariableStats, sitesDataStats } from '$src/lib/data/stats';
 	import { concatTablesAllColumns } from '$src/lib/data/tableHelpers';
 	import type { VariableStats } from '$src/lib/types/analysis';
@@ -22,7 +22,8 @@
 
 	let { onVarClicked, region, dataSelection }: Props = $props();
 
-	const sitesInRegion = $derived(sites.allEnabled.filter((s) => s.huc10 === region?.id));
+	// const sitesInRegion = $derived(sites.allEnabled.filter((s) => s.huc10 === region?.id));
+	const sitesInRegion = $derived(Sites.forRegionFeature(sites.allEnabled, region));
 
 	const sitesStats = $derived(sitesDataStats(sitesInRegion));
 	const sitesInAreaTables = $derived(
@@ -44,12 +45,6 @@
 
 
 <div id="region-stats-panel">
-	<!-- {#if region}
-		<h3 class="region-label">
-			Region: <span style="font-weight: 400">{region.name}</span>
-			<span class="subtitle">{region.regionType}:{region.id}</span>
-		</h3>
-	{/if} -->
 	<div class="flex stats-summary">
 		<div class="cell"><p><b>{sitesStats.numSites}</b> sites</p></div>
 		<div class="cell"><p><b>{sitesStats.numVariables}</b> variables</p></div>
@@ -107,38 +102,12 @@
 
 	#region-stats-panel :global {
 		td.date {
-			/* font-size: 75%; */
 			min-width: 6.2rem;
 		}
 	}
 
 	p {
 		margin-bottom: 0.2rem !important;
-	}
-
-	h3 {
-		margin-bottom: 3px;
-		/* margin-top: 0.5rem; */
-
-		.subtitle {
-			font-size: 0.9rem;
-			color: #444;
-		}
-	}
-
-	h3 :global(.icon) {
-		height: 24px;
-		vertical-align: -6px !important;
-	}
-
-	h3 :global(.blink) {
-		animation: blink 1s linear 2;
-	}
-
-	@keyframes blink {
-		50% {
-			opacity: 0;
-		}
 	}
 
 	.stats-summary {
