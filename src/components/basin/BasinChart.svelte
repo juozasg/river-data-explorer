@@ -4,6 +4,7 @@
 	import type { Site } from "$src/lib/types/site";
 	import { varChartDomain, YZChartParams } from "$src/lib/utils/YZChartParams";
 	import BrushedYzChart from "../chart/BrushedYZChart.svelte";
+	import InlineBlockIconify from "../maps/controls/InlineBlockIconify.svelte";
 
 	type Props = {
 		dataSelection: DataSelectionState;
@@ -42,26 +43,46 @@
 	});
 
 	function locationName(site?: Site) {
-		if(!site) return '';
-		return site.name + ` (${site.id.replace(/-/, '&#8209;')})`; // non-breaking hyphen
+		if (!site) return "";
+		return site.name + ` (${site.id.replace(/-/, "&#8209;")})`; // non-breaking hyphen
 	}
 
-	let yParams = $derived(new YZChartParams("y", dataSelection.yVar || '', yzTable, locationName(dataSelection.ySite), forceDomain ?? yDomain));
-	let zParams = $derived(new YZChartParams("z", dataSelection.zVar || '', yzTable, locationName(dataSelection.zSite), forceDomain ?? zDomain));
+	let yParams = $derived(
+		new YZChartParams("y", dataSelection.yVar || "", yzTable, locationName(dataSelection.ySite), forceDomain ?? yDomain)
+	);
+	let zParams = $derived(
+		new YZChartParams("z", dataSelection.zVar || "", yzTable, locationName(dataSelection.zSite), forceDomain ?? zDomain)
+	);
 
-
-$effect(() => {
-	console.log('yParams', yParams);
-	console.log('zParams', zParams);
-	console.log('yzTable', yzTable?.objects());
-});
+	$effect(() => {
+		console.log("yParams", yParams);
+		console.log("zParams", zParams);
+		console.log("yzTable", yzTable?.objects());
+	});
 </script>
 
 {#if yzTable && yParams && zParams}
 	<BrushedYzChart {yzTable} {yParams} {zParams} {onDateSelect} />
 {:else}
-	<p>No data</p>
+	<!-- <div class="arrrow-icon"> -->
+	<h3>
+		<InlineBlockIconify icon="lets-icons:expand-up" size="2rem" />
+		Click site markers to select sites
+		<!-- </div> -->
+
+		<InlineBlockIconify icon="lets-icons:expand-up" size="2rem" />
+	</h3>
+	<!-- <div class="arrrow-icon"> -->
+	<!-- </div> -->
+	<h3>
+		Use <tt>Y</tt> and <tt>Z</tt> buttons to graph site variables
+		<InlineBlockIconify icon="lets-icons:expand-right" size="2rem" />
+	</h3>
 {/if}
 
 <style>
+	h3 :global(.icon) {
+		position: relative;
+		top: 0.5rem;
+	}
 </style>

@@ -20,7 +20,7 @@ temp:
 
 # water flow
 flow:
-  label: Gage Flow
+  label: Streamflow
   units: ft^3/s
   format: "%d"
   scale:

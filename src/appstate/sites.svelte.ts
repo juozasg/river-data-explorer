@@ -41,7 +41,7 @@ export class Sites {
 
 	static forRegionFeature(sites: Site[], region?: RegionFeature) {
 		if(!region) return [];
-		const regionType = region.regionType; // huc10
+		const regionType = region.regionType; // for example: 'huc10'
 		return sites.filter(s => (s as any)[regionType] === region.id);
 
 	}
@@ -55,7 +55,6 @@ export class Sites {
 			regionTypes.forEach((rt) => {
 				(site[rt] as any) = sitesGeoindex[site.id]?.[rt] as string || '';
 			});
-				// console.log('set index', site.id, site.huc10);
 		}
 	}
 }
