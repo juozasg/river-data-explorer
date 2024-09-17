@@ -84,12 +84,12 @@
 			if((hoveredRegion.feature && !selectedRegion?.feature) ||
 			(!site && hoveredRegion.feature && selectedRegion?.feature && !regionEqual(hoveredRegion?.feature, selectedRegion?.feature)))
 			 {
-				console.log('make hovered region yellow')
+				// console.log('make hovered region yellow')
 				mlMap.setFeatureState({ source: hoveredRegion?.feature.mlSource, id: hoveredRegion.feature.id }, { willbeselected: true });
 
 				// selectedRegion.feature = hoveredRegion.feature;
 			} else if(hoveredRegion.feature) {
-				console.log('not yellow!')
+				// console.log('not yellow!')
 				mlMap.setFeatureState({ source: hoveredRegion?.feature.mlSource, id: hoveredRegion.feature.id }, { willbeselected: false });
 			}
 
