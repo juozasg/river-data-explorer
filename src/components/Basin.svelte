@@ -54,7 +54,8 @@
 	};
 
 	const onSearchItemSelect = (item: Site) => {
-		console.log("search item selected", item);
+		// console.log("search ÷item selected", item);
+		selectedSite = item;
 	};
 
 	const onHeaderClose = () => {
@@ -152,10 +153,8 @@
 
 <span class="map-attribution">
 	Map Sources: Esri, TomTom, Garmin, FAO, NOAA, USGS, © OpenStreetMap contributors, and the GIS User Community. Date
-	sources: USGS, St. Joseph River Basin Commission. <a
-		class="github"
-		target="_blank"
-		href="https://github.com/Limnogirl90/SJRBC-web-map-data/tree/webapp/datasets"
+	sources: USGS, <a href='https://sjrbc.com'>St. Joseph River Basin Commission.</a>
+	<a class="github" target="_blank" href="https://github.com/Limnogirl90/SJRBC-web-map-data/tree/webapp/datasets"
 		>Download Datasets <InlineBlockIconify icon="uiw:github" size="0.9rem" /></a>
 </span>
 
