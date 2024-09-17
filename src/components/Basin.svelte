@@ -9,6 +9,7 @@
 	import SiteStatsPanel from "$src/components/basin/stats/SiteStatsPanel.svelte";
 	import InlineBlockIconify from "$src/components/maps/controls/InlineBlockIconify.svelte";
 	import VarDataMap from "$src/components/maps/VarDataMap.svelte";
+	import { sitesEarliestDate } from "$src/lib/data/dateStats";
 	import { defaultLayersParams } from "$src/lib/types/mapControls";
 	import type { Site } from "$src/lib/types/site";
 	import { chartYColor } from "$src/lib/utils/colors";
@@ -102,7 +103,19 @@
 			dataSelection.zSite = selectedSite;
 			console.log('select Z', vn, selectedSite);
 		} else {
+			// if(selectedSite &&
 			varname = vn;
+			if(dataSelection.yVar === vn) {
+				if(selectedSite?.id === dataSelection.ySite?.id) {
+					dataSelection.yVar = "";
+					dataSelection.ySite = undefined;
+				}
+			} else if(dataSelection.zVar === vn) {
+				if(selectedSite?.id === dataSelection.zSite?.id) {
+					dataSelection.zVar = "";
+					dataSelection.zSite = undefined;
+				}
+			}
 		}
 	}
 </script>
@@ -148,7 +161,7 @@
 <span class="map-attribution">
 	<span class="long-text">
 		Map Sources: Esri, TomTom, Garmin, FAO, NOAA, USGS, © OpenStreetMap contributors, and the GIS User Community. Data
-		sources: USGS, <a href="https://sjrbc.com">St. Joseph River Basin Commission</a>
+		sources: <a target="_blank" href='https://waterservices.usgs.gov/'>USGS</a>, <a target="_blank" href="https://sjrbc.com">St. Joseph River Basin Commission</a>
 	</span>
 </span>
 <a class="github" target="_blank" href="https://github.com/Limnogirl90/SJRBC-web-map-data/tree/webapp/datasets"

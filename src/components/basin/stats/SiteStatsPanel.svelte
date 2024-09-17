@@ -69,8 +69,10 @@
 				<!-- {hoverColor} -->
 				{r.label}
 				{varunits(r.varname, true)}
-				<a onclick={() => onVarClicked(r.varname, "y")}>Y</a>
-				<a onclick={() => onVarClicked(r.varname, "z")}>Z</a>
+				<div class="graph-buttons">
+					<a class="graph-button y" onclick={(e) => {onVarClicked(r.varname, "y"); e.stopPropagation() }}>Y</a>
+					<a class="graph-button z" onclick={(e) => {onVarClicked(r.varname, "z"); e.stopPropagation() }}>Z</a>
+				</div>
 			</TdStatsVariableLabel>
 
 			<td><VarValueStandards v={r.varname} value={r.lastObservation} /></td>
@@ -93,6 +95,49 @@
 		font-size: 90%;
 		display: flex;
 		flex-direction: column;
+	}
+
+	.graph-buttons {
+		display: none;
+
+		white-space: nowrap;
+		position: absolute;
+		right: 0;
+		top: -4px;
+		/* text-align: right; */
+
+		.graph-button {
+			display: inline-block;
+			padding: 2px 0.25rem;
+			/* margin-left: 0.5rem; */
+			border-radius: var(--border-radius);
+			background-color: #f0f0f0;
+			color: #444;
+			font-size: 0.8rem;
+			text-align: center;
+			cursor: pointer;
+			transition: background-color 0.2s;
+		}
+	}
+
+	.graph-button.y {
+		border: 2px solid var(--color-chart-y);
+
+		&:hover {
+			background-color: var(--color-chart-y);
+			color: white;
+		}
+	}
+	.graph-button.z {
+		border: 2px solid var(--color-chart-z);
+		&:hover {
+			background-color: var(--color-chart-z);
+			color: white;
+		}
+	}
+
+	:global(table tr:hover .graph-buttons) {
+		display: block;
 	}
 
 	h3 {

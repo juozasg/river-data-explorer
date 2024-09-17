@@ -84,6 +84,11 @@
 		flex-direction: row;
 	}
 
+	.text-block {
+		position: relative;
+		width: 100%;
+	}
+
 	.selection-hints {
 		display: flex;
 		height: auto;
