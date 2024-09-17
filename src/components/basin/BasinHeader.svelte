@@ -60,7 +60,7 @@
 
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
+		/* align-items: center; */
 
 		.pill {
 			display: inline;
