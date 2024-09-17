@@ -1,20 +1,21 @@
 <script lang="ts">
-	import type { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
-	import { sitesTables } from '$src/appstate/data/datasets.svelte';
-	import { allVariableStats } from '$src/lib/data/stats';
-	import type { VariableStats } from '$src/lib/types/analysis';
-	import type { Site } from '$src/lib/types/site';
-	import { fmtVarNum, varunits } from '$src/lib/utils/varHelpers';
-	import VarValueStandards from '$src/components/tooltips/VarValueStandards.svelte';
-	import StatsDataTable from '$src/components/StatsDataTable.svelte';
-	import TdStatsVariableLabel from './TdStatsVariableLabel.svelte';
+	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
+	import { sitesTables } from "$src/appstate/data/datasets.svelte";
+	import { allVariableStats } from "$src/lib/data/stats";
+	import type { VariableStats } from "$src/lib/types/analysis";
+	import type { Site } from "$src/lib/types/site";
+	import { fmtVarNum, varunits } from "$src/lib/utils/varHelpers";
+	import VarValueStandards from "$src/components/tooltips/VarValueStandards.svelte";
+	import StatsDataTable from "$src/components/StatsDataTable.svelte";
+	import TdStatsVariableLabel from "./TdStatsVariableLabel.svelte";
+	import { on } from "events";
 
 	type Props = {
 		site: Site;
 		dataSelection: DataSelectionState;
 		hoverColor?: string;
 
-		onVarClicked: (name: string) => void;
+		onVarClicked: (name: string, axis: "y" | "z") => void;
 	};
 
 	const { onVarClicked, dataSelection, site, hoverColor }: Props = $props();
@@ -40,10 +41,10 @@
 		</div>
 
 		<span class="pill">site</span>
-	<span class="label">
+		<span class="label">
 			<span style="font-weight: 400">{site.name}</span>
 			<span class="subtitle">{site.id}</span>
-	</span>
+		</span>
 	</h3>
 	<StatsDataTable data={rows}>
 		<th>Variable</th>
@@ -59,21 +60,17 @@
 
 		{#snippet row(r: VariableStats)}
 			<TdStatsVariableLabel
-				ySelected={dataSelection.yVar === r.varname &&
-					dataSelection.ySite &&
-					dataSelection.ySite.id == site.id}
-				zSelected={dataSelection.zVar === r.varname &&
-					dataSelection.zSite &&
-					dataSelection.zSite.id == site.id}
-
+				ySelected={dataSelection.yVar === r.varname && dataSelection.ySite && dataSelection.ySite.id == site.id}
+				zSelected={dataSelection.zVar === r.varname && dataSelection.zSite && dataSelection.zSite.id == site.id}
 				yHinted={!!r.varname && dataSelection.yVar === r.varname}
 				zHinted={!!r.varname && dataSelection.zVar === r.varname}
-				varname={r.varname}
-				onclick={() => onVarClicked(r.varname)}
-				{hoverColor}
-			>
+				varname={r.varname}>
+				<!-- {hoverColor} -->
+				<!-- onclick={() => onVarClicked(r.varname, "y")} -->
 				{r.label}
 				{varunits(r.varname, true)}
+				<a onclick={() => onVarClicked(r.varname, "y")}>Y</a>
+				<a onclick={() => onVarClicked(r.varname, "z")}>Z</a>
 			</TdStatsVariableLabel>
 
 			<td><VarValueStandards v={r.varname} value={r.lastObservation} /></td>
@@ -110,8 +107,7 @@
 		}
 	}
 
-
-	#site-stats-panel  {
+	#site-stats-panel {
 		td.date {
 			/* font-size: 75%; */
 			min-width: 6.2rem;
@@ -122,7 +118,6 @@
 			overflow-x: hidden;
 			padding-right: 0.5rem;
 		}
-
 
 		.selection-hints {
 			height: 20px;
