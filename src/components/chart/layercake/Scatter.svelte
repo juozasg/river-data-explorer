@@ -4,9 +4,9 @@
  -->
 <script>
 	import { isNumber } from "$src/lib/utils";
-import { getContext } from "svelte";
+	import { getContext } from "svelte";
 
-	const { data, xGet, yGet, zGet, y, z, xScale, yScale, zScale } = getContext("LayerCake");
+	const { data, xGet, yGet, zGet, x, y, z, xScale, yScale, zScale } = getContext("LayerCake");
 
 	/** @type {String} [ySource="y"] - "y" or "z" for data values */
 	export let dataSource = "y";
@@ -14,12 +14,14 @@ import { getContext } from "svelte";
 	$: dataBandwidth = dataSource === "y" ? $yScale.bandwidth : $zScale.bandwidth;
 	$: value = dataSource === "y" ? $y : $z;
 
+	/** @type {Date|undefined} [dateHovered = undefined] – Currently hovered date. Make the scatter point larger */
+	export let dateHovered = undefined;
+
 	/** @type {Number|null} [min=null] – Standard value min. Highlight in red */
 	export let min = null;
 
 	/** @type {Number|null} [min=null] – Standard value max. Highlight in red */
 	export let max = null;
-
 
 	export let badcolor = "red";
 	/** @type {Number} [r=5] – The circle's radius. */
@@ -45,6 +47,16 @@ import { getContext } from "svelte";
 	// 	const allData = $data.map(d => [d, $xGet(d), dataGet(d)]);
 	// 	console.log('Scatter allData', allData);
 	// }
+
+	function isDateHovered(d) {
+		// console.log(
+		// 	"isDateHovered",
+		// 	dateHovered?.valueOf(),
+		// 	$x(d).valueOf(),
+		// 	dateHovered && $x(d).valueOf() == dateHovered.valueOf()
+		// );
+		return dateHovered && $x(d).valueOf() == dateHovered.valueOf();
+	}
 </script>
 
 <g class="scatter-group">
@@ -53,12 +65,18 @@ import { getContext } from "svelte";
 			{#if typeof dataGet(d) == "number" && typeof $xGet(d) == "number"}
 				{@const cx = $xGet(d) + ($xScale.bandwidth ? $xScale.bandwidth() / 2 : 0)}
 				{@const cy = dataGet(d) + (dataBandwidth ? dataBandwidth() / 2 : 0)}
+				{@const hovered = isDateHovered(d)}
 
 				<!-- {#if (min != null && dataGet(d) < min) || (max != null && dataGet(d) > max)} -->
-				{#if (typeof max == 'number' && value(d) > max) || (typeof min == 'number' && value(d) < min)}
-					<circle {cx} {cy} r={r+1} fill="none" stroke={badcolor} stroke-width={strokeWidth + 2} />
+				{#if (typeof max == "number" && value(d) > max) || (typeof min == "number" && value(d) < min)}
+					<circle {cx} {cy} r={r + 1} fill="none" stroke={badcolor} stroke-width={strokeWidth + 2} />
 				{/if}
-				<circle {cx} {cy} {r} {fill} {stroke} stroke-width={strokeWidth} />
+				{#if hovered}
+					<circle {cx} {cy} r={r + 3} {fill} {stroke} stroke-width={strokeWidth} />
+					<circle {cx} {cy} r={r} fill="#fff" {stroke} stroke-width={strokeWidth} />
+				{:else}
+					<circle {cx} {cy} {r} {fill} {stroke} stroke-width={strokeWidth} />
+				{/if}
 			{/if}
 		{/if}
 	{/each}

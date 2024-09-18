@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
 	import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
-		import { fmtVarNum, varunits } from '$src/lib/utils/varHelpers';
+	import { fmtVarNum, varunits } from '$src/lib/utils/varHelpers';
 
 	const { v: varname, value }: { v: string; value: number | undefined } = $props();
 
@@ -25,6 +25,8 @@
 
 <span class="var-{varname}" {onmousemove} {onmouseleave} class:exceeds-min={exceedsMin} class:exceeds-max={exceedsMax} role="tooltip">
 	{fmtVarNum(varname, value)}
+
+
 </span>
 
 {#snippet tooltipContent()}
