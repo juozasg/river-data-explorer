@@ -24,7 +24,7 @@
 			const labels = varcategories(varname)?.map((v, i) => varcatilegend(varname, i));
 			if (!labels || labels.length === 0) return 30;
 			const longestLabel = labels.reduce((a, b) => (a.length > b.length ? a : b));
-			console.log('longestLabel', longestLabel, longestLabel.length);
+			// console.log('longestLabel', longestLabel, longestLabel.length);
 			return (longestLabel.length + 3) * 12;
 		}
 		const maxValueNumChars = varmax(varname).toString().length;

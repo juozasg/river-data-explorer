@@ -27,6 +27,7 @@
 		if (dataSelection.yRegion && dataSelection.yVar) {
 			const tables = siteTablesForRegion(sites.allEnabled, dataSelection.yRegion);
 			const dailyMediansTable = varDailyMedian(tables, dataSelection.yVar);
+			// console.log('dailyMediansTable', dailyMediansTable.objects());
 			return selectTableVar(dailyMediansTable, dataSelection.yVar, "y");
 		}
 	});

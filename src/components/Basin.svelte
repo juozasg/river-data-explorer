@@ -103,16 +103,22 @@
 			// varname = vn;
 
 			// clear selection
-			if (dataSelection.yVar === vn && selectedRegion.feature && dataSelection.yRegion) {
-				if (regionEqual(selectedRegion.feature, dataSelection.yRegion)) {
-					dataSelection.yVar = "";
-					dataSelection.yRegion = undefined;
-				}
-			} else if (dataSelection.zVar === vn && selectedRegion.feature && dataSelection.zRegion) {
-				if (regionEqual(selectedRegion.feature, dataSelection.zRegion)) {
-					dataSelection.zVar = "";
-					dataSelection.zRegion = undefined;
-				}
+			if (
+				dataSelection.yVar === vn &&
+				selectedRegion.feature &&
+				dataSelection.yRegion &&
+				regionEqual(selectedRegion.feature, dataSelection.yRegion)
+			) {
+				dataSelection.yVar = "";
+				dataSelection.yRegion = undefined;
+			} else if (
+				dataSelection.zVar === vn &&
+				selectedRegion.feature &&
+				dataSelection.zRegion &&
+				regionEqual(selectedRegion.feature, dataSelection.zRegion)
+			) {
+				dataSelection.zVar = "";
+				dataSelection.zRegion = undefined;
 			} else {
 				varname = vn;
 			}
@@ -135,16 +141,15 @@
 		} else {
 			// set map varname
 			// clear selection
-			if (dataSelection.yVar === vn) {
-				if (selectedSite?.id === dataSelection.ySite?.id) {
-					dataSelection.yVar = "";
-					dataSelection.ySite = undefined;
-				}
-			} else if (dataSelection.zVar === vn) {
-				if (selectedSite?.id === dataSelection.zSite?.id) {
-					dataSelection.zVar = "";
-					dataSelection.zSite = undefined;
-				}
+			console.log("clear selection", vn, selectedSite, dataSelection);
+			if (dataSelection.yVar === vn && dataSelection.ySite?.id && selectedSite?.id === dataSelection.ySite?.id) {
+				console.log("clear y");
+				dataSelection.yVar = "";
+				dataSelection.ySite = undefined;
+			} else if (dataSelection.zVar === vn && dataSelection.zSite?.id && selectedSite?.id === dataSelection.zSite?.id) {
+				console.log("clear z");
+				dataSelection.zVar = "";
+				dataSelection.zSite = undefined;
 			} else {
 				varname = vn;
 			}

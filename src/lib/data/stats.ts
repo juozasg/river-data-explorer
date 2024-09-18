@@ -73,46 +73,54 @@ export function allVariableStats(table: ColumnTable, { errorLabel } = { errorLab
 }
 
 export function allVarsDailyMedians(tables: ColumnTable[]): ColumnTable {
-	const combinedTable = concatTablesAllColumns(tables);
+	let combinedTable = concatTablesAllColumns(tables);
 	if (combinedTable.numRows() == 0) return aq.table([]);
 
 	const groupedTable = combinedTable.orderby('date').groupby('date');
 
-	console.log('grouped', groupedTable.objects({ grouped: true }));
+	// console.log('grouped', groupedTable.objects({ grouped: true }));
 
 	const rollup: any = {};
 	combinedTable.columnNames().forEach(c => {
-		rollup[c] = aq.op.median(c);
+		if (varcategories(c)) {
+			rollup[c] = aq.op.array_agg(c);
+		}
+		else {
+			rollup[c] = aq.op.median(c);
+		}
 	});
+
+
 
 	return rollupDailies(groupedTable, rollup);
 }
 
 export function varDailyMedian(tables: ColumnTable[], varname: string): ColumnTable {
-	const combinedTable = concatTablesAllColumns(tables);
+	let combinedTable = concatTablesAllColumns(tables);
 	if (combinedTable.numRows() == 0) return aq.table([]);
 	if (!combinedTable.columnNames().includes(varname)) return aq.table([]);
 
 	const groupedTable = combinedTable.orderby('date').groupby('date');
 
 	const rollup: any = {};
-	rollup[varname] = aq.op.median(varname);
+	rollup[varname] = varcategories(varname) ?  aq.op.array_agg(varname) : aq.op.median(varname);
 	return rollupDailies(groupedTable, rollup);
+
 }
 
 function rollupDailies(table: ColumnTable, rollup: any) {
-	return table.rollup(rollup).derive({ 'date': aq.escape((r: any) => UTCDayDate(r.date)) }).orderby('date').reify();
+	const ru = table.rollup(rollup).derive({ 'date': aq.escape((r: any) => UTCDayDate(r.date)) }).orderby('date').reify();
+
+	// console.log('rolledUp', ru.objects());
+	return ru;
 }
 
 
 export function variableStats(variable: string, table: ColumnTable, { errorLabel = '' }): VariableStats {
 	try {
-
 		if (table.numRows() === 0) {
 			return emptyVariableStats(variable);
 		}
-
-
 		const label = variablesMetadata[variable]?.label || variable;
 
 		const tsTable = table

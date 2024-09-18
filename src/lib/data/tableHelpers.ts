@@ -14,6 +14,7 @@ import type { Site } from '../types/site';
 import { varcategories } from '../utils/varHelpers';
 import { dateEqualYMD } from '../utils/dates';
 import { tab } from '@testing-library/user-event/dist/cjs/convenience/tab.js';
+import { mean, median } from '../utils';
 
 export function tablesUniqueColumns(tables: ColumnTable[]): string[] {
 	const cols = tables.flatMap(t => t.columnNames());
@@ -118,7 +119,24 @@ export function selectTableVar(table: ColumnTable | undefined, varname: string |
 
 	// const renamedTable = siteTable.select(['date', varname]).rename({ [varname]: renameVar ?? varname })
 	if(varcategories(varname)) {
-		filteredTable = filteredTable.derive({ 'var': aq.escape((d: any) => varcategories(varname)!.indexOf(d.var)) });
+		filteredTable = filteredTable.derive({ 'var': aq.escape((d: any) => catsToNumber(varname, d.var)) })
+		.filter(d => aq.op.is_nan(d!.var) == false)
+		.filter(aq.escape((d: any) => d!.var !== undefined && d!.var !== null && d!.var !== ''))
+		.reify();
+
 	}
 	return filteredTable.rename({ 'var': renameVar ?? varname });
+}
+
+function catsToNumber(varname: string, value: string| string[]) {
+	// console.log('cats to number', varname, value)
+	if (varcategories(varname)) {
+		if(typeof value === 'string') return varcategories(varname)!.indexOf(value as string);
+		const vals = (value as string[]).map(v => varcategories(varname)!.indexOf(v)).filter(v => v !== -1);
+		const md = Math.round(mean(vals));
+		// console.log('VALS', vals, md)
+		return md;
+
+	}
+	return value;
 }

@@ -8,7 +8,6 @@
 	import VarValueStandards from "$src/components/tooltips/VarValueStandards.svelte";
 	import StatsDataTable from "$src/components/StatsDataTable.svelte";
 	import TdStatsVariableLabel from "./TdStatsVariableLabel.svelte";
-	import { on } from "events";
 
 	type Props = {
 		site: Site;

@@ -35,7 +35,7 @@
 	const rows: VariableStats[] = $derived.by(() => {
 		// dont bother with empty tables
 		const dailyMedians = allVarsDailyMedians(sitesInAreaTables);
-		console.log("daily meads", dailyMedians.objects());
+		// console.log("daily meads", dailyMedians.objects());
 
 		return allVariableStats(dailyMedians, {
 			errorLabel: sitesInRegion.map((s) => s.id).join(", ")
