@@ -31,7 +31,6 @@
 	const sitesStats = $derived(sitesDataStats(sitesInRegion));
 	const sitesInAreaTables = $derived(sitesInRegion.map((s) => sitesTables.get(s.id)).filter((t) => t)) as ColumnTable[];
 
-
 	const rows: VariableStats[] = $derived.by(() => {
 		// dont bother with empty tables
 		const dailyMedians = allVarsDailyMedians(sitesInAreaTables);
@@ -69,12 +68,13 @@
 		<th>To</th>
 
 		{#snippet row(r: VariableStats)}
-
 			<TdStatsVariableLabel
-				ySelected={!!dataSelection.yVar && dataSelection.yVar === r.varname &&
+				ySelected={!!dataSelection.yVar &&
+					dataSelection.yVar === r.varname &&
 					dataSelection.yRegion &&
 					regionEqual(dataSelection.yRegion, region)}
-				zSelected={!!dataSelection.zVar &&dataSelection.zVar === r.varname &&
+				zSelected={!!dataSelection.zVar &&
+					dataSelection.zVar === r.varname &&
 					dataSelection.zRegion &&
 					regionEqual(dataSelection.zRegion, region)}
 				yHinted={!!r.varname && dataSelection.yVar === r.varname}
@@ -89,32 +89,33 @@
 					{JSON.stringify(dataSelection)}
 					---
 					{region.id} {region.regionType} -->
-
 				</span>
 				<div class="graph-buttons">
 					<a
 						class="graph-button y"
 						onclick={(e) => {
-							if(r.numObservations > 0)  onVarClicked(r.varname, "y");
+							if (r.numObservations > 0) onVarClicked(r.varname, "y");
 							e.stopPropagation();
 						}}>Y</a>
 					<a
 						class="graph-button z"
 						onclick={(e) => {
-							if(r.numObservations > 0) onVarClicked(r.varname, "z");
+							if (r.numObservations > 0) onVarClicked(r.varname, "z");
 							e.stopPropagation();
 						}}>Z</a>
 				</div>
 			</TdStatsVariableLabel>
 
-			<td>{r.numObservations}</td>
-			<td class="stat"><VarValueStandards v={r.varname} value={r.min} /></td>
-			<td class="stat"><VarValueStandards v={r.varname} value={r.max} /></td>
-			<td class="stat"><VarValueStandards v={r.varname} value={r.mean} /></td>
-			<td class="stat"><VarValueStandards v={r.varname} value={r.median} /></td>
-			<td class="stat">{fmtVarNum(r.varname, r.stdDev)}</td>
-			<td class="date">{r.dateFromLabel}</td>
-			<td class="date">{r.dateToLabel}</td>
+			{#key r.varname}
+				<td>{r.numObservations}</td>
+				<td class="stat"><VarValueStandards v={r.varname} value={r.min} /></td>
+				<td class="stat"><VarValueStandards v={r.varname} value={r.max} /></td>
+				<td class="stat"><VarValueStandards v={r.varname} value={r.mean} /></td>
+				<td class="stat"><VarValueStandards v={r.varname} value={r.median} /></td>
+				<td class="stat">{fmtVarNum(r.varname, r.stdDev)}</td>
+				<td class="date">{r.dateFromLabel}</td>
+				<td class="date">{r.dateToLabel}</td>
+			{/key}
 		{/snippet}
 	</StatsDataTable>
 </div>

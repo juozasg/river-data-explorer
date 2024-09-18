@@ -13,7 +13,8 @@
 	import { sites } from "$src/appstate/sites.svelte";
 	import { isDatasetEnabled, setEnabledDatasets, toggleDatasetEnable } from "$src/appstate/ui/layers.svelte";
 	import DetailsOpenIcon from "$src/components/icons/DetailsOpenIcon.svelte";
-	import { type MapLayersParams, defaultLayersParams } from "$src/lib/types/mapControls";
+	import { type MapLayersParams } from "$src/lib/types/mapControls";
+	import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
 	import type { Site } from "$src/lib/types/site";
 
 	let {

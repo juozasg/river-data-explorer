@@ -1,4 +1,13 @@
+import type { MapLayersParams } from '$src/lib/types/mapControls';
 import { aremove } from '$src/lib/utils/arrays';
+
+
+export const defaultLayersParams: MapLayersParams = {
+	riverLayerVisible: true,
+	baseStyleId: 'TOPO',
+	regionType: 'huc10'
+};
+
 
 let _enabledDatasetLayers: string[] = $state([]);
 

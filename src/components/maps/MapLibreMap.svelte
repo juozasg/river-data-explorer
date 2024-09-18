@@ -11,7 +11,7 @@
 	import { addMlmSources } from '$src/lib/data/map/mapData/mapSources';
 	import { addMapLayers } from '$src/lib/data/map/mapData/regionsMapLayers';
 	import { toggleRiverLayerVisibility } from '$src/lib/data/map/mapData/riverLayers';
-	import { defaultLayersParams } from '$src/lib/types/mapControls';
+		import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
 	import { selectRegionTypeLayers } from '$src/lib/data/map/mapData/mapLayers';
 
 	let {

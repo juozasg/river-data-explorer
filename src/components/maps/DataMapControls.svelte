@@ -4,7 +4,8 @@
 	import type { MapLibreMapProps } from "$src/lib/types/components";
 
 	import { sitesValidDates } from "$src/lib/data/dateStats";
-	import { defaultLayersParams, type MapLayersParams } from "$src/lib/types/mapControls";
+	import { type MapLayersParams } from "$src/lib/types/mapControls";
+	import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
 	import type { Site } from "$src/lib/types/site";
 	import { UTCDayDate } from '$src/lib/utils/dates';
 	import DataTools from "./controls/DataTools.svelte";

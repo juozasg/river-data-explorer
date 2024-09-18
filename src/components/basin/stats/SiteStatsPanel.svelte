@@ -72,27 +72,28 @@
 					<a
 						class="graph-button y"
 						onclick={(e) => {
-							if(r.numObservations > 0) onVarClicked(r.varname, "y");
+							if (r.numObservations > 0) onVarClicked(r.varname, "y");
 							e.stopPropagation();
 						}}>Y</a>
 					<a
 						class="graph-button z"
 						onclick={(e) => {
-							if(r.numObservations > 0) onVarClicked(r.varname, "z");
+							if (r.numObservations > 0) onVarClicked(r.varname, "z");
 							e.stopPropagation();
 						}}>Z</a>
 				</div>
 			</TdStatsVariableLabel>
-
-			<td><VarValueStandards v={r.varname} value={r.lastObservation} /></td>
-			<td>{r.numObservations}</td>
-			<td class="stat"><VarValueStandards v={r.varname} value={r.min} /></td>
-			<td class="stat"><VarValueStandards v={r.varname} value={r.max} /></td>
-			<td class="stat"><VarValueStandards v={r.varname} value={r.mean} /></td>
-			<td class="stat"><VarValueStandards v={r.varname} value={r.median} /></td>
-			<td class="stat">{fmtVarNum(r.varname, r.stdDev)}</td>
-			<td class="date">{r.dateFromLabel}</td>
-			<td class="date">{r.dateToLabel}</td>
+			{#key r.varname}
+				<td><VarValueStandards v={r.varname} value={r.lastObservation} /></td>
+				<td>{r.numObservations}</td>
+				<td class="stat"><VarValueStandards v={r.varname} value={r.min} /></td>
+				<td class="stat"><VarValueStandards v={r.varname} value={r.max} /></td>
+				<td class="stat"><VarValueStandards v={r.varname} value={r.mean} /></td>
+				<td class="stat"><VarValueStandards v={r.varname} value={r.median} /></td>
+				<td class="stat">{fmtVarNum(r.varname, r.stdDev)}</td>
+				<td class="date">{r.dateFromLabel}</td>
+				<td class="date">{r.dateToLabel}</td>
+			{/key}
 		{/snippet}
 	</StatsDataTable>
 </div>

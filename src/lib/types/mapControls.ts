@@ -7,8 +7,3 @@ export type MapLayersParams = {
 	regionType: RegionType;
 };
 
-export const defaultLayersParams: MapLayersParams = {
-	riverLayerVisible: true,
-	baseStyleId: 'TOPO',
-	regionType: 'huc10'
-};

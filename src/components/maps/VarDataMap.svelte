@@ -11,7 +11,8 @@
 	import { MapFeatureSelectionState, toggleHoveredFeatureState } from "$src/appstate/map/featureState.svelte";
 	import { sites as globalSites, Sites } from "$src/appstate/sites.svelte";
 	import { setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
-	import { defaultLayersParams, type MapLayersParams } from "$src/lib/types/mapControls";
+	import { type MapLayersParams } from "$src/lib/types/mapControls";
+	import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
 	import type { Site } from "$src/lib/types/site";
 		import { aremove } from '$src/lib/utils/arrays';
 	import { UTCDayDate } from '$src/lib/utils/dates';
