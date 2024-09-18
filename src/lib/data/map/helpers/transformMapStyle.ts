@@ -1,5 +1,5 @@
 import * as ml from 'maplibre-gl';
-import { partition } from '$lib/utils';
+import { partition } from '$src/lib/utils/arrays';
 
 // copy over riverapp- sources and layers from previous style
 // make sure that label elements are on top of sjrbc elements

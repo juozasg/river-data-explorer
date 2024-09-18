@@ -11,7 +11,8 @@
 	import ChartTooltip from "$src/components/chart/layercake/ChartTooltip.svelte";
 	import Line from "$src/components/chart/layercake/Line.svelte";
 	import Scatter from "$src/components/chart/layercake/Scatter.svelte";
-	import { fmtDateDMonY, isNumber, UTCDayDate } from "$src/lib/utils";
+	import { isNumber } from "$src/lib/utils";
+	import { fmtDateDMonY, UTCDayDate } from '$src/lib/utils/dates';
 	import { formatChartDate, formatChartTTKey, formatChatTTValue, genXDateTicks, genYTicks } from "$src/lib/utils/chart";
 	import type ColumnTable from "arquero/dist/types/table/column-table";
 

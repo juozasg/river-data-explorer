@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { variablesMetadata } from "$src/appstate/variablesMetadata.svelte";
 	import DetailsOpenIcon from "$src/components/icons/DetailsOpenIcon.svelte";
-	import { aremove } from "$src/lib/utils";
+		import { aremove } from '$src/lib/utils/arrays';
 	import { varlabel, varlabelabbrev } from "$src/lib/utils/varHelpers";
 	import InlineBlockIconify from "./InlineBlockIconify.svelte";
 

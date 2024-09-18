@@ -6,7 +6,7 @@
 	import { sitesValidDates } from "$src/lib/data/dateStats";
 	import { defaultLayersParams, type MapLayersParams } from "$src/lib/types/mapControls";
 	import type { Site } from "$src/lib/types/site";
-	import { UTCDayDate } from "$src/lib/utils";
+	import { UTCDayDate } from '$src/lib/utils/dates';
 	import DataTools from "./controls/DataTools.svelte";
 	import DateMultiInput from "./controls/DateMultiInput.svelte";
 	import Legend from "./controls/Legend.svelte";

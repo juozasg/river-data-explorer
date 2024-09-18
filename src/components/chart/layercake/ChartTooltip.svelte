@@ -8,7 +8,7 @@
 	import { getContext, onMount } from 'svelte';
 	import { format } from 'd3-format';
 
-	import { findAncestor } from '$src/lib/utils';
+		import { findAncestor } from '$src/lib/utils/dom';
 	import QuadTree from './QuadTree.html.svelte';
 	import { on } from 'svelte/events';
 

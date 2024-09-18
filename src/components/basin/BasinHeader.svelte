@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { RegionFeature } from "$src/appstate/data/features.svelte";
-	import { regionIdLabel } from "$src/lib/utils";
+	import { regionIdLabel } from '$src/lib/utils/regions';
 	import InlineBlockIconify from "../maps/controls/InlineBlockIconify.svelte";
 
 	type Props = {

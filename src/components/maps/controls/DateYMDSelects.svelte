@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { binaryClosestTo, daysInMonth, UTCDayDate } from "$src/lib/utils";
-	import { closestTo } from "date-fns";
+		import { binaryClosestTo } from '$src/lib/utils/arrays';
+	import { daysInMonth, UTCDayDate } from '$src/lib/utils/dates';
 
 	const { validDates, onDateSelect }: { validDates: Date[]; onDateSelect: (d: Date) => void } = $props();
 

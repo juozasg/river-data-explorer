@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { sitesTables } from '$src/appstate/data/datasets.svelte';
-	import { selectedSite } from '$src/appstate/map/featureState.svelte';
 	import { sites } from '$src/appstate/sites.svelte';
 	import { tableIndexBeforeDate } from '$src/lib/data/tableHelpers';
-	import { fmtMonDY } from '$src/lib/utils';
+		import { fmtMonDY } from '$src/lib/utils/dates';
 
 	const table = $derived(sitesTables.get('sjrbc-1')?.slice(0, 1));
 	$effect(() => {

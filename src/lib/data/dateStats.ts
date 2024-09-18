@@ -2,7 +2,7 @@
 import { sitesTables } from "$src/appstate/data/datasets.svelte";
 import type ColumnTable from "arquero/dist/types/table/column-table";
 import type { Site } from "../types/site";
-import { UTCDayDate } from "../utils";
+import { UTCDayDate } from '../utils/dates';
 import { all } from "arquero";
 
 export function sitesEarliestDate(sites: Site[]): Date {

@@ -1,20 +1,18 @@
 <script lang="ts">
+	import * as ml from "maplibre-gl";
 	import { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
 	import { regionFeatures, type RegionFeature, type RegionType } from "$src/appstate/data/features.svelte";
 	import { MapFeatureSelectionState, toggleSelectedFeatureState } from "$src/appstate/map/featureState.svelte";
-	import { sites } from "$src/appstate/sites.svelte";
 	import BasinChart from "$src/components/basin/BasinChart.svelte";
 	import BasinHeader from "$src/components/basin/BasinHeader.svelte";
 	import RegionStatsPanel from "$src/components/basin/stats/RegionStatsPanel.svelte";
 	import SiteStatsPanel from "$src/components/basin/stats/SiteStatsPanel.svelte";
 	import InlineBlockIconify from "$src/components/maps/controls/InlineBlockIconify.svelte";
 	import VarDataMap from "$src/components/maps/VarDataMap.svelte";
-	import { sitesEarliestDate } from "$src/lib/data/dateStats";
 	import { defaultLayersParams } from "$src/lib/types/mapControls";
 	import type { Site } from "$src/lib/types/site";
 	import { chartYColor } from "$src/lib/utils/colors";
 	import { fitFeatureBounds } from "$src/lib/utils/maplibre";
-	import * as ml from "maplibre-gl";
 
 	const dataSelection: DataSelectionState = new DataSelectionState();
 	let varDataMap = $state<VarDataMap>();
@@ -93,7 +91,9 @@
 	function regionTableVarClicked(vn: string) {
 		varname = vn;
 	}
-	function siteTableVarClicked(vn: string, axis?: "y" | "z") {
+
+	// y, z and unselect behavior
+function siteTableVarClicked(vn: string, axis?: "y" | "z") {
 		if (axis === "y") {
 			dataSelection.yVar = vn;
 			dataSelection.ySite = selectedSite;

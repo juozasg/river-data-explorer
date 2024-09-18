@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { findAncestor } from "$src/lib/utils";
+		import { findAncestor } from '$src/lib/utils/dom';
 	import { onMount, type Snippet } from "svelte";
 
 	type Props = {

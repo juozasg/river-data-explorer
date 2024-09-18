@@ -8,8 +8,8 @@ import { startedLoading } from '../ui/loadingItem.svelte';
 import { dataPathsStartingWith } from '$src/lib/data/loaders/loadAppData';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
 import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
-import { UTCDayDate } from '$src/lib/utils';
 import { sites } from '../sites.svelte';
+import { UTCDayDate } from '$src/lib/utils/dates';
 
 export type SiteId = string;
 export const sitesTables: Map<SiteId, ColumnTable> = new SvelteMap();

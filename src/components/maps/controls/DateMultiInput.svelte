@@ -1,7 +1,8 @@
 <script lang="ts">
 	import DateSliderInput from "./DateSliderInput.svelte";
 	import DateYMDSelects from "./DateYMDSelects.svelte";
-	import { binaryClosestSearch, UTCDayDate } from "$src/lib/utils";
+		import { binaryClosestSearch } from '$src/lib/utils/arrays';
+	import { UTCDayDate } from '$src/lib/utils/dates';
 	import { untrack } from "svelte";
 
 	let { validDates, vardate = $bindable(UTCDayDate()) }: { validDates: Date[]; vardate: Date } = $props();

@@ -13,7 +13,8 @@
 	import { setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
 	import { defaultLayersParams, type MapLayersParams } from "$src/lib/types/mapControls";
 	import type { Site } from "$src/lib/types/site";
-	import { aremove, UTCDayDate } from "$src/lib/utils";
+		import { aremove } from '$src/lib/utils/arrays';
+	import { UTCDayDate } from '$src/lib/utils/dates';
 	import { onMount } from "svelte";
 	import VarDataHoveredFeatures from "./VarDataHoveredFeatures.svelte";
 	import type { RegionFeature } from "$src/appstate/data/features.svelte";

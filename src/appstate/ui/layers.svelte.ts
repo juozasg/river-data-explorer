@@ -1,4 +1,4 @@
-import { aremove } from "$src/lib/utils";
+import { aremove } from '$src/lib/utils/arrays';
 
 let _enabledDatasetLayers: string[] = $state([]);
 

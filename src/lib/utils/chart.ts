@@ -1,5 +1,5 @@
 import type ColumnTable from "arquero/dist/types/table/column-table";
-import { fmtDateDMonY, UTCDayDate } from ".";
+import { fmtDateDMonY, UTCDayDate } from './dates';
 import { chartYColor, chartZDarker } from "./colors";
 import { varcategories, varlabel, varunits } from './varHelpers';
 import type { YZChartParams } from "./YZChartParams";

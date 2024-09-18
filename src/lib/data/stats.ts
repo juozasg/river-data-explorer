@@ -3,7 +3,7 @@ import type ColumnTable from 'arquero/dist/types/table/column-table';
 
 import type { SitesDataStats, VariableStats } from "$lib/types/analysis";
 import type { Site } from "$lib/types/site";
-import { fmtDateDMonY } from "$lib/utils";
+import { fmtDateDMonY } from '../utils/dates';
 import { sitesTables } from '$src/appstate/data/datasets.svelte';
 import { concatTablesAllColumns } from './tableHelpers';
 import { isCategoricalVar, variablesMetadata } from '$src/appstate/variablesMetadata.svelte';

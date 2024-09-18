@@ -1,7 +1,8 @@
 <script lang="ts">
 	import "$src/styles/time-slider.scss";
 
-	import { binaryClosestSearch, fmtDateDMonY, UTCDayDate } from "$src/lib/utils";
+		import { binaryClosestSearch } from '$src/lib/utils/arrays';
+	import { fmtDateDMonY, UTCDayDate } from '$src/lib/utils/dates';
 
 	let { validDates, onDateSelect }: { validDates: Date[]; onDateSelect: (d: Date) => void } = $props();
 
