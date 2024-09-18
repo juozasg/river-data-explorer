@@ -107,37 +107,14 @@
 		flex-direction: column;
 	}
 
-	.graph-buttons {
-		display: none;
-
-		white-space: nowrap;
-		position: absolute;
-		right: 0;
-		top: -4px;
-		/* text-align: right; */
-
-		.graph-button.y {
-			border: 2px solid var(--color-chart-y);
-
-			&:hover {
-				background-color: var(--color-chart-y);
-				color: white;
-				text-decoration: none;
-			}
-		}
-
-		.graph-button.z {
-			border: 2px solid var(--color-chart-z);
-			&:hover {
-				background-color: var(--color-chart-z);
-				color: white;
-				text-decoration: none;
-			}
-		}
-	}
-
 	:global(table tr:hover .graph-buttons) {
 		display: block;
+	}
+
+	.graph-buttons {
+		/* position: relative; */
+		top: -2px;
+		/* bottom: -3px; */
 	}
 
 	h3 {

@@ -1,17 +1,32 @@
 <script lang="ts">
-	import type { RegionFeature } from "$src/appstate/data/features.svelte";
-	import { regionIdLabel } from '$src/lib/utils/regions';
+	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
+	import { regionEqual, type RegionFeature } from "$src/appstate/data/features.svelte";
+	import { regionIdLabel } from "$src/lib/utils/regions";
+	import { data } from "@maptiler/sdk";
 	import InlineBlockIconify from "../maps/controls/InlineBlockIconify.svelte";
+	import DataSelectionHints from "./stats/DataSelectionHints.svelte";
 
 	type Props = {
 		regionFeature?: RegionFeature;
+		dataSelection?: DataSelectionState;
 		onClickRegionType?: (regionType: string) => void;
 		onClickClose?: () => void;
 		regionType?: string;
 	};
 
-	const { regionFeature, onClickRegionType, regionType, onClickClose }: Props = $props();
+	const { regionFeature, onClickRegionType, regionType, onClickClose, dataSelection }: Props = $props();
 
+	const ySelected = $derived(
+		dataSelection && regionFeature && dataSelection.yRegion && regionEqual(dataSelection.yRegion, regionFeature)
+	);
+	const zSelected = $derived(
+		dataSelection && regionFeature && dataSelection.zRegion && regionEqual(dataSelection.zRegion, regionFeature)
+	);
+
+	// ySelected={dataSelection.yVar === r.varname && dataSelection.ySite && dataSelection.ySite.id == site.id}
+	// 			zSelected={dataSelection.zVar === r.varname && dataSelection.zSite && dataSelection.zSite.id == site.id}
+	// 			yHinted={!!r.varname && dataSelection.yVar === r.varname}
+	// 			zHinted={!!r.varname && dataSelection.zVar === r.varname}
 </script>
 
 <div class="basin-header">
@@ -36,11 +51,22 @@
 	{#if regionFeature}
 		<div class="selected-details">
 			<div class="label">
+				{#if dataSelection}
+					<div class="selection-hints">
+						{#if ySelected}
+							<div class="y-selection"></div>
+						{/if}
+						{#if zSelected}
+							<div class="z-selection"></div>
+						{/if}
+					</div>
+				{/if}
+
 				<div class="pill">{regionFeature.regionType}</div>
 				<strong>{regionFeature.name}</strong>
 				<small>{regionIdLabel(regionFeature)} {regionFeature.id}</small>
 			</div>
-			<div class="close" onclick={onClickClose}><InlineBlockIconify icon="lets-icons:close-ring" size="2rem"/></div>
+			<div class="close" onclick={onClickClose}><InlineBlockIconify icon="lets-icons:close-ring" size="2rem" /></div>
 		</div>
 	{:else}
 		<div class="selected-cue">
@@ -60,6 +86,30 @@
 
 		display: flex;
 		justify-content: space-between;
+
+		.selection-hints {
+			height: 20px;
+			display: inline-block;
+			position: relative;
+			bottom: -3px;
+
+			pointer-events: none;
+
+			.y-selection {
+				display: inline-block;
+				background-color: #ab00d6;
+				width: 6px;
+				height: 100%;
+			}
+
+			.z-selection {
+				display: inline-block;
+
+				background-color: #00d6ab;
+				width: 6px;
+				height: 100%;
+			}
+		}
 
 		.pill {
 			display: inline;
@@ -99,7 +149,6 @@
 					display: block;
 				}
 				flex-grow: 1;
-
 			}
 		}
 

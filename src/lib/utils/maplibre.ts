@@ -14,7 +14,8 @@ export function onceIdle(map: ml.Map) {
 export function fitFeatureBounds(map: ml.Map, feature: RegionFeature) {
 	// const geomfeat = geometries.get(feature.regionType)?.features.find(f => f?.properties?.[feature.regionType] == feature.id);
 	const geometry = feature.geometry as GeoJSON.Polygon;
-	const coordinates: GeoJSON.Position[] = geometry.coordinates[0];
+	let coordinates: GeoJSON.Position[] = geometry.coordinates[0];
+	if (coordinates.length == 1) coordinates = (coordinates[0] as any);
 
 	map.fitBounds(bounds(coordinates), {
 		padding: 60

@@ -74,6 +74,10 @@
 
 	onMount(() => {
 		mlMap!.on("click", (e) => onMapClick?.(mlMap!, e.point, _hoveredSite, hoveredRegion.feature, hoveredRiver.feature));
+		_mlmComponent?.mapDivElement()?.addEventListener("mouseleave", () => {
+			hoveredRegion.feature = undefined;
+			hoveredRiver.feature = undefined;
+		});
 	});
 
 	let dataMapControls = $state<DataMapControls>();

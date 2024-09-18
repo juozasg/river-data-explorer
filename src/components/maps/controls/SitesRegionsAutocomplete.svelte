@@ -3,7 +3,7 @@
 	import AutoComplete from "simple-svelte-autocomplete";
 	import { sites } from "$src/appstate/sites.svelte";
 	import type { Site } from "$src/lib/types/site";
-	import { onMount } from "svelte";
+	import { onMount, untrack } from "svelte";
 	import InlineBlockIconify from "./InlineBlockIconify.svelte";
 
 	let {
@@ -39,12 +39,19 @@
 		// console.log("Mouse enter", e);
 		inputElement?.click();
 	};
+	$inspect('autocomplete selected site', selectedSite);
 
 	$effect(() => {
-		// console.log("autocomplete selected item", selectedSite);
-		if (onSearchItemSelect && selectedSite) {
-			onSearchItemSelect(selectedSite);
-		}
+		console.log("autocomplete selected item", selectedSite);
+		selectedSite;
+		untrack(() => {
+			if (onSearchItemSelect && selectedSite) {
+				onSearchItemSelect(selectedSite);
+			}
+		});
+		// if (onSearchItemSelect && selectedSite) {
+		// 	onSearchItemSelect(selectedSite);
+		// }
 	});
 
 	const itemSortFunction = (a: Site, b: Site) => {

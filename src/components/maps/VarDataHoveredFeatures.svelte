@@ -56,8 +56,17 @@
 		return feature.name;
 	};
 
+
+
 	onMount(() => {
+		// mlMap.on("mouseleave", () => {
+		// 	if(hoveredRegion.feature) {
+		// 		// console.log('not yellow!')
+		// 		mlMap.setFeatureState({ source: hoveredRegion?.feature.mlSource, id: hoveredRegion.feature.id }, { willbeselected: false });
+		// 	}
+		// });
 		mlMap.on("mousemove", (e: ml.MapMouseEvent) => {
+
 			hoveredRiver.feature = queryMouseMoveHover(e, ["riverapp-river"], 10);
 			hoveredRegion.feature = queryMouseMoveHover(
 				e,

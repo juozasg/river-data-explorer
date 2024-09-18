@@ -1,8 +1,10 @@
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Snippet } from 'svelte';
-	import TooltipVariableBrief from '../../tooltips/TooltipVariableBrief.svelte';
-	import { chartYColor, chartZColor } from '$src/lib/utils/colors';
+	import DataSelectionHints from "./DataSelectionHints.svelte";
+
+	import type { HTMLAttributes } from "svelte/elements";
+	import type { Snippet } from "svelte";
+	import TooltipVariableBrief from "../../tooltips/TooltipVariableBrief.svelte";
+	import { chartYColor, chartZColor } from "$src/lib/utils/colors";
 
 	interface Props extends HTMLAttributes<HTMLTableCellElement> {
 		ySelected?: boolean;
@@ -23,21 +25,19 @@
 		zSelected = false,
 		yHinted = false,
 		zHinted = false,
-		hoverColor = '#ccc',
+		hoverColor = "#ccc",
 		...attribs
 	}: Props = $props();
 
-
 	let finalHoverColor = $derived.by(() => {
-		if(ySelected) return chartYColor + '33';
-		if(zSelected) return chartZColor + '33';
+		if (ySelected) return chartYColor + "33";
+		if (zSelected) return chartZColor + "33";
 
-		return hoverColor
+		return hoverColor;
 	});
 
 	let variableTooltip: TooltipVariableBrief | undefined = $state();
 </script>
-
 
 <TooltipVariableBrief bind:this={variableTooltip} />
 
@@ -46,23 +46,9 @@
 	{...attribs}
 	class="variable-label"
 	onmouseleave={(e: MouseEvent) => variableTooltip?.mouseLeaveVariable(e)}
-	onmousemove={(e: MouseEvent) => variableTooltip?.mouseMoveVariable(e, varname)}
->
+	onmousemove={(e: MouseEvent) => variableTooltip?.mouseMoveVariable(e, varname)}>
 	<div class="flexblock">
-		<div class="selection-hints">
-			{#if ySelected}
-				<div class="y-selection"></div>
-			{/if}
-			{#if zSelected}
-				<div class="z-selection"></div>
-			{/if}
-			{#if yHinted && !ySelected}
-				<div class="y-hint"></div>
-			{/if}
-			{#if zHinted && !zSelected}
-				<div class="z-hint"></div>
-			{/if}
-		</div>
+		<DataSelectionHints {ySelected} {yHinted} {zSelected} {zHinted}/>
 
 		<div class="text-block">{@render children()}</div>
 	</div>

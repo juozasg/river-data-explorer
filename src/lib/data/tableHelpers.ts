@@ -96,17 +96,16 @@ export function siteGetBeforeDate(site: Site, varname: string, date?: Date): num
 }
 
 /* returns table with date and varname columns. varname column can be renamed  */
-export function selectSiteTableVar(site: Site | undefined, varname: string | undefined, renameVar: string | undefined) {
-	if (!site || !varname) {
+export function selectTableVar(table: ColumnTable | undefined, varname: string | undefined, renameVar: string | undefined) {
+	if (!varname || !table) {
 		return;
 	}
 
-	const siteTable = sitesTables.get(site.id);
-	if (!siteTable || siteTable.numRows() === 0 || !siteTable.columnNames().includes(varname)) {
+	if (!table || table.numRows() === 0 || !table.columnNames().includes(varname)) {
 		return;
 	}
 
-	const renamedTable = siteTable.select(['date', varname]).rename({ [varname]: 'var' })
+	const renamedTable = table.select(['date', varname]).rename({ [varname]: 'var' })
 
 	let filteredTable = renamedTable
 	.filter(d => aq.op.is_nan(d!.var) == false)

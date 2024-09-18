@@ -8,7 +8,7 @@
 	export const mouseMoveVariable = (e: MouseEvent, varname: string) => {
 		hoveredVariable = varname;
 		if (variablesBriefMarkdown.get(varname)) {
-			tooltip.show(e.x, e.y);
+			tooltip.show(e.x, e.y - 5);
 			tooltip.content = tooltipContent;
 		}
 	};

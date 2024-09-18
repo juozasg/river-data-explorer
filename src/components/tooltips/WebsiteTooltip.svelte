@@ -42,7 +42,7 @@
 			let top = y - containerHeight - 12;
 
 			if(top < 0) {
-				top = y + 12;
+				top = y + 20;
 			}
 
 			if(x + 10 + containerWidth > window.innerWidth) {

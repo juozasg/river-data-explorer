@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as ml from "maplibre-gl";
 	import { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
-	import { regionFeatures, type RegionFeature, type RegionType } from "$src/appstate/data/features.svelte";
+	import { regionEqual, regionFeatures, type RegionFeature, type RegionType } from "$src/appstate/data/features.svelte";
 	import { MapFeatureSelectionState, toggleSelectedFeatureState } from "$src/appstate/map/featureState.svelte";
 	import BasinChart from "$src/components/basin/BasinChart.svelte";
 	import BasinHeader from "$src/components/basin/BasinHeader.svelte";
@@ -47,7 +47,7 @@
 	};
 
 	const onSearchItemSelect = (item: Site) => {
-		// console.log("search ÷item selected", item);
+		console.log("search item selected", item);
 		selectedSite = item;
 		if (!selectedRegion.feature) {
 			const rt = layersParams.regionType;
@@ -75,7 +75,6 @@
 				if (feature) fitFeatureBounds(varDataMap?.mlmMap()!, feature);
 			}, 300);
 		}
-
 	});
 
 	let mapWidth = $state("calc(100vw - 3rem)");
@@ -88,41 +87,74 @@
 	let siteStatsVarHoverColor = chartYColor + "33";
 
 	let varname = $state("ecoli");
-	function regionTableVarClicked(vn: string) {
-		varname = vn;
+	function regionTableVarClicked(vn: string, axis?: "y" | "z") {
+		if (axis === "y") {
+			dataSelection.yVar = vn;
+			dataSelection.yRegion = selectedRegion.feature;
+			dataSelection.ySite = undefined;
+			console.log("select y", vn, selectedRegion.feature);
+		} else if (axis === "z") {
+			dataSelection.zVar = vn;
+			dataSelection.zRegion = selectedRegion.feature;
+			dataSelection.zSite = undefined;
+			console.log("select Z", vn, selectedRegion.feature);
+		} else {
+			// set map varname
+			// varname = vn;
+
+			// clear selection
+			if (dataSelection.yVar === vn && selectedRegion.feature && dataSelection.yRegion) {
+				if (regionEqual(selectedRegion.feature, dataSelection.yRegion)) {
+					dataSelection.yVar = "";
+					dataSelection.yRegion = undefined;
+				}
+			} else if (dataSelection.zVar === vn && selectedRegion.feature && dataSelection.zRegion) {
+				if (regionEqual(selectedRegion.feature, dataSelection.zRegion)) {
+					dataSelection.zVar = "";
+					dataSelection.zRegion = undefined;
+				}
+			} else {
+				varname = vn;
+			}
+		}
 	}
 
 	// y, z and unselect behavior
-function siteTableVarClicked(vn: string, axis?: "y" | "z") {
+	function siteTableVarClicked(vn: string, axis?: "y" | "z") {
 		if (axis === "y") {
 			dataSelection.yVar = vn;
 			dataSelection.ySite = selectedSite;
-			console.log('select y', vn, selectedSite);
-		} else if(axis === "z") {
+			dataSelection.yRegion = undefined;
+			console.log("select y", vn, selectedSite);
+		} else if (axis === "z") {
 			dataSelection.zVar = vn;
 			dataSelection.zSite = selectedSite;
-			console.log('select Z', vn, selectedSite);
+			dataSelection.zRegion = undefined;
+
+			console.log("select Z", vn, selectedSite);
 		} else {
-			// if(selectedSite &&
-			varname = vn;
-			if(dataSelection.yVar === vn) {
-				if(selectedSite?.id === dataSelection.ySite?.id) {
+			// set map varname
+			// clear selection
+			if (dataSelection.yVar === vn) {
+				if (selectedSite?.id === dataSelection.ySite?.id) {
 					dataSelection.yVar = "";
 					dataSelection.ySite = undefined;
 				}
-			} else if(dataSelection.zVar === vn) {
-				if(selectedSite?.id === dataSelection.zSite?.id) {
+			} else if (dataSelection.zVar === vn) {
+				if (selectedSite?.id === dataSelection.zSite?.id) {
 					dataSelection.zVar = "";
 					dataSelection.zSite = undefined;
 				}
+			} else {
+				varname = vn;
 			}
 		}
 	}
 </script>
 
-
 <div class="workflow-header">
 	<BasinHeader
+		{dataSelection}
 		regionFeature={selectedRegion.feature}
 		{onClickRegionType}
 		onClickClose={onHeaderClose}
@@ -161,7 +193,8 @@ function siteTableVarClicked(vn: string, axis?: "y" | "z") {
 <span class="map-attribution">
 	<span class="long-text">
 		Map Sources: Esri, TomTom, Garmin, FAO, NOAA, USGS, © OpenStreetMap contributors, and the GIS User Community. Data
-		sources: <a target="_blank" href='https://waterservices.usgs.gov/'>USGS</a>, <a target="_blank" href="https://sjrbc.com">St. Joseph River Basin Commission</a>
+		sources: <a target="_blank" href="https://waterservices.usgs.gov/">USGS</a>,
+		<a target="_blank" href="https://sjrbc.com">St. Joseph River Basin Commission</a>
 	</span>
 </span>
 <a class="github" target="_blank" href="https://github.com/Limnogirl90/SJRBC-web-map-data/tree/webapp/datasets"
@@ -218,7 +251,6 @@ function siteTableVarClicked(vn: string, axis?: "y" | "z") {
 		margin: 0;
 		padding: 0;
 		width: calc(100vw - 10rem);
-
 	}
 
 	a.github {

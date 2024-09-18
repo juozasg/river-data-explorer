@@ -33,7 +33,7 @@ a:hover {
 
 .graph-button {
 	display: inline-block;
-	padding: 2px 0.25rem;
+	padding: 1.5px 0.25rem;
 	/* margin-left: 0.5rem; */
 	border-radius: var(--border-radius);
 	background-color: #f0f0f0;
@@ -44,22 +44,41 @@ a:hover {
 	transition: background-color 0.2s;
 }
 
-.graph-button.y {
-	border: 2px solid var(--color-chart-y);
+.graph-buttons {
+	display: none;
 
-	&:hover {
-		background-color: var(--color-chart-y);
-		color: white;
+	white-space: nowrap;
+	position: absolute;
+	right: -4px;
+	top: -4px;
+	/* text-align: right; */
+
+	.graph-button.y {
+		border: 2px solid var(--color-chart-y);
+		padding-bottom: 1px;
+		padding-top: 2px;
+
+		&:hover {
+			background-color: var(--color-chart-y);
+			color: white;
+			text-decoration: none;
+			opacity: 1;
+		}
+	}
+
+	.graph-button.z {
+		border: 2px solid var(--color-chart-z);
+		padding-bottom: 1px;
+    padding-top: 2px;
+		&:hover {
+			background-color: var(--color-chart-z);
+			color: white;
+			text-decoration: none;
+			opacity: 1;
+		}
 	}
 }
 
-.graph-button.z {
-	border: 2px solid var(--color-chart-z);
-	&:hover {
-		background-color: var(--color-chart-z);
-		color: white;
-	}
-}
 
 body {
 	line-height: 1;

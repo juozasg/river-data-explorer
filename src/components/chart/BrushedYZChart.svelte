@@ -60,7 +60,7 @@
 		if(v > 10000) {
 			const str = v.toString();
 			// 30000 -> 30k
-			console.log('strs', str, ' ', str.slice(0, -3))
+			// console.log('strs', str, ' ', str.slice(0, -3))
 			return str.slice(0, -3) + "k";
 		}
 

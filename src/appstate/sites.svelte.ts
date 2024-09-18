@@ -5,6 +5,7 @@ import { sitesTables } from "./data/datasets.svelte";
 import { sitesGeoindex } from "./data/geoindexes.svelte";
 import { enabledDatasets } from './ui/layers.svelte';
 import { regionTypes, type RegionFeature } from './data/features.svelte';
+import type ColumnTable from 'arquero/dist/types/table/column-table';
 
 export class Sites {
 	private sites: Site[] = $state([]);
@@ -43,7 +44,6 @@ export class Sites {
 		if(!region) return [];
 		const regionType = region.regionType; // for example: 'huc10'
 		return sites.filter(s => (s as any)[regionType] === region.id);
-
 	}
 
 	findById(siteId: string) {
@@ -60,6 +60,12 @@ export class Sites {
 }
 
 export const sites = new Sites();
+
+export const siteTablesForRegion = (sites: Site[], region: RegionFeature) => {
+	const regionType = region.regionType;
+	const regionSites = sites.filter(s => (s as any)[regionType] === region.id);
+	return regionSites.map(s => sitesTables.get(s.id)).filter(t => t) as ColumnTable[];
+}
 
 export function splitSiteId(siteId: string): { dataset: string, num: number } {
 	const [dataset, ns] = siteId.split('-');

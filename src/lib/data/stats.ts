@@ -3,7 +3,7 @@ import type ColumnTable from 'arquero/dist/types/table/column-table';
 
 import type { SitesDataStats, VariableStats } from "$lib/types/analysis";
 import type { Site } from "$lib/types/site";
-import { fmtDateDMonY } from '../utils/dates';
+import { fmtDateDMonY, UTCDayDate } from '../utils/dates';
 import { sitesTables } from '$src/appstate/data/datasets.svelte';
 import { concatTablesAllColumns } from './tableHelpers';
 import { isCategoricalVar, variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
@@ -67,9 +67,41 @@ const noSitesStats = {
 }
 
 
-export function allVariableStats(table: ColumnTable, { errorLabel } = { errorLabel: ''}): VariableStats[] {
+export function allVariableStats(table: ColumnTable, { errorLabel } = { errorLabel: '' }): VariableStats[] {
 	const variables = table.columnNames().filter(c => c !== 'date');
 	return variables.map(v => variableStats(v, table, { errorLabel }));
+}
+
+export function allVarsDailyMedians(tables: ColumnTable[]): ColumnTable {
+	const combinedTable = concatTablesAllColumns(tables);
+	if (combinedTable.numRows() == 0) return aq.table([]);
+
+	const groupedTable = combinedTable.orderby('date').groupby('date');
+
+	console.log('grouped', groupedTable.objects({ grouped: true }));
+
+	const rollup: any = {};
+	combinedTable.columnNames().forEach(c => {
+		rollup[c] = aq.op.median(c);
+	});
+
+	return rollupDailies(groupedTable, rollup);
+}
+
+export function varDailyMedian(tables: ColumnTable[], varname: string): ColumnTable {
+	const combinedTable = concatTablesAllColumns(tables);
+	if (combinedTable.numRows() == 0) return aq.table([]);
+	if (!combinedTable.columnNames().includes(varname)) return aq.table([]);
+
+	const groupedTable = combinedTable.orderby('date').groupby('date');
+
+	const rollup: any = {};
+	rollup[varname] = aq.op.median(varname);
+	return rollupDailies(groupedTable, rollup);
+}
+
+function rollupDailies(table: ColumnTable, rollup: any) {
+	return table.rollup(rollup).derive({ 'date': aq.escape((r: any) => UTCDayDate(r.date)) }).orderby('date').reify();
 }
 
 

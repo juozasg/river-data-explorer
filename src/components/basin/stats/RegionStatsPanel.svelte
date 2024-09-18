@@ -1,23 +1,26 @@
 <script lang="ts">
-	import TdStatsVariableLabel from './TdStatsVariableLabel.svelte';
+	import * as aq from "arquero";
 
-	import { sitesTables } from '$src/appstate/data/datasets.svelte';
-	import { regionEqual, type RegionFeature } from '$src/appstate/data/features.svelte';
-	import { Sites, sites } from '$src/appstate/sites.svelte';
-	import { allVariableStats, sitesDataStats } from '$src/lib/data/stats';
-	import { concatTablesAllColumns } from '$src/lib/data/tableHelpers';
-	import type { VariableStats } from '$src/lib/types/analysis';
-	import { fmtVarNum, varunits } from '$src/lib/utils/varHelpers';
-	import type ColumnTable from 'arquero/dist/types/table/column-table';
-	import VarValueStandards from '$src/components/tooltips/VarValueStandards.svelte';
-	import StatsDataTable from '$src/components/StatsDataTable.svelte';
-	import type { DataSelectionState } from '$src/appstate/data/dataSelection.svelte';
+	import TdStatsVariableLabel from "./TdStatsVariableLabel.svelte";
+
+	import { sitesTables } from "$src/appstate/data/datasets.svelte";
+	import { regionEqual, type RegionFeature } from "$src/appstate/data/features.svelte";
+	import { Sites, sites } from "$src/appstate/sites.svelte";
+	import { allVariableStats, allVarsDailyMedians, sitesDataStats } from "$src/lib/data/stats";
+	import { concatTablesAllColumns } from "$src/lib/data/tableHelpers";
+	import type { VariableStats } from "$src/lib/types/analysis";
+	import { fmtVarNum, varunits } from "$src/lib/utils/varHelpers";
+	import type ColumnTable from "arquero/dist/types/table/column-table";
+	import VarValueStandards from "$src/components/tooltips/VarValueStandards.svelte";
+	import StatsDataTable from "$src/components/StatsDataTable.svelte";
+	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
+	import { bm } from "$src/lib/utils";
 
 	type Props = {
 		region: RegionFeature;
 		dataSelection: DataSelectionState;
 
-		onVarClicked: (name: string) => void;
+		onVarClicked: (name: string, axis?: "y" | "z") => void;
 	};
 
 	let { onVarClicked, region, dataSelection }: Props = $props();
@@ -26,23 +29,18 @@
 	const sitesInRegion = $derived(Sites.forRegionFeature(sites.allEnabled, region));
 
 	const sitesStats = $derived(sitesDataStats(sitesInRegion));
-	const sitesInAreaTables = $derived(
-		sitesInRegion.map((s) => sitesTables.get(s.id)).filter((t) => t)
-	) as ColumnTable[];
+	const sitesInAreaTables = $derived(sitesInRegion.map((s) => sitesTables.get(s.id)).filter((t) => t)) as ColumnTable[];
 
 	const rows: VariableStats[] = $derived.by(() => {
-		const combinedTable = concatTablesAllColumns(sitesInAreaTables);
+		// dont bother with empty tables
+		const dailyMedians = allVarsDailyMedians(sitesInAreaTables);
+		console.log("daily meads", dailyMedians.objects());
 
-		if (combinedTable.numRows() == 0) return [];
-		// dont order empty tables because column date won't exist
-		const orderedTable = combinedTable.orderby('date').reify();
-		return allVariableStats(orderedTable, {
-			errorLabel: sitesInRegion.map((s) => s.id).join(', ')
+		return allVariableStats(dailyMedians, {
+			errorLabel: sitesInRegion.map((s) => s.id).join(", ")
 		});
 	});
-
 </script>
-
 
 <div id="region-stats-panel">
 	<div class="flex stats-summary">
@@ -71,13 +69,33 @@
 
 		{#snippet row(r: VariableStats)}
 			<TdStatsVariableLabel
-			ySelected={dataSelection.yVar === r.varname && dataSelection.yRegion && regionEqual(dataSelection.yRegion, region)}
-			zSelected={dataSelection.zVar === r.varname && dataSelection.zRegion && regionEqual(dataSelection.zRegion, region)}
-			yHinted={!!r.varname && dataSelection.yVar === r.varname}
-			zHinted={!!r.varname && dataSelection.zVar === r.varname}
-			varname={r.varname}
-			onclick={() => onVarClicked(r.varname)}
-			>{r.label} {varunits(r.varname, true)}</TdStatsVariableLabel>
+				ySelected={dataSelection.yVar === r.varname &&
+					dataSelection.yRegion &&
+					regionEqual(dataSelection.yRegion, region)}
+				zSelected={dataSelection.zVar === r.varname &&
+					dataSelection.zRegion &&
+					regionEqual(dataSelection.zRegion, region)}
+				yHinted={!!r.varname && dataSelection.yVar === r.varname}
+				zHinted={!!r.varname && dataSelection.zVar === r.varname}
+				varname={r.varname}
+				onclick={() => onVarClicked(r.varname)}>
+				{r.label}
+				{varunits(r.varname, true)}
+				<div class="graph-buttons">
+					<a
+						class="graph-button y"
+						onclick={(e) => {
+							onVarClicked(r.varname, "y");
+							e.stopPropagation();
+						}}>Y</a>
+					<a
+						class="graph-button z"
+						onclick={(e) => {
+							onVarClicked(r.varname, "z");
+							e.stopPropagation();
+						}}>Z</a>
+				</div>
+			</TdStatsVariableLabel>
 
 			<td>{r.numObservations}</td>
 			<td class="stat"><VarValueStandards v={r.varname} value={r.min} /></td>
@@ -104,6 +122,16 @@
 		td.date {
 			min-width: 6.2rem;
 		}
+	}
+
+	:global(table tr:hover .graph-buttons) {
+		display: block;
+	}
+
+	.graph-buttons {
+		/* position: relative; */
+		top: -3px;
+		/* bottom: -3px; */
 	}
 
 	p {
