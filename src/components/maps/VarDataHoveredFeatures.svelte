@@ -41,14 +41,12 @@
 	}: Props = $props();
 
 	const siteStats = $derived(site ? sitesDataStats([site]) : undefined);
-
 	const regionSites = $derived(Sites.forRegionFeature(sites, hoveredRegion.feature));
-	// $effect(() => {
-	// 	console.log(hoveredRegion.feature, regionSites, regionStats)
-	// });
+
+	// const getStats = (sites: Site[]) => {
+	// 	return bm('siteDataStats', () => sitesDataStats(sites));
+	// };
 	const regionStats = $derived(regionSites.length > 0 ? sitesDataStats(regionSites) : undefined);
-
-
 
 	const regionNameLabel = (feature: RegionFeature) => {
 		const rt = feature.regionType;
@@ -88,9 +86,9 @@
 				// console.log('not yellow!')
 				mlMap.setFeatureState({ source: hoveredRegion?.feature.mlSource, id: hoveredRegion.feature.id }, { willbeselected: false });
 			}
-
 		});
 	});
+
 	function selectedDateClosestBeforeDate(site: Site) {
 		const date = siteGetBeforeDate(site, "date", vardate);
 		if (date instanceof Date && !isNaN(date.valueOf())) {

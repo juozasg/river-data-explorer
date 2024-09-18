@@ -17,7 +17,7 @@ export function seqid() {
 	return (++n).toString(36);
 }
 
-export function bm(label: string, fn: () => void) {
+export function bm(label: string, fn: () => any) {
 	const start = new Date().valueOf();
 	const r = fn();
 	const end = new Date().valueOf();

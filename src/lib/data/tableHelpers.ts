@@ -9,10 +9,11 @@ if (typeof window !== 'undefined') {
 import { variablesBriefMarkdown } from '$src/appstate/variablesMetadata.svelte';
 import * as aq from 'arquero';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
-import { dateEqualYMD, fmtMonDY } from '../utils/dates';
 import { sitesTables } from '$src/appstate/data/datasets.svelte';
 import type { Site } from '../types/site';
 import { varcategories } from '../utils/varHelpers';
+import { dateEqualYMD } from '../utils/dates';
+import { tab } from '@testing-library/user-event/dist/cjs/convenience/tab.js';
 
 export function tablesUniqueColumns(tables: ColumnTable[]): string[] {
 	const cols = tables.flatMap(t => t.columnNames());
@@ -32,7 +33,9 @@ export function concatTablesAllColumns(tables: (ColumnTable | undefined)[]): Col
 
 	const columns = tablesUniqueColumns(nonEmptyTables);
 	const t0 = emptyTable(columns); // initial table determines result columns
-	return nonEmptyTables.reduce((acc, t) => acc.concat(t), t0).reify();
+
+	const tablesObjects = nonEmptyTables.map(t => t.objects()).flat();
+	return aq.from(tablesObjects, columns);
 }
 
 
