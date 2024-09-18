@@ -31,6 +31,7 @@
 	const sitesStats = $derived(sitesDataStats(sitesInRegion));
 	const sitesInAreaTables = $derived(sitesInRegion.map((s) => sitesTables.get(s.id)).filter((t) => t)) as ColumnTable[];
 
+
 	const rows: VariableStats[] = $derived.by(() => {
 		// dont bother with empty tables
 		const dailyMedians = allVarsDailyMedians(sitesInAreaTables);
@@ -68,11 +69,12 @@
 		<th>To</th>
 
 		{#snippet row(r: VariableStats)}
+
 			<TdStatsVariableLabel
-				ySelected={dataSelection.yVar === r.varname &&
+				ySelected={!!dataSelection.yVar && dataSelection.yVar === r.varname &&
 					dataSelection.yRegion &&
 					regionEqual(dataSelection.yRegion, region)}
-				zSelected={dataSelection.zVar === r.varname &&
+				zSelected={!!dataSelection.zVar &&dataSelection.zVar === r.varname &&
 					dataSelection.zRegion &&
 					regionEqual(dataSelection.zRegion, region)}
 				yHinted={!!r.varname && dataSelection.yVar === r.varname}
@@ -81,17 +83,25 @@
 				onclick={() => onVarClicked(r.varname)}>
 				{r.label}
 				{varunits(r.varname, true)}
+				<span class="debug" style="display:none">
+					<!-- {JSON.stringify(r)}
+					---
+					{JSON.stringify(dataSelection)}
+					---
+					{region.id} {region.regionType} -->
+
+				</span>
 				<div class="graph-buttons">
 					<a
 						class="graph-button y"
 						onclick={(e) => {
-							onVarClicked(r.varname, "y");
+							if(r.numObservations > 0)  onVarClicked(r.varname, "y");
 							e.stopPropagation();
 						}}>Y</a>
 					<a
 						class="graph-button z"
 						onclick={(e) => {
-							onVarClicked(r.varname, "z");
+							if(r.numObservations > 0) onVarClicked(r.varname, "z");
 							e.stopPropagation();
 						}}>Z</a>
 				</div>

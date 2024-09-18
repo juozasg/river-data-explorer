@@ -73,13 +73,13 @@
 					<a
 						class="graph-button y"
 						onclick={(e) => {
-							onVarClicked(r.varname, "y");
+							if(r.numObservations > 0) onVarClicked(r.varname, "y");
 							e.stopPropagation();
 						}}>Y</a>
 					<a
 						class="graph-button z"
 						onclick={(e) => {
-							onVarClicked(r.varname, "z");
+							if(r.numObservations > 0) onVarClicked(r.varname, "z");
 							e.stopPropagation();
 						}}>Z</a>
 				</div>
