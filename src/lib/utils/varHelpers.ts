@@ -79,10 +79,10 @@ export function varstdmax(varname: string): number | undefined {
 	return variablesMetadata[varname]?.standards?.max;
 }
 
-export function catvarOutsideStandards(varname: string, value: string): boolean {
+export function catvarOutsideStandards(varname: string, value: string | number): boolean {
 	const cats = varcategories(varname);
 	if (!cats) return false;
-	const catIndex = cats.indexOf(value);
+	const catIndex = typeof value == 'number' ? value : cats.indexOf(value);
 	if(catIndex  == -1) return false;
 
 	const frac = catIndex / cats.length;

@@ -197,7 +197,7 @@ export function simpleStats(colname: string, table?: ColumnTable, varname?: stri
 	}
 
 	if (varname && varcategories(varname)) {
-		console.log('vcats', varname, varcategories(varname))
+		// console.log('vcats', varname, varcategories(varname))
 		const max = varcategories(varname)!.length - 1;
 		return { count: tsTable.numRows(), min: 0, max: max, range: max };
 	}

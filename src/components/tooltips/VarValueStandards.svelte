@@ -3,9 +3,9 @@
 	import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 		import { fmtVarNum, varunits } from '$src/lib/utils/varHelpers';
 
-	const { v, value }: { v: string; value: number | undefined } = $props();
+	const { v: varname, value }: { v: string; value: number | undefined } = $props();
 
-	const md = variablesMetadata[v];
+	const md = variablesMetadata[varname];
 	const standardsMin = md?.standards?.min;
 	const standardsMax = md?.standards?.max;
 
@@ -23,15 +23,15 @@
 	};
 </script>
 
-<span {onmousemove} {onmouseleave} class:exceeds-min={exceedsMin} class:exceeds-max={exceedsMax} role="tooltip">
-	{fmtVarNum(v, value)}
+<span class="var-{varname}" {onmousemove} {onmouseleave} class:exceeds-min={exceedsMin} class:exceeds-max={exceedsMax} role="tooltip">
+	{fmtVarNum(varname, value)}
 </span>
 
 {#snippet tooltipContent()}
 	{#if exceedsMax}
-		<p>Above maximum {standardsMax} {varunits(v)}</p>
+		<p>Above maximum {standardsMax} {varunits(varname)}</p>
 	{:else if exceedsMin}
-		<p>Below minimum {standardsMin} {varunits(v)}</p>
+		<p>Below minimum {standardsMin} {varunits(varname)}</p>
 	{/if}
 {/snippet}
 

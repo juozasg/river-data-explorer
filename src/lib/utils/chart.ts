@@ -1,7 +1,7 @@
 import type ColumnTable from "arquero/dist/types/table/column-table";
 import { fmtDateDMonY, UTCDayDate } from './dates';
 import { chartYColor, chartZDarker } from "./colors";
-import { varcategories, varlabel, varunits } from './varHelpers';
+import { catvarOutsideStandards, varcategories, varlabel, varstdmax, varstdmin, varunits } from './varHelpers';
 import type { YZChartParams } from "./YZChartParams";
 import { variablesMetadata } from "$src/appstate/variablesMetadata.svelte";
 
@@ -20,11 +20,11 @@ export function genYTicks(domain: [number, number], ts: number[]): number[] {
 	const min = domain[0] || ts[0];
 	const max = domain[1] || ts[ts.length - 1];
 
-	if(Number.isInteger(min) && Number.isInteger(max)) {
+	if (Number.isInteger(min) && Number.isInteger(max)) {
 		const range = max - min;
-		if(range < 9) {
+		if (range < 9) {
 			// return integers from min to max inclusive
-			return Array.from({length: range + 1}, (_, i) => min + i);
+			return Array.from({ length: range + 1 }, (_, i) => min + i);
 		}
 	}
 	const range = max - min;
@@ -91,7 +91,7 @@ export function formatChartTTKey(key: string, yParams: YZChartParams, zParams: Y
 	return `<span style="font-weight: 600; color: ${keycolor}">${label}</bold>`;
 }
 
-export function formatChatTTValue(key: string, value: any, yParams: YZChartParams, zParams: YZChartParams): string {
+export function formatChatTTValueLabel(key: string, value: any, yParams: YZChartParams, zParams: YZChartParams): string {
 	let unit = '';
 	const params = key == 'y' ? yParams : zParams;
 	if (varcategories(params.varname)) {
@@ -104,6 +104,39 @@ export function formatChatTTValue(key: string, value: any, yParams: YZChartParam
 		unit = varunits(params.varname);
 	}
 	return `${value} ${unit}`;
+}
+
+export function formatChatTTValue(key: string, value: any, yParams: YZChartParams, zParams: YZChartParams): string {
+	let label = formatChatTTValueLabel(key, value, yParams, zParams);
+
+	const params = key == 'y' ? yParams : zParams;
+	const standards = formatStandards(params.varname, value);
+
+	// const standards = ` <span class='stdbad'> &nbsp; &gt; 100 CFU</span>`;
+	return label + standards;
+}
+
+function formatStandards(varname: string, value: number): string {
+
+	if (varcategories(varname)) {
+		console.log('formatStandards cat ', varname, value, catvarOutsideStandards(varname, value));
+		if (catvarOutsideStandards(varname, value)) {
+			return ` <span class='stdbad'> &nbsp; is below 'Acceptable' </span>`;
+		}
+		return '';
+	}
+
+	const stdmin = varstdmin(varname);
+	const stdmax = varstdmax(varname);
+	if (typeof stdmin == 'number' && value < stdmin) {
+		return ` <span class='stdbad'> &nbsp; &lt; ${stdmin} ${varunits(varname)}</span>`;
+	} else if (typeof stdmax == 'number' && stdmax && value > stdmax) {
+		return ` <span class='stdbad'> &nbsp; &gt; ${stdmax} ${varunits(varname)}</span>`;
+	}
+
+
+
+	return '';
 }
 
 

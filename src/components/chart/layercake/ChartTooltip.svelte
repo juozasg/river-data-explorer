@@ -113,7 +113,7 @@
 					<div class="row">
 						<span class="key">{@html formatKey(row.key)}:&nbsp; </span>
 
-						{formatValue(row.key, row.value)}
+						{@html formatValue(row.key, row.value)}
 					</div>
 				{/each}
 			</div>
