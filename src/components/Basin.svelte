@@ -160,6 +160,8 @@
 <div class="workflow-header">
 	<BasinHeader
 		{dataSelection}
+		{selectedSite}
+		{onSearchItemSelect}
 		regionFeature={selectedRegion.feature}
 		{onClickRegionType}
 		onClickClose={onHeaderClose}

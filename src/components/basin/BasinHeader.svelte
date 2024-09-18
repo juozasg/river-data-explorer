@@ -5,6 +5,8 @@
 	import { data } from "@maptiler/sdk";
 	import InlineBlockIconify from "../maps/controls/InlineBlockIconify.svelte";
 	import DataSelectionHints from "./stats/DataSelectionHints.svelte";
+	import SitesRegionsAutocomplete from "../maps/controls/SitesRegionsAutocomplete.svelte";
+	import type { Site } from "$src/lib/types/site";
 
 	type Props = {
 		regionFeature?: RegionFeature;
@@ -12,9 +14,11 @@
 		onClickRegionType?: (regionType: string) => void;
 		onClickClose?: () => void;
 		regionType?: string;
+		selectedSite?: Site;
+		onSearchItemSelect?: (item: Site) => void;
 	};
 
-	const { regionFeature, onClickRegionType, regionType, onClickClose, dataSelection }: Props = $props();
+	const { regionFeature, onClickRegionType, regionType, onClickClose, dataSelection, selectedSite, onSearchItemSelect }: Props = $props();
 
 	const ySelected = $derived(
 		dataSelection && regionFeature && dataSelection.yRegion && regionEqual(dataSelection.yRegion, regionFeature)
@@ -47,6 +51,10 @@
 		<a onclick={() => onClickRegionType?.("huc12")} class:bg-primary={regionType == "huc12"}>
 			Stream <small>HUC12</small>
 		</a>
+<!--
+		<span class="search">
+			<SitesRegionsAutocomplete maxWidth={"50vw"} {selectedSite} {onSearchItemSelect} />
+		</span> -->
 	</div>
 	{#if regionFeature}
 		<div class="selected-details">
