@@ -75,7 +75,7 @@
 	<!-- <div class="arrrow-icon"> -->
 	<!-- </div> -->
 	<h3>
-		Use <tt>Y</tt> and <tt>Z</tt> buttons to graph site variables
+		Use <span class='graph-button y'>Y</span> and <span class='graph-button z'>Z</span> buttons to graph site variables
 		<InlineBlockIconify icon="lets-icons:expand-right" size="2rem" />
 	</h3>
 {/if}
@@ -85,4 +85,11 @@
 		position: relative;
 		top: 0.5rem;
 	}
+/*
+	.y-button-label {
+		color: var(--color-chart-y);
+	}
+	.z-button-label {
+		color: var(--color-chart-z);
+	} */
 </style>

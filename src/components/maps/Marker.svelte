@@ -86,8 +86,8 @@
 	}
 	.marker .y-var-site {
 		position: absolute;
-		bottom: calc(50% - 2.5px);
-		left: calc(-9px - 70%);
+		bottom: calc(50% - 3px);
+		left: calc(-8px - 70%);
 		width: 18px;
 		height: 6px;
 		background-color: #ab00d6;
@@ -97,8 +97,8 @@
 
 	.marker .z-var-site {
 		position: absolute;
-		bottom: calc(50% - 2.5px);
-		right: calc(-9px - 70%);
+		bottom: calc(50% - 3px);
+		right: calc(-8px - 70%);
 		width: 18px;
 		height: 6px;
 		background-color: #00d6ab;

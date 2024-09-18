@@ -24,11 +24,41 @@ a:hover {
 	border-radius: 6px;
 	border: 1px solid #ddd;
 	background-color: var(--color-primary);
-	color: var(--color-lightGrey);
+	color: #eee;
 	padding: 3px;
 	font-size: 0.9rem;
 	position: relative;
 	bottom: 2px;
+}
+
+.graph-button {
+	display: inline-block;
+	padding: 2px 0.25rem;
+	/* margin-left: 0.5rem; */
+	border-radius: var(--border-radius);
+	background-color: #f0f0f0;
+	color: #444;
+	font-size: 0.8rem;
+	text-align: center;
+	cursor: pointer;
+	transition: background-color 0.2s;
+}
+
+.graph-button.y {
+	border: 2px solid var(--color-chart-y);
+
+	&:hover {
+		background-color: var(--color-chart-y);
+		color: white;
+	}
+}
+
+.graph-button.z {
+	border: 2px solid var(--color-chart-z);
+	&:hover {
+		background-color: var(--color-chart-z);
+		color: white;
+	}
 }
 
 body {
