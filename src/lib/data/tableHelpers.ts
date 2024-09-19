@@ -77,12 +77,22 @@ export function tableIndexBeforeDate(table: ColumnTable, date: Date, fromIndex =
 export function tableGetBeforeDate(table: ColumnTable, varname: string, date?: Date): number | Date | undefined {
 	if (!table.columnNames().includes(varname)) return undefined;
 
-	let timeIndex = date ? tableIndexBeforeDate(table, date) : table.numRows() - 1;
+	const renamedTable = table.select(['date', varname]).rename({ [varname]: 'var' })
+
+	let filteredTable = renamedTable
+	.filter(d => aq.op.is_nan(d!.var) == false)
+	.filter(aq.escape((d: any) => d!.var !== undefined && d!.var !== null && d!.var !== ''))
+	.rename({ 'var': varname })
+	.reify();
+
+	if(filteredTable.numRows() === 0) return undefined;
+
+	let timeIndex = date ? tableIndexBeforeDate(filteredTable, date) : table.numRows() - 1;
 	// console.log('tableGetBeforeDate', varname, fmtDate(date), 'index', timeIndex);
 	if (timeIndex === -1) return undefined;
 	try {
 		// console.log('at index', table.object(timeIndex));
-		return table.get(varname, timeIndex);
+		return filteredTable.get(varname, timeIndex);
 	} catch (e) {
 		console.error('varValueBeforeDate', e);
 		return undefined;
