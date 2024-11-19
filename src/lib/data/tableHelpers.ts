@@ -13,7 +13,6 @@ import { sitesTables } from '$src/appstate/data/datasets.svelte';
 import type { Site } from '../types/site';
 import { varcategories } from '../utils/varHelpers';
 import { dateEqualYMD } from '../utils/dates';
-import { tab } from '@testing-library/user-event/dist/cjs/convenience/tab.js';
 import { mean, median } from '../utils';
 
 export function tablesUniqueColumns(tables: ColumnTable[]): string[] {

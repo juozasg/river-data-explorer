@@ -1,11 +1,8 @@
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import tsconfigPaths from 'vite-tsconfig-paths';
-import {svelteTesting} from '@testing-library/svelte/vite'
-
 
 import checker from 'vite-plugin-checker'
-
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -20,7 +17,6 @@ export default defineConfig({
         if (warning.code === 'a11y_no_noninteractive_element_to_interactive_role') return;
 			}
 		}),
-		svelteTesting(),
     checker({
       // e.g. use TypeScript check
       typescript: true,

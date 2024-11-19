@@ -3,7 +3,6 @@
 	import { sites } from "$src/appstate/sites.svelte";
 	import VarDataMap from "$src/components/maps/VarDataMap.svelte";
 	import type { Site } from "$src/lib/types/site";
-	import { hover } from "@testing-library/user-event/dist/cjs/convenience/hover.js";
 	import { onMount } from "svelte";
 
 	let selectedSite = $state<Site>();
