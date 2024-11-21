@@ -9,7 +9,7 @@
 	import SiteStatsPanel from "$src/components/basin/stats/SiteStatsPanel.svelte";
 	import InlineBlockIconify from "$src/components/maps/controls/InlineBlockIconify.svelte";
 	import VarDataMap from "$src/components/maps/VarDataMap.svelte";
-		import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
+	import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
 	import type { Site } from "$src/lib/types/site";
 	import { chartYColor } from "$src/lib/utils/colors";
 	import { fitFeatureBounds } from "$src/lib/utils/maplibre";
@@ -86,7 +86,8 @@
 
 	let siteStatsVarHoverColor = chartYColor + "33";
 
-	let varname = $state("ecoli");
+	let varname = $state("invertNarrative");
+	// let varname = $state("ecoli");
 	function regionTableVarClicked(vn: string, axis?: "y" | "z") {
 		if (axis === "y") {
 			dataSelection.yVar = vn;

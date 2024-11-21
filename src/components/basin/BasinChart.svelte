@@ -124,6 +124,8 @@
 		Use <span class='graph-buttons'><span class="graph-button y">Y</span></span> and <span class='graph-buttons'><span class="graph-button z">Z</span></span> buttons to graph site variables
 		<InlineBlockIconify icon="lets-icons:expand-right" size="2rem" />
 	</h3>
+
+	<br/>
 {/if}
 
 <style>

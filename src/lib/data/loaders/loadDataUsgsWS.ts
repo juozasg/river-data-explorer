@@ -8,7 +8,7 @@ import { notify } from "$src/appstate/ui/notifications.svelte";
 import { sitesTables, type SiteId } from "$src/appstate/data/datasets.svelte";
 import { variablesMetadata, type VariablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import { retryingFetch } from '$src/lib/utils/retryingFetch';
-import { UTCDayDate } from '$src/lib/utils/dates';
+import { parseEasternTzDate, UTCDayDate } from '$src/lib/utils/dates';
 
 export async function loadDatasetsUsgsWS() {
 	const finishedLoading = startedLoading("USGS Datasets");
@@ -73,8 +73,8 @@ function usgsTimeseriesToSiteTables(timeSeries: any) {
 			if (!siteDateValues[siteId]) siteDateValues[siteId] = {};
 			if (!siteDateValues[siteId][d]) siteDateValues[siteId][d] = {};
 			siteDateValues[siteId][d][sjriverVarname] = v;
-			siteDateValues[siteId][d]['date'] = UTCDayDate(new Date(d + '-03:00'));
 
+			siteDateValues[siteId][d]['date'] =  parseEasternTzDate(d);
 		}
 	}
 	for (const [siteId, dateValues] of Object.entries(siteDateValues)) {

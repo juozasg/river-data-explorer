@@ -1,3 +1,29 @@
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import dayjsarr from "dayjs/plugin/arraySupport";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(dayjsarr);
+
+export const tz = 'US/Eastern';
+
+// either 'MM/DD/YYYY' or 'YYYY-MM-DD'
+// or 'YYYY-MM-DDTHH:MM:SS' (THH:MM:SS is discarded)
+// returns noon in EST
+export function parseEasternTzDate(str: string): Date {
+	const d = new Date(str.split('T')[0]);
+	// don't ask why the hour must be parsed and set to 12
+	const djs = dayjs.tz([d.getFullYear(), d.getMonth(), d.getDate(), 12], tz).hour(12);
+	return djs.toDate();
+}
+
+
+const w = window as any;
+w['dayjs'] = dayjs;
+w['tz'] = tz;
+w['parseTzDate'] = parseEasternTzDate;
 
 const shortMon = (date: Date): string => date.toLocaleString('default', { month: 'short' });
 export function fmtMonDY(date: Date | undefined): string {

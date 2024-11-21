@@ -35,6 +35,11 @@ export async function loadSitesCsv() {
 			huc12: '',
 		};
 
+		if(r.siteId !== 'invert-436') {
+			continue;
+		}
+
+
 		sites.add(site);
 	}
 

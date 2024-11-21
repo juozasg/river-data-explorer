@@ -39,19 +39,16 @@
 
 	onMount(() => {
 		document.body.addEventListener("keydown", copyMouseLocationData);
-		document.body.addEventListener('keydown', toggleHideTooltipsKeydown);
+		document.body.addEventListener("keydown", toggleHideTooltipsKeydown);
 		return () => {
 			document.body.removeEventListener("keydown", copyMouseLocationData);
-			document.body.removeEventListener('keydown', toggleHideTooltipsKeydown);
+			document.body.removeEventListener("keydown", toggleHideTooltipsKeydown);
 		};
 	});
 
-
-
 	$effect(() => {
-		if(websiteTooltip) tooltip.component = websiteTooltip;
+		if (websiteTooltip) tooltip.component = websiteTooltip;
 	});
-
 
 	onMount(async () => {
 		console.log("APP MOUNTED");
@@ -72,11 +69,10 @@
 
 	:global(._toastMsg pre) {
 		background: none;
-    font-size: 0.6rem;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
+		font-size: 0.6rem;
+		padding: 0;
+		margin: 0;
+		overflow: hidden;
 		max-width: 16rem;
 	}
-
 </style>

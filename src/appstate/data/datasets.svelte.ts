@@ -9,7 +9,7 @@ import { dataPathsStartingWith } from '$src/lib/data/loaders/loadAppData';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
 import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import { sites } from '../sites.svelte';
-import { UTCDayDate } from '$src/lib/utils/dates';
+import { parseEasternTzDate, UTCDayDate } from '$src/lib/utils/dates';
 
 export type SiteId = string;
 export const sitesTables: Map<SiteId, ColumnTable> = new SvelteMap();
@@ -33,7 +33,7 @@ export async function loadDatasets() {
 
 	const validKeys = Object.keys(variablesMetadata);
 	// console.log('known variables', validKeys);
-	const futureDate = UTCDayDate((new Date()).valueOf() + 1000 * 60 * 60 * 24 * 2); // 2 days from now
+	const futureDateMs = (new Date()).valueOf() + (1000 * 60 * 60 * 24 * 3); // 3 days from now
 	for (const r of records) {
 		r.siteId = r.siteId.trim();
 		r.date = r.date.trim();
@@ -42,10 +42,9 @@ export async function loadDatasets() {
 			continue;
 		}
 
-		// if(r.siteId !== 'ecoli-1') {
-		// 	continue;
-		// }
-
+		if(r.siteId !== 'invert-436') {
+			continue;
+		}
 
 		const record: Record<string, any> = {};
 		for (const key in r) {
@@ -56,10 +55,9 @@ export async function loadDatasets() {
 			if (validKeys.includes(key) || key == 'date') {
 				record[key] = parseValue(key, r[key] as string);
 			}
-
 		}
 
-		if(!record.date && isNaN(record.date.valueOf()) || record.date > futureDate) {
+		if(!record.date && isNaN(record.date.valueOf()) || record.date.valueOf() > futureDateMs) {
 			// console.warn('Invalid date in csv files', r.date, r, record.date);
 			continue
 		}
@@ -88,8 +86,7 @@ export async function loadDatasets() {
 function parseValue(key: string, value: string): number | Date | string | undefined {
 	value = value.trim();
 	if (key == 'date') {
-		const d = UTCDayDate(toDate(value));
-		return d;
+		return parseEasternTzDate(value);
 	}
 
 	const isCategorical = !!(variablesMetadata[key]?.categories);
