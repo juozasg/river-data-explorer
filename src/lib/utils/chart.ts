@@ -1,5 +1,5 @@
 import type ColumnTable from "arquero/dist/types/table/column-table";
-import { fmtDateDMonY, UTCDayDate } from './dates';
+import { fmtDateDMonY, USEasternNoonDate } from './dates';
 import { chartYColor, chartZDarker } from "./colors";
 import { catvarOutsideStandards, varcategories, varlabel, varstdmax, varstdmin, varunits } from './varHelpers';
 import type { YZChartParams } from "./YZChartParams";
@@ -73,7 +73,7 @@ export function closestPointIndex(arr: number[], x: number, min = true) {
 }
 
 export function formatChartDate(d: number): any {
-	const date = UTCDayDate(d);
+	const date = USEasternNoonDate(d);
 	// console.log('formatChartDate', date);
 	return fmtDateDMonY(date);
 }
@@ -119,7 +119,7 @@ export function formatChatTTValue(key: string, value: any, yParams: YZChartParam
 function formatStandards(varname: string, value: number): string {
 
 	if (varcategories(varname)) {
-		console.log('formatStandards cat ', varname, value, catvarOutsideStandards(varname, value));
+		// console.log('formatStandards cat ', varname, value, catvarOutsideStandards(varname, value));
 		if (catvarOutsideStandards(varname, value)) {
 			return ` <span class='stdbad'> &nbsp; is below 'Acceptable' </span>`;
 		}

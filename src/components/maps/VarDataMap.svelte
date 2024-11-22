@@ -15,7 +15,7 @@
 	import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
 	import type { Site } from "$src/lib/types/site";
 		import { aremove } from '$src/lib/utils/arrays';
-	import { UTCDayDate } from '$src/lib/utils/dates';
+	import { USEasternNoonDate } from '$src/lib/utils/dates';
 	import { onMount } from "svelte";
 	import VarDataHoveredFeatures from "./VarDataHoveredFeatures.svelte";
 	import type { RegionFeature } from "$src/appstate/data/features.svelte";
@@ -46,7 +46,7 @@
 		showRegionTooltip = true,
 		dataSelection,
 		varname = $bindable("ecoli"),
-		vardate = $bindable(UTCDayDate()),
+		vardate = $bindable(USEasternNoonDate()),
 		layersParams = $bindable(defaultLayersParams),
 		...others
 	}: Props = $props();
@@ -86,9 +86,9 @@
 		dataMapControls?.setDate(d);
 	}
 
-	$effect(() => {
-		// console.log('VDM vardate', vardate)
-	});
+	// $effect(() => {
+	// 	console.log('VDM vardate', vardate)
+	// });
 
 </script>
 

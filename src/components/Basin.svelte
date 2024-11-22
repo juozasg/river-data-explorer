@@ -86,8 +86,8 @@
 
 	let siteStatsVarHoverColor = chartYColor + "33";
 
-	let varname = $state("invertNarrative");
-	// let varname = $state("ecoli");
+	// let varname = $state("invertNarrative");
+	let varname = $state("ecoli");
 	function regionTableVarClicked(vn: string, axis?: "y" | "z") {
 		if (axis === "y") {
 			dataSelection.yVar = vn;

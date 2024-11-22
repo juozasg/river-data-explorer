@@ -8,7 +8,7 @@ import { notify } from "$src/appstate/ui/notifications.svelte";
 import { sitesTables, type SiteId } from "$src/appstate/data/datasets.svelte";
 import { variablesMetadata, type VariablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import { retryingFetch } from '$src/lib/utils/retryingFetch';
-import { parseEasternTzDate, UTCDayDate } from '$src/lib/utils/dates';
+import { parseEasternTzDate, USEasternNoonDate } from '$src/lib/utils/dates';
 
 export async function loadDatasetsUsgsWS() {
 	const finishedLoading = startedLoading("USGS Datasets");

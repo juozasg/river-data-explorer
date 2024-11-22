@@ -1,11 +1,11 @@
 <script lang="ts">
 	import DateSliderInput from "./DateSliderInput.svelte";
 	import DateYMDSelects from "./DateYMDSelects.svelte";
-		import { binaryClosestSearch } from '$src/lib/utils/arrays';
-	import { UTCDayDate } from '$src/lib/utils/dates';
+	import { binaryClosestSearch } from '$src/lib/utils/arrays';
+	import { USEasternNoonDate } from '$src/lib/utils/dates';
 	import { untrack } from "svelte";
 
-	let { validDates, vardate = $bindable(UTCDayDate()) }: { validDates: Date[]; vardate: Date } = $props();
+let { validDates, vardate = $bindable(USEasternNoonDate()) }: { validDates: Date[]; vardate: Date } = $props();
 	const validValues = $derived((validDates || []).map((d) => d.valueOf()));
 
 	const isValidDate = (date: Date) =>
@@ -21,6 +21,8 @@
 	// works great - do not touch!
 	const onYmdDateSelect = (date: Date) => {
 		// console.log('onYmdDateSelect', date.toISOString());
+		// console.log('validDates', validDates.map((d) => d.toISOString()));
+
 		if (isValidDate(date)) {
 			untrack(() => {
 				// console.log('set data slider input date', date.toISOString());
@@ -34,6 +36,8 @@
 		// console.log('onRangeDateSelect', date.toISOString());
 
 		const closestValid = binaryClosestSearch(validValues, date.valueOf());
+		// console.log('closestValid', closestValid, new Date(closestValid).toISOString());
+
 		if (closestValid) {
 			untrack(() => {
 				// console.log('set YMD date', new Date(closestValid).toISOString());

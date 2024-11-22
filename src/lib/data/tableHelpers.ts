@@ -52,7 +52,7 @@ export function tooltipText(varname: string): string {
 export function tableIndexBeforeDate(table: ColumnTable, date: Date, fromIndex = 0, toIndex?: number): number {
 	if (table.numRows() === 0) return -1;
 	if (toIndex === undefined) toIndex = table.numRows() - 1;
-	if (fromIndex === toIndex) return table.get('date', fromIndex) < date ? fromIndex : -1;
+	if (fromIndex === toIndex) return table.get('date', fromIndex) <= date ? fromIndex : -1;
 
 	const midIndex = Math.floor((fromIndex + toIndex) / 2);
 	if (midIndex === toIndex) return midIndex;
@@ -66,8 +66,8 @@ export function tableIndexBeforeDate(table: ColumnTable, date: Date, fromIndex =
 		if (nextDate > date) return midIndex;
 		if (dateEqualYMD(nextDate, date)) return midIndex + 1;
 		return tableIndexBeforeDate(table, date, midIndex + 1, toIndex);
-	} else {
-		if (table.get('date', midIndex - 1) < date) return midIndex - 1;
+	} else { // midDate > date
+		if (table.get('date', midIndex - 1) <= date) return midIndex - 1;
 		return tableIndexBeforeDate(table, date, fromIndex, midIndex - 1);
 	}
 }

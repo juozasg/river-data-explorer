@@ -23,7 +23,6 @@ export async function loadAppData(manifest: DataManifest) {
 	loadMarkdown();
 }
 
-
 export function dataPathsStartingWith(prefix: string) {
 	return Object.keys(dataManifest).filter(k => k.startsWith(prefix));
 }

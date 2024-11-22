@@ -11,14 +11,26 @@ export const tz = 'US/Eastern';
 
 // either 'MM/DD/YYYY' or 'YYYY-MM-DD'
 // or 'YYYY-MM-DDTHH:MM:SS' (THH:MM:SS is discarded)
+// 'Z.*' is discarded t
 // returns noon in EST
 export function parseEasternTzDate(str: string): Date {
-	const d = new Date(str.split('T')[0]);
+	const d = new Date(str.split('T')[0].split('Z')[0]);
 	// don't ask why the hour must be parsed and set to 12
 	const djs = dayjs.tz([d.getFullYear(), d.getMonth(), d.getDate(), 12], tz).hour(12);
 	return djs.toDate();
 }
 
+
+// always returns YYYY-MM-DDT12:00:00 (US/Eastern - UST or EDT)
+export function USEasternNoonDate(date?: Date | string | number | undefined): Date {
+	if (typeof date === 'string') {
+		date = parseEasternTzDate(date);
+	};
+	if (typeof date === 'number') date = new Date(date);
+	if (!date || isNaN(date.valueOf())) date = new Date();
+	// return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+	return parseEasternTzDate(date.toISOString());
+}
 
 const w = window as any;
 w['dayjs'] = dayjs;
@@ -51,16 +63,7 @@ export function fmtDateValue(date: Date) {
 export function fmtDateISO(date: Date) {
 	return date.toISOString();
 }
-// always returns YYYY-MM-DDT00:00:00 (UTC)
 
-export function UTCDayDate(date?: Date | string | number | undefined): Date {
-	if (typeof date === 'string') {
-		date = date.includes('Z') ? new Date(date) : new Date(date + 'Z');
-	};
-	if (typeof date === 'number') date = new Date(date);
-	if (!date || isNaN(date.valueOf())) date = new Date();
-	return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
-}
 // month is 0-indexed
 // days are 1-indexed, but day=0 means last day of previous month
 
