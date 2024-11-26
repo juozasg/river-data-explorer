@@ -8,17 +8,16 @@
 	import MapLibreMap from "./MapLibreMap.svelte";
 
 	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
+	import type { RegionFeature } from "$src/appstate/data/features.svelte";
 	import { MapFeatureSelectionState, toggleHoveredFeatureState } from "$src/appstate/map/featureState.svelte";
 	import { sites as globalSites, Sites } from "$src/appstate/sites.svelte";
-	import { setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
+	import { defaultLayersParams, setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
 	import { type MapLayersParams } from "$src/lib/types/mapControls";
-	import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
 	import type { Site } from "$src/lib/types/site";
-		import { aremove } from '$src/lib/utils/arrays';
-	import { USEasternNoonDate } from '$src/lib/utils/dates';
+	import { aremove } from "$src/lib/utils/arrays";
+	import { USEasternNoonDate } from "$src/lib/utils/dates";
 	import { onMount } from "svelte";
 	import VarDataHoveredFeatures from "./VarDataHoveredFeatures.svelte";
-	import type { RegionFeature } from "$src/appstate/data/features.svelte";
 
 	type Props = {
 		dataSelection: DataSelectionState;
@@ -34,7 +33,7 @@
 		onSearchItemSelect?: (item: Site) => void;
 	} & Partial<MapLibreMapProps>;
 
-		// let layersParams = $state<MapLayersParams>(defaultLayersParams);
+	// let layersParams = $state<MapLayersParams>(defaultLayersParams);
 	// export function
 
 	let {
@@ -69,9 +68,12 @@
 
 	let _hoveredSite = $state<Site>();
 	export const hoveredSite = () => _hoveredSite;
-	export const hoveredRegion = new MapFeatureSelectionState((c, u) => toggleHoveredFeatureState(mlMap, c, u, selectedRegion?.feature, _hoveredSite));
-	export const hoveredRiver = new MapFeatureSelectionState((c, u) => toggleHoveredFeatureState(mlMap, c, u, undefined, undefined));
-
+	export const hoveredRegion = new MapFeatureSelectionState((c, u) =>
+		toggleHoveredFeatureState(mlMap, c, u, selectedRegion?.feature, _hoveredSite)
+	);
+	export const hoveredRiver = new MapFeatureSelectionState((c, u) =>
+		toggleHoveredFeatureState(mlMap, c, u, undefined, undefined)
+	);
 
 	onMount(() => {
 		mlMap!.on("click", (e) => onMapClick?.(mlMap!, e.point, _hoveredSite, hoveredRegion.feature, hoveredRiver.feature));
@@ -89,7 +91,6 @@
 	// $effect(() => {
 	// 	console.log('VDM vardate', vardate)
 	// });
-
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -124,6 +125,7 @@
 		{varname}
 		{vardate}
 		{sites}
+		ghostSitesVisible={layersParams.ghostSitesVisible}
 		yVarSite={dataSelection.yVar ? dataSelection.ySite : undefined}
 		zVarSite={dataSelection.zVar ? dataSelection.zSite : undefined}
 		{emphasizedSites}

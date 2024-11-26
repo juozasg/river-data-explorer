@@ -18,9 +18,8 @@
 		yVarSite?: Site;
 		zVarSite?: Site;
 		emphasizedSites?: Site[];
+		ghostSitesVisible?: boolean;
 	};
-
-	// const markers = new sr.Map<number, Marker>();
 
 	let {
 		hoveredSite = $bindable(),
@@ -31,7 +30,8 @@
 		selectedSite,
 		yVarSite,
 		zVarSite,
-		emphasizedSites = []
+		emphasizedSites = [],
+		ghostSitesVisible = true
 	}: Props = $props();
 
 	const markerMouseEnter = (e: MouseEvent, site: Site) => {
@@ -50,6 +50,11 @@
 				const val = siteBeforeVardateValue(marker.siteId, varname, vardate);
 				if (val === undefined) {
 					marker.setColor(ghost);
+					if(ghostSitesVisible) {
+						marker.setHideGhost(false);
+					} else {
+						marker.setHideGhost(true);
+					}
 					return;
 				}
 				const color = interpolateVarColor(varname, val);

@@ -30,6 +30,7 @@
 	let color = $state('yellowgreen');
 	export const isGhost = () => color == ghost;
 	let stdbad = $state(false);
+	let hideGhost = $state(true);
 
 
 
@@ -40,6 +41,7 @@
 	export const siteId = site.id;
 	export const setColor = (c: string) => (color = c);
 	export const setStdBad = (bad: boolean) => (stdbad = bad);
+	export const setHideGhost = (hide: boolean) => (hideGhost = hide);
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -60,7 +62,7 @@
 		<div class="z-var-site"></div>
 	{/if}
 
-	<div style="--color: {color}" class="marker-box" class:ghost={isGhost()} ></div>
+	<div style="--color: {color}" class="marker-box" class:ghost={isGhost()} class:hide={isGhost() && hideGhost} ></div>
 </div>
 
 <style>
@@ -143,6 +145,13 @@
 		width: 10px;
 		height: 10px;
 	}
+
+	.marker .marker-box.hide {
+		opacity: 0;
+		width: 10px;
+		height: 10px;
+	}
+
 
 
 	.marker:has(.marker-box:not(.ghost)) {

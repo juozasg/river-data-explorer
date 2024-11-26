@@ -5,7 +5,8 @@ import { aremove } from '$src/lib/utils/arrays';
 export const defaultLayersParams: MapLayersParams = {
 	riverLayerVisible: true,
 	baseStyleId: 'TOPO',
-	regionType: 'huc10'
+	regionType: 'huc10',
+	ghostSitesVisible: false
 };
 
 

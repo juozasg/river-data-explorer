@@ -109,6 +109,11 @@
 				Mainstem and tributaries
 			</label>
 
+			<label for="hide-ghosts">
+				<input type="checkbox" id="hide-ghosts" bind:checked={layersParams.ghostSitesVisible} />
+				Show sites without data
+			</label>
+
 			<hr />
 			<SitesRegionsAutocomplete maxWidth={maxWidth + "px"} {selectedSite} {onSearchItemSelect} />
 		</div>
