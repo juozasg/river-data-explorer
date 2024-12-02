@@ -9,7 +9,7 @@ import { dataPathsStartingWith } from '$src/lib/data/loaders/loadAppData';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
 import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import { sites } from '../sites.svelte';
-import { parseEasternTzDate, USEasternNoonDate } from '$src/lib/utils/dates';
+import { parseUTCMinus5Date, UTCMinus5NoonDate } from '$src/lib/utils/dates';
 
 export type SiteId = string;
 export const sitesTables: Map<SiteId, ColumnTable> = new SvelteMap();
@@ -86,7 +86,7 @@ export async function loadDatasets() {
 function parseValue(key: string, value: string): number | Date | string | undefined {
 	value = value.trim();
 	if (key == 'date') {
-		return parseEasternTzDate(value);
+		return parseUTCMinus5Date(value);
 	}
 
 	const isCategorical = !!(variablesMetadata[key]?.categories);

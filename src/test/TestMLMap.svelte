@@ -9,7 +9,7 @@
 	// } as MapLayersParams;
 </script>
 
-<div style="position: relative; height: 1000px; width: 500px">
+<div style="position: relative; height: 800px; width: 800px">
 	<MapLibreMap />
 </div>
 

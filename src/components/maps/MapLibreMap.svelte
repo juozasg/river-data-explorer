@@ -16,7 +16,8 @@
 
 	let {
 		mlMap = $bindable(),
-		zoom = 11,
+		// zoom = 11,
+		zoom = 4,
 		center = [-86.2536621504243, 41.699967298106515],
 		layersParams = defaultLayersParams,
 		addLayers = addMapLayers
@@ -26,33 +27,33 @@
 	export const mapDivElement = () => mapDiv;
 
 	let clientWidth = $state(0);
-	// $effect(() => {console.log('CW', clientWidth)});
+	// // $effect(() => {console.log('CW', clientWidth)});
 
-	const arcgisServicesStyles =
-		// 'cached://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles';
-		'https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles';
-	const apiKey =
-		'AAPK3dfaa40a13c0404983142c26b566596ammsJLVROPRkVaZnrwj6bYIrYdi4FEikx7NZpYg7f5M9XlV2RFL6PgxMA_56IceHv';
+	// const arcgisServicesStyles =
+	// 	// 'cached://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles';
+	// 	'https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles';
+	// const apiKey =
+	// 	'AAPK3dfaa40a13c0404983142c26b566596ammsJLVROPRkVaZnrwj6bYIrYdi4FEikx7NZpYg7f5M9XlV2RFL6PgxMA_56IceHv';
 
-	const basemapEnum = 'e20332d6d2af43ff8402bb155df01467';
-	const basemapStyles = {
-		TOPO: `${arcgisServicesStyles}/items/${basemapEnum}?token=${apiKey}`,
-		SATELLITE: `${arcgisServicesStyles}/arcgis/imagery/?token=${apiKey}`
-	};
+	// const basemapEnum = 'e20332d6d2af43ff8402bb155df01467';
+	// const basemapStyles = {
+	// 	TOPO: `${arcgisServicesStyles}/items/${basemapEnum}?token=${apiKey}`,
+	// 	SATELLITE: `${arcgisServicesStyles}/arcgis/imagery/?token=${apiKey}`
+	// };
 
 	$effect(() => {
 		if (!mlMap) return;
-		toggleRiverLayerVisibility(mlMap, layersParams.riverLayerVisible);
+		// toggleRiverLayerVisibility(mlMap, layersParams.riverLayerVisible);
 	});
 
 
 
-	$effect(() => {
-		if (!mlMap) return;
-		console.log('layers regionType', layersParams.regionType);
-		const regionType = layersParams.regionType;
-		selectRegionTypeLayers(mlMap, layersParams.regionType);
-	});
+	// $effect(() => {
+		// if (!mlMap) return;
+		// console.log('layers regionType', layersParams.regionType);
+		// const regionType = layersParams.regionType;
+		// selectRegionTypeLayers(mlMap, layersParams.regionType);
+	// });
 
 	let _dataLoaded = $state(false);
 
@@ -63,15 +64,16 @@
 	$effect(() => {
 		if (!mlMap) return;
 
-		const style = basemapStyles[layersParams.baseStyleId];
-		mlMap.setStyle(style, { transformStyle });
+		// const style = basemapStyles[layersParams.baseStyleId];
+		// mlMap.setStyle(style, { transformStyle });
 	});
 
 	onMount(() => {
-		const style = basemapStyles[layersParams.baseStyleId];
+		// const style = basemapStyles[layersParams.baseStyleId];
 		mlMap = new ml.Map({
 			container: mapDiv!, // container's id or the HTML element to render the map
-			style,
+			// style,
+			style: 'https://demotiles.maplibre.org/style.json', // style URL
 			center, // starting position [lng, lat]
 			zoom, // starting zoom
 			minZoom: 3,
@@ -79,41 +81,42 @@
 		});
 
 		// mlMap.addControl(new ml.AttributionControl(), 'bottom-right');
-		mlMap.addControl(new ml.NavigationControl(), 'bottom-right');
-		console.log('map', mlMap)
-
-
+		// mlMap.addControl(new ml.NavigationControl(), 'bottom-right');
+		// console.log('map', mlMap)
 
 		// only fires for the initial style, not for map.setStyle
 		mlMap.once('idle', () => {
 			mlMap!.resize();
-			addMlmSources(mlMap!).then(() => {
-				addLayers(mlMap!);
-				const style = basemapStyles[layersParams.baseStyleId];
-				mlMap!.setStyle(style, { transformStyle }); // force transformStyle to reorder layers
-				toggleRiverLayerVisibility(mlMap!, layersParams.riverLayerVisible);
-				selectRegionTypeLayers(mlMap!, layersParams.regionType);
+			console.log('MAP IDLE');
 
-				mlMap!.once('idle', () => (_dataLoaded = true));
-			});
+			// addMlmSources(mlMap!).then(() => {
+			// 	// addLayers(mlMap!);
+			// 	// const style = basemapStyles[layersParams.baseStyleId];
+			// 	// mlMap!.setStyle(style, { transformStyle }); // force transformStyle to reorder layers
+			// 	// toggleRiverLayerVisibility(mlMap!, layersParams.riverLayerVisible);
+			// 	// selectRegionTypeLayers(mlMap!, layersParams.regionType);
+
+			// 	mlMap!.once('idle', () => (_dataLoaded = true));
+			// });
 		});
 
-		// global state for mouse x,y and lonlat location
+		// // global state for mouse x,y and lonlat location
 		// used for C to copy lonlat
-		mlMap.on('mousemove', (e): void => {
-			mapMouseLocation.onMouseMove(mlMap, e);
-		});
+		// mlMap.on('mousemove', (e): void => {
+		// 	mapMouseLocation.onMouseMove(mlMap, e);
+		// });
 
-		toggleoffAttribution(mapDiv!);
+		// toggleoffAttribution(mapDiv!);
 	});
 
-	function onmouseleave() {
-		mapMouseLocation.onMouseOut();
-		tooltip.hide();
-	}
+	// function onmouseleave() {
+	// 	mapMouseLocation.onMouseOut();
+	// 	tooltip.hide();
+	// }
 </script>
 
-<div class="map" bind:this={mapDiv} {onmouseleave} role="figure" bind:clientWidth></div>
+<!-- <div class="map" bind:this={mapDiv} {onmouseleave} role="figure" bind:clientWidth></div> -->
+<div class="map" bind:this={mapDiv} role="figure" bind:clientWidth></div>
 
 <style>
 	.map {

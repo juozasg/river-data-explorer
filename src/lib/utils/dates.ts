@@ -1,41 +1,44 @@
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
-import dayjsarr from "dayjs/plugin/arraySupport";
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.extend(dayjsarr);
+const mmddyyyyRe = /^\d\d?\/\d\d?\/\d{4}.*$/;
+const yyyymmddRe = /^\d{4}-\d\d?-\d\d?.*$/;
 
-export const tz = 'US/Eastern';
+// matches either 'MM/DD/YYYY' or 'YYYY-MM-DD'
+// anything after the match is ignored
+// failed matches is replaced with '2020-01-01'
+// returns 17:00 in UTC which is noon in EST, or 13:00 in EDT
+export function parseUTCMinus5Date(str: string): Date {
+	let year = 2020;
+	let month = 1;
+	let day = 1;
+	if(str.match(mmddyyyyRe)) {
+		const parts = str.split('/');
+		month = parseInt(parts[0]);
+		day = parseInt(parts[1]);
+		year = parseInt(parts[2]);
+	} else if (str.match(yyyymmddRe)) {
+		const parts = str.split('-');
+		year = parseInt(parts[0]);
+		month = parseInt(parts[1]);
+		day = parseInt(parts[2]);
+	}
 
-// either 'MM/DD/YYYY' or 'YYYY-MM-DD'
-// or 'YYYY-MM-DDTHH:MM:SS' (THH:MM:SS is discarded)
-// 'Z.*' is discarded t
-// returns noon in EST
-export function parseEasternTzDate(str: string): Date {
-	const d = new Date(str.split('T')[0].split('Z')[0]);
-	// don't ask why the hour must be parsed and set to 12
-	const djs = dayjs.tz([d.getFullYear(), d.getMonth(), d.getDate(), 12], tz).hour(12);
-	return djs.toDate();
+	return new Date(Date.UTC(year, month - 1, day, 17));
 }
 
 
 // always returns YYYY-MM-DDT12:00:00 (US/Eastern - UST or EDT)
-export function USEasternNoonDate(date?: Date | string | number | undefined): Date {
-	if (typeof date === 'string') {
-		date = parseEasternTzDate(date);
-	};
-	if (typeof date === 'number') date = new Date(date);
-	if (!date || isNaN(date.valueOf())) date = new Date();
-	// return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
-	return parseEasternTzDate(date.toISOString());
-}
+// export function UTCMinus5NoonDate(date?: Date | string | number | undefined): Date {
+// 	if (typeof date === 'string') {
+// 		date = parseUTCMinus5Date(date);
+// 	};
+// 	if (typeof date === 'number') date = new Date(date);
+// 	if (!date || isNaN(date.valueOf())) date = new Date();
+// 	// return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+// 	return parseUTCMinus5Date(date.toISOString());
+// }
 
 const w = window as any;
-w['dayjs'] = dayjs;
-w['tz'] = tz;
-w['parseTzDate'] = parseEasternTzDate;
+w['parseTzDate'] = parseUTCMinus5Date;
 
 const shortMon = (date: Date): string => date.toLocaleString('default', { month: 'short' });
 export function fmtMonDY(date: Date | undefined): string {

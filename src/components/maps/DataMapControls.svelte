@@ -7,7 +7,7 @@
 	import { type MapLayersParams } from "$src/lib/types/mapControls";
 	import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
 	import type { Site } from "$src/lib/types/site";
-	import { USEasternNoonDate } from '$src/lib/utils/dates';
+	import { UTCMinus5NoonDate } from '$src/lib/utils/dates';
 	import DataTools from "./controls/DataTools.svelte";
 	import DateMultiInput from "./controls/DateMultiInput.svelte";
 	import Legend from "./controls/Legend.svelte";
@@ -31,7 +31,7 @@
 		mapWidth = 400,
 		layersParams = $bindable(defaultLayersParams),
 		varname = $bindable("ecoli"),
-		vardate = $bindable(USEasternNoonDate())
+		vardate = $bindable(UTCMinus5NoonDate())
 	}: Props = $props();
 
 	const small = $derived(mapWidth <= 550);

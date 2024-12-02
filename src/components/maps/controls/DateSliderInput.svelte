@@ -2,7 +2,7 @@
 	import "$src/styles/time-slider.scss";
 
 		import { binaryClosestSearch } from '$src/lib/utils/arrays';
-	import { fmtDateDMonY, USEasternNoonDate } from '$src/lib/utils/dates';
+	import { fmtDateDMonY, UTCMinus5NoonDate } from '$src/lib/utils/dates';
 
 	let { validDates, onDateSelect }: { validDates: Date[]; onDateSelect: (d: Date) => void } = $props();
 
@@ -15,10 +15,10 @@
 
 	const validValues = $derived((validDates || []).map((d) => d.valueOf()));
 
-	const startDate = $derived(validDates[0] || USEasternNoonDate("1990-01-01"));
-	const endDate = $derived(validDates[validDates.length - 1] || USEasternNoonDate());
+	const startDate = $derived(validDates[0] || UTCMinus5NoonDate("1990-01-01"));
+	const endDate = $derived(validDates[validDates.length - 1] || UTCMinus5NoonDate());
 
-	let value: number = $state(USEasternNoonDate().valueOf());
+	let value: number = $state(UTCMinus5NoonDate().valueOf());
 
 
 	const firstLabel = $derived(fmtDateDMonY(startDate));

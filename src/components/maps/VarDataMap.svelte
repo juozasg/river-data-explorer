@@ -15,7 +15,7 @@
 	import { type MapLayersParams } from "$src/lib/types/mapControls";
 	import type { Site } from "$src/lib/types/site";
 	import { aremove } from "$src/lib/utils/arrays";
-	import { USEasternNoonDate } from "$src/lib/utils/dates";
+	import { UTCMinus5NoonDate } from "$src/lib/utils/dates";
 	import { onMount } from "svelte";
 	import VarDataHoveredFeatures from "./VarDataHoveredFeatures.svelte";
 
@@ -45,7 +45,7 @@
 		showRegionTooltip = true,
 		dataSelection,
 		varname = $bindable("ecoli"),
-		vardate = $bindable(USEasternNoonDate()),
+		vardate = $bindable(UTCMinus5NoonDate()),
 		layersParams = $bindable(defaultLayersParams),
 		...others
 	}: Props = $props();

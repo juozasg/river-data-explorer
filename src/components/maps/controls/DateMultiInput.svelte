@@ -1,11 +1,11 @@
 <script lang="ts">
 	import DateSliderInput from "./DateSliderInput.svelte";
 	import DateYMDSelects from "./DateYMDSelects.svelte";
-	import { binaryClosestSearch } from '$src/lib/utils/arrays';
-	import { USEasternNoonDate } from '$src/lib/utils/dates';
+	import { binaryClosestSearch } from "$src/lib/utils/arrays";
+	import { UTCMinus5NoonDate } from "$src/lib/utils/dates";
 	import { untrack } from "svelte";
 
-let { validDates, vardate = $bindable(USEasternNoonDate()) }: { validDates: Date[]; vardate: Date } = $props();
+	let { validDates, vardate = $bindable() }: { validDates: Date[]; vardate: Date } = $props();
 	const validValues = $derived((validDates || []).map((d) => d.valueOf()));
 
 	const isValidDate = (date: Date) =>
@@ -44,7 +44,6 @@ let { validDates, vardate = $bindable(USEasternNoonDate()) }: { validDates: Date
 				ymdSelects?.setDate(new Date(closestValid));
 			});
 		}
-
 	};
 </script>
 
