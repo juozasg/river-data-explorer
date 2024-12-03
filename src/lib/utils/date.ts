@@ -31,7 +31,6 @@ export function parseUTC1700Date(str: string): Date {
 	return new Date(Date.UTC(year, month - 1, day, 17));
 }
 
-
 const w = window as any;
 w['parseTzDate'] = parseUTC1700Date;
 
