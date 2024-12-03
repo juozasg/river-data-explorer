@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as ml from "maplibre-gl";
 
-	import { siteBeforeVardateValue } from "$src/lib/data/map/helpers/markerHelpers";
+		import { siteBeforeVardateValue } from "$src/lib/data/siteTableHelpers";
 	import type { Site } from "$src/lib/types/site";
 	import Marker from "./Marker.svelte";
 	import { untrack } from "svelte";

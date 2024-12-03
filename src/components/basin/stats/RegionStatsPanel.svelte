@@ -7,7 +7,7 @@
 	import { regionEqual, type RegionFeature } from "$src/appstate/data/features.svelte";
 	import { Sites, sites } from "$src/appstate/sites.svelte";
 	import { allVariableStats, allVarsDailyMedians, sitesDataStats } from "$src/lib/data/stats";
-	import { concatTablesAllColumns } from "$src/lib/data/tableHelpers";
+	import { concatTablesAllColumns } from "$src/lib/data/siteTableHelpers";
 	import type { VariableStats } from "$src/lib/types/analysis";
 	import { fmtVarNum, varunits } from "$src/lib/utils/varHelpers";
 	import type ColumnTable from "arquero/dist/types/table/column-table";

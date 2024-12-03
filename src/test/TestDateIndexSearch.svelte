@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { sitesTables } from "$src/appstate/data/datasets.svelte";
-	import { tableIndexBeforeDate } from "$src/lib/data/tableHelpers";
+	import { tableIndexBeforeDate } from "$src/lib/data/siteTableHelpers";
 	import { fmtMonDY } from "$src/lib/utils/date";
 
 	const table = $derived(sitesTables.get("sjrbc-1")?.slice(0, 1));

@@ -5,7 +5,7 @@ import type { SitesDataStats, VariableStats } from "$lib/types/analysis";
 import type { Site } from "$lib/types/site";
 import { fmtDateDMonY } from '../utils/date';
 import { sitesTables } from '$src/appstate/data/datasets.svelte';
-import { concatTablesAllColumns } from './tableHelpers';
+import { concatTablesAllColumns } from './siteTableHelpers';
 import { isCategoricalVar, variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import { varcategories, varlabel } from '../utils/varHelpers';
 

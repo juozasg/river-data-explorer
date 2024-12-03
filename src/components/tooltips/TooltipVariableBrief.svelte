@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { tooltip } from "$src/appstate/ui/tooltips.svelte";
 	import { variablesBriefMarkdown } from "$src/appstate/variablesMetadata.svelte";
-	import { tooltipText } from "$src/lib/data/tableHelpers";
+	import { tooltipText } from "$src/lib/data/siteTableHelpers";
 
 	let hoveredVariable: string | undefined = $state();
 

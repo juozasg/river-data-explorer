@@ -5,7 +5,7 @@
 	import { MapFeatureSelectionState } from "$src/appstate/map/featureState.svelte";
 	import { tooltip } from "$src/appstate/ui/tooltips.svelte";
 	import { sitesDataStats } from "$src/lib/data/stats";
-	import { siteGetBeforeDate } from "$src/lib/data/tableHelpers";
+	import { siteGetBeforeDate } from "$src/lib/data/siteTableHelpers";
 	import type { Site } from "$src/lib/types/site";
 	import { regionIdLabel } from '$src/lib/utils/regions';
 	import { fmtDateDMonY } from '$src/lib/utils/date';

@@ -4,7 +4,7 @@
 	import type { RegionFeature } from "$src/appstate/data/features.svelte";
 	import { sites, siteTablesForRegion } from "$src/appstate/sites.svelte";
 	import { varDailyMedian } from "$src/lib/data/stats";
-	import { selectTableVar } from "$src/lib/data/tableHelpers";
+	import { selectTableVar } from "$src/lib/data/siteTableHelpers";
 	import type { Site } from "$src/lib/types/site";
 	import { varChartDomain, YZChartParams } from "$src/lib/utils/YZChartParams";
 	import BrushedYzChart from "../chart/BrushedYZChart.svelte";

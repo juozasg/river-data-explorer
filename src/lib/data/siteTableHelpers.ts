@@ -1,11 +1,5 @@
 import snarkdown from 'snarkdown';
 
-if (typeof window !== 'undefined') {
-	// @ts-ignore
-	window.snarkdown = snarkdown;
-}
-
-
 import { variablesBriefMarkdown } from '$src/appstate/variablesMetadata.svelte';
 import * as aq from 'arquero';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
@@ -105,6 +99,20 @@ export function siteGetBeforeDate(site: Site, varname: string, date?: Date): num
 	return tableGetBeforeDate(table, varname, date);
 }
 
+export function siteBeforeVardateValue(siteid: string, varname: string, beforeDate?: Date): number | string | undefined {
+	try {
+		const table = sitesTables.get(siteid);
+		if (!table) return;
+
+		const value = tableGetBeforeDate(table, varname, beforeDate);
+		if (typeof value === 'number' || typeof value == 'string') return value;
+	} catch (e) {
+		console.error('siteBeforeVardateValue', e);
+		return;
+	}
+}
+
+
 /* returns table with date and varname columns. varname column can be renamed  */
 export function selectTableVar(table: ColumnTable | undefined, varname: string | undefined, renameVar: string | undefined) {
 	if (!varname || !table) {
@@ -149,3 +157,10 @@ function catsToNumber(varname: string, value: string| string[]) {
 	}
 	return value;
 }
+
+
+
+// if (typeof window !== 'undefined') {
+// 	// @ts-ignore
+// 	window.snarkdown = snarkdown;
+// }
