@@ -5,7 +5,6 @@ const localNow = new Date();
 export const todayDate = new Date(Date.UTC(localNow.getUTCFullYear(), localNow.getUTCMonth(), localNow.getUTCDate(), 17));
 
 
-
 // matches either 'MM/DD/YYYY' or 'YYYY-MM-DD'
 const mmddyyyyRe = /^\d\d?\/\d\d?\/\d{4}.*$/;
 const yyyymmddRe = /^\d{4}-\d\d?-\d\d?.*$/;
