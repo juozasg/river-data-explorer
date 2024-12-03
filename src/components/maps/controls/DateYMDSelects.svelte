@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { binaryClosestTo } from "$src/lib/utils/arrays";
-	import { daysInMonth, parseUTCMinus5Date, UTCMinus5NoonDate } from "$src/lib/utils/dates";
+	import { daysInMonth, todayDate, parseUTC1700Date } from "$src/lib/utils/date";
 
 	const { validDates, onDateSelect }: { validDates: Date[]; onDateSelect: (d: Date) => void } = $props();
 
@@ -28,9 +28,9 @@
 		return [...new Set(validDates.map((d) => d.getUTCFullYear()))].sort();
 	});
 
-	let selectedYear: number = $state(UTCMinus5NoonDate().getUTCFullYear());
-	let selectedMon: number = $state(UTCMinus5NoonDate().getUTCMonth());
-	let selectedDay: number = $state(UTCMinus5NoonDate().getUTCDate());
+	let selectedYear: number = $state(todayDate.getUTCFullYear());
+	let selectedMon: number = $state(todayDate.getUTCMonth());
+	let selectedDay: number = $state(todayDate.getUTCDate());
 	let daysInSelectedMonth = $derived(daysInMonth(selectedYear, selectedMon));
 
 	$effect(() => {
@@ -42,7 +42,7 @@
 		onDateSelect?.(selectedDate());
 	});
 
-	export const selectedDate = () =>  parseUTCMinus5Date(`${selectedYear}-${selectedMon+1}-${selectedDay}`);// new Date(Date.UTC(selectedYear, selectedMon, selectedDay));
+	export const selectedDate = () =>  parseUTC1700Date(`${selectedYear}-${selectedMon+1}-${selectedDay}`);// new Date(Date.UTC(selectedYear, selectedMon, selectedDay));
 
 	const monthThreeLetterNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 </script>

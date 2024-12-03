@@ -2,25 +2,25 @@
 import { sitesTables } from "$src/appstate/data/datasets.svelte";
 import type ColumnTable from "arquero/dist/types/table/column-table";
 import type { Site } from "../types/site";
-import { UTCMinus5NoonDate } from '../utils/dates';
+import { todayDate } from "$src/lib/utils/date";
 
-export function sitesEarliestDate(sites: Site[]): Date {
-	const tables = sites.map((s) => sitesTables.get(s.id)).filter((t) => t);
-	const firstDates = tables.map((t) => t?.get('date')).filter((d) => d) as Date[];
-	if (firstDates.length === 0) return UTCMinus5NoonDate(0);
-	return UTCMinus5NoonDate(Math.min(...firstDates.map((d) => d.valueOf())));
-}
+// export function sitesEarliestDate(sites: Site[]): Date {
+// 	const tables = sites.map((s) => sitesTables.get(s.id)).filter((t) => t);
+// 	const firstDates = tables.map((t) => t?.get('date')).filter((d) => d) as Date[];
+// 	if (firstDates.length === 0) return minDate;
+// 	return new Date(Math.min(...firstDates.map((d) => d.valueOf())));
+// }
 
 
 export function sitesLatestDate(sites: Site[]): Date {
 	// if usgs assume realtime latest date, this prevents needless reactions to latestDate
 	// after slow loading USGS datasets become available
-	if (sites.find(s => s.dataset == 'usgs')) return UTCMinus5NoonDate();
+	if (sites.find(s => s.dataset == 'usgs')) return todayDate;
 
 	const tables = sites.map((s) => sitesTables.get(s.id)).filter((t) => t);
 	const lastDates = tables.map((t) => t?.get('date', t.numRows() - 1)).filter((d) => d) as Date[];
-	if (lastDates.length === 0) return UTCMinus5NoonDate();
-	return UTCMinus5NoonDate(Math.max(...lastDates.map((d) => d.valueOf())));
+	if (lastDates.length === 0) return todayDate;
+	return new Date(Math.max(...lastDates.map((d) => d.valueOf())));
 }
 
 

@@ -1,13 +1,20 @@
+// each day is 17:00 UTC
+export const defaultDate = new Date(Date.UTC(2020, 0, 1, 17));
+export const minDate = new Date(Date.UTC(1970, 0, 1, 17));
+const localNow = new Date();
+export const todayDate = new Date(Date.UTC(localNow.getUTCFullYear(), localNow.getUTCMonth(), localNow.getUTCDate(), 17));
 
+
+
+// matches either 'MM/DD/YYYY' or 'YYYY-MM-DD'
 const mmddyyyyRe = /^\d\d?\/\d\d?\/\d{4}.*$/;
 const yyyymmddRe = /^\d{4}-\d\d?-\d\d?.*$/;
 
-// matches either 'MM/DD/YYYY' or 'YYYY-MM-DD'
 // anything after the match is ignored
-// failed matches is replaced with '2020-01-01'
+// failed matches is replaced with '2000-01-01'
 // returns 17:00 in UTC which is noon in EST, or 13:00 in EDT
-export function parseUTCMinus5Date(str: string): Date {
-	let year = 2020;
+export function parseUTC1700Date(str: string): Date {
+	let year = 2000;
 	let month = 1;
 	let day = 1;
 	if(str.match(mmddyyyyRe)) {
@@ -26,19 +33,8 @@ export function parseUTCMinus5Date(str: string): Date {
 }
 
 
-// always returns YYYY-MM-DDT12:00:00 (US/Eastern - UST or EDT)
-// export function UTCMinus5NoonDate(date?: Date | string | number | undefined): Date {
-// 	if (typeof date === 'string') {
-// 		date = parseUTCMinus5Date(date);
-// 	};
-// 	if (typeof date === 'number') date = new Date(date);
-// 	if (!date || isNaN(date.valueOf())) date = new Date();
-// 	// return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
-// 	return parseUTCMinus5Date(date.toISOString());
-// }
-
 const w = window as any;
-w['parseTzDate'] = parseUTCMinus5Date;
+w['parseTzDate'] = parseUTC1700Date;
 
 const shortMon = (date: Date): string => date.toLocaleString('default', { month: 'short' });
 export function fmtMonDY(date: Date | undefined): string {

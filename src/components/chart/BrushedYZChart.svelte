@@ -12,7 +12,7 @@
 	import Line from "$src/components/chart/layercake/Line.svelte";
 	import Scatter from "$src/components/chart/layercake/Scatter.svelte";
 	import { isNumber } from "$src/lib/utils";
-	import { fmtDateDMonY, UTCMinus5NoonDate } from '$src/lib/utils/dates';
+	import { fmtDateDMonY } from '$src/lib/utils/date';
 	import { formatChartDate, formatChartTTKey, formatChatTTValue, genXDateTicks, genYTicks } from "$src/lib/utils/chart";
 	import type ColumnTable from "arquero/dist/types/table/column-table";
 
@@ -94,7 +94,7 @@
 	// 	console.log('dateHovered', dateHovered);
 	// });
 	const formatTooltipTitle = (d: number) => {
-		const date = UTCMinus5NoonDate(d);
+		const date = new Date(d);
 		if (dateHovered?.valueOf() !== date.valueOf()) {
 			dateHovered = date;
 		}

@@ -3,7 +3,7 @@ import type ColumnTable from 'arquero/dist/types/table/column-table';
 
 import type { SitesDataStats, VariableStats } from "$lib/types/analysis";
 import type { Site } from "$lib/types/site";
-import { fmtDateDMonY, UTCMinus5NoonDate } from '../utils/dates';
+import { fmtDateDMonY } from '../utils/date';
 import { sitesTables } from '$src/appstate/data/datasets.svelte';
 import { concatTablesAllColumns } from './tableHelpers';
 import { isCategoricalVar, variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
@@ -90,8 +90,6 @@ export function allVarsDailyMedians(tables: ColumnTable[]): ColumnTable {
 		}
 	});
 
-
-
 	return rollupDailies(groupedTable, rollup);
 }
 
@@ -109,7 +107,8 @@ export function varDailyMedian(tables: ColumnTable[], varname: string): ColumnTa
 }
 
 function rollupDailies(table: ColumnTable, rollup: any) {
-	const ru = table.rollup(rollup).derive({ 'date': aq.escape((r: any) => UTCMinus5NoonDate(r.date)) }).orderby('date').reify();
+	// const ru = table.rollup(rollup).derive({ 'date': aq.escape((r: any) => new Date(r.date)) }).orderby('date').reify();
+	const ru = table.rollup(rollup).orderby('date').reify();
 
 	// console.log('rolledUp', ru.objects());
 	return ru;

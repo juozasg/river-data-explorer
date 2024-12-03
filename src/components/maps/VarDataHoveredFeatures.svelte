@@ -8,7 +8,7 @@
 	import { siteGetBeforeDate } from "$src/lib/data/tableHelpers";
 	import type { Site } from "$src/lib/types/site";
 	import { regionIdLabel } from '$src/lib/utils/regions';
-	import { fmtDateDMonY } from '$src/lib/utils/dates';
+	import { fmtDateDMonY } from '$src/lib/utils/date';
 	import { queryMouseMoveHover } from "$src/lib/utils/maplibre";
 	import { varlabel, varstdmax, varstdmin, varunits } from "$src/lib/utils/varHelpers";
 	import TooltipSiteStats from "../tooltips/TooltipContentSiteStats.svelte";

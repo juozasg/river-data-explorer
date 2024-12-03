@@ -12,7 +12,7 @@ import type ColumnTable from 'arquero/dist/types/table/column-table';
 import { sitesTables } from '$src/appstate/data/datasets.svelte';
 import type { Site } from '../types/site';
 import { varcategories } from '../utils/varHelpers';
-import { dateEqualYMD } from '../utils/dates';
+import { dateEqualYMD } from '../utils/date';
 import { mean, median } from '../utils';
 
 export function tablesUniqueColumns(tables: ColumnTable[]): string[] {
