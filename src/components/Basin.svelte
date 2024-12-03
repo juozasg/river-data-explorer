@@ -72,8 +72,7 @@
 			mapHeight = "calc(100vh - 5rem)";
 			const feature = regionFeatures.get("huc8", "04050001");
 			setTimeout(() => {
-				// TODO: reenable
-				// if (feature) fitFeatureBounds(varDataMap?.mlmMap()!, feature);
+				if (feature) fitFeatureBounds(varDataMap?.mlmMap()!, feature);
 			}, 300);
 		}
 	});
