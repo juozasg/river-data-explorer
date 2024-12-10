@@ -41,9 +41,12 @@ export const tooltip = {
 };
 
 export function toggleHideTooltipsKeydown(e: KeyboardEvent) {
+
 	if(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
 		return;
 	}
+
+	console.log('toggleHideTooltipsKeydown', e.key, _tooltip?.isToggleable());
 
 	if(e.key === 't' && _tooltip?.isToggleable()) {
 		tooltip.toggledHidden = !tooltip.toggledHidden;

@@ -55,12 +55,16 @@
 			// tooltip.style.top = y + 'px';
 			// console.log('top', tooltip.style.top);
 		}
+		console.log('SHOWING TOOLTIP', x, y, showToggleHint, content);
+
 	};
 
 	export const hide = () => {
 		if(tooltipElement) {
 			tooltipElement.style.display = 'none';
 		}
+		console.log('HIDING TOOLTIP');
+
 	};
 
 	// let content = $state('a<b>a</b>a');
@@ -73,7 +77,6 @@
 
 
 <div bind:this={tooltipElement} class="hover-tooltip" style="pointer-events: none;">
-	<!-- {@render tooltipContent()} -->
 	 {#if content}
 		{@render content()}
 		{#if showToggleHint}
