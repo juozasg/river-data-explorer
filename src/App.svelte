@@ -11,11 +11,11 @@
 
 	import { onMount } from "svelte";
 	import { loadAppData, type DataManifest } from "./lib/data/loaders/loadAppData";
-	import { routeTestComponent } from "./test/routeTestComponent";
 	import { copyMouseLocationData } from "./lib/copyMouseLocationData";
 	import { toggleHideTooltipsKeydown, tooltip } from "./appstate/ui/tooltips.svelte";
 	import WebsiteTooltip from "./components/tooltips/WebsiteTooltip.svelte";
 	import Basin from "./components/Basin.svelte";
+	import { routeTestComponent } from "./components/test-pages/routeTestComponent";
 
 	type Props = {
 		dataManifest: DataManifest;

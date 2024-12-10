@@ -26,6 +26,6 @@
 		// "rootDirs": ["..", "./types"],
 		"lib": ["esnext", "DOM", "DOM.Iterable"],
 	},
-	"include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],
+	"include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "src/tests/**/*.ts", "src/tests/**/*.js", "tests-e2e/**/*.ts", "tests-e2e/**/*.js"],
 	"references": [{ "path": "./tsconfig.vite.json" }]
 }

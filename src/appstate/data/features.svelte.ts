@@ -1,5 +1,6 @@
 import { SvelteMap } from "svelte/reactivity";
 import type ColumnTable from "arquero/dist/types/table/column-table";
+import { defineGlobal } from "$src/lib/utils";
 
 const geometriesIds = new SvelteMap<string, string>();
 const geometries = new SvelteMap<string, GeoJSON.FeatureCollection>();
@@ -12,7 +13,7 @@ export function geomFeatureName(source: string | undefined, id: string | number 
 	return feature?.properties?.name || id?.toString() || '';
 }
 
-export const regionTypes = [ 'huc8', 'huc10', 'huc12', 'state', 'county' ] as const;
+export const regionTypes = ['huc8', 'huc10', 'huc12', 'state', 'county'] as const;
 
 export type RegionType = typeof regionTypes[number];
 
@@ -78,8 +79,6 @@ export class RegionFeatures {
 
 export const regionFeatures = new RegionFeatures();
 
-if (typeof window !== 'undefined') {
-	(window as any).geometries = geometries;
-	(window as any).geometriesIds = geometriesIds;
-	(window as any).regionFeatures = regionFeatures;
-}
+defineGlobal('geometries', geometries);
+defineGlobal('geometriesIds', geometriesIds);
+defineGlobal('regionFeatures', regionFeatures);

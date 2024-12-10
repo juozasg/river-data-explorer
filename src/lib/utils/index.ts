@@ -17,6 +17,7 @@ export function seqid() {
 	return (++n).toString(36);
 }
 
+// benchmark
 export function bm(label: string, fn: () => any) {
 	const start = new Date().valueOf();
 	const r = fn();
@@ -39,4 +40,13 @@ export function median(numbers: number[]) {
 
 export function mean(numbers: number[]) {
 	return numbers.reduce((a, b) => a + b, 0) / numbers.length;
+}
+
+
+export function defineGlobal(name: string, value: any) {
+	console.log('defineGlobal', name, value);
+	if (typeof window === 'undefined') return;
+
+	const w = window as any;
+	w[name] = value;
 }

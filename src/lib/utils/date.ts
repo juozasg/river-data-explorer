@@ -1,3 +1,5 @@
+import { defineGlobal } from ".";
+
 // each day is 17:00 UTC
 export const defaultDate = new Date(Date.UTC(2020, 0, 1, 17));
 export const minDate = new Date(Date.UTC(1970, 0, 1, 17));
@@ -31,8 +33,7 @@ export function parseUTC1700Date(str: string): Date {
 	return new Date(Date.UTC(year, month - 1, day, 17));
 }
 
-const w = window as any;
-w['parseTzDate'] = parseUTC1700Date;
+defineGlobal('parseUTC1700Date', parseUTC1700Date);
 
 const shortMon = (date: Date): string => date.toLocaleString('default', { month: 'short' });
 export function fmtMonDY(date: Date | undefined): string {
