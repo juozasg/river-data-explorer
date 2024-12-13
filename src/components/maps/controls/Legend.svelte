@@ -59,7 +59,7 @@
 </pre> -->
 
 <div class="map-control" bind:clientWidth={legendWidth}>
-	<div class="legend">
+	<div class="legend" aria-label="Legend">
 		<img class="legend-bar" src={dataUrl} alt="legend color bar"/>
 
 		<div class="legend-labels">

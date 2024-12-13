@@ -47,7 +47,7 @@
 </script>
 
 {#if validDates.length > 0}
-	<div class="map-control">
+	<div class="map-control" aria-label="Time Selector">
 		<DateSliderInput {validDates} onDateSelect={onRangeDateSelect} bind:this={dateSliderInput} />
 		<DateYMDSelects {validDates} onDateSelect={onYmdDateSelect} bind:this={ymdSelects} />
 	</div>

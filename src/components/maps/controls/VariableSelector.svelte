@@ -23,7 +23,7 @@
 	// });
 </script>
 
-<div class="map-control" {onmouseleave}>
+<div class="map-control" {onmouseleave} aria-label="Variable Selector">
 	<div class="invisible-hover-target"></div>
 
 	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->

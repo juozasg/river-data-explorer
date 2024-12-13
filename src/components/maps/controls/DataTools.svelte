@@ -49,7 +49,7 @@
 	};
 </script>
 
-<div class="map-control" {onmouseleave}>
+<div class="map-control" {onmouseleave} aria-label="Data Controls">
 	<div class="invisible-hover-target"></div>
 
 	<details {open} class="dropdown mainmenu">
