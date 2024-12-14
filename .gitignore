@@ -1,3 +1,4 @@
+
 # Logs
 logs
 *.log
@@ -27,7 +28,7 @@ public/data
 *.njsproj
 *.sln
 *.sw?
-/test-results/
+tests-e2e/output
 /playwright-report/
 /blob-report/
 /playwright/.cache/
