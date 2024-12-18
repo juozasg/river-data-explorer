@@ -15,11 +15,12 @@ test('has a map with controls', async ({ page }) => {
   await expect(page.getByLabel('Legend'), 'has map legend').toBeVisible();
   await expect(page.getByLabel('Variable Selector'), 'has map variable selector').toBeVisible();
   await expect(page.getByLabel('Data Controls'), 'has map data control').toBeVisible();
-  // expect(page.getByLabel('Time Selector'), 'has datetime controls').toBeVisible();
+  await expect(page.getByLabel('Time Selector'), 'has datetime controls').toBeVisible();
+
+});
+
+
 
   // expect(page.locator('body')).toHaveText(/Hello world x1!/);
-
   // await page.locator('#incbtn').click();
-
   // expect(page.locator('body')).toHaveText(/Hello world x2!/);
-});

@@ -7,6 +7,9 @@
 	let { validDates, vardate = $bindable() }: { validDates: Date[]; vardate: Date } = $props();
 	const validValues = $derived((validDates || []).map((d) => d.valueOf()));
 
+	console.log('+++ validDates', validDates.map((d) => d.toISOString()));
+
+
 	const isValidDate = (date: Date) =>
 		validValues.length > 0 && binaryClosestSearch(validValues, date.valueOf()).valueOf() === date.valueOf();
 

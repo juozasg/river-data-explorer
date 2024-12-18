@@ -63,7 +63,7 @@
 		if(tooltipElement) {
 			tooltipElement.style.display = 'none';
 		}
-		console.log('HIDING TOOLTIP');
+		// console.log('HIDING TOOLTIP');
 
 	};
 
