@@ -1,15 +1,19 @@
 <script lang="ts">
-	import * as ml from 'maplibre-gl';
+	import * as ml from "maplibre-gl";
 
-	import type { Site } from '$src/lib/types/site';
-	import { makeSiteMarker } from '$src/lib/utils/maplibre';
-	import { ghost } from '$src/lib/utils/colors';
+	import type { Site } from "$src/lib/types/site";
+	import { makeSiteMarker } from "$src/lib/utils/maplibre";
+	import { ghost, interpolateVarColor } from "$src/lib/utils/colors";
+	import { siteBeforeVardateValue } from "$src/lib/data/siteTableHelpers";
+	import { varoutsidestandard } from "$src/lib/utils/varHelpers";
 
 	type Props = {
 		map: ml.Map;
 		markerMouseEnter: (e: MouseEvent, site: Site) => void;
 		markerMouseLeave: (e: MouseEvent, site: Site) => void;
 		site: Site;
+		varname: string; // variable in map dropdown
+		vardate: Date; // date with time selector
 		emphasized?: boolean;
 		selected?: boolean;
 		isYVar?: boolean;
@@ -21,18 +25,21 @@
 		markerMouseEnter,
 		markerMouseLeave,
 		site,
+		varname,
+		vardate,
 		emphasized = false,
 		selected = false,
 		isYVar = false,
 		isZVar = false
 	}: Props = $props();
 
-	let color = $state('yellowgreen');
-	export const isGhost = () => color == ghost;
+	let color = $state("yellowgreen");
+	// export const isGhost = () => color == ghost;
 	let stdbad = $state(false);
 	let hideGhost = $state(true);
 
-
+	// TODO: make this a global layperParam
+	const ghostSitesVisible = true;
 
 	const makeMarker = (node: HTMLElement, site: Site) => {
 		return makeSiteMarker(node, map, site);
@@ -42,6 +49,40 @@
 	export const setColor = (c: string) => (color = c);
 	export const setStdBad = (bad: boolean) => (stdbad = bad);
 	export const setHideGhost = (hide: boolean) => (hideGhost = hide);
+
+	// const isGhost = () => color == ghost;
+	const isGhost = () => false;
+
+	$effect(() => {
+		// const val = siteBeforeVardateValue(site.id, varname, vardate);
+		const val = 200;
+		if (val === undefined) {
+			setColor(ghost);
+			if (ghostSitesVisible) {
+				setHideGhost(false);
+			} else {
+				setHideGhost(true);
+			}
+		}
+
+		const color = interpolateVarColor(varname, val);
+		setColor(color);
+
+		const stdbad = varoutsidestandard(varname, val);
+		// console.log('stdbad', stdbad, marker.siteId, val);
+		setStdBad(stdbad);
+		// marker.class
+	});
+	// const val = siteBeforeVardateValue(site.id, varname, vardate);
+	// if (val === undefined) {
+	// 	setColor(ghost);
+	// 	if (ghostSitesVisible) {
+	// 		setHideGhost(false);
+	// 	} else {
+	// 		setHideGhost(true);
+	// 	}
+	// 	;
+	// }
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -53,8 +94,7 @@
 	class:is-selected={selected}
 	class:emphasized
 	class:stdbad
-	use:makeMarker={site}
->
+	use:makeMarker={site}>
 	{#if isYVar}
 		<div class="y-var-site"></div>
 	{/if}
@@ -62,7 +102,7 @@
 		<div class="z-var-site"></div>
 	{/if}
 
-	<div style="--color: {color}" class="marker-box" class:ghost={isGhost()} class:hide={isGhost() && hideGhost} ></div>
+	<div style="--color: {color}" class="marker-box" class:ghost={isGhost()} class:hide={isGhost() && hideGhost}></div>
 </div>
 
 <style>
@@ -110,12 +150,12 @@
 
 	.marker.is-selected {
 		.y-var-site {
-				left: calc(2px - 70%);
-			}
+			left: calc(2px - 70%);
+		}
 
-			.z-var-site {
-				right: calc(2px - 70%);
-			}
+		.z-var-site {
+			right: calc(2px - 70%);
+		}
 	}
 
 	.marker {
@@ -151,8 +191,6 @@
 		width: 10px;
 		height: 10px;
 	}
-
-
 
 	.marker:has(.marker-box:not(.ghost)) {
 		z-index: 1;

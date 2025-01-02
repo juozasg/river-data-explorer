@@ -56,8 +56,8 @@
 	let clientWidth = $state(0);
 
 	$effect(() => {
-		setEnabledDatasets(aremove(globalSites.allDatasets, "usgs"));
-		// setEnabledDatasets(['sjrbc', 'steuben', 'usgs']);
+		// setEnabledDatasets(aremove(globalSites.allDatasets, "usgs"));
+		setEnabledDatasets(['sjrbc']);
 	});
 
 	const sites = $derived(globalSites.allEnabled);
