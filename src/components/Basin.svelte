@@ -132,23 +132,23 @@
 			dataSelection.yVar = vn;
 			dataSelection.ySite = selectedSite;
 			dataSelection.yRegion = undefined;
-			console.log("select y", vn, selectedSite);
+			// console.log("select y", vn, selectedSite);
 		} else if (axis === "z") {
 			dataSelection.zVar = vn;
 			dataSelection.zSite = selectedSite;
 			dataSelection.zRegion = undefined;
 
-			console.log("select Z", vn, selectedSite);
+			// console.log("select Z", vn, selectedSite);
 		} else {
 			// set map varname
 			// clear selection
-			console.log("clear selection", vn, selectedSite, dataSelection);
+			// console.log("clear selection", vn, selectedSite, dataSelection);
 			if (dataSelection.yVar === vn && dataSelection.ySite?.id && selectedSite?.id === dataSelection.ySite?.id) {
-				console.log("clear y");
+				// console.log("clear y");
 				dataSelection.yVar = "";
 				dataSelection.ySite = undefined;
 			} else if (dataSelection.zVar === vn && dataSelection.zSite?.id && selectedSite?.id === dataSelection.zSite?.id) {
-				console.log("clear z");
+				// console.log("clear z");
 				dataSelection.zVar = "";
 				dataSelection.zSite = undefined;
 			} else {

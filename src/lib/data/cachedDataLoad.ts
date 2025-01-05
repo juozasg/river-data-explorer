@@ -51,7 +51,7 @@ async function fetchDataWithCache(path: string) {
 	}
 
 	const response = await retryingFetch(url);
-	console.log('data fetch ', url);
+	// console.log('data fetch ', url);
 
 	if (!response.ok) throw new Error('Request failed.');
 
