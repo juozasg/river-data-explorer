@@ -18,6 +18,7 @@
 		selected?: boolean;
 		isYVar?: boolean;
 		isZVar?: boolean;
+		ghostSitesVisible?: boolean;
 	};
 
 	let {
@@ -30,59 +31,37 @@
 		emphasized = false,
 		selected = false,
 		isYVar = false,
-		isZVar = false
+		isZVar = false,
+		ghostSitesVisible = true
 	}: Props = $props();
 
 	let color = $state("yellowgreen");
 	// export const isGhost = () => color == ghost;
 	let stdbad = $state(false);
-	let hideGhost = $state(true);
-
-	// TODO: make this a global layperParam
-	const ghostSitesVisible = true;
+	let isGhost = $state(true);
 
 	const makeMarker = (node: HTMLElement, site: Site) => {
 		return makeSiteMarker(node, map, site);
 	};
 
 	export const siteId = site.id;
-	export const setColor = (c: string) => (color = c);
-	export const setStdBad = (bad: boolean) => (stdbad = bad);
-	export const setHideGhost = (hide: boolean) => (hideGhost = hide);
-
-	// const isGhost = () => color == ghost;
-	const isGhost = () => false;
 
 	$effect(() => {
-		// const val = siteBeforeVardateValue(site.id, varname, vardate);
-		const val = 200;
+		const val = siteBeforeVardateValue(site.id, varname, vardate);
+		// console.log('marker val', val, site.id, varname, vardate);
+
+		// const val = 200;
 		if (val === undefined) {
-			setColor(ghost);
-			if (ghostSitesVisible) {
-				setHideGhost(false);
-			} else {
-				setHideGhost(true);
-			}
+			isGhost = true;
+			color = ghost;
+			stdbad = false;
+		} else {
+			isGhost = false;
+
+			color = interpolateVarColor(varname, val);
+			stdbad = varoutsidestandard(varname, val);
 		}
-
-		const color = interpolateVarColor(varname, val);
-		setColor(color);
-
-		const stdbad = varoutsidestandard(varname, val);
-		// console.log('stdbad', stdbad, marker.siteId, val);
-		setStdBad(stdbad);
-		// marker.class
 	});
-	// const val = siteBeforeVardateValue(site.id, varname, vardate);
-	// if (val === undefined) {
-	// 	setColor(ghost);
-	// 	if (ghostSitesVisible) {
-	// 		setHideGhost(false);
-	// 	} else {
-	// 		setHideGhost(true);
-	// 	}
-	// 	;
-	// }
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -102,7 +81,8 @@
 		<div class="z-var-site"></div>
 	{/if}
 
-	<div style="--color: {color}" class="marker-box" class:ghost={isGhost()} class:hide={isGhost() && hideGhost}></div>
+	<div style="--color: {color}" class="marker-box" class:ghost={isGhost} class:hide={isGhost && !ghostSitesVisible}>
+	</div>
 </div>
 
 <style>

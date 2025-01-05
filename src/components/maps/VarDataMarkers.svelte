@@ -1,12 +1,8 @@
 <script lang="ts">
 	import * as ml from "maplibre-gl";
 
-		import { siteBeforeVardateValue } from "$src/lib/data/siteTableHelpers";
 	import type { Site } from "$src/lib/types/site";
 	import Marker from "./Marker.svelte";
-	import { untrack } from "svelte";
-	import { ghost, interpolateVarColor } from "$src/lib/utils/colors";
-	import { varoutsidestandard } from "$src/lib/utils/varHelpers";
 
 	type Props = {
 		sites: Site[];
@@ -41,12 +37,11 @@
 	const markerMouseLeave = (e: MouseEvent, site: Site) => {
 		hoveredSite = undefined;
 	};
-
-
 </script>
 
 {#if mlMap}
 	{#each sites as site (site.id)}
+		<!-- {#if site.id === 'steuben-1'} -->
 		<Marker
 			map={mlMap}
 			{markerMouseEnter}
@@ -54,9 +49,11 @@
 			{site}
 			{varname}
 			{vardate}
+			{ghostSitesVisible}
 			selected={selectedSite && site.id == selectedSite?.id}
 			emphasized={emphasizedSites.some((s) => s.id == site.id)}
 			isYVar={site.id == yVarSite?.id}
 			isZVar={site.id == zVarSite?.id} />
+		<!-- {/if} -->
 	{/each}
 {/if}

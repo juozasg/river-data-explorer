@@ -14,10 +14,10 @@
 	import { defaultLayersParams, setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
 	import { type MapLayersParams } from "$src/lib/types/mapControls";
 	import type { Site } from "$src/lib/types/site";
-	import { aremove } from "$src/lib/utils/arrays";
 	import { todayDate } from "$src/lib/utils/date";
 	import { onMount } from "svelte";
 	import VarDataHoveredFeatures from "./VarDataHoveredFeatures.svelte";
+	import { aremove } from "$src/lib/utils/arrays";
 
 	type Props = {
 		dataSelection: DataSelectionState;
@@ -56,8 +56,8 @@
 	let clientWidth = $state(0);
 
 	$effect(() => {
-		// setEnabledDatasets(aremove(globalSites.allDatasets, "usgs"));
-		setEnabledDatasets(['sjrbc']);
+		setEnabledDatasets(aremove(globalSites.allDatasets, "usgs"));
+		// setEnabledDatasets(['sjrbc']);
 	});
 
 	const sites = $derived(globalSites.allEnabled);
