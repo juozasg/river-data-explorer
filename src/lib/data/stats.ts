@@ -107,8 +107,8 @@ export function varDailyMedian(tables: ColumnTable[], varname: string): ColumnTa
 }
 
 function rollupDailies(table: ColumnTable, rollup: any) {
-	// const ru = table.rollup(rollup).derive({ 'date': aq.escape((r: any) => new Date(r.date)) }).orderby('date').reify();
-	const ru = table.rollup(rollup).orderby('date').reify();
+	// rollu turns Date objects into numbers. restore them
+	const ru = table.rollup(rollup).derive({ 'date': aq.escape((r: any) => new Date(r.date)) }).orderby('date').reify();
 
 	// console.log('rolledUp', ru.objects());
 	return ru;
@@ -138,9 +138,6 @@ export function variableStats(variable: string, table: ColumnTable, { errorLabel
 		const lastObservation = tsTable.get('var', numObservations - 1);
 
 		const stats: any = isCategoricalVar(variable) ? emptyStringStats : calculateVarStats(tsTable)
-
-		// console.log('variable stats')
-
 
 		return {
 			varname: variable,
