@@ -21,4 +21,5 @@ done
 
 
 # Run Playwright tests
+yarn playwright install
 CI=true yarn run playwright test --fully-parallel --workers 4
