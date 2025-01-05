@@ -183,14 +183,14 @@
 			.close {
 				margin-left: 0.3rem;
 				:global(path) {
-					stroke: var(--color-lightGrey);
+					stroke: var(--font-color);
 				}
 			}
 			.close:hover {
 				cursor: pointer;
 				/* background-color: var(--color-hover); */
 				:global(path) {
-					stroke: var(--font-color);
+					stroke: var(--color-primary);
 				}
 			}
 		}
