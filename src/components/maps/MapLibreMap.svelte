@@ -49,8 +49,7 @@
 
 	$effect(() => {
 		if (!mlMap) return;
-		console.log('layers regionType', layersParams.regionType);
-		const regionType = layersParams.regionType;
+		// console.log('layers regionType', layersParams.regionType);
 		selectRegionTypeLayers(mlMap, layersParams.regionType);
 	});
 

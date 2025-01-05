@@ -55,7 +55,7 @@
 			// tooltip.style.top = y + 'px';
 			// console.log('top', tooltip.style.top);
 		}
-		console.log('SHOWING TOOLTIP', x, y, showToggleHint, content);
+		// console.log('SHOWING TOOLTIP', x, y, showToggleHint, content);
 
 	};
 

@@ -35,7 +35,7 @@
 		varDataMap?.setDate(d);
 	};
 	const onMapClick = (map: ml.Map, p: ml.PointLike, site?: Site, region?: RegionFeature, river?: RegionFeature) => {
-		console.log("map clicked", map, p, site, region, river);
+		// console.log("map clicked", map, p, site, region, river);
 
 		// clicking a site in another region will select that region
 		// only if no region is already selected

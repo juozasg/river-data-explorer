@@ -33,7 +33,7 @@ export function parseUTC1700Date(str: string): Date {
 	return new Date(Date.UTC(year, month - 1, day, 17));
 }
 
-defineGlobal('parseUTC1700Date', parseUTC1700Date);
+// defineGlobal('parseUTC1700Date', parseUTC1700Date);
 
 const shortMon = (date: Date): string => date.toLocaleString('default', { month: 'short' });
 export function fmtMonDY(date: Date | undefined): string {

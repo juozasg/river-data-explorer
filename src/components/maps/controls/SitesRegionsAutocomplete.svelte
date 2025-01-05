@@ -18,7 +18,7 @@
 	);
 
 	onMount(() => {
-		console.log("autocomplete mounted", containerDiv, inputElement);
+		// console.log("autocomplete mounted", containerDiv, inputElement);
 		const selectOnFocus = () => inputElement?.select()
 		inputElement?.addEventListener(`focus`, selectOnFocus);
 
@@ -39,10 +39,10 @@
 		// console.log("Mouse enter", e);
 		inputElement?.click();
 	};
-	$inspect('autocomplete selected site', selectedSite);
+	// $inspect('autocomplete selected site', selectedSite);
 
 	$effect(() => {
-		console.log("autocomplete selected item", selectedSite);
+		// console.log("autocomplete selected item", selectedSite);
 		selectedSite;
 		untrack(() => {
 			if (onSearchItemSelect && selectedSite) {
