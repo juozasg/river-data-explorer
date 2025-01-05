@@ -41,15 +41,52 @@ export function tooltipText(varname: string): string {
 	}
 }
 
+
+export function tableGetBeforeDate(table: ColumnTable, varname: string, date?: Date): number | Date | undefined {
+	if (!table.columnNames().includes(varname)) return undefined;
+
+	const renamedTable = table.select(['date', varname]).rename({ [varname]: 'var' })
+
+	let filteredTable = renamedTable
+	.filter(d => aq.op.is_nan(d!.var) == false)
+	.filter(aq.escape((d: any) => d!.var !== undefined && d!.var !== null && d!.var !== ''))
+	.rename({ 'var': varname })
+	.reify();
+
+	if(filteredTable.numRows() === 0) return undefined;
+	let timeIndex = table.numRows() - 1;
+	if (date) {
+		const earliestDate = filteredTable.get('date', 0);
+		if(date < earliestDate) return undefined;
+
+		timeIndex = tableIndexBeforeDate(filteredTable, date);
+	}
+	// timeIndex = date ? tableIndexBeforeDate(filteredTable, date) : table.numRows() - 1;
+	// console.log('tableGetBeforeDate', varname, fmtDate(date), 'index', timeIndex);
+	if (timeIndex === -1) return undefined;
+	try {
+		// console.log('at index', table.object(timeIndex));
+		return filteredTable.get(varname, timeIndex);
+	} catch (e) {
+		console.error('varValueBeforeDate', e);
+		return undefined;
+	}
+}
+
 // tested and works, could be written better tho
 // TODO: rewrite using binarySearch function
 export function tableIndexBeforeDate(table: ColumnTable, date: Date, fromIndex = 0, toIndex?: number): number {
 	if (table.numRows() === 0) return -1;
+	if (toIndex === -1) return -1;
+	if (fromIndex < 0 || fromIndex >= table.numRows()) return -1;
 	if (toIndex === undefined) toIndex = table.numRows() - 1;
 	if (fromIndex === toIndex) return table.get('date', fromIndex) <= date ? fromIndex : -1;
 
 	const midIndex = Math.floor((fromIndex + toIndex) / 2);
-	if (midIndex === toIndex) return midIndex;
+	// if (midIndex === toIndex) {
+	// 	console.log('midIndex === toIndex', date, midIndex, toIndex, table.objects());
+	// 	return midIndex;
+	// }
 
 	const midDate = table.get('date', midIndex);
 	// console.log('mid', midIndex, fmtDate(midDate))
@@ -66,31 +103,6 @@ export function tableIndexBeforeDate(table: ColumnTable, date: Date, fromIndex =
 	}
 }
 
-
-export function tableGetBeforeDate(table: ColumnTable, varname: string, date?: Date): number | Date | undefined {
-	if (!table.columnNames().includes(varname)) return undefined;
-
-	const renamedTable = table.select(['date', varname]).rename({ [varname]: 'var' })
-
-	let filteredTable = renamedTable
-	.filter(d => aq.op.is_nan(d!.var) == false)
-	.filter(aq.escape((d: any) => d!.var !== undefined && d!.var !== null && d!.var !== ''))
-	.rename({ 'var': varname })
-	.reify();
-
-	if(filteredTable.numRows() === 0) return undefined;
-
-	let timeIndex = date ? tableIndexBeforeDate(filteredTable, date) : table.numRows() - 1;
-	// console.log('tableGetBeforeDate', varname, fmtDate(date), 'index', timeIndex);
-	if (timeIndex === -1) return undefined;
-	try {
-		// console.log('at index', table.object(timeIndex));
-		return filteredTable.get(varname, timeIndex);
-	} catch (e) {
-		console.error('varValueBeforeDate', e);
-		return undefined;
-	}
-}
 
 
 export function siteGetBeforeDate(site: Site, varname: string, date?: Date): number | Date | undefined {

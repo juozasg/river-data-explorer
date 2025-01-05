@@ -15,6 +15,7 @@ dist-ssr
 static
 public/data
 .svelte-kit
+coverage
 
 # Editor directories and files
 .vscode/*

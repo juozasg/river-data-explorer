@@ -19,6 +19,7 @@ export function aremove(arr: any[] | undefined, ...elements: any[]): any[] {
 	return arr;
 }
 
+// closest date in a sorted array
 export function binaryClosestTo(target: Date, dates: Date[]): Date | undefined {
 	if (!dates.length) return undefined;
 	if (dates.length === 1) return dates[0];
@@ -27,6 +28,7 @@ export function binaryClosestTo(target: Date, dates: Date[]): Date | undefined {
 	return new Date(binaryClosestSearch(dateVals, target.valueOf()));
 }
 
+// binary search for closest value index in sorted array
 export function binaryClosestSearch(arr: number[], target: number, lo = 0, hi = arr.length - 1): number {
 	if (target < arr[lo]) { return arr[lo]; }
 	if (target > arr[hi]) { return arr[hi]; }

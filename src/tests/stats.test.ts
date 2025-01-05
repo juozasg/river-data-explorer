@@ -1,15 +1,3 @@
-// variableStats error TypeError: date.getUTCDate is not a function
-//     at fmtDateDMonY (date.ts:47:17)
-//     at variableStats (stats.ts:136:25)
-//     at stats.ts:72:28
-//     at Array.map (<anonymous>)
-//     at allVariableStats (stats.ts:72:19)
-//     at RegionStatsPanel.svelte:39:10
-//     at update_reaction (chunk-4SPJZ4HE.js?v=0bc54715:1886:23)
-//     at execute_derived (chunk-4SPJZ4HE.js?v=0bc54715:1205:15)
-//     at update_derived (chunk-4SPJZ4HE.js?v=0bc54715:1213:15)
-//     at Module.get (chunk-4SPJZ4HE.js?v=0bc54715:2259:7) sjrbc-23, sjrbc-24, sjrbc-25, sjrbc-26, sjrbc-27, sjrbc-28, sjrbc-29, sjrbc-30, sjrbc-31, sjrbc-32, sjrbc-33, sjrbc-34
-
 import * as aq from "arquero";
 import { variableStats } from "$src/lib/data/stats";
 import { describe, it, expect } from "vitest";
