@@ -1,6 +1,7 @@
 /* fancy slider */
 input.date-slider-range {
-	--c: var(--color-primary);  /* active color */
+	// --c: var(--color-primary);  /* active color */
+	--c: #830002;  /* active color */
 	--l: 5px; /* line thickness*/
 	--h: 29px; /* thumb height */
 	--w: 5px; /* thumb width */
