@@ -4,6 +4,19 @@ import App from './App.svelte'
 
 import { load as yamlLoad } from "js-yaml";
 
+
+async function logVersion() {
+	try {
+		const r = await fetch('/data/versions.txt');
+		const version = await r.text();
+		console.log('RIVER DATA EXPLORER VERSION')
+		console.log(version);
+	} catch (e) {
+		console.error('Failed to load version', e);
+	}
+}
+
+
 export const loadManifests = async () => {
 	let dataManifest: any;
 	let variablesMetadata: any;
@@ -20,6 +33,7 @@ export const loadManifests = async () => {
 };
 
 const initApp = async () => {
+	logVersion();
 	const { dataManifest, variablesMetadata } = await loadManifests();
 
 	const appElement = document.getElementById('app')!;

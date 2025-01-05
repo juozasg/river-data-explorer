@@ -1,23 +1,35 @@
 #!/bin/bash
 set -e
-
+REPO="juozasg/SJRBC-web-map-data"
 rm -rf tmp
 mkdir -p tmp
 cd tmp
 if [[ $1 = "--local" ]]; then
 	cp -r ../../SJRBC-web-map-data data
-	cd data
-	rm -rf .git
+	rm -rf data/.git
+	echo "Data: local" > data/versions.txt
 else
-	curl -L https://github.com/juozasg/SJRBC-web-map-data/archive/refs/heads/main.zip -o data.zip
+	curl -L "https://github.com/$REPO/archive/refs/heads/main.zip" -o data.zip
 	unzip data.zip
 	mv SJRBC-web-map-data-main data
-	cd data
+
+	# get the latest commit hash
+	json=$(curl -s "https://api.github.com/repos/$REPO/branches/main")
+	sha=$(echo "$json" | jq -r '.commit.sha' | cut -c1-8)
+	echo "Data: $sha" > data/versions.txt
 fi
 
 
-find * -type f -exec sha1sum {} \; > sha1.txt
+# Record app version
+version=$(jq -r '.version' ../package.json)
+sha=$(git rev-parse --short=8 HEAD)
+echo "App: $version $sha" >> data/versions.txt
 
+
+cd data
+
+# Create manifest
+find * -type f -exec sha1sum {} \; > sha1.txt
 
 last_line=$(wc -l < sha1.txt)
 current_line=0
