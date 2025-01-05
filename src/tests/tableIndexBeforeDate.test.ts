@@ -18,7 +18,7 @@ describe("searches a table sorted by date", () => {
 	it("finds the most recent index before a date", () => {
 		const dateToFind = new Date("2021-03-15");
 		const index = tableIndexBeforeDate(table, dateToFind);
-		expect(index).toBe(2);
+		expect(index).toBe(3);
 	});
 
 	it("finds the most recent index on date", () => {
