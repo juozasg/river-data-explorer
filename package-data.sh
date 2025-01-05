@@ -23,7 +23,9 @@ fi
 # Record app version
 version=$(jq -r '.version' ../package.json)
 sha=$(git rev-parse --short=8 HEAD)
+date=$(date -u )
 echo "App: $version $sha" >> data/versions.txt
+echo "Packaged: $date" >> data/versions.txt
 
 
 cd data
@@ -53,3 +55,4 @@ cat data-manifest.json
 cd ../..
 rm -rf public/data
 mv tmp/data public/data
+rm -rf tmp
