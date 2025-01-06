@@ -26,7 +26,6 @@ export function concatTablesAllColumns(tables: (ColumnTable | undefined)[]): Col
 	if (nonEmptyTables.length === 0) return aq.table([]);
 
 	const columns = tablesUniqueColumns(nonEmptyTables);
-	const t0 = emptyTable(columns); // initial table determines result columns
 
 	const tablesObjects = nonEmptyTables.map(t => t.objects()).flat();
 	return aq.from(tablesObjects, columns);
