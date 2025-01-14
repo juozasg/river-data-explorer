@@ -14,12 +14,10 @@ export function tablesUniqueColumns(tables: ColumnTable[]): string[] {
 	return Array.from(new Set(cols));
 }
 
-
 export function emptyTable(columnNames: string[]): ColumnTable {
 	const data = columnNames.map(name => [name, []]);
 	return aq.table(data);
 }
-
 
 export function concatTablesAllColumns(tables: (ColumnTable | undefined)[]): ColumnTable {
 	let nonEmptyTables = tables.filter(t => t && t.numRows() > 0) as ColumnTable[];

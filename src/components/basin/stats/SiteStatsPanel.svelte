@@ -58,31 +58,14 @@
 		<th>To</th>
 
 		{#snippet row(r: VariableStats)}
-			<TdStatsVariableLabel
+			<!-- <TdStatsVariableLabel
 				ySelected={dataSelection.yVar === r.varname && dataSelection.ySite && dataSelection.ySite.id == site.id}
 				zSelected={dataSelection.zVar === r.varname && dataSelection.zSite && dataSelection.zSite.id == site.id}
 				yHinted={!!r.varname && dataSelection.yVar === r.varname}
 				zHinted={!!r.varname && dataSelection.zVar === r.varname}
 				varname={r.varname}
-				onclick={() => onVarClicked(r.varname)}>
-				<!-- {hoverColor} -->
-				{r.label}
-				{varunits(r.varname, true)}
-				<div class="graph-buttons">
-					<a
-						class="graph-button y"
-						onclick={(e) => {
-							if (r.numObservations > 0) onVarClicked(r.varname, "y");
-							e.stopPropagation();
-						}}>Y</a>
-					<a
-						class="graph-button z"
-						onclick={(e) => {
-							if (r.numObservations > 0) onVarClicked(r.varname, "z");
-							e.stopPropagation();
-						}}>Z</a>
-				</div>
-			</TdStatsVariableLabel>
+				{onVarClicked}/>
+
 			{#key r.varname}
 				<td><VarValueStandards v={r.varname} value={r.lastObservation} /></td>
 				<td>{r.numObservations}</td>
@@ -93,7 +76,7 @@
 				<td class="stat">{fmtVarNum(r.varname, r.stdDev)}</td>
 				<td class="date">{r.dateFromLabel}</td>
 				<td class="date">{r.dateToLabel}</td>
-			{/key}
+			{/key} -->
 		{/snippet}
 	</StatsDataTable>
 </div>

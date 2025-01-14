@@ -7,7 +7,6 @@
 	import { regionEqual, type RegionFeature } from "$src/appstate/data/features.svelte";
 	import { Sites, sites } from "$src/appstate/sites.svelte";
 	import { allVariableStats, allVarsDailyMedians, sitesDataStats } from "$src/lib/data/stats";
-	import { concatTablesAllColumns } from "$src/lib/data/siteTableHelpers";
 	import type { VariableStats } from "$src/lib/types/analysis";
 	import { fmtVarNum, varunits } from "$src/lib/utils/varHelpers";
 	import type ColumnTable from "arquero/dist/types/table/column-table";
@@ -20,10 +19,12 @@
 		region: RegionFeature;
 		dataSelection: DataSelectionState;
 
-		onVarClicked: (name: string, axis?: "y" | "z") => void;
+		// onVarClicked: (name: string, axis?: "y" | "z") => void;
+		varLabelClick: (name: string) => void;
+		varGraphButtonClick: (name: string, axis: "y" | "z") => void;
 	};
 
-	let { onVarClicked, region, dataSelection }: Props = $props();
+	let { varLabelClick, varGraphButtonClick, region, dataSelection }: Props = $props();
 
 	// const sitesInRegion = $derived(sites.allEnabled.filter((s) => s.huc10 === region?.id));
 	const sitesInRegion = $derived(Sites.forRegionFeature(sites.allEnabled, region));
@@ -80,31 +81,9 @@
 				yHinted={!!r.varname && dataSelection.yVar === r.varname}
 				zHinted={!!r.varname && dataSelection.zVar === r.varname}
 				varname={r.varname}
-				onclick={() => onVarClicked(r.varname)}>
-				{r.label}
-				{varunits(r.varname, true)}
-				<span class="debug" style="display:none">
-					<!-- {JSON.stringify(r)}
-					---
-					{JSON.stringify(dataSelection)}
-					---
-					{region.id} {region.regionType} -->
-				</span>
-				<div class="graph-buttons">
-					<a
-						class="graph-button y"
-						onclick={(e) => {
-							if (r.numObservations > 0) onVarClicked(r.varname, "y");
-							e.stopPropagation();
-						}}>Y</a>
-					<a
-						class="graph-button z"
-						onclick={(e) => {
-							if (r.numObservations > 0) onVarClicked(r.varname, "z");
-							e.stopPropagation();
-						}}>Z</a>
-				</div>
-			</TdStatsVariableLabel>
+				onclick={() => varLabelClick(r.varname)}
+				canBeGraphed={r.numObservations > 0}
+				{varGraphButtonClick}/>
 
 			{#key r.varname}
 				<td>{r.numObservations}</td>
@@ -137,12 +116,6 @@
 
 	:global(table tr:hover .graph-buttons) {
 		display: block;
-	}
-
-	.graph-buttons {
-		/* position: relative; */
-		top: -3px;
-		/* bottom: -3px; */
 	}
 
 	p {

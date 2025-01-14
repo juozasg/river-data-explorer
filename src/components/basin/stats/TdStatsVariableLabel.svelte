@@ -4,37 +4,31 @@
 	import type { HTMLAttributes } from "svelte/elements";
 	import type { Snippet } from "svelte";
 	import TooltipVariableBrief from "../../tooltips/TooltipVariableBrief.svelte";
-	import { chartYColor, chartZColor } from "$src/lib/utils/colors";
 
 	interface Props extends HTMLAttributes<HTMLTableCellElement> {
 		ySelected?: boolean;
 		zSelected?: boolean;
 		yHinted?: boolean;
 		zHinted?: boolean;
-		children: Snippet;
+		// children: Snippet;
+		varGraphButtonClick: (name: string, axis: "y" | "z") => void;
 		varname: string;
-		hoverColor?: string;
+		canBeGraphed?: boolean;
 	}
 
 	// type Props = any;
 
 	let {
-		children,
+		// children,
 		varname,
+		varGraphButtonClick,
 		ySelected = false,
 		zSelected = false,
 		yHinted = false,
 		zHinted = false,
-		hoverColor = "#ccc",
+		canBeGraphed = true,
 		...attribs
 	}: Props = $props();
-
-	let finalHoverColor = $derived.by(() => {
-		if (ySelected) return chartYColor + "33";
-		if (zSelected) return chartZColor + "33";
-
-		return hoverColor;
-	});
 
 	let variableTooltip: TooltipVariableBrief | undefined = $state();
 </script>
@@ -42,22 +36,38 @@
 <TooltipVariableBrief bind:this={variableTooltip} />
 
 <td
-	style="--hover-color: {finalHoverColor}"
 	{...attribs}
 	class="variable-label"
 	onmouseleave={(e: MouseEvent) => variableTooltip?.mouseLeaveVariable(e)}
 	onmousemove={(e: MouseEvent) => variableTooltip?.mouseMoveVariable(e, varname)}>
 	<div class="flexblock">
-		<DataSelectionHints {ySelected} {yHinted} {zSelected} {zHinted}/>
+		<DataSelectionHints {ySelected} {yHinted} {zSelected} {zHinted} />
 
-		<div class="text-block">{@render children()}</div>
+		<div class="text-block">
+			<div class="graph-buttons" class:is-hidden={!canBeGraphed}>
+				<a
+					class={['graph-button y', {'selected': ySelected}]}
+
+					onclick={(e) => {
+						varGraphButtonClick(varname, "y");
+						e.stopPropagation();
+					}}>Y</a>
+				<a
+					class={['graph-button z', {'selected': zSelected}]}
+					onclick={(e) => {
+						varGraphButtonClick(varname, "z");
+						e.stopPropagation();
+					}}>Z</a>
+			</div>
+		</div>
 	</div>
 </td>
 
 <style>
 	.variable-label:hover {
 		cursor: pointer;
-		background-color: var(--hover-color, #ccc);
+		/* background-color: var(--hover-color, #ccc); */
+		background-color: #ccc;
 	}
 
 	.variable-label {
@@ -110,4 +120,9 @@
 			height: 100%;
 		}
 	}
+
+	.graph-buttons {
+		top: -3px;
+	}
+
 </style>

@@ -88,10 +88,21 @@
 
 	// let varname = $state("invertNarrative");
 	let varname = $state("ecoli");
+
+
+	function varLabelClick(vname: string) {
+		console.log("var clicked", varname);
+		varname = vname;
+	}
+
+	function varGraphButtonClick(varname: string, axis: "y" | "z", site?: Site, region?: RegionFeature) {
+		console.log("graph var button clicked", varname, axis);
+	}
+
 	function regionTableVarClicked(vn: string, axis?: "y" | "z") {
 		if (axis === "y") {
 			dataSelection.yVar = vn;
-			dataSelection.yRegion = selectedRegion.feature;
+			// dataSelection.yRegion = selectedRegion.feature;
 			dataSelection.ySite = undefined;
 			console.log("select y", vn, selectedRegion.feature);
 		} else if (axis === "z") {
@@ -184,7 +195,9 @@
 
 	{#if selectedRegion.feature}
 		<div class="region-table">
-			<RegionStatsPanel {dataSelection} region={selectedRegion.feature} onVarClicked={regionTableVarClicked} />
+			<RegionStatsPanel {dataSelection} region={selectedRegion.feature} {varLabelClick}
+				varGraphButtonClick={(varname: string, axis: 'y' | 'z') => varGraphButtonClick(varname, axis, undefined, selectedRegion.feature)}
+			 />
 		</div>
 	{/if}
 	{#if selectedSite && selectedRegion.feature}
