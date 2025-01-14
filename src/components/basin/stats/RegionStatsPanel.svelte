@@ -83,7 +83,11 @@
 				varname={r.varname}
 				onclick={() => varLabelClick(r.varname)}
 				canBeGraphed={r.numObservations > 0}
-				{varGraphButtonClick}/>
+				{varGraphButtonClick}>
+				<!--  -->
+				{r.label}
+				{varunits(r.varname, true)}
+			</TdStatsVariableLabel>
 
 			{#key r.varname}
 				<td>{r.numObservations}</td>

@@ -10,16 +10,14 @@
 		zSelected?: boolean;
 		yHinted?: boolean;
 		zHinted?: boolean;
-		// children: Snippet;
+		children: Snippet;
 		varGraphButtonClick: (name: string, axis: "y" | "z") => void;
 		varname: string;
 		canBeGraphed?: boolean;
 	}
 
-	// type Props = any;
-
 	let {
-		// children,
+		children,
 		varname,
 		varGraphButtonClick,
 		ySelected = false,
@@ -44,6 +42,7 @@
 		<DataSelectionHints {ySelected} {yHinted} {zSelected} {zHinted} />
 
 		<div class="text-block">
+			{@render children()}
 			<div class="graph-buttons" class:is-hidden={!canBeGraphed}>
 				<a
 					class={['graph-button y', {'selected': ySelected}]}
@@ -83,42 +82,6 @@
 	.text-block {
 		position: relative;
 		width: 100%;
-	}
-
-	.selection-hints {
-		display: flex;
-		height: auto;
-		margin-right: 4px;
-		padding-right: 1px;
-		margin-left: -6px;
-
-		pointer-events: none;
-		/* border: 1px solid salmon; */
-
-		.y-selection {
-			background-color: #ab00d6;
-			width: 6px;
-			height: 100%;
-		}
-
-		.z-selection {
-			background-color: #00d6ab;
-			width: 6px;
-			height: 100%;
-		}
-
-		.y-hint {
-			border: 2px dashed #ab00d6;
-
-			width: 6px;
-			height: 100%;
-		}
-
-		.z-hint {
-			border: 2px dashed #00d6ab;
-			width: 6px;
-			height: 100%;
-		}
 	}
 
 	.graph-buttons {

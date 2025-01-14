@@ -1,9 +1,10 @@
 <script lang="ts">
 
-	interface Pros {
+	interface Props {
 		r: { varname: string; numObservations: number };
 		onVarClicked: (name: string, axis: "y" | "z") => void;
 	}
+
 	let { onVarClicked, r }: Props = $props();
 </script>
 
