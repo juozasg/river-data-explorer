@@ -9,7 +9,7 @@ export default defineConfig({
     tsconfigPaths() as any,
 
     svelte({
-      hot: !process.env.VITEST,
+      // hot: !process.env.VITEST,
       onwarn(warning, defaultHandler) {
         // don't warn on <marquee> elements, cos they're cool
         if (warning.code === 'a11y-distracting-elements') return;
