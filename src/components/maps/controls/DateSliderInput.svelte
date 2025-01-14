@@ -1,11 +1,10 @@
 <script lang="ts">
 	import "$src/styles/time-slider.scss";
 
-		import { binaryClosestSearch } from '$src/lib/utils/arrays';
-	import { fmtDateDMonY, parseUTC1700Date, todayDate } from '$src/lib/utils/date';
+	import { binaryClosestSearch } from "$src/lib/utils/arrays";
+	import { fmtDateDMonY, parseUTC1700Date, todayDate } from "$src/lib/utils/date";
 
 	let { validDates, onDateSelect }: { validDates: Date[]; onDateSelect: (d: Date) => void } = $props();
-
 
 	export function setDate(date: Date) {
 		// vardate = closestTo(date, validDates) || UTCDayDate();
@@ -19,7 +18,6 @@
 	const endDate = $derived(validDates[validDates.length - 1] || todayDate);
 
 	let value: number = $state(todayDate.valueOf());
-
 
 	const firstLabel = $derived(fmtDateDMonY(startDate));
 	const lastLabel = $derived(fmtDateDMonY(endDate));

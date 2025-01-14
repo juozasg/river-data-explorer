@@ -89,52 +89,9 @@
 	// let varname = $state("invertNarrative");
 	let varname = $state("ecoli");
 
-
 	function varLabelClick(vname: string) {
 		console.log("var clicked", varname);
 		varname = vname;
-	}
-
-	function varGraphButtonClick(varname: string, axis: "y" | "z", site?: Site, region?: RegionFeature) {
-		console.log("graph var button clicked", varname, axis);
-	}
-
-	function regionTableVarClicked(vn: string, axis?: "y" | "z") {
-		if (axis === "y") {
-			dataSelection.yVar = vn;
-			// dataSelection.yRegion = selectedRegion.feature;
-			dataSelection.ySite = undefined;
-			console.log("select y", vn, selectedRegion.feature);
-		} else if (axis === "z") {
-			dataSelection.zVar = vn;
-			dataSelection.zRegion = selectedRegion.feature;
-			dataSelection.zSite = undefined;
-			console.log("select Z", vn, selectedRegion.feature);
-		} else {
-			// set map varname
-			// varname = vn;
-
-			// clear selection
-			if (
-				dataSelection.yVar === vn &&
-				selectedRegion.feature &&
-				dataSelection.yRegion &&
-				regionEqual(selectedRegion.feature, dataSelection.yRegion)
-			) {
-				dataSelection.yVar = "";
-				dataSelection.yRegion = undefined;
-			} else if (
-				dataSelection.zVar === vn &&
-				selectedRegion.feature &&
-				dataSelection.zRegion &&
-				regionEqual(selectedRegion.feature, dataSelection.zRegion)
-			) {
-				dataSelection.zVar = "";
-				dataSelection.zRegion = undefined;
-			} else {
-				varname = vn;
-			}
-		}
 	}
 
 	// y, z and unselect behavior
@@ -195,9 +152,12 @@
 
 	{#if selectedRegion.feature}
 		<div class="region-table">
-			<RegionStatsPanel {dataSelection} region={selectedRegion.feature} {varLabelClick}
-				varGraphButtonClick={(varname: string, axis: 'y' | 'z') => varGraphButtonClick(varname, axis, undefined, selectedRegion.feature)}
-			 />
+			<RegionStatsPanel
+				{dataSelection}
+				region={selectedRegion.feature}
+				{varLabelClick}
+				varGraphButtonClick={(varname: string, axis: "y" | "z", clearGraph: boolean) =>
+					dataSelection.selectAxis(varname, axis, undefined, selectedRegion.feature, clearGraph)} />
 		</div>
 	{/if}
 	{#if selectedSite && selectedRegion.feature}
@@ -205,8 +165,10 @@
 			<SiteStatsPanel
 				{dataSelection}
 				site={selectedSite}
-				onVarClicked={siteTableVarClicked}
-				hoverColor={siteStatsVarHoverColor} />
+				{varLabelClick}
+				varGraphButtonClick={(varname: string, axis: "y" | "z", clearGraph: boolean) =>
+					dataSelection.selectAxis(varname, axis, selectedSite, undefined, clearGraph)} />
+				/>
 		</div>
 	{/if}
 </div>

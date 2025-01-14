@@ -14,10 +14,10 @@
 		dataSelection: DataSelectionState;
 		hoverColor?: string;
 
-		onVarClicked: (name: string, axis?: "y" | "z") => void;
-	};
+		varLabelClick: (name: string) => void;
+		varGraphButtonClick: (name: string, axis: "y" | "z", clearGraph: boolean) => void;	};
 
-	const { onVarClicked, dataSelection, site, hoverColor }: Props = $props();
+	const { varLabelClick, varGraphButtonClick, dataSelection, site, hoverColor }: Props = $props();
 
 	const table = $derived(site && sitesTables.get(site.id));
 
@@ -58,30 +58,19 @@
 		<th>To</th>
 
 		{#snippet row(r: VariableStats)}
-			<!-- <TdStatsVariableLabel
+			<TdStatsVariableLabel
 				ySelected={dataSelection.yVar === r.varname && dataSelection.ySite && dataSelection.ySite.id == site.id}
 				zSelected={dataSelection.zVar === r.varname && dataSelection.zSite && dataSelection.zSite.id == site.id}
 				yHinted={!!r.varname && dataSelection.yVar === r.varname}
 				zHinted={!!r.varname && dataSelection.zVar === r.varname}
 				varname={r.varname}
-				onclick={() => onVarClicked(r.varname)}>
+				onclick={() => varLabelClick(r.varname)}
+				canBeGraphed={r.numObservations > 0}
+				{varGraphButtonClick}>
+				<!--  -->
 				{r.label}
 				{varunits(r.varname, true)}
-				<div class="graph-buttons">
-					<a
-						class="graph-button y"
-						onclick={(e) => {
-							if (r.numObservations > 0) onVarClicked(r.varname, "y");
-							e.stopPropagation();
-						}}>Y</a>
-					<a
-						class="graph-button z"
-						onclick={(e) => {
-							if (r.numObservations > 0) onVarClicked(r.varname, "z");
-							e.stopPropagation();
-						}}>Z</a>
-				</div>
-			</TdStatsVariableLabel> -->
+			</TdStatsVariableLabel>
 			{#key r.varname}
 				<td><VarValueStandards v={r.varname} value={r.lastObservation} /></td>
 				<td>{r.numObservations}</td>
@@ -104,16 +93,6 @@
 		font-size: 90%;
 		display: flex;
 		flex-direction: column;
-	}
-
-	:global(table tr:hover .graph-buttons) {
-		display: block;
-	}
-
-	.graph-buttons {
-		/* position: relative; */
-		top: -2px;
-		/* bottom: -3px; */
 	}
 
 	h3 {

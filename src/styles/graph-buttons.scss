@@ -1,0 +1,62 @@
+
+.graph-button {
+	display: inline-block;
+	padding: 1.5px 0.25rem;
+	/* margin-left: 0.5rem; */
+	border-radius: var(--border-radius);
+	background-color: #f0f0f0;
+	color: #444;
+	font-size: 0.8rem;
+	text-align: center;
+	cursor: pointer;
+	transition: background-color 0.2s;
+}
+
+.graph-buttons {
+
+	white-space: nowrap;
+	position: absolute;
+	right: -4px;
+	top: -2.5px;
+	/* text-align: right; */
+
+	.graph-button.y {
+		display: inline-block;
+		opacity: 0;
+
+		border: 2px solid var(--color-chart-y);
+		padding-bottom: 1px;
+		padding-top: 2px;
+
+		&:hover, &.selected {
+
+			background-color: var(--color-chart-y);
+			color: white;
+			text-decoration: none;
+			opacity: 1;
+		}
+	}
+
+	.graph-button.z {
+		display: inline-block;
+		opacity: 0;
+
+		border: 2px solid var(--color-chart-z);
+		padding-bottom: 1px;
+    padding-top: 2px;
+		&:hover, &.selected {
+			display: inline-block;
+
+			background-color: var(--color-chart-z);
+			color: white;
+			text-decoration: none;
+			opacity: 1;
+		}
+	}
+}
+
+table tr:hover .graph-buttons .graph-button {
+	// display: inline-block;
+	opacity: 1;
+}
+

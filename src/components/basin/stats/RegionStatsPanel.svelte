@@ -19,9 +19,8 @@
 		region: RegionFeature;
 		dataSelection: DataSelectionState;
 
-		// onVarClicked: (name: string, axis?: "y" | "z") => void;
 		varLabelClick: (name: string) => void;
-		varGraphButtonClick: (name: string, axis: "y" | "z") => void;
+		varGraphButtonClick: (name: string, axis: "y" | "z", clearGraph: boolean) => void;
 	};
 
 	let { varLabelClick, varGraphButtonClick, region, dataSelection }: Props = $props();
@@ -116,10 +115,6 @@
 		td.date {
 			min-width: 6.2rem;
 		}
-	}
-
-	:global(table tr:hover .graph-buttons) {
-		display: block;
 	}
 
 	p {

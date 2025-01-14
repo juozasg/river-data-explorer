@@ -1,4 +1,6 @@
 <script lang="ts">
+	import "$src/styles/graph-buttons.scss";
+
 	import DataSelectionHints from "./DataSelectionHints.svelte";
 
 	import type { HTMLAttributes } from "svelte/elements";
@@ -11,7 +13,7 @@
 		yHinted?: boolean;
 		zHinted?: boolean;
 		children: Snippet;
-		varGraphButtonClick: (name: string, axis: "y" | "z") => void;
+		varGraphButtonClick: (name: string, axis: "y" | "z", clearGraph: boolean) => void;
 		varname: string;
 		canBeGraphed?: boolean;
 	}
@@ -48,13 +50,13 @@
 					class={['graph-button y', {'selected': ySelected}]}
 
 					onclick={(e) => {
-						varGraphButtonClick(varname, "y");
+						varGraphButtonClick(varname, "y", ySelected);
 						e.stopPropagation();
 					}}>Y</a>
 				<a
 					class={['graph-button z', {'selected': zSelected}]}
 					onclick={(e) => {
-						varGraphButtonClick(varname, "z");
+						varGraphButtonClick(varname, "z", zSelected);
 						e.stopPropagation();
 					}}>Z</a>
 			</div>
@@ -83,9 +85,4 @@
 		position: relative;
 		width: 100%;
 	}
-
-	.graph-buttons {
-		top: -3px;
-	}
-
 </style>
