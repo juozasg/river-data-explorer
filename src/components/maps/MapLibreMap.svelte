@@ -1,18 +1,18 @@
 <script lang="ts">
-	import * as ml from 'maplibre-gl';
-	import 'maplibre-gl/dist/maplibre-gl.css';
+	import * as ml from "maplibre-gl";
+	import "maplibre-gl/dist/maplibre-gl.css";
 
-	import { mapMouseLocation } from '$src/appstate/map/mapMouse.svelte';
-	import { tooltip } from '$src/appstate/ui/tooltips.svelte';
-	import { transformStyle } from '$src/lib/data/map/helpers/transformMapStyle';
-	import type { MapLibreMapProps } from '$src/lib/types/components';
-	import { toggleoffAttribution } from '$src/lib/utils/maplibre';
-	import { onMount } from 'svelte';
-	import { addMlmSources } from '$src/lib/data/map/mapData/mapSources';
-	import { addMapLayers } from '$src/lib/data/map/mapData/regionsMapLayers';
-	import { toggleRiverLayerVisibility } from '$src/lib/data/map/mapData/riverLayers';
-		import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
-	import { selectRegionTypeLayers } from '$src/lib/data/map/mapData/mapLayers';
+	import { mapMouseLocation } from "$src/appstate/map/mapMouse.svelte";
+	import { tooltip } from "$src/appstate/ui/tooltips.svelte";
+	import { transformStyle } from "$src/lib/data/map/helpers/transformMapStyle";
+	import type { MapLibreMapProps } from "$src/lib/types/components";
+	import { toggleoffAttribution } from "$src/lib/utils/maplibre";
+	import { onMount } from "svelte";
+	import { addMlmSources } from "$src/lib/data/map/mapData/mapSources";
+	import { addMapLayers } from "$src/lib/data/map/mapData/regionsMapLayers";
+	import { toggleRiverLayerVisibility } from "$src/lib/data/map/mapData/riverLayers";
+	import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
+	import { selectRegionTypeLayers } from "$src/lib/data/map/mapData/mapLayers";
 
 	let {
 		mlMap = $bindable(),
@@ -30,22 +30,20 @@
 
 	const arcgisServicesStyles =
 		// 'cached://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles';
-		'https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles';
-	const apiKey =
-		'AAPK3dfaa40a13c0404983142c26b566596ammsJLVROPRkVaZnrwj6bYIrYdi4FEikx7NZpYg7f5M9XlV2RFL6PgxMA_56IceHv';
+		"https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles";
+	const apiKey = "AAPK3dfaa40a13c0404983142c26b566596ammsJLVROPRkVaZnrwj6bYIrYdi4FEikx7NZpYg7f5M9XlV2RFL6PgxMA_56IceHv";
 
-	const basemapEnum = 'e20332d6d2af43ff8402bb155df01467';
+	const basemapEnum = "e20332d6d2af43ff8402bb155df01467";
 	const basemapStyles = {
 		TOPO: `${arcgisServicesStyles}/items/${basemapEnum}?token=${apiKey}`,
-		SATELLITE: `${arcgisServicesStyles}/arcgis/imagery/?token=${apiKey}`
+		SATELLITE: `${arcgisServicesStyles}/arcgis/imagery/?token=${apiKey}`,
+		HILLSHADE: `${arcgisServicesStyles}/arcgis/hillshade/dark/?token=${apiKey}`
 	};
 
 	$effect(() => {
 		if (!mlMap) return;
 		toggleRiverLayerVisibility(mlMap, layersParams.riverLayerVisible);
 	});
-
-
 
 	$effect(() => {
 		if (!mlMap) return;
@@ -78,13 +76,12 @@
 		});
 
 		// mlMap.addControl(new ml.AttributionControl(), 'bottom-right');
-		mlMap.addControl(new ml.NavigationControl(), 'bottom-right');
-		console.log('map', mlMap)
-
-
+		mlMap.addControl(new ml.ScaleControl({ maxWidth: 160, unit: "imperial" }), "top-right");
+		mlMap.addControl(new ml.NavigationControl(), "bottom-right");
+		console.log("map", mlMap);
 
 		// only fires for the initial style, not for map.setStyle
-		mlMap.once('idle', () => {
+		mlMap.once("idle", () => {
 			mlMap!.resize();
 			addMlmSources(mlMap!).then(() => {
 				addLayers(mlMap!);
@@ -93,13 +90,13 @@
 				toggleRiverLayerVisibility(mlMap!, layersParams.riverLayerVisible);
 				selectRegionTypeLayers(mlMap!, layersParams.regionType);
 
-				mlMap!.once('idle', () => (_dataLoaded = true));
+				mlMap!.once("idle", () => (_dataLoaded = true));
 			});
 		});
 
 		// global state for mouse x,y and lonlat location
 		// used for C to copy lonlat
-		mlMap.on('mousemove', (e): void => {
+		mlMap.on("mousemove", (e): void => {
 			mapMouseLocation.onMouseMove(mlMap, e);
 		});
 
@@ -119,17 +116,21 @@
 		height: var(--map-height, 100%);
 		/* width: var(--map-width, 100%); */
 		z-index: 1;
-		& :global(.maplibregl-ctrl-bottom-right  .maplibregl-ctrl-group) {
+		& :global(.maplibregl-ctrl-bottom-right .maplibregl-ctrl-group) {
 			margin-bottom: 3rem;
 		}
 
-		:global(.maplibregl-ctrl-group button+button) {
+		:global(.maplibregl-ctrl-group button + button) {
 			border-radius: 0;
 		}
 
 		:global(.maplibregl-ctrl-group:not(:empty)) {
 			box-shadow: var(--box-shadow);
 			border-radius: var(--border-radius);
+		}
+
+		:global(.maplibregl-ctrl-scale) {
+			margin-top: 48px;
 		}
 	}
 </style>

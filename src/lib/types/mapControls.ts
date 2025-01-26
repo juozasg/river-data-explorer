@@ -4,7 +4,7 @@ export type MapLayersParams = {
 	// enabledDatasets: string[]; // global state is used instead
 	riverLayerVisible: boolean;
 	ghostSitesVisible: boolean;
-	baseStyleId: 'SATELLITE' | 'TOPO';
+	baseStyleId: 'SATELLITE' | 'TOPO' | 'HILLSHADE';
 	regionType: RegionType;
 };
 

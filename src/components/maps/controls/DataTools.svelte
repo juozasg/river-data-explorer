@@ -103,6 +103,15 @@
 					checked={layersParams.baseStyleId == "SATELLITE"} />
 				Satellite
 			</label>
+			<label for="hillshade" onclick={() => (layersParams.baseStyleId = "HILLSHADE")}>
+				<input
+					type="radio"
+					id="hillshade"
+					name="basemap"
+					value="HILLSHADE"
+					checked={layersParams.baseStyleId == "HILLSHADE"} />
+				Hillshade
+			</label>
 			<hr />
 			<label for="river">
 				<input type="checkbox" id="river" bind:checked={layersParams.riverLayerVisible} />
