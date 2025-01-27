@@ -37,7 +37,7 @@
 	const basemapStyles = {
 		TOPO: `${arcgisServicesStyles}/items/${basemapEnum}?token=${apiKey}`,
 		SATELLITE: `${arcgisServicesStyles}/arcgis/imagery/?token=${apiKey}`,
-		HILLSHADE: `${arcgisServicesStyles}/arcgis/hillshade/dark/?token=${apiKey}`
+		HILLSHADE: `${arcgisServicesStyles}/arcgis/hillshade/light/?token=${apiKey}`
 	};
 
 	$effect(() => {
