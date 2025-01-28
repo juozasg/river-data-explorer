@@ -116,7 +116,7 @@
 		Click site markers to select sites
 		<!-- </div> -->
 
-		<InlineBlockIconify icon="lets-icons:expand-up" size="2rem" />
+		<!-- <InlineBlockIconify icon="lets-icons:expand-up" size="2rem" /> -->
 	</h3>
 	<!-- <div class="arrrow-icon"> -->
 	<!-- </div> -->
@@ -149,6 +149,7 @@
 
 		.z, .y {
 			margin-right: 5px;
+			opacity: 1 !important;
 		}
 
 
