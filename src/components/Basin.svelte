@@ -47,7 +47,7 @@
 	};
 
 	const onSearchItemSelect = (item: Site) => {
-		console.log("search item selected", item);
+		console.log("search item selected", $state.snapshot(item));
 		selectedSite = item;
 		if (!selectedRegion.feature) {
 			const rt = layersParams.regionType;
@@ -126,7 +126,7 @@
 	}
 </script>
 
-<div class="workflow-header">
+<!-- <div class="workflow-header"> -->
 	<BasinHeader
 		{dataSelection}
 		{selectedSite}
@@ -135,7 +135,7 @@
 		{onClickRegionType}
 		onClickClose={onHeaderClose}
 		regionType={layersParams.regionType} />
-</div>
+<!-- </div> -->
 <div class="workflow" style="width: {mapWidth}; height: {mapHeight}">
 	<VarDataMap
 		{varname}
@@ -184,14 +184,14 @@
 	>Download Datasets <InlineBlockIconify icon="uiw:github" size="0.9rem" /></a>
 
 <style>
-	.workflow-header {
-		width: calc(100vw - 3rem);
+	/* .workflow-header {
+		position: relative;
 		left: 1.5rem;
 		top: 1rem;
+		width: calc(100vw - 3rem);
 		height: 42px;
 		overflow: hidden;
-		position: relative;
-	}
+	} */
 	.workflow {
 		margin: 1rem;
 		margin-left: 1.5rem;

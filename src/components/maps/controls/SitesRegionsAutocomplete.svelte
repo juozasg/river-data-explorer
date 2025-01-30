@@ -19,14 +19,13 @@
 
 	onMount(() => {
 		// console.log("autocomplete mounted", containerDiv, inputElement);
-		const selectOnFocus = () => inputElement?.select()
+		const selectOnFocus = () => inputElement?.select();
 		inputElement?.addEventListener(`focus`, selectOnFocus);
 
 		return () => {
 			inputElement?.removeEventListener(`focus`, selectOnFocus);
 		};
 	});
-
 
 	const onmouseleave = (e: MouseEvent) => {
 		let esc = new KeyboardEvent("keydown", {
@@ -65,15 +64,16 @@
 	class="sites-regions-autocomplete"
 	{onmouseleave}
 	{onmouseenter}
-	bind:this={containerDiv}
-	style="--maxWidth: {maxWidth}">
+	bind:this={containerDiv}>
+	<!-- style="--maxWidth: {maxWidth}" -->
+	<!-- items={sites.allEnabled.sort(itemSortFunction)} -->
 	<AutoComplete
-		items={sites.allEnabled.sort(itemSortFunction)}
+		items={sites.all}
 		labelFieldName="id"
 		valueFieldName="id"
 		keywordsFunction={(s: Site) => s.name + " " + s.dataset + " " + s.num + " " + s.id + " site"}
 		bind:selectedItem={selectedSite}
-		placeholder="Search sites..."
+		placeholder="Search..."
 		hideArrow={true}>
 		<div slot="item" let:item={s}>
 			<p><strong>Site</strong> <i class="siteid">{s.id}</i></p>
@@ -81,31 +81,49 @@
 			<!-- <span style="color:{item.code}">{item.code}</span> -->
 		</div>
 	</AutoComplete>
-	<div class="bgicon"><InlineBlockIconify icon="gridicons:search" size="1.5rem" /></div>
+	<!-- <div class="bgicon"><InlineBlockIconify icon="gridicons:search" size="1.5rem" /></div> -->
 </div>
 
 <style>
 	.sites-regions-autocomplete {
 		padding: 0;
 		margin: 0;
-		position: relative;
+		/* position: fixed; */
+		/* top: 0; */
+		right: 400px;
+		z-index: 1007;
 
-		.bgicon {
+		:global(& > .autocomplete) {
+			width: 200px;
+			min-width: 50px;
+			&:hover {
+				width: 500px;
+			}
+			/* max-width: 24rem; */
+			/* position: relative; */
+		}
+
+		/* .bgicon {
 			position: absolute;
 			bottom: 5px;
 			right: 10px;
 			pointer-events: none;
-			color: var(--color-lightGrey);
-		}
+			color: var(--color-darkGrey);
+		} */
 
-		:global(input.autocomplete-input) {
+		/* :global(input.autocomplete-input) {
 			padding: 0.5rem !important;
 			margin: 0 !important;
 			font-size: 1rem !important;
 			border: none !important;
-		}
 
-		:global(.autocomplete-list) {
+			&::placeholder {
+				opacity: 0.7;
+				color: var(--color-darkGrey);
+			}
+		} */
+
+		/* :global(.autocomplete-list) {
 			position: absolute;
 			width: auto;
 			max-width: calc(var(--maxWidth, 100%) - 60px);
@@ -152,6 +170,6 @@
 			width: 100%;
 			max-width: 24rem;
 			position: relative;
-		}
+		} */
 	}
 </style>

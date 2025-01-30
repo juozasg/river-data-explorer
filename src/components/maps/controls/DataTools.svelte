@@ -124,7 +124,7 @@
 			</label>
 
 			<hr />
-			<SitesRegionsAutocomplete maxWidth={maxWidth + "px"} {selectedSite} {onSearchItemSelect} />
+			<!-- <SitesRegionsAutocomplete maxWidth={maxWidth + "px"} {selectedSite} {onSearchItemSelect} /> -->
 		</div>
 	</details>
 </div>

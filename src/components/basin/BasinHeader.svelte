@@ -1,4 +1,6 @@
 <script lang="ts">
+	import SelectedRegionHeader from "./stats/SelectedRegionHeader.svelte";
+
 	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
 	import { regionEqual, type RegionFeature } from "$src/appstate/data/features.svelte";
 	import { regionIdLabel } from "$src/lib/utils/regions";
@@ -18,19 +20,17 @@
 		onSearchItemSelect?: (item: Site) => void;
 	};
 
-	const { regionFeature, onClickRegionType, regionType, onClickClose, dataSelection, selectedSite, onSearchItemSelect }: Props = $props();
+	const {
+		regionFeature,
+		onClickRegionType,
+		regionType,
+		onClickClose,
+		dataSelection,
+		selectedSite,
+		onSearchItemSelect
+	}: Props = $props();
 
-	const ySelected = $derived(
-		dataSelection && regionFeature && dataSelection.yRegion && regionEqual(dataSelection.yRegion, regionFeature)
-	);
-	const zSelected = $derived(
-		dataSelection && regionFeature && dataSelection.zRegion && regionEqual(dataSelection.zRegion, regionFeature)
-	);
-
-	// ySelected={dataSelection.yVar === r.varname && dataSelection.ySite && dataSelection.ySite.id == site.id}
-	// 			zSelected={dataSelection.zVar === r.varname && dataSelection.zSite && dataSelection.zSite.id == site.id}
-	// 			yHinted={!!r.varname && dataSelection.yVar === r.varname}
-	// 			zHinted={!!r.varname && dataSelection.zVar === r.varname}
+	const maxWidth = 300;
 </script>
 
 <div class="basin-header">
@@ -51,33 +51,22 @@
 		<a onclick={() => onClickRegionType?.("huc12")} class:bg-primary={regionType == "huc12"}>
 			Stream <small>HUC12</small>
 		</a>
-<!--
+		<SitesRegionsAutocomplete maxWidth={maxWidth + "px"} {onSearchItemSelect} />
+
+		<!-- <SitesRegionsAutocomplete maxWidth={maxWidth + "px"} {selectedSite} {onSearchItemSelect} /> -->
+
+		<!--
 		<span class="search">
 			<SitesRegionsAutocomplete maxWidth={"50vw"} {selectedSite} {onSearchItemSelect} />
 		</span> -->
 	</div>
-	{#if regionFeature}
-		<div class="selected-details">
-			<div class="label">
-				{#if dataSelection}
-					<div class="selection-hints">
-						{#if ySelected}
-							<div class="y-selection"></div>
-						{/if}
-						{#if zSelected}
-							<div class="z-selection"></div>
-						{/if}
-					</div>
-				{/if}
 
-				<div class="pill">{regionFeature.regionType}</div>
-				<strong>{regionFeature.name}</strong>
-				<small>{regionIdLabel(regionFeature)} {regionFeature.id}</small>
-			</div>
-			<div class="close" onclick={onClickClose}><InlineBlockIconify icon="lets-icons:close-ring" size="2rem" /></div>
-		</div>
+	<!-- <SitesRegionsAutocomplete maxWidth={"50vw"} {selectedSite} {onSearchItemSelect} /> -->
+
+	{#if regionFeature}
+		<SelectedRegionHeader {regionFeature} {dataSelection} {onClickClose}/>
 	{:else}
-		<div class="selected-cue">
+		<div class="select-cue">
 			<h4>
 				<InlineBlockIconify icon="lets-icons:arrow-drop-down" size="2rem" />
 				Click map region to select
@@ -87,41 +76,21 @@
 	{/if}
 </div>
 
+
 <style>
 	.basin-header {
+		position: relative;
+		left: 1.5rem;
+		top: 1rem;
+
+		width: calc(100vw - 3rem);
+		height: 42px;
+
 		padding: 0 0rem;
 		margin-bottom: 0rem;
 
 		display: flex;
 		justify-content: space-between;
-
-		.selection-hints {
-			height: 20px;
-			display: inline-block;
-			position: relative;
-			bottom: -3px;
-
-			pointer-events: none;
-
-			.y-selection {
-				display: inline-block;
-				background-color: #ab00d6;
-				width: 6px;
-				height: 100%;
-			}
-
-			.z-selection {
-				display: inline-block;
-
-				background-color: #00d6ab;
-				width: 6px;
-				height: 100%;
-			}
-		}
-
-		.pill {
-			display: inline;
-		}
 
 		.select-choices {
 			display: flex;
@@ -160,47 +129,12 @@
 			}
 		}
 
-		.selected-details {
-			display: flex;
-			.label {
-				flex-basis: content;
-				text-align: right;
-				padding-right: 0;
-				padding-left: 1rem;
-				margin-right: 0;
-				line-height: 32px;
-
-				/* display: flex; */
-				/* flex-direction: column; */
-				justify-content: right;
-				gap: 2px;
-
-				strong {
-					font-size: 1.2rem;
-				}
-			}
-
-			.close {
-				margin-left: 0.3rem;
-				:global(path) {
-					stroke: var(--font-color);
-				}
-			}
-			.close:hover {
-				cursor: pointer;
-				/* background-color: var(--color-hover); */
-				:global(path) {
-					stroke: var(--color-primary);
-				}
-			}
-		}
-
-		.selected-cue {
+		.select-cue {
 			flex-grow: 1;
 			text-align: left;
 		}
 
-		.selected-cue h4 {
+		.select-cue h4 {
 			display: inline-flex;
 			line-height: 1.8rem;
 			margin: 0;
