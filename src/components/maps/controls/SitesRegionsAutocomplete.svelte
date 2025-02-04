@@ -94,13 +94,22 @@
 		z-index: 1007;
 
 		:global(& > .autocomplete) {
-			width: 200px;
-			min-width: 50px;
+			width: 60px;
+			min-width: 60px;
 			&:hover {
-				width: 500px;
+				width: 370px;
+				position: absolute;
 			}
 			/* max-width: 24rem; */
 			/* position: relative; */
+		}
+
+		:global(.input-container) {
+			height: 2.2rem;
+			margin-top: 3px;
+			:global(input) {
+				border-radius: 3px !important;
+			}
 		}
 
 		/* .bgicon {

@@ -36,6 +36,8 @@
 <div class="basin-header">
 	<!-- <h5 class='select-label'>Select</h5> -->
 	<div class="select-choices">
+		<SitesRegionsAutocomplete maxWidth={maxWidth + "px"} {onSearchItemSelect} />
+
 		<a onclick={() => onClickRegionType?.("huc8")} class:bg-primary={regionType == "huc8"}>
 			Basin <small>HUC8</small>
 		</a>
@@ -51,7 +53,7 @@
 		<a onclick={() => onClickRegionType?.("huc12")} class:bg-primary={regionType == "huc12"}>
 			Stream <small>HUC12</small>
 		</a>
-		<SitesRegionsAutocomplete maxWidth={maxWidth + "px"} {onSearchItemSelect} />
+		<!-- <SitesRegionsAutocomplete maxWidth={maxWidth + "px"} {onSearchItemSelect} /> -->
 
 		<!-- <SitesRegionsAutocomplete maxWidth={maxWidth + "px"} {selectedSite} {onSearchItemSelect} /> -->
 
