@@ -94,7 +94,7 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div style="position: relative; height:100%" bind:clientWidth>
+<div class="map-with-controls" style="position: relative; height:100%" bind:clientWidth>
 	<DataMapControls
 		bind:this={dataMapControls}
 		{sites}

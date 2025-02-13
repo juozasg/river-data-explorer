@@ -8,11 +8,11 @@
 	import type { MapLibreMapProps } from "$src/lib/types/components";
 	import { toggleoffAttribution } from "$src/lib/utils/maplibre";
 	import { onMount } from "svelte";
-	import { addMlmSources } from "$src/lib/data/map/mapData/mapSources";
-	import { addMapLayers } from "$src/lib/data/map/mapData/regionsMapLayers";
-	import { toggleRiverLayerVisibility } from "$src/lib/data/map/mapData/riverLayers";
+	import { addMlmSources } from "$src/lib/data/map/layers/mapSources";
+	import { addMapLayers } from "$src/lib/data/map/layers/regionsMapLayers";
+	import { toggleRiverLayerVisibility } from "$src/lib/data/map/layers/riverLayers";
 	import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
-	import { selectRegionTypeLayers } from "$src/lib/data/map/mapData/mapLayers";
+	import { selectRegionTypeLayers } from "$src/lib/data/map/layers/mapLayers";
 
 	let {
 		mlMap = $bindable(),

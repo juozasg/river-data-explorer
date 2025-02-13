@@ -73,7 +73,7 @@
 		valueFieldName="id"
 		keywordsFunction={(s: Site) => s.name + " " + s.dataset + " " + s.num + " " + s.id + " site"}
 		bind:selectedItem={selectedSite}
-		placeholder="Search..."
+		placeholder=""
 		hideArrow={true}>
 		<div slot="item" let:item={s}>
 			<p><strong>Site</strong> <i class="siteid">{s.id}</i></p>
@@ -81,44 +81,43 @@
 			<!-- <span style="color:{item.code}">{item.code}</span> -->
 		</div>
 	</AutoComplete>
-	<!-- <div class="bgicon"><InlineBlockIconify icon="gridicons:search" size="1.5rem" /></div> -->
+	<div class="bgicon"><InlineBlockIconify icon="gridicons:search" size="1.5rem" /></div>
 </div>
 
 <style>
 	.sites-regions-autocomplete {
 		padding: 0;
 		margin: 0;
-		/* position: fixed; */
-		/* top: 0; */
 		right: 400px;
 		z-index: 1007;
 
 		:global(& > .autocomplete) {
-			width: 60px;
-			min-width: 60px;
+			width: 42px;
+			min-width: 42px;
 			&:hover {
 				width: 370px;
 				position: absolute;
 			}
-			/* max-width: 24rem; */
-			/* position: relative; */
 		}
 
 		:global(.input-container) {
-			height: 2.2rem;
-			margin-top: 3px;
+			height: 42px;
+			/* margin-top: 3px; */
 			:global(input) {
-				border-radius: 3px !important;
+				border-radius: 0px !important;
+				border-top-right-radius: 3px !important;
+				border-top-left-radius: 3px !important;
+				border-bottom: none !important;
 			}
 		}
 
-		/* .bgicon {
+		.bgicon {
 			position: absolute;
-			bottom: 5px;
-			right: 10px;
+			bottom: 6px;
+			left: 11px;
 			pointer-events: none;
-			color: var(--color-darkGrey);
-		} */
+			color: var(--color-primary);
+		}
 
 		/* :global(input.autocomplete-input) {
 			padding: 0.5rem !important;

@@ -80,63 +80,28 @@
 	let mapWidth = $state("calc(100vw - 3rem)");
 	let mapHeight = $state("calc(100vh - 5rem)");
 
-	// let siteStatsVarHoverColor = $derived(
-	// 	clickAssignsYAxis ? chartYColor + '33' : chartZColor + '33'
-	// );
 
 	let siteStatsVarHoverColor = chartYColor + "33";
+	const layoutType = 'mobile';
 
-	// let varname = $state("invertNarrative");
 	let varname = $state("ecoli");
 
 	function varLabelClick(vname: string) {
 		console.log("var clicked", varname);
 		varname = vname;
 	}
-
-	// y, z and unselect behavior
-	function siteTableVarClicked(vn: string, axis?: "y" | "z") {
-		if (axis === "y") {
-			dataSelection.yVar = vn;
-			dataSelection.ySite = selectedSite;
-			dataSelection.yRegion = undefined;
-			// console.log("select y", vn, selectedSite);
-		} else if (axis === "z") {
-			dataSelection.zVar = vn;
-			dataSelection.zSite = selectedSite;
-			dataSelection.zRegion = undefined;
-
-			// console.log("select Z", vn, selectedSite);
-		} else {
-			// set map varname
-			// clear selection
-			// console.log("clear selection", vn, selectedSite, dataSelection);
-			if (dataSelection.yVar === vn && dataSelection.ySite?.id && selectedSite?.id === dataSelection.ySite?.id) {
-				// console.log("clear y");
-				dataSelection.yVar = "";
-				dataSelection.ySite = undefined;
-			} else if (dataSelection.zVar === vn && dataSelection.zSite?.id && selectedSite?.id === dataSelection.zSite?.id) {
-				// console.log("clear z");
-				dataSelection.zVar = "";
-				dataSelection.zSite = undefined;
-			} else {
-				varname = vn;
-			}
-		}
-	}
 </script>
 
-<!-- <div class="workflow-header"> -->
-	<BasinHeader
-		{dataSelection}
-		{selectedSite}
-		{onSearchItemSelect}
-		regionFeature={selectedRegion.feature}
-		{onClickRegionType}
-		onClickClose={onHeaderClose}
-		regionType={layersParams.regionType} />
-<!-- </div> -->
-<div class="workflow" style="width: {mapWidth}; height: {mapHeight}">
+<BasinHeader
+	{dataSelection}
+	{selectedSite}
+	{onSearchItemSelect}
+	regionFeature={selectedRegion.feature}
+	{onClickRegionType}
+	onClickClose={onHeaderClose}
+	regionType={layersParams.regionType} />
+
+<div class={["workflow", layoutType]} style="width: {mapWidth}; height: {mapHeight}">
 	<VarDataMap
 		{varname}
 		{selectedRegion}
@@ -146,6 +111,7 @@
 		{onSearchItemSelect}
 		{layersParams}
 		bind:this={varDataMap} />
+
 	<div class="chart">
 		<BasinChart {dataSelection} {onDateSelect} />
 	</div>
@@ -168,7 +134,7 @@
 				{varLabelClick}
 				varGraphButtonClick={(varname: string, axis: "y" | "z", clearGraph: boolean) =>
 					dataSelection.selectAxis(varname, axis, selectedSite, undefined, clearGraph)} />
-				/>
+			/>
 		</div>
 	{/if}
 </div>
@@ -184,14 +150,14 @@
 	>Download Datasets <InlineBlockIconify icon="uiw:github" size="0.9rem" /></a>
 
 <style>
-	/* .workflow-header {
-		position: relative;
-		left: 1.5rem;
-		top: 1rem;
-		width: calc(100vw - 3rem);
-		height: 42px;
-		overflow: hidden;
-	} */
+
+	.workflow.mobile {
+	}
+
+	.workflow.desktop {
+		/* display: flex; */
+	}
+
 	.workflow {
 		margin: 1rem;
 		margin-left: 1.5rem;
@@ -207,8 +173,6 @@
 
 			width: calc(50vw - 2rem);
 			height: calc(50vh - 5rem);
-
-			/* border: 1px solid aqua; */
 		}
 
 		.site-table {
@@ -217,7 +181,6 @@
 			right: 1.5rem;
 			width: calc(50vw - 2rem);
 			height: calc(50vh - 1rem);
-			/* border: 1px solid  salmon; */
 		}
 	}
 

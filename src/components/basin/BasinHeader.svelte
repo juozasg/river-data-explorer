@@ -26,7 +26,6 @@
 		regionType,
 		onClickClose,
 		dataSelection,
-		selectedSite,
 		onSearchItemSelect
 	}: Props = $props();
 
@@ -34,7 +33,6 @@
 </script>
 
 <div class="basin-header">
-	<!-- <h5 class='select-label'>Select</h5> -->
 	<div class="select-choices">
 		<SitesRegionsAutocomplete maxWidth={maxWidth + "px"} {onSearchItemSelect} />
 
@@ -53,29 +51,13 @@
 		<a onclick={() => onClickRegionType?.("huc12")} class:bg-primary={regionType == "huc12"}>
 			Stream <small>HUC12</small>
 		</a>
-		<!-- <SitesRegionsAutocomplete maxWidth={maxWidth + "px"} {onSearchItemSelect} /> -->
-
-		<!-- <SitesRegionsAutocomplete maxWidth={maxWidth + "px"} {selectedSite} {onSearchItemSelect} /> -->
-
-		<!--
-		<span class="search">
-			<SitesRegionsAutocomplete maxWidth={"50vw"} {selectedSite} {onSearchItemSelect} />
-		</span> -->
 	</div>
 
-	<!-- <SitesRegionsAutocomplete maxWidth={"50vw"} {selectedSite} {onSearchItemSelect} /> -->
-
+<!--
 	{#if regionFeature}
 		<SelectedRegionHeader {regionFeature} {dataSelection} {onClickClose}/>
 	{:else}
-		<div class="select-cue">
-			<h4>
-				<InlineBlockIconify icon="lets-icons:arrow-drop-down" size="2rem" />
-				Click map region to select
-				<InlineBlockIconify icon="lets-icons:arrow-drop-down" size="2rem" />
-			</h4>
-		</div>
-	{/if}
+	{/if} -->
 </div>
 
 
@@ -100,7 +82,9 @@
 			align-items: stretch;
 			flex-grow: 0;
 			flex-shrink: 0;
-			width: 340px;
+			/* width: 360px; */
+			min-width: 360px;
+			border: 1px solid green;
 
 			& > a {
 				padding: 5px 3px;
@@ -131,15 +115,6 @@
 			}
 		}
 
-		.select-cue {
-			flex-grow: 1;
-			text-align: left;
-		}
 
-		.select-cue h4 {
-			display: inline-flex;
-			line-height: 1.8rem;
-			margin: 0;
-		}
 	}
 </style>

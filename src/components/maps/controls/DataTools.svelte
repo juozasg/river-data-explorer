@@ -103,7 +103,7 @@
 					checked={layersParams.baseStyleId == "SATELLITE"} />
 				Satellite
 			</label>
-			<!-- <label for="hillshade" onclick={() => (layersParams.baseStyleId = "HILLSHADE")}>
+			<label for="hillshade" onclick={() => (layersParams.baseStyleId = "HILLSHADE")} style="display: none;">
 				<input
 					type="radio"
 					id="hillshade"
@@ -111,7 +111,7 @@
 					value="HILLSHADE"
 					checked={layersParams.baseStyleId == "HILLSHADE"} />
 				Hillshade
-			</label> -->
+			</label>
 			<hr />
 			<label for="river">
 				<input type="checkbox" id="river" bind:checked={layersParams.riverLayerVisible} />
@@ -124,7 +124,6 @@
 			</label>
 
 			<hr />
-			<!-- <SitesRegionsAutocomplete maxWidth={maxWidth + "px"} {selectedSite} {onSearchItemSelect} /> -->
 		</div>
 	</details>
 </div>

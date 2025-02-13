@@ -67,7 +67,6 @@
 				{@const cy = dataGet(d) + (dataBandwidth ? dataBandwidth() / 2 : 0)}
 				{@const hovered = isDateHovered(d)}
 
-				<!-- {#if (min != null && dataGet(d) < min) || (max != null && dataGet(d) > max)} -->
 				{#if (typeof max == "number" && value(d) > max) || (typeof min == "number" && value(d) < min)}
 					<circle {cx} {cy} r={r + 1} fill="none" stroke={badcolor} stroke-width={strokeWidth + 2} />
 				{/if}
