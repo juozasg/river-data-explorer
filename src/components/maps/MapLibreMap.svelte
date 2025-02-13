@@ -76,7 +76,7 @@
 		});
 
 		// mlMap.addControl(new ml.AttributionControl(), 'bottom-right');
-		mlMap.addControl(new ml.ScaleControl({ maxWidth: 160, unit: "imperial" }), "top-right");
+		mlMap.addControl(new ml.ScaleControl({ maxWidth: 160, unit: "imperial" }), "bottom-left");
 		mlMap.addControl(new ml.NavigationControl(), "bottom-right");
 		console.log("map", mlMap);
 
@@ -130,7 +130,7 @@
 		}
 
 		:global(.maplibregl-ctrl-scale) {
-			margin-top: 48px;
+			margin-bottom: 44px;
 		}
 	}
 </style>

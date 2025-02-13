@@ -25,10 +25,10 @@ function addLayersRegionType(map: ml.Map, regionType: string): void {
 			'fill-opacity': [
 				'case',
 				['boolean', ['feature-state', 'hover'], false],
-				0.6,
+				0.2,
 				['boolean', ['feature-state', 'selected'], false],
 				0.8,
-				0.3
+				0.1
 			]
 		}
 	});
