@@ -53,11 +53,11 @@
 		</a>
 	</div>
 
-<!--
+
 	{#if regionFeature}
 		<SelectedRegionHeader {regionFeature} {dataSelection} {onClickClose}/>
 	{:else}
-	{/if} -->
+	{/if}
 </div>
 
 
