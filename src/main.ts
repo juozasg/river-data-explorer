@@ -19,11 +19,11 @@ logVersion();
 const appElement = document.getElementById('app')!;
 
 new Navigo("/")
+	.on("/test/:name", function (match: any) {
+		mount(TestApp, { target: appElement, props: { testName: match.data.name } });
+	})
 	.on("/test", function () {
 		mount(TestApp, { target: appElement, props: {} });
-	})
-	.on("/test/:name", function (match: any) {
-		mount(TestApp, { target: appElement, props: { testName: match.name } });
 	})
 	.on("*", function () {
 		mount(App, { target: appElement, props: {} });
