@@ -64,6 +64,7 @@
 		"js-yaml": "^4.1.0",
 		"layercake": "^8.3.4",
 		"maplibre-gl": "^3.6.2",
+		"navigo": "^8.11.1",
 		"sass": "^1.69.5",
 		"snarkdown": "^2.0.0",
 		"sprintf": "^0.1.5"

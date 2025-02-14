@@ -15,7 +15,6 @@
 	import { toggleHideTooltipsKeydown, tooltip } from "./appstate/ui/tooltips.svelte";
 	import WebsiteTooltip from "./components/tooltips/WebsiteTooltip.svelte";
 	import Basin from "./components/Basin.svelte";
-	import { routeTestComponent } from "./components/test-pages/routeTestComponent";
 
 	type Props = {
 		dataManifest: DataManifest;
@@ -25,17 +24,21 @@
 
 	let websiteTooltip = $state<WebsiteTooltip>();
 
+
+
+
+
 	Object.assign(globalVariablesMetadata, variablesMetadata);
 	loadAppData(dataManifest);
 
-	const pathname = window.location.pathname;
+	// const pathname = window.location.pathname;
 
-	let MainComponent: any = $state(Basin);
-	if (pathname === "/") {
-		MainComponent = Basin;
-	} else {
-		MainComponent = routeTestComponent(pathname.replace("/test/", ""));
-	}
+	// let MainComponent: any = $state(Basin);
+	// if (pathname === "/") {
+	// 	MainComponent = Basin;
+	// } else {
+	// 	MainComponent = routeTestComponent(pathname.replace("/test/", ""));
+	// }
 
 	onMount(() => {
 		document.body.addEventListener("keydown", copyMouseLocationData);
@@ -59,7 +62,7 @@
 <WebsiteTooltip bind:this={websiteTooltip} />
 
 <main>
-	<MainComponent />
+	<Basin />
 </main>
 
 <style>

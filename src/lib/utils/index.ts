@@ -44,7 +44,7 @@ export function mean(numbers: number[]) {
 
 
 export function defineGlobal(name: string, value: any) {
-	console.log('[DEBUG]', name, value);
+	console.log('[debug]', name, '=', value);
 	if (typeof window === 'undefined') return;
 
 	const w = window as any;

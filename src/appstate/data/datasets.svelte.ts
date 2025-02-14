@@ -10,6 +10,7 @@ import type ColumnTable from 'arquero/dist/types/table/column-table';
 import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import { sites } from '../sites.svelte';
 import { parseUTC1700Date } from '$src/lib/utils/date';
+import { defineGlobal } from '$src/lib/utils';
 
 export type SiteId = string;
 export const sitesTables: Map<SiteId, ColumnTable> = new SvelteMap();
@@ -72,13 +73,10 @@ export async function loadDatasets() {
 		sitesTables.set(siteId, tbl);
 	});
 
-	(window as any)['aq'] = aq;
-	(window as any)['tables'] = sitesTables;
-	(window as any)['sites'] = sites;
-	// console.log('window.aq', aq);
-	console.log('window.tables', sitesTables);
+	defineGlobal('aq', aq);
+	defineGlobal('sites', sites);
+	defineGlobal('sitesTables', sitesTables);
 
-	// multi site stats same as this but s1tbl.concat(s2tbl).orderby('date') -- for all sites using reduce
 	finishedLoading();
 }
 

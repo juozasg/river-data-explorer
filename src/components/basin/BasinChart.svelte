@@ -100,11 +100,11 @@
 		)
 	);
 
-	$effect(() => {
-		console.log("yParams", yParams);
-		console.log("zParams", zParams);
-		console.log("yzTable", yzTable?.objects());
-	});
+	// $effect(() => {
+	// 	console.log("yParams", yParams);
+	// 	console.log("zParams", zParams);
+	// 	console.log("yzTable", yzTable?.objects());
+	// });
 </script>
 
 {#if yzTable && yParams && zParams}

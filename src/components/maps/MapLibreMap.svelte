@@ -13,6 +13,7 @@
 	import { toggleRiverLayerVisibility } from "$src/lib/data/map/layers/riverLayers";
 	import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
 	import { selectRegionTypeLayers } from "$src/lib/data/map/layers/mapLayers";
+	import { defineGlobal } from "$src/lib/utils";
 
 	let {
 		mlMap = $bindable(),
@@ -78,7 +79,7 @@
 		// mlMap.addControl(new ml.AttributionControl(), 'bottom-right');
 		mlMap.addControl(new ml.ScaleControl({ maxWidth: 160, unit: "imperial" }), "bottom-left");
 		mlMap.addControl(new ml.NavigationControl(), "bottom-right");
-		console.log("map", mlMap);
+		defineGlobal('mlMap', mlMap);
 
 		// only fires for the initial style, not for map.setStyle
 		mlMap.once("idle", () => {
