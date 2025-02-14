@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { type MapLayersParams } from "$src/lib/types/mapControls";
 	import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
-	import MapLibreMap from "../maps/MapLibreMap.svelte";
+	import MapLibreMap from "../mlmap/MapLibreMap.svelte";
 
 	// export let layersParams = {
 	// 	baseStyleId: 'TOPO',

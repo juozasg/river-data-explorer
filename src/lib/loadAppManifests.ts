@@ -1,6 +1,6 @@
 import jsyaml from 'js-yaml';
 
-export const loadManifests = async () => {
+export const loadAppManifests = async () => {
 	let dataManifest: any;
 	let variablesMetadata: any;
 

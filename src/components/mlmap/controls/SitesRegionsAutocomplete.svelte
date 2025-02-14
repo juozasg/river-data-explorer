@@ -4,7 +4,7 @@
 	import { sites } from "$src/appstate/sites.svelte";
 	import type { Site } from "$src/lib/types/site";
 	import { onMount, untrack } from "svelte";
-	import InlineBlockIconify from "./InlineBlockIconify.svelte";
+	import InlineBlockIconify from "../../icons/InlineBlockIconify.svelte";
 
 	let {
 		maxWidth = "100%",

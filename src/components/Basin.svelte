@@ -1,14 +1,14 @@
 <script lang="ts">
 	import * as ml from "maplibre-gl";
 	import { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
-	import { regionEqual, regionFeatures, type RegionFeature, type RegionType } from "$src/appstate/data/features.svelte";
+	import { regionFeatures, type RegionFeature, type RegionType } from "$src/appstate/data/features.svelte";
 	import { MapFeatureSelectionState, toggleSelectedFeatureState } from "$src/appstate/map/featureState.svelte";
 	import BasinChart from "$src/components/basin/BasinChart.svelte";
 	import BasinHeader from "$src/components/basin/BasinHeader.svelte";
 	import RegionStatsPanel from "$src/components/basin/stats/RegionStatsPanel.svelte";
 	import SiteStatsPanel from "$src/components/basin/stats/SiteStatsPanel.svelte";
-	import InlineBlockIconify from "$src/components/maps/controls/InlineBlockIconify.svelte";
-	import VarDataMap from "$src/components/maps/VarDataMap.svelte";
+	import InlineBlockIconify from "$src/components/icons/InlineBlockIconify.svelte";
+	import VarDataMap from "$src/components/mlmap/VarDataMap.svelte";
 	import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
 	import type { Site } from "$src/lib/types/site";
 	import { chartYColor } from "$src/lib/utils/colors";

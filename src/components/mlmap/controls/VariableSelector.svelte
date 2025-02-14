@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { variablesMetadata } from "$src/appstate/variablesMetadata.svelte";
+	import InlineBlockIconify from "$src/components/icons/InlineBlockIconify.svelte";
 	import DetailsOpenIcon from "$src/components/icons/DetailsOpenIcon.svelte";
-		import { aremove } from '$src/lib/utils/arrays';
+	import { aremove } from "$src/lib/utils/arrays";
 	import { varlabel, varlabelabbrev } from "$src/lib/utils/varHelpers";
-	import InlineBlockIconify from "./InlineBlockIconify.svelte";
 
 	const varnames = aremove(Object.keys(variablesMetadata), "default");
 	let { varname = $bindable("ecoli"), small = false }: { varname: string; small?: boolean } = $props();

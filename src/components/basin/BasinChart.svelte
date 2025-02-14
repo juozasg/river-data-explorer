@@ -8,7 +8,7 @@
 	import type { Site } from "$src/lib/types/site";
 	import { varChartDomain, YZChartParams } from "$src/lib/utils/YZChartParams";
 	import BrushedYzChart from "../chart/BrushedYZChart.svelte";
-	import InlineBlockIconify from "../maps/controls/InlineBlockIconify.svelte";
+	import InlineBlockIconify from "../icons/InlineBlockIconify.svelte";
 
 	type Props = {
 		dataSelection: DataSelectionState;

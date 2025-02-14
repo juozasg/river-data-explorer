@@ -3,11 +3,9 @@
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 
 <script lang="ts">
-	import InlineBlockIconify from "./InlineBlockIconify.svelte";
+	import InlineBlockIconify from "../../icons/InlineBlockIconify.svelte";
 
 	import "$src/styles/map-controls.scss";
-
-	import SitesRegionsAutocomplete from "./SitesRegionsAutocomplete.svelte";
 
 	// import ArrowDropRight from '$src/components/icons/ArrowDropRight.svelte';
 	import { sites } from "$src/appstate/sites.svelte";

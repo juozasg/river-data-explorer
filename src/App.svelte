@@ -1,13 +1,12 @@
 <script lang="ts">
+	import AppLoadError from "./components/AppLoadError.svelte";
+
 	import "$src/styles/kbd.scss";
 	import "$src/styles/variables.scss";
 	import "$src/styles/app.scss";
 	import { SvelteToast } from "@zerodevx/svelte-toast";
 
-	import {
-		variablesMetadata as globalVariablesMetadata,
-		type VariablesMetadata
-	} from "$src/appstate/variablesMetadata.svelte";
+	import { variablesMetadata, type VariablesMetadata } from "$src/appstate/variablesMetadata.svelte";
 
 	import { onMount } from "svelte";
 	import { loadAppData, type DataManifest } from "./lib/data/loaders/loadAppData";
@@ -15,30 +14,25 @@
 	import { toggleHideTooltipsKeydown, tooltip } from "./appstate/ui/tooltips.svelte";
 	import WebsiteTooltip from "./components/tooltips/WebsiteTooltip.svelte";
 	import Basin from "./components/Basin.svelte";
+	import { loadAppManifests } from "./lib/loadAppManifests";
 
-	type Props = {
-		dataManifest: DataManifest;
-		variablesMetadata: VariablesMetadata;
-	};
-	const { dataManifest, variablesMetadata }: Props = $props();
 
 	let websiteTooltip = $state<WebsiteTooltip>();
 
+	let loadState: "loading" | "loaded" | "error" = $state("loading");
 
-
-
-
-	Object.assign(globalVariablesMetadata, variablesMetadata);
-	loadAppData(dataManifest);
-
-	// const pathname = window.location.pathname;
-
-	// let MainComponent: any = $state(Basin);
-	// if (pathname === "/") {
-	// 	MainComponent = Basin;
-	// } else {
-	// 	MainComponent = routeTestComponent(pathname.replace("/test/", ""));
-	// }
+	onMount(async () => {
+		console.log("App mounted! Loading manifests and data...");
+		try {
+			const { dataManifest: manifest, variablesMetadata: metadata } = await loadAppManifests();
+			Object.assign(variablesMetadata, metadata);
+			loadAppData(manifest);
+			loadState = "loaded";
+		} catch (e) {
+			console.error("Error loading app", e);
+			loadState = "error";
+		}
+	});
 
 	onMount(() => {
 		document.body.addEventListener("keydown", copyMouseLocationData);
@@ -52,18 +46,19 @@
 	$effect(() => {
 		if (websiteTooltip) tooltip.component = websiteTooltip;
 	});
-
-	onMount(async () => {
-		console.log("APP MOUNTED");
-	});
 </script>
 
-<SvelteToast />
-<WebsiteTooltip bind:this={websiteTooltip} />
-
-<main>
-	<Basin />
-</main>
+{#if loadState === "loaded"}
+	<SvelteToast />
+	<WebsiteTooltip bind:this={websiteTooltip} />
+	<main>
+		<Basin />
+	</main>
+{:else if loadState === "loading"}
+	<div class="loading">...</div>
+{:else if loadState === "error"}
+	<AppLoadError />
+{/if}
 
 <style>
 	:global(.u-high) {
