@@ -1,8 +1,7 @@
 import Navigo from 'navigo';
 import { mount } from 'svelte'
 import App from './App.svelte'
-
-import { loadAppManifests } from './lib/loadAppManifests';
+import TestApp from './components/test-pages/TestApp.svelte';
 
 async function logVersion() {
 	try {
@@ -15,12 +14,21 @@ async function logVersion() {
 	}
 }
 
-const initApp = async () => {
-	logVersion();
-	const appElement = document.getElementById('app')!;
-	mount(App, { target: appElement, props: {  } });
-}
+logVersion();
 
-initApp();
+const appElement = document.getElementById('app')!;
+
+new Navigo("/")
+	.on("/test", function () {
+		mount(TestApp, { target: appElement, props: {} });
+	})
+	.on("/test/:name", function (match: any) {
+		mount(TestApp, { target: appElement, props: { testName: match.name } });
+	})
+	.on("*", function () {
+		mount(App, { target: appElement, props: {} });
+	})
+	.resolve();
+
 
 export default {}
