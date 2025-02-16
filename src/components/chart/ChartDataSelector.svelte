@@ -1,12 +1,10 @@
 <script lang="ts">
+	import type { Site } from "$lib/types/site";
+	import { sites, Sites } from "$src/appstate/sites.svelte";
+	import { aremove } from "$src/lib/utils/arrays";
+	import { chartYColor, chartZDarker } from "$src/lib/utils/colors";
 
-
-	import type { Site } from '$lib/types/site';
-	import { sites, Sites } from '$src/appstate/sites.svelte';
-		import { aremove } from '$src/lib/utils/arrays';
-	import { chartYColor, chartZDarker } from '$src/lib/utils/chart';
-
-		let dataset: string = $state('steuben');
+	let dataset: string = $state("steuben");
 	let datasetNum: number = $state(8);
 
 	$effect(() => {
@@ -18,21 +16,18 @@
 	// let zVar: string = $state('bodPercent');
 
 	// const { table, yParams, zParams }: {table: ColumnTable, yParams: YZChartParams, zParams: YZChartParams}  = $props()
-	let { table,
-		yVar = $bindable('bod'),
-		zVar = $bindable('bodPercent'),
-		tableName = $bindable(),
-			// datasetNum = $bindable(1),
-	 }: any  = $props()
+	let {
+		table,
+		yVar = $bindable("bod"),
+		zVar = $bindable("bodPercent"),
+		tableName = $bindable()
+		// datasetNum = $bindable(1),
+	}: any = $props();
 
-
-
-	const availableVars = $derived(aremove(table?.columnNames(), 'invertNarrative', 'date') || []);
-	const availableDatasetSites = $derived(Sites.groupedBy(sites.withDataTables(), 'dataset'));
+	const availableVars = $derived(aremove(table?.columnNames(), "invertNarrative", "date") || []);
+	const availableDatasetSites = $derived(Sites.groupedBy(sites.withDataTables(), "dataset"));
 	const availableDatasetNames = $derived([...availableDatasetSites.keys()]);
-	const availableTableNums = $derived(
-		availableDatasetSites.get(dataset)?.map((s: Site) => s.num) || []
-	);
+	const availableTableNums = $derived(availableDatasetSites.get(dataset)?.map((s: Site) => s.num) || []);
 
 	$effect(() => {
 		if (!availableVars.length) return;
@@ -41,8 +36,6 @@
 		if (!availableTableNums.includes(datasetNum)) datasetNum = availableTableNums[0];
 	});
 </script>
-
-
 
 <h4>Dataset: {dataset} Num: {datasetNum}</h4>
 <div style="display: flex">
