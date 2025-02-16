@@ -15,6 +15,7 @@
 	import WebsiteTooltip from "./components/tooltips/WebsiteTooltip.svelte";
 	import Basin from "./components/Basin.svelte";
 	import { loadAppManifests } from "./lib/loadAppManifests";
+	import Ui2Test from "./components/test-pages/fixtures/UI2-Test.svelte";
 
 
 	let websiteTooltip = $state<WebsiteTooltip>();
@@ -49,11 +50,9 @@
 </script>
 
 {#if loadState === "loaded"}
-	<SvelteToast />
-	<WebsiteTooltip bind:this={websiteTooltip} />
-	<main>
-		<Basin />
-	</main>
+	<!-- <SvelteToast /> -->
+	<!-- <WebsiteTooltip bind:this={websiteTooltip} /> -->
+<Ui2Test />
 {:else if loadState === "loading"}
 	<div class="loading">...</div>
 {:else if loadState === "error"}
