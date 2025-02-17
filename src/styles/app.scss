@@ -59,7 +59,7 @@ body {
 }
 
 // reset button
-button{
+button {
 	border: none;
 	border-radius: 0;
 	outline: none;
@@ -100,4 +100,22 @@ button:focus:not(:focus-visible) {
 
 button:focus:not(:-moz-focusring) {
 	outline: none;
+}
+
+// reset input
+input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="color"]):not([type="button"]):not(
+		[type="reset"]
+	),
+select,
+textarea,
+textarea[type="text"] {
+	border: 1px solid var(--color-lightGrey);
+	border-radius: 4px;
+	display: block;
+	font-family: inherit;
+	font-size: 1em;
+	padding: unset;
+	-webkit-transition: unset;
+	transition: unset;
+	width: unset;
 }
