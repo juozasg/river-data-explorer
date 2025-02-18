@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { DataSelectionState } from "$src/appstate/data/chartDataSelection.svelte";
-ChartDataSelectionles } from "$src/appstate/data/datasets.svelte";
+	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
+	import { sitesTables } from "$src/appstate/data/datasets.svelte";
 	import type { RegionFeature } from "$src/appstate/data/features.svelte";
 	import { sites, siteTablesForRegion } from "$src/appstate/sites.svelte";
 	import { varDailyMedian } from "$src/lib/data/stats";
@@ -13,7 +13,7 @@ ChartDataSelectionles } from "$src/appstate/data/datasets.svelte";
 	type Props = {
 		dataSelection: DataSelectionState;
 
-		onDateSelect?ChartDataSelectiond;
+		onDateSelect?: (d: Date) => void;
 	};
 
 	const { dataSelection, onDateSelect }: Props = $props();

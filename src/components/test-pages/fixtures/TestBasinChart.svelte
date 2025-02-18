@@ -1,8 +1,17 @@
-<script lang="ts">ChartDataSelectionesTables } from "$src/appstate/data/datasets.svelte";
+<script lang="ts">
+	import { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
+	import { sitesTables } from "$src/appstate/data/datasets.svelte";
 	import { sites } from "$src/appstate/sites.svelte";
 	import BasinChart from "$src/components/basin/BasinChart.svelte";
 
-	const dataSelectChartDataSelectionaSelectChartDataSelectionNarrative';
+	const dataSelection: DataSelectionState = new DataSelectionState();
+
+	$effect(() => {
+		console.log('sites', sites.all.length);
+		dataSelection.ySite = sites.findById('sjrbc-1');
+		dataSelection.ySite = sites.findById('invert-1');
+		// dataSelection.yVar = 'do';
+		dataSelection.yVar = 'invertNarrative';
 		dataSelection.zSite = sites.findById('sjrbc-1');
 		// dataSelection.zVar = 'ecoli';
 		// dataSelection.zSite = sites.findById('sjrbc-2');
