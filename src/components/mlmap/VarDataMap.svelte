@@ -7,8 +7,8 @@
 	import type { MapLibreMapProps } from "$src/lib/types/components";
 	import MapLibreMap from "./MapLibreMap.svelte";
 
-	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
-	import type { RegionFeature } from "$src/appstate/data/features.svelte";
+	import type { DataSelectionState } from "$src/appstate/data/chartDataSelection.svelte";
+	impoChartDataSelectionature } from "$src/appstate/data/features.svelte";
 	import { MapFeatureSelectionState, toggleHoveredFeatureState } from "$src/appstate/map/featureState.svelte";
 	import { sites as globalSites, Sites } from "$src/appstate/sites.svelte";
 	import { defaultLayersParams, setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
@@ -22,8 +22,7 @@
 	type Props = {
 		dataSelection: DataSelectionState;
 		selectedRegion?: MapFeatureSelectionState;
-		selectedRiver?: MapFeatureSelectionState;
-		selectedSite?: Site;
+		selectedRiver?: MapChartDataSelectionselectedSite?: Site;
 		showRegionTooltip?: boolean;
 		varname?: string;
 		vardate?: Date;

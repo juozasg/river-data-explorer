@@ -1,7 +1,7 @@
 <script lang="ts">
 	// import App from "$src/App.svelte";
-	import AppMenu from "$src/components/app/AppMenu.svelte";
-	import AppPanelTabs from "$src/components/app/AppPanelTabs.svelte";
+	import AppMenu from "./AppMenu.svelte";
+	import AppPanelTabs from "./AppPanelTabs.svelte";
 
 	let clientWidth = $state(0);
 	let clientHeight = $state(0);

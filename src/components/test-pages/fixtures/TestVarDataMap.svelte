@@ -1,6 +1,4 @@
-<script lang="ts">
-	import { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
-	import { sites } from "$src/appstate/sites.svelte";
+<script lang="ts">ChartDataSelectiones } from "$src/appstate/sites.svelte";
 	import VarDataMap from "$src/components/mlmap/VarDataMap.svelte";
 	import type { Site } from "$src/lib/types/site";
 	import { onMount } from "svelte";
@@ -37,7 +35,7 @@
 			if (varDataMap?.hoveredSite()) {
 				selectedSite = varDataMap?.hoveredSite();
 			}
-		}}
+		}}ChartDataSelection
 		onSearchItemSelect={(item: Site) => {
 			console.log("TEST Search item selected", item);
 			selectedSite = item;

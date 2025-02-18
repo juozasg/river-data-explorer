@@ -13,9 +13,8 @@
 	import { copyMouseLocationData } from "./lib/copyMouseLocationData";
 	import { toggleHideTooltipsKeydown, tooltip } from "./appstate/ui/tooltips.svelte";
 	import WebsiteTooltip from "./components/tooltips/WebsiteTooltip.svelte";
-	import Basin from "./components/Basin.svelte";
 	import { loadAppManifests } from "./lib/loadAppManifests";
-	import Ui2Test from "./components/test-pages/fixtures/UI2-Test.svelte";
+	import AppLayout from "./components/app/AppLayout.svelte";
 
 
 	let websiteTooltip = $state<WebsiteTooltip>();
@@ -52,7 +51,7 @@
 {#if loadState === "loaded"}
 	<!-- <SvelteToast /> -->
 	<!-- <WebsiteTooltip bind:this={websiteTooltip} /> -->
-<Ui2Test />
+<AppLayout />
 {:else if loadState === "loading"}
 	<div class="loading">...</div>
 {:else if loadState === "error"}

@@ -5,8 +5,7 @@ export function clickOutside(node: HTMLElement, fn: () => void) {
 
 	function handleClick(e: MouseEvent) {
 		if (!node.contains(e.target as Node)) {
-			console.log('click outside on', node, e.target);
-
+			// console.log('click outside on', node, e.target);
 			fn();
 		}
 	}

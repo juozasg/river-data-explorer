@@ -1,7 +1,6 @@
 <script lang="ts">
 	import * as ml from "maplibre-gl";
-	import { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
-	import { regionFeatures, type RegionFeature, type RegionType } from "$src/appstate/data/features.svelte";
+	import { DataSelectionState } ChartDataSelectiononFeatures, type RegionFeature, type RegionType } from "$src/appstate/data/features.svelte";
 	import { MapFeatureSelectionState, toggleSelectedFeatureState } from "$src/appstate/map/featureState.svelte";
 	import BasinChart from "$src/components/basin/BasinChart.svelte";
 	import BasinHeader from "$src/components/basin/BasinHeader.svelte";
@@ -19,19 +18,10 @@
 
 	const updatedRegionSelection = (curr?: RegionFeature, u?: RegionFeature) => {
 		toggleSelectedFeatureState(varDataMap?.mlmMap(), curr, u);
-	};
-
-	const selectedRegion = new MapFeatureSelectionState(updatedRegionSelection);
-	let selectedSite = $state<Site>();
-
-	let layersParams = $state(defaultLayersParams);
-	function onClickRegionType(regionType: string) {
-		// console.log("regionType", regionType);
-		layersParams.regionType = regionType as RegionType;
-	}
+ChartDataSelection	}
 
 	const onDateSelect = (d: Date) => {
-		console.log("date selected", d);
+		ChartDataSelectionselected", d);
 		varDataMap?.setDate(d);
 	};
 	const onMapClick = (map: ml.Map, p: ml.PointLike, site?: Site, region?: RegionFeature, river?: RegionFeature) => {
