@@ -46,7 +46,7 @@ export function toggleHideTooltipsKeydown(e: KeyboardEvent) {
 		return;
 	}
 
-	console.log('toggleHideTooltipsKeydown', e.key, _tooltip?.isToggleable());
+	// console.log('toggleHideTooltipsKeydown', e.key, _tooltip?.isToggleable());
 
 	if(e.key === 't' && _tooltip?.isToggleable()) {
 		tooltip.toggledHidden = !tooltip.toggledHidden;

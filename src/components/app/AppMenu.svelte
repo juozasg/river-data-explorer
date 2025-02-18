@@ -23,7 +23,7 @@
 	</div>
 	<ul class:open>
 		<li class="search">
-			<div class="search-icon"><InlineBlockIconify icon="gridicons:search" size="28px" /></div>
+			<div class="search-icon"><InlineBlockIconify icon="fluent:search-12-filled" size="28px" /></div>
 			<input type="text"
 			onkeydown={(e) => { if(e.key === 'Escape') e.currentTarget?.blur()}}
 			placeholder={searchPlaceholder}
@@ -43,8 +43,7 @@
 		display: inline-block;
 		width: 100%;
 		height: 100%;
-
-		border: 2px greenyellow dashed;
+		/* border: 2px greenyellow dashed; */
 	}
 
 	.hamburger {
@@ -54,9 +53,10 @@
 	ul {
 		display: flex;
 		list-style: none;
+		justify-content: flex-start;
 		margin: 0;
 		padding: 0;
-		border: 1px red solid;
+		/* border: 1px red solid; */
 		/* display: inline-flex; */
 	}
 
@@ -65,9 +65,22 @@
 		display: inline-block;
 		margin: 0;
 		padding: 0;
-		border: 2px blue dotted;
+		/* border: 2px blue dotted; */
 		font-weight: bold;
+
+		a {
+			font-size: 1.1rem;
+			line-height: 40px;
+			margin-right: 1.2rem;
+			color: var(--stjoe-blue);
+
+		}
+
+		a:hover {
+			color: var(--color-darkGrey);
+		}
 	}
+
 
 	li.search {
 		padding: 0;
@@ -75,22 +88,33 @@
 		position: relative;
 		.search-icon {
 			position: absolute;
-			top: 5px;
-			left: 6px;
-			color: var(--color-lightGrey);
+			top: 6px;
+			left: 10px;
+			color: var(--stjoe-blue);
 			pointer-events: none;
 		}
 		input {
-			width: 42px !important;
+			width: 50px !important;
 			height: 36px;
-			padding-left: 42px !important;
+			padding-left: 60px !important;
 			margin: 0;
+			border: none !important;
+		}
+
+		input:hover {
+			cursor: pointer;
 		}
 	}
 
 	.app-menu.search-focused, li.search:hover {
 		.search-icon {
 			color: var(--color-darkGrey);
+		}
+	}
+
+	li.search:hover {
+		.search-icon {
+			opacity: 0.75;
 		}
 	}
 

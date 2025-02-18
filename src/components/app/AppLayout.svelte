@@ -2,6 +2,10 @@
 	// import App from "$src/App.svelte";
 	import AppMenu from "./AppMenu.svelte";
 	import AppPanelTabs from "./AppPanelTabs.svelte";
+	import PanelChart from "./PanelChart.svelte";
+	import PanelData1 from "./PanelData1.svelte";
+	import PanelData2 from "./PanelData2.svelte";
+	import PanelMap from "./PanelMap.svelte";
 
 	let clientWidth = $state(0);
 	let clientHeight = $state(0);
@@ -20,19 +24,19 @@
 	</div>
 
 	<div class="panel panel-map" class:selected={selectedPanel === 'map'}>
-		<h1>Map</h1>
+		<PanelMap />
 	</div>
 
 	<div class="panel panel-data1" class:selected={selectedPanel === 'data1'}>
-		<h1>Data 1</h1>
+		<PanelData1 />
 	</div>
 
 	<div class="panel panel-data2" class:selected={selectedPanel === 'data2'}>
-		<h1>Data 2</h1>
+		<PanelData2	/>
 	</div>
 
 	<div class="panel panel-chart" class:selected={selectedPanel === 'chart'}>
-		<h1>Chart</h1>
+		<PanelChart />
 	</div>
 </main>
 
@@ -49,7 +53,7 @@
 		height: 100vh;
 		position: absolute;
 
-		background: rgb(255, 218, 224);
+		/* background: rgb(255, 218, 224); */
 	}
 
 	.app-header {
@@ -59,7 +63,7 @@
 		left: 0;
 		width: 50%;
 		height: var(--headerHeight);
-		background: #ffbcee;
+		/* background: #ffbcee; */
 	}
 
 	.panel {
@@ -67,37 +71,31 @@
 		height: 50%;
 		/* opacity: 0.7; */
 		position: absolute;
-		h1 {
-			position: absolute;
-			top: 50%;
-			width: 100%;
-			text-align: center;
-		}
 	}
 
 	.panel-map {
 		top: var(--headerHeight);
 		left: 0;
 		height: calc(50% - var(--headerHeight));
-		background: rgb(184, 183, 255);
+		/* background: rgb(184, 183, 255); */
 	}
 
 	.panel-data1 {
 		top: 0px;
 		right: 0;
-		background: rgb(183, 255, 184);
+		/* background: rgb(183, 255, 184); */
 	}
 
 	.panel-data2 {
 		bottom: 0;
 		right: 0;
-		background: rgb(255, 184, 183);
+		/* background: rgb(255, 184, 183); */
 	}
 
 	.panel-chart {
 		bottom: 0;
 		left: 0;
-		background: rgb(255, 255, 183);
+		/* background: rgb(255, 255, 183); */
 	}
 
 	main.mobile {
