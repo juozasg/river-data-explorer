@@ -9,8 +9,6 @@
 	let searchFocused = $state(false);
 	const searchPlaceholder = $derived(mobile || searchFocused ? 'Search' : '');
 
-
-
 </script>
 
 <div
