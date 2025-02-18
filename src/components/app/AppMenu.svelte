@@ -7,8 +7,7 @@
 
 	let open = $state(false);
 	let searchFocused = $state(false);
-	const searchPlaceholder = $derived(mobile || searchFocused ? 'Search' : '');
-
+	const searchPlaceholder = $derived(mobile || searchFocused ? "Search" : "");
 </script>
 
 <div
@@ -24,15 +23,21 @@
 	<ul class:open>
 		<li class="search">
 			<div class="search-icon"><InlineBlockIconify icon="fluent:search-12-filled" size="28px" /></div>
-			<input type="text"
-			onkeydown={(e) => { if(e.key === 'Escape') e.currentTarget?.blur()}}
-			placeholder={searchPlaceholder}
-			bind:focused={searchFocused} />
+			<input
+				type="text"
+				onkeydown={(e) => {
+					if (e.key === "Escape") e.currentTarget?.blur();
+				}}
+				placeholder={searchPlaceholder}
+				bind:focused={searchFocused} />
 		</li>
 		<li><a target="_blank" href="help.html">User Guide</a></li>
 		<li>
 			<a target="_blank" href="https://github.com/Limnogirl90/SJRBC-web-map-data/tree/webapp/datasets">
 				Download Datasets
+				<span class="github-icon">
+					<InlineBlockIconify icon="uiw:github" size="20px" />
+				</span>
 			</a>
 		</li>
 	</ul>
@@ -73,14 +78,19 @@
 			line-height: 40px;
 			margin-right: 1.2rem;
 			color: var(--stjoe-blue);
-
+			white-space: nowrap;
 		}
 
 		a:hover {
 			color: var(--color-darkGrey);
 		}
-	}
 
+		a .github-icon {
+			position: relative;
+			top: 2px;
+			/* margin-left: 0.5rem; */
+		}
+	}
 
 	li.search {
 		padding: 0;
@@ -100,13 +110,10 @@
 			margin: 0;
 			border: none !important;
 		}
-
-		input:hover {
-			cursor: pointer;
-		}
 	}
 
-	.app-menu.search-focused, li.search:hover {
+	.app-menu.search-focused,
+	li.search:hover {
 		.search-icon {
 			color: var(--color-darkGrey);
 		}
@@ -115,6 +122,12 @@
 	li.search:hover {
 		.search-icon {
 			opacity: 0.75;
+		}
+	}
+
+	.app-menu:not(.search-focused) {
+		input:hover {
+			cursor: pointer;
 		}
 	}
 
@@ -135,11 +148,11 @@
 	.app-menu.mobile {
 		width: var(--headerHeight);
 
-		background: black;
+		/* background: black; */
 
 		.hamburger {
 			display: block;
-			color: white;
+			/* color: white; */
 			font-size: 1.5rem;
 		}
 
@@ -150,6 +163,8 @@
 		ul.open {
 			display: block;
 			width: calc(100vw - 2px); /* 1px border on each side */
+			position: relative;
+			top: -2px;
 		}
 
 		li {
@@ -172,6 +187,15 @@
 		li.search {
 			input {
 				width: 100% !important;
+				padding-left: 48px !important;
+			}
+
+			.search-icon {
+				/* position: absolute; */
+				/* top: 6px; */
+				left: 16px;
+				/* color: var(--stjoe-blue); */
+				/* pointer-events: none; */
 			}
 		}
 	}

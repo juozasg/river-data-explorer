@@ -28,7 +28,7 @@
 		top: 0;
 		display: inline-block;
 		height: 100%;
-		border: 2px greenyellow dashed;
+		/* border: 2px greenyellow dashed; */
 	}
 
 	ul {
@@ -38,7 +38,7 @@
 		height: 100%;
 		margin: 0;
 		padding: 0;
-		border: 1px red solid;
+		/* border: 1px red solid; */
 	}
 
 	li {
@@ -46,34 +46,37 @@
 		align-items: center;
 		justify-content: center;
 
-		width: 60px;
+		width: 70px;
 		height: 100%;
 
 		margin: 0;
 		padding: 0;
 		background: rgb(255, 255, 255);
-		border: 1px solid black;
+		/* border: 1px solid black; */
 		text-align: center;
 
 		button {
-			color: rgb(47, 47, 153);
+			color: var(--stjoe-blue);
+			height: 100%;
+			/* padding-left:÷ 4px; */
+			/* padding-right 4px; */
 			/* width: 100%; */
 			/* text-align: center; */
 		}
 
 		&:hover {
-			background: rgb(81, 95, 183);
+			background: var(--color-lightGrey);
 			button {
-				color: white;
+				color: var(--stjoe-blue);
 			}
 		}
 	}
 
 	li.selected {
-		background: rgb(81, 95, 183);
+		background:var(--stjoe-blue);
 		button {
 			color: white;
-			font-weight: 600;
+			font-weight: 500;
 		}
 	}
 </style>
