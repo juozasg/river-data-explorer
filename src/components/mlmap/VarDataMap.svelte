@@ -16,7 +16,7 @@
 	import type { Site } from "$src/lib/types/site";
 	import { todayDate } from "$src/lib/utils/date";
 	import { onMount } from "svelte";
-	import VarDataHoveredFeatures from "./VarDataHoveredFeatures.svelte";
+	import MapTooltip from "./MapTooltip.svelte";
 	import { aremove } from "$src/lib/utils/arrays";
 
 	type Props = {
@@ -109,7 +109,7 @@
 </div>
 
 {#if mlMap}
-	<VarDataHoveredFeatures
+	<MapTooltip
 		{selectedRegion}
 		{showRegionTooltip}
 		{mlMap}
