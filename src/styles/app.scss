@@ -118,4 +118,9 @@ textarea[type="text"] {
 	-webkit-transition: unset;
 	transition: unset;
 	width: unset;
+
+	&:focus {
+		-webkit-box-shadow: none;
+		box-shadow: none;
+	}
 }

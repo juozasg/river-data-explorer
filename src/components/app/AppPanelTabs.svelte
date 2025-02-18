@@ -58,6 +58,7 @@
 		button {
 			color: var(--stjoe-blue);
 			height: 100%;
+			width: 100%;
 			/* padding-left:÷ 4px; */
 			/* padding-right 4px; */
 			/* width: 100%; */

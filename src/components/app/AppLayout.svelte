@@ -52,8 +52,6 @@
 		width: 100vw;
 		height: 100vh;
 		position: absolute;
-
-		/* background: rgb(255, 218, 224); */
 	}
 
 	.app-header {
