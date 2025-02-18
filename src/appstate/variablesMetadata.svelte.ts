@@ -5,8 +5,7 @@ import { SvelteMap } from 'svelte/reactivity';
 export type VariableName = string;
 export type VariablesMetadata = Record<VariableName, {[key: string]: any}>;
 
-// not reactive - instead set by load() in layout.ts to be globally available
-// its loaded in during static site build
+// not reactive - instead set by initial load of variables.yaml
 export const variablesMetadata: VariablesMetadata = {};
 
 export const variablesBriefMarkdown = new SvelteMap<string, string>();
