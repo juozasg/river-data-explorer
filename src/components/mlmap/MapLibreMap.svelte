@@ -58,6 +58,8 @@
 		return _dataLoaded;
 	};
 
+	export const mlmMap = () => mlMap;
+
 	$effect(() => {
 		if (!mlMap) return;
 
@@ -85,7 +87,7 @@
 		mlMap.once("idle", () => {
 			mlMap!.resize();
 			addMlmSources(mlMap!).then(() => {
-				addLayers(mlMap!);
+				// addLayers(mlMap!);
 				const style = basemapStyles[layersParams.baseStyleId];
 				mlMap!.setStyle(style, { transformStyle }); // force transformStyle to reorder layers
 				toggleRiverLayerVisibility(mlMap!, layersParams.riverLayerVisible);

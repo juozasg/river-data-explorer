@@ -3,9 +3,9 @@
 
 	let { open = $bindable() }: { open: boolean } = $props();
 
-	$effect(() => {
-		console.log("open", open);
-	});
+	// $effect(() => {
+	// 	console.log("open", open);
+	// });
 </script>
 
 <button onclick={() => (open = !open)} aria-label="Hamburger Menu">

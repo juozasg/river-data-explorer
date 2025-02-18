@@ -15,7 +15,6 @@ export const transformStyle = (previousStyle: ml.StyleSpecification | any, nextS
 
 	// TODO: caching works but doesnt offer much speedup
 	// replaceUrlsWithCached(nextStyle);
-
 	const [labelLayers, nonLabelLayers] = partition(nextStyle.layers, (l: any) =>
 			l.id.match(/label/) || l.id.match(/place/i) || l.id.match(/city/i));
 
