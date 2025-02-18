@@ -3,8 +3,6 @@ import type { RegionFeature } from '../data/features.svelte';
 import type { Site } from '$src/lib/types/site';
 
 
-
-
 export type FeatureSelectionChangeFn = (current: RegionFeature | undefined, updated: RegionFeature | undefined) => void;
 
 export class MapFeatureSelectionState {

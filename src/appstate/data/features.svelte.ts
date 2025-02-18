@@ -13,7 +13,7 @@ export function geomFeatureName(source: string | undefined, id: string | number 
 	return feature?.properties?.name || id?.toString() || '';
 }
 
-export const regionTypes = ['huc8', 'huc10', 'huc12', 'state', 'county'] as const;
+export const regionTypes = ['huc8', 'huc10', 'huc12', 'state', 'county', 'custom'] as const;
 
 export type RegionType = typeof regionTypes[number];
 
