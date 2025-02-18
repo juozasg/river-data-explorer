@@ -10,7 +10,7 @@
 	let clientWidth = $state(0);
 	let clientHeight = $state(0);
 	const mobile = $derived(clientWidth <= 720 || clientHeight < 720);
-	const mapMaximized = false;
+	const mapMaximized = $state(true);
 
 	let selectedPanel:string = $state('map');
 </script>
@@ -120,13 +120,13 @@
 
 		.panel {
 			display: none;
-			width: 100%;
-			height: 100%;
-			top: 0;
 		}
 
 		.panel-map {
 			display: block;
+			height: calc(100% - var(--headerHeight));
+			top: var(--headerHeight);
+			width: 100%;
 		}
 	}
 </style>

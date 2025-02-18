@@ -17,8 +17,8 @@
 
 	let {
 		mlMap = $bindable(),
-		zoom = 11,
-		center = [-86.2536621504243, 41.699967298106515],
+		zoom = 8,
+		center = [-85.49182050000002, 41.82128218341444],
 		layersParams = defaultLayersParams,
 		addLayers = addMapLayers
 	}: MapLibreMapProps = $props();
