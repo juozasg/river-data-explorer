@@ -1,7 +1,7 @@
 import type { Site } from "$lib/types/site";
-import type { RegionFeature } from "./features.svelte";
+import type { RegionFeature } from "../data/features.svelte";
 
-export class DataSelectionState {
+export class ChartDataSelectionState {
 	yVar?: string = $state();
 	zVar?: string = $state();
 	ySite?: Site = $state();
@@ -50,3 +50,5 @@ export class DataSelectionState {
 		}
 	}
 }
+
+export const chartDataSelection = new ChartDataSelectionState();

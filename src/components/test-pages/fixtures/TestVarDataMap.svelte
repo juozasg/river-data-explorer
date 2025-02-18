@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
+	import { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
 	import { sites } from "$src/appstate/sites.svelte";
 	import VarDataMap from "$src/components/mlmap/VarDataMap.svelte";
 	import type { Site } from "$src/lib/types/site";
@@ -30,7 +30,7 @@
 <div style="position: relative; height: 500px; width: 550px; margin: 2rem">
 	<VarDataMap
 		{selectedSite}
-		dataSelection={new DataSelectionState()}
+		dataSelection={new ChartDataSelectionState()}
 		bind:this={varDataMap}
 		onMapClick={() => {
 			console.log("Map clicked", varDataMap?.hoveredSite());

@@ -12,12 +12,12 @@
 	import type ColumnTable from "arquero/dist/types/table/column-table";
 	import VarValueStandards from "$src/components/tooltips/VarValueStandards.svelte";
 	import StatsDataTable from "$src/components/StatsDataTable.svelte";
-	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
+	import type { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
 	import { bm } from "$src/lib/utils";
 
 	type Props = {
 		region: RegionFeature;
-		dataSelection: DataSelectionState;
+		dataSelection: ChartDataSelectionState;
 
 		varLabelClick: (name: string) => void;
 		varGraphButtonClick: (name: string, axis: "y" | "z", clearGraph: boolean) => void;

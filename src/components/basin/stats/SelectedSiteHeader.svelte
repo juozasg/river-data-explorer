@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
+	import type { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
 	import type { Site } from "$src/lib/types/site";
 
 	type Props = {
 		site: Site;
-		dataSelection: DataSelectionState;
+		dataSelection: ChartDataSelectionState;
 	}
 
 	const { dataSelection, site }: Props = $props();

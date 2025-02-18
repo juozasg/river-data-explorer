@@ -1,12 +1,12 @@
 <script lang="ts">
-	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
+	import type { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
 	import { regionEqual, type RegionFeature } from "$src/appstate/data/features.svelte";
 	import { regionIdLabel } from "$src/lib/utils/regions";
 	import InlineBlockIconify from "../../icons/InlineBlockIconify.svelte";
 
 	type Props = {
 		regionFeature: RegionFeature;
-		dataSelection?: DataSelectionState;
+		dataSelection?: ChartDataSelectionState;
 		onClickClose?: () => void;
 	};
 

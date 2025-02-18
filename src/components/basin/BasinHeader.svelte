@@ -1,7 +1,7 @@
 <script lang="ts">
 	import SelectedRegionHeader from "./stats/SelectedRegionHeader.svelte";
 
-	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
+	import type { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
 	import { regionEqual, type RegionFeature } from "$src/appstate/data/features.svelte";
 	import { regionIdLabel } from "$src/lib/utils/regions";
 	import { data } from "@maptiler/sdk";
@@ -12,7 +12,7 @@
 
 	type Props = {
 		regionFeature?: RegionFeature;
-		dataSelection?: DataSelectionState;
+		dataSelection?: ChartDataSelectionState;
 		onClickRegionType?: (regionType: string) => void;
 		onClickClose?: () => void;
 		regionType?: string;

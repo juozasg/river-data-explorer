@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
+	import type { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
 	import { sitesTables } from "$src/appstate/data/datasets.svelte";
 	import type { RegionFeature } from "$src/appstate/data/features.svelte";
 	import { sites, siteTablesForRegion } from "$src/appstate/sites.svelte";
@@ -11,7 +11,7 @@
 	import InlineBlockIconify from "../icons/InlineBlockIconify.svelte";
 
 	type Props = {
-		dataSelection: DataSelectionState;
+		dataSelection: ChartDataSelectionState;
 
 		onDateSelect?: (d: Date) => void;
 	};

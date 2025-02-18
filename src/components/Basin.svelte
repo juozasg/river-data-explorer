@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as ml from "maplibre-gl";
-	import { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
+	import { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
 	import { regionFeatures, type RegionFeature, type RegionType } from "$src/appstate/data/features.svelte";
 	import { MapFeatureSelectionState, toggleSelectedFeatureState } from "$src/appstate/map/featureState.svelte";
 	import BasinChart from "$src/components/basin/BasinChart.svelte";
@@ -14,7 +14,7 @@
 	import { chartYColor } from "$src/lib/utils/colors";
 	import { fitFeatureBounds } from "$src/lib/utils/maplibre";
 
-	const dataSelection: DataSelectionState = new DataSelectionState();
+	const dataSelection: ChartDataSelectionState = new ChartDataSelectionState();
 	let varDataMap = $state<VarDataMap>();
 
 	const updatedRegionSelection = (curr?: RegionFeature, u?: RegionFeature) => {

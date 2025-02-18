@@ -1,7 +1,7 @@
 <script lang="ts">
   import SelectedSiteHeader from './SelectedSiteHeader.svelte';
 
-	import type { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
+	import type { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
 	import { sitesTables } from "$src/appstate/data/datasets.svelte";
 	import { allVariableStats } from "$src/lib/data/stats";
 	import type { VariableStats } from "$src/lib/types/analysis";
@@ -13,7 +13,7 @@
 
 	type Props = {
 		site: Site;
-		dataSelection: DataSelectionState;
+		dataSelection: ChartDataSelectionState;
 		hoverColor?: string;
 
 		varLabelClick: (name: string) => void;

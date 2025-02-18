@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { DataSelectionState } from "$src/appstate/data/dataSelection.svelte";
+	import { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
 	import { sitesTables } from "$src/appstate/data/datasets.svelte";
 	import { sites } from "$src/appstate/sites.svelte";
 	import BasinChart from "$src/components/basin/BasinChart.svelte";
 
-	const dataSelection: DataSelectionState = new DataSelectionState();
+	const dataSelection: ChartDataSelectionState = new ChartDataSelectionState();
 
 	$effect(() => {
 		console.log('sites', sites.all.length);
