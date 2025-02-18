@@ -1,17 +1,16 @@
 <script lang="ts">
 	// import App from "$src/App.svelte";
-	import AppMenu from "$src/components/app/AppMenu.svelte";
-	import AppPanelTabs from "$src/components/app/AppPanelTabs.svelte";
+	import AppMenu from "$src/components/ui2/AppMenu.svelte";
+	import AppPanelTabs from "$src/components/ui2/AppPanelTabs.svelte";
 
 	let clientWidth = $state(0);
-	let clientHeight = $state(0);
-	const mobile = $derived(clientWidth <= 720 || clientHeight < 720);
+	const mobile = $derived(clientWidth <= 720);
 	const mapMaximized = false;
 
 	let selectedPanel:string = $state('map');
 </script>
 
-<main bind:clientWidth bind:clientHeight class:mobile class:map-maximized={mapMaximized}>
+<main bind:clientWidth class:mobile class:map-maximized={mapMaximized}>
 	<div class="app-header">
 		<AppMenu {mobile}/>
 		{#if mobile}
@@ -37,11 +36,10 @@
 </main>
 
 <style>
-	/* TODO: delete later */
+
 	:global(*) {
 		overflow: visible;
 	}
-
 	main {
 		padding: 0;
 		margin: 0;
@@ -50,6 +48,7 @@
 		position: absolute;
 
 		background: rgb(255, 218, 224);
+		/* font-size: 120%; */
 	}
 
 	.app-header {
@@ -65,7 +64,7 @@
 	.panel {
 		width: 50%;
 		height: 50%;
-		/* opacity: 0.7; */
+		opacity: 0.7;
 		position: absolute;
 		h1 {
 			position: absolute;
