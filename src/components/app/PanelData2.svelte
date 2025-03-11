@@ -34,7 +34,7 @@
 			font-size: 3rem;
 		}
 		padding: 10px;
-		border-radius: 5px;
+		/* border-radius: 5px; */
 		width: 100%;
 		height: 100%;
 	}

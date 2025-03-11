@@ -10,7 +10,7 @@
 	let clientWidth = $state(0);
 	let clientHeight = $state(0);
 	const mobile = $derived(clientWidth <= 720 || clientHeight < 720);
-	const mapMaximized = false;
+	const mapMaximized = true;
 
 	let selectedPanel:string = $state('map');
 </script>
