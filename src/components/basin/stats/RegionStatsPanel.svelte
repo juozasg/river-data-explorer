@@ -4,8 +4,8 @@
 	import TdStatsVariableLabel from "./TdStatsVariableLabel.svelte";
 
 	import { sitesTables } from "$src/appstate/data/datasets.svelte";
-	import { regionEqual, type RegionFeature } from "$src/appstate/data/features.svelte";
-	import { Sites, sites } from "$src/appstate/sites.svelte";
+	import { regionEqual, type RegionFeature } from "$src/appstate/data/regionFeatures.svelte";
+	import { Sites, sites } from "$src/appstate/data/sites.svelte";
 	import { allVariableStats, allVarsDailyMedians, sitesDataStats } from "$src/lib/data/stats";
 	import type { VariableStats } from "$src/lib/types/analysis";
 	import { fmtVarNum, varunits } from "$src/lib/utils/varHelpers";

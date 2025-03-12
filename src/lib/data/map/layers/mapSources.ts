@@ -1,7 +1,30 @@
 import * as ml from 'maplibre-gl';
 
 import { loadDataJson } from '$lib/data/cachedDataLoad';
-import { regionFeatures } from '$src/appstate/data/features.svelte';
+import { regionFeatures } from '$src/appstate/data/regionFeatures.svelte';
+
+
+// const geometriesLoaded
+
+export async function loadGeometries() {
+	await Promise.all([
+		loadGeometry('state', 'statefp'),
+		loadGeometry('county', 'countyfp'),
+		loadGeometry('huc12', 'huc12'),
+		loadGeometry('huc10', 'huc10'),
+		loadGeometry('huc8', 'huc8'),
+		loadGeometry('river', 'id')
+	]);
+
+	return Promise.resolve();
+}
+
+
+export async function loadGeometry(name: string, promoteId?: string | undefined) {
+	const data = await loadDataJson(`geojson/${name}.geojson`);
+
+	regionFeatures.addGeoJSONCollection(name, promoteId || 'id', data);
+}
 
 
 export async function addMlmSources(map: ml.Map): Promise<void> {

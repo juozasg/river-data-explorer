@@ -12,9 +12,9 @@
 	import { queryMouseMoveHover } from "$src/lib/utils/maplibre";
 	import { varlabel, varstdmax, varstdmin, varunits } from "$src/lib/utils/varHelpers";
 	import TooltipSiteStats from "../tooltips/TooltipContentSiteStats.svelte";
-	import { Sites } from "$src/appstate/sites.svelte";
+	import { Sites } from "$src/appstate/data/sites.svelte";
 	import { mapMouseLocation } from "$src/appstate/map/mapMouse.svelte";
-	import { regionEqual, regionTypes, type RegionFeature } from "$src/appstate/data/features.svelte";
+	import { regionEqual, regionTypes, type RegionFeature } from "$src/appstate/data/regionFeatures.svelte";
 
 	type Props = {
 		sites: Site[];

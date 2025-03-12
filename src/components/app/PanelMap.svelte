@@ -3,14 +3,15 @@
 
 	import { onMount } from "svelte";
 	import MapLibreMap from "../mlmap/MapLibreMap.svelte";
+	import { defineGlobal } from "$src/lib/utils";
+	import { regionFeatures } from "$src/appstate/data/regionFeatures.svelte";
+	import { loadGeometries } from "$src/lib/data/map/layers/mapSources";
+	import { mapSelectionMode } from "$src/appstate/selection/objectInteractionState.svelte";
 
 	let mlMapComponent: MapLibreMap;
 	onMount(() => {
 		console.log("mlmap", mlMapComponent);
-
-		// if (!mlMap) return;
-		// mlMap.setCenter([-85.49182050000002, 41.82128218341444]);
-		// mlMap.setZoom(8);
+		mapSelectionMode.mode = "river";
 	});
 
 	function randCoord() {
@@ -22,11 +23,20 @@
 		return Array.from({ length: 1000 }, () => randCoord());
 	}
 
+	function randomHexColor() {
+		return "#" + Math.floor(Math.random() * 16777215).toString(16);
+	}
+
 	function pointFeatureCollection(numPoints: number) {
 		return {
 			type: "FeatureCollection",
-			features: Array.from({ length: numPoints }, () => ({
+			features: Array.from({ length: numPoints }, (_, v) => ({
 				type: "Feature",
+				id: v + 1,
+				// id: "site-" + v,
+				properties: {
+					name: "site-" + v
+				},
 				geometry: {
 					type: "Point",
 					coordinates: randCoord()
@@ -35,115 +45,213 @@
 		};
 	}
 
-	// console.log('randCoord', randCoords());
-
-	// let flashingSquare = () => {
-	// 	return {
-	// 		width: 12,
-	// 		height: 12,
-	// 		data: new Uint8Array(12 * 12 * 4),
-	// 		map: null as ml.Map | null,
-	// 		previousValue: 0,
-
-	// 		onAdd: function (map: ml.Map) {
-	// 			this.map = map;
-	// 		},
-
-	// 		render: function () {
-	// 			// keep repainting while the icon is on the map
-	// 			this.map!.triggerRepaint();
-
-	// 			// alternate between black and white based on the time
-	// 			let value = Math.round(Date.now() / 1000) % 2 === 0 ? 255 : 0;
-
-	// 			// check if image needs to be changed
-	// 			if (value !== this.previousValue) {
-	// 				this.previousValue = value;
-
-	// 				let bytesPerPixel = 4;
-	// 				for (let x = 0; x < this.width; x++) {
-	// 					for (let y = 0; y < this.height; y++) {
-	// 						let offset = (y * this.width + x) * bytesPerPixel;
-	// 						this.data[offset + 0] = value;
-	// 						this.data[offset + 1] = value;
-	// 						this.data[offset + 2] = value;
-	// 						this.data[offset + 3] = 255;
-	// 					}
-	// 				}
-
-	// 				// return true to indicate that the image changed
-	// 				return true;
-	// 			}
-	// 		}
-	// 	};
-	// };
-
-	$effect(() => {
-		if (!mlMapComponent.dataLoaded()) return;
-
+	async function sauce() {
+		await loadGeometries();
 		const map = mlMapComponent.mlmMap()!;
 
-		map.loadImage(
-			"./shop-15.png",
-			(error, image) => {
-				if (error) throw error;
-				map.addImage("store-icon", image as any, { sdf: true });
-				// map.addSource("food-stores", {
-				// 	type: "vector",
-				// 	url: "mapbox://examples.dl46ljcs"
-				// });
-				map.addSource('sites', {
-					type: "geojson",
-					data: pointFeatureCollection(1000)
-				});
+		const geojsonData = pointFeatureCollection(10);
+		console.log("geojsonData", geojsonData);
 
-				map.addLayer({
-					id: "sites",
-					source: "sites",
-					type: "symbol",
-					layout: {
-						"icon-image": "store-icon",
-						"icon-size": 1,
-						"icon-allow-overlap": true,
-						"icon-ignore-placement": true
-					},
-					paint: {
-						"icon-color": "#FF0000"
-					}
-				});
+		map.addSource("riverapp-sitez", {
+			type: "geojson",
+			data: geojsonData
+			// generateId: true,
+		});
+
+		map.addSource("riverapp-regions", {
+			generateId: true,
+			type: "geojson",
+			data: {
+				type: "FeatureCollection",
+				features: []
 			}
+		});
+
+		const insertBeforeLayer = "Water line/label/Default";
+
+		map.addLayer(
+			{
+				id: "riverapp-regions",
+				source: "riverapp-regions",
+				type: "line",
+				paint: {
+					"line-color": "#088",
+					"line-width": 2
+					// "fill-opacity": 0.5
+				}
+			},
+			insertBeforeLayer
 		);
 
-		// for (let i = 0; i <= 1; i++) {
-		// 	map.addImage(`flashing_square-${i}`, flashingSquare());
+		map.addLayer(
+			{
+				id: "riverapp-regions-fill",
+				source: "riverapp-regions",
+				type: "fill",
+				paint: {
+					"fill-opacity": 0.2,
+					"fill-color": "#088"
+				}
+			},
+			insertBeforeLayer
+		);
+	}
 
-		// 	map.addSource(`drone-${i}`, {
-		// 		type: "geojson",
-		// 		data: {
-		// 			type: "Feature",
-		// 			geometry: {
-		// 				type: "Point",
-		// 				coordinates: randCoord()
-		// 			}
-		// 		}
-		// 	});
+	$effect(() => {
+		if (!mlMapComponent.styleLoaded()) return;
 
-		// 	map.addLayer({
-		// 		id: `drone-${i}`,
-		// 		type: "symbol",
-		// 		source: `drone-${i}`,
-		// 		layout: {
-		// 			"icon-image": `flashing_square-${i}`
-		// 		}
-		// 	});
-		// }
+		const map = mlMapComponent.mlmMap()!;
+		// defineGlobal("map", map);
 
-		// console.log('mllibre map', map);
+		// map.on("load", () => {
+		// 	console.log("map load-2");
+		// });
+
+		map.once("idle", () => {
+			console.log("map idle-2");
+			randomizeRegionsSource();
+		});
+
+		// map.on(''
+
+		// map.loadImage("./shop-15.png", (error, image) => {
+		// if (error) throw error;
+		// map.addImage("store-icon", image as any, { sdf: true });
+		// map.addSource("food-stores", {
+		// 	type: "vector",
+		// 	url: "mapbox://examples.dl46ljcs"
+		// });
+
+		// map.setFilter("regions-fill", ["has", "huc12"]);
+
+		// map.on('mousemove', 'regions-fill', (e) => {
+		// 	console.log(' layer MMove', e.features?.map((f) => f.properties));
+		// });
+
+		// map.on('mouseleave', 'regions-fill', (e) => {
+		// 	console.log(' layer mLEAVE', e.features?.map((f) => f.properties));
+		// });
+
+		// map.on('mouseover', 'regions-fill', (e) => {
+		// 	console.log(' mouse OVER', e.features?.map((f) => f.properties));
+		// });
+
+		// 		geojsonData.features.forEach((feature) => {
+		// 			console.log("inital feature", feature);
+
+		// 			map.setFeatureState({ source: "sitez", id: feature.id }, { color: randomHexColor(), r: 20 });
+		// 		});
+
+		// 		geojsonData.features.forEach((feature) => {
+		// 			console.log("READ inital feature", map.getFeatureState({ source: "sitez", id: feature.id }));
+
+		// 		});
+		// //
+		// map.once('idle', () => {
+		// console.log('map idle. adding layers');
+		// randomizeFS();
+		// map.addLayer({
+		// 	id: "sitez",
+		// 	source: "sitez",
+		// 	type: "circle",
+		// 	layout: {
+		// 		// "icon-image": "store-icon",
+		// 		// "icon-size": 1,
+		// 		// "icon-allow-overlap": true,
+		// 		// "allow-overlap":
+		// 		// "icon-ignore-placement": true
+		// 	},
+		// 	paint: {
+		// 		// "icon-color": ["feature-state", "color"]
+		// 		"circle-color": ["feature-state", "color"],
+		// 		// 'circle-color': '#CCCC00',
+		// 		"circle-radius": 15
+		// 	}
+		// });
+		// });
+
+		// });
 	});
+
+	function randomizeFS() {
+		const map = mlMapComponent.mlmMap()!;
+
+		const source = map.getSource("sitez") as ml.GeoJSONSource;
+		const data = source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+
+		console.log("_data", data);
+		data.features.forEach((feature) => {
+			// console.log("feature", feature);
+			map.setFeatureState({ source: "sitez", id: feature.id }, { color: randomHexColor(), r: 20 });
+		});
+
+		// console.log('map', map);
+	}
+
+	function randomizeRegionsSource() {
+		const map = mlMapComponent.mlmMap()!;
+
+		// pick random from huc8, huc10, huc12 and county geojson
+		const regionTypes = ["huc8", "huc10", "huc12", "county"];
+		const regionType = regionTypes[Math.floor(Math.random() * regionTypes.length)];
+		const data = regionFeatures.getFeatureCollection(regionType);
+
+		console.log("regionType setting data", regionType, data);
+
+		// merge huc8, huc10, huc12 and county featureCollections
+		const allFeatures = regionTypes.map((rt) => regionFeatures.getFeatureCollection(rt).features).flat();
+		console.log("allFeatures", allFeatures);
+
+		const featureCollection = {
+			type: "FeatureCollection",
+			features: allFeatures,
+			name: "allRegions"
+		};
+
+		console.log("featureCollection", featureCollection);
+
+		console.log("data", data);
+
+		const source = map.getSource("riverapp-regions") as ml.GeoJSONSource;
+		source.setData(featureCollection as any);
+
+		// const layer = map.getLayer("riverapp-regions-fill");
+		// layer?.setLayoutProperty("filter",  ["has", "huc12"]);
+		// const data = source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+
+		// console.log("_data", data);
+		// data.features.forEach((feature) => {
+		// console.log("feature", feature);
+		// map.setFeatureState({ source: "regions", id: feature.id }, { color: randomHexColor(), r: 20 });
+		// });
+
+		// console.log('map', map);
+	}
 </script>
 
 <!-- <div>Panel map</div> -->
-<MapLibreMap bind:this={mlMapComponent} />
+
+<div class="debug-controls">
+	<input type="range" min="1" max="10000" onmousemove={randomizeFS} />
+	<button class="debug" onclick={randomizeFS}>Randomize colors</button>
+	<button class="debug" onclick={randomizeRegionsSource}>Randomize Regions</button>
+	<button class="debug" onclick={() => mlMapComponent.setBasemapStyle("TOPO")}>TOPO</button>
+	<button class="debug" onclick={() => mlMapComponent.setBasemapStyle("SATELLITE")}>SAT</button>
+</div>
+
+<MapLibreMap bind:this={mlMapComponent} addData={sauce} />
 
 <style>
+	.debug-controls {
+		position: absolute;
+		/* top: 50px; */
+		left: 10;
+		background-color: rgba(128, 128, 128, 0.289);
+		padding: 0.5rem;
+		z-index: 1000;
+		width: 100vw;
+		display: flex;
+
+		gap: 20px;
+	}
 </style>

@@ -2,7 +2,7 @@
 	import SelectedRegionHeader from "./stats/SelectedRegionHeader.svelte";
 
 	import type { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
-	import { regionEqual, type RegionFeature } from "$src/appstate/data/features.svelte";
+	import { regionEqual, type RegionFeature } from "$src/appstate/data/regionFeatures.svelte";
 	import { regionIdLabel } from "$src/lib/utils/regions";
 	import { data } from "@maptiler/sdk";
 	import InlineBlockIconify from "../icons/InlineBlockIconify.svelte";

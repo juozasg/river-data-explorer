@@ -1,5 +1,5 @@
 import { startedLoading } from "$src/appstate/ui/loadingItem.svelte";
-import { sites } from "$src/appstate/sites.svelte";
+import { sites } from "$src/appstate/data/sites.svelte";
 import { notify } from "$src/appstate/ui/notifications.svelte";
 import type { Site } from "$src/lib/types/site";
 import { StateFips, StateCountyFips } from "$src/lib/types/fips";

@@ -113,7 +113,7 @@
 		}
 	}
 
-	main.map-maximized {
+	main.map-maximized:not(.mobile) {
 		.app-header {
 			width: 100%;
 		}

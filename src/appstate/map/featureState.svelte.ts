@@ -1,5 +1,5 @@
 import * as ml from 'maplibre-gl';
-import type { RegionFeature } from '../data/features.svelte';
+import type { RegionFeature } from '../data/regionFeatures.svelte';
 import type { Site } from '$src/lib/types/site';
 
 

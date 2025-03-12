@@ -1,4 +1,4 @@
-import type { RegionType } from "$src/appstate/data/features.svelte";
+import type { RegionType } from "$src/appstate/data/regionFeatures.svelte";
 
 export type MapLayersParams = {
 	// enabledDatasets: string[]; // global state is used instead

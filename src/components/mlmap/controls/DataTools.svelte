@@ -3,17 +3,16 @@
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 
 <script lang="ts">
-	import InlineBlockIconify from "../../icons/InlineBlockIconify.svelte";
-
 	import "$src/styles/map-controls.scss";
 
 	// import ArrowDropRight from '$src/components/icons/ArrowDropRight.svelte';
-	import { sites } from "$src/appstate/sites.svelte";
+	import { sites } from "$src/appstate/data/sites.svelte";
 	import { isDatasetEnabled, setEnabledDatasets, toggleDatasetEnable } from "$src/appstate/ui/layers.svelte";
 	import DetailsOpenIcon from "$src/components/icons/DetailsOpenIcon.svelte";
 	import { type MapLayersParams } from "$src/lib/types/mapControls";
 	import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
 	import type { Site } from "$src/lib/types/site";
+	import InlineBlockIconify from "$src/components/icons/InlineBlockIconify.svelte";
 
 	let {
 		maxWidth = 500,

@@ -9,10 +9,6 @@ blockquote {
 	color: red;
 }
 
-.debug {
-	display: none;
-}
-
 a:hover {
 	text-decoration: underline;
 	cursor: pointer;
@@ -122,5 +118,18 @@ textarea[type="text"] {
 	&:focus {
 		-webkit-box-shadow: none;
 		box-shadow: none;
+	}
+}
+
+/* debug button */
+
+button.debug {
+	border: 1px solid #000;
+	padding: 0.5rem;
+	border-radius: 2px;
+
+	&:hover {
+		background-color: #000;
+		color: #fff;
 	}
 }

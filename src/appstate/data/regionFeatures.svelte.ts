@@ -42,6 +42,8 @@ export class RegionFeatures {
 
 	addGeoJSONCollection(regionType: RegionType | string, idField: string, data: GeoJSON.FeatureCollection) {
 		const regionCollection = this.#regionFeatureCollections.get(regionType) || [];
+
+		geometries.set(regionType, data);
 		data.features.forEach((f: GeoJSON.Feature) => {
 			const id = f.properties?.[idField] || f.id || '';
 			const key = `${regionType}-${id}`;
@@ -75,6 +77,11 @@ export class RegionFeatures {
 	getRegionCollection(regionType: string): RegionFeature[] {
 		return this.#regionFeatureCollections.get(regionType) || [];
 	}
+
+	getFeatureCollection(regionType: string): GeoJSON.FeatureCollection {
+		return geometries.get(regionType) || { type: 'FeatureCollection', features: [] };
+	}
+
 }
 
 export const regionFeatures = new RegionFeatures();

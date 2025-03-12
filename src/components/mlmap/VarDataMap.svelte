@@ -8,9 +8,9 @@
 	import MapLibreMap from "./MapLibreMap.svelte";
 
 	import type { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
-	import type { RegionFeature } from "$src/appstate/data/features.svelte";
+	import type { RegionFeature } from "$src/appstate/data/regionFeatures.svelte";
 	import { MapFeatureSelectionState, toggleHoveredFeatureState } from "$src/appstate/map/featureState.svelte";
-	import { sites as globalSites, Sites } from "$src/appstate/sites.svelte";
+	import { sites as globalSites, Sites } from "$src/appstate/data/sites.svelte";
 	import { defaultLayersParams, setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
 	import { type MapLayersParams } from "$src/lib/types/mapControls";
 	import type { Site } from "$src/lib/types/site";

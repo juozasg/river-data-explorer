@@ -1,4 +1,4 @@
-import type { RegionFeature } from "$src/appstate/data/features.svelte";
+import type { RegionFeature } from "$src/appstate/data/regionFeatures.svelte";
 
 export const regionIdLabel = (feature: RegionFeature) => {
 	const rt = feature.regionType;

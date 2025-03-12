@@ -1,7 +1,7 @@
 import type { Point } from "$lib/types/map";
 import type { Site } from "$src/lib/types/site";
 import type { LngLat, MapMouseEvent } from "maplibre-gl";
-import type { RegionFeature } from "../data/features.svelte";
+import type { RegionFeature } from "../data/regionFeatures.svelte";
 
 export class MapMouseLocation {
   lngLat? = $state<LngLat>();

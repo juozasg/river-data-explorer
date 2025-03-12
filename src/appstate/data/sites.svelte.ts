@@ -1,21 +1,21 @@
 import * as aq from 'arquero';
 
 import type { Site } from "$lib/types/site";
-import { sitesTables } from "./data/datasets.svelte";
-import { sitesGeoindex } from "./data/geoindexes.svelte";
-import { enabledDatasets } from './ui/layers.svelte';
-import { regionTypes, type RegionFeature } from './data/features.svelte';
+import { sitesTables } from "./datasets.svelte";
+import { sitesGeoindex } from "./geoindexes.svelte";
+import { enabledDatasets } from '../ui/layers.svelte';
+import { regionTypes, type RegionFeature } from './regionFeatures.svelte';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
 
 export class Sites {
-	private sites: Site[] = $state([]);
+	#sites: Site[] = $state([]);
 
 	add(site: Site) {
-		this.sites.push(site);
+		this.#sites.push(site);
 	}
 
 	withDataTables(onlyEnabled = false) {
-		// console.log('with data tables', sitesTables.size, this.sites.length)
+		// console.log('with data tables', sitesTables.size, this.#sites.length)
 		const keys = Array.from(sitesTables.keys());
 		const sts = onlyEnabled ? this.allEnabled : this.all;
 		return sts.filter(s => keys.includes(s.id));
@@ -28,16 +28,16 @@ export class Sites {
 
 	get allEnabled() {
 		const datasets = enabledDatasets();
-		// return this.sites.filter(s => s.id === 'sjrbc-20');
-		return this.sites.filter(s => [...datasets].includes(s.dataset));
+		// return this.#sites.filter(s => s.id === 'sjrbc-20');
+		return this.#sites.filter(s => [...datasets].includes(s.dataset));
 	}
 
 	get all() {
-		return this.sites;
+		return this.#sites;
 	}
 
 	get allDatasets(): string[] {
-		return [...Sites.groupedBy(this.sites, 'dataset').keys()];
+		return [...Sites.groupedBy(this.#sites, 'dataset').keys()];
 	}
 
 	static forRegionFeature(sites: Site[], region?: RegionFeature) {
@@ -47,11 +47,11 @@ export class Sites {
 	}
 
 	findById(siteId: string) {
-		return this.sites.find(s => s.id === siteId);
+		return this.#sites.find(s => s.id === siteId);
 	}
 
 	reindexGeometries() {
-		for (const site of this.sites) {
+		for (const site of this.#sites) {
 			regionTypes.forEach((rt) => {
 				if (rt !== 'custom') {
 					(site[rt] as any) = sitesGeoindex[site.id]?.[rt] as string || '';

@@ -1,7 +1,7 @@
 
 import * as ml from 'maplibre-gl';
 import { addRiverLayers } from './riverLayers';
-import { regionTypes } from '$src/appstate/data/features.svelte';
+import { regionTypes } from '$src/appstate/data/regionFeatures.svelte';
 
 
 export async function addMapLayers(map: ml.Map): Promise<void> {

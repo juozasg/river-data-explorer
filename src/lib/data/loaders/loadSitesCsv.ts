@@ -3,7 +3,7 @@ import { dataPathsStartingWith } from "$lib/data/loaders/loadAppData";
 import type { Site } from "$lib/types/site";
 import { StateCountyFips, StateFips } from "$src/lib/types/fips";
 import { startedLoading } from "../../../appstate/ui/loadingItem.svelte";
-import { splitSiteId, sites } from "../../../appstate/sites.svelte";
+import { splitSiteId, sites } from "../../../appstate/data/sites.svelte";
 
 
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Site } from "$lib/types/site";
-	import { sites, Sites } from "$src/appstate/sites.svelte";
+	import { sites, Sites } from "$src/appstate/data/sites.svelte";
 	import { aremove } from "$src/lib/utils/arrays";
 	import { chartYColor, chartZDarker } from "$src/lib/utils/colors";
 

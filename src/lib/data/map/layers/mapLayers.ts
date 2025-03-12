@@ -1,4 +1,4 @@
-import { regionTypes, type RegionType } from '$src/appstate/data/features.svelte';
+import { regionTypes, type RegionType } from '$src/appstate/data/regionFeatures.svelte';
 import * as ml from 'maplibre-gl';
 
 export async function selectRegionTypeLayers(map: ml.Map, regionType: RegionType) {

@@ -1,7 +1,7 @@
 <script lang="ts">
 	// import ArrowDropRight from '$src/components/icons/ArrowDropRight.svelte';
 	import AutoComplete from "simple-svelte-autocomplete";
-	import { sites } from "$src/appstate/sites.svelte";
+	import { sites } from "$src/appstate/data/sites.svelte";
 	import type { Site } from "$src/lib/types/site";
 	import { onMount, untrack } from "svelte";
 	import InlineBlockIconify from "../../icons/InlineBlockIconify.svelte";

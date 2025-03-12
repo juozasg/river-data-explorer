@@ -1,5 +1,5 @@
 import type { Site } from "$lib/types/site";
-import type { RegionFeature } from "../data/features.svelte";
+import type { RegionFeature } from "../data/regionFeatures.svelte";
 
 export class ChartDataSelectionState {
 	yVar?: string = $state();

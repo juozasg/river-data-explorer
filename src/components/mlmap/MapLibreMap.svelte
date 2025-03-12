@@ -5,7 +5,6 @@
 	import { mapMouseLocation } from "$src/appstate/map/mapMouse.svelte";
 	import { tooltip } from "$src/appstate/ui/tooltips.svelte";
 	import { transformStyle } from "$src/lib/data/map/helpers/transformMapStyle";
-	import type { MapLibreMapProps } from "$src/lib/types/components";
 	import { toggleoffAttribution } from "$src/lib/utils/maplibre";
 	import { onMount } from "svelte";
 	import { addMlmSources } from "$src/lib/data/map/layers/mapSources";
@@ -14,14 +13,24 @@
 	import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
 	import { selectRegionTypeLayers } from "$src/lib/data/map/layers/mapLayers";
 	import { defineGlobal } from "$src/lib/utils";
+	import type { MapLayersParams } from "$src/lib/types/mapControls";
+
+	interface Props {
+		zoom?: number;
+		center?: ml.LngLatLike;
+
+		layersParams?: MapLayersParams;
+		mlMap?: ml.Map;
+		addData: (map: ml.Map) => Promise<void>;
+	}
 
 	let {
 		mlMap = $bindable(),
 		zoom = 8,
 		center = [-85.49182050000002, 41.82128218341444],
 		layersParams = defaultLayersParams,
-		addLayers = addMapLayers
-	}: MapLibreMapProps = $props();
+		addData
+	}: Props = $props();
 
 	let mapDiv = $state<HTMLDivElement>();
 	export const mapDivElement = () => mapDiv;
@@ -46,26 +55,36 @@
 		toggleRiverLayerVisibility(mlMap, layersParams.riverLayerVisible);
 	});
 
+	export function setBasemapStyle(style: keyof typeof basemapStyles) {
+		// layersParams.baseStyleId = style;
+		// console.log('setBasemapStyle', style);
+
+		const s = basemapStyles[style];
+		mlMap!.setStyle(s, { transformStyle });
+
+		// mlMap.setStyle(style);
+	}
+
 	$effect(() => {
 		if (!mlMap) return;
 		// console.log('layers regionType', layersParams.regionType);
 		selectRegionTypeLayers(mlMap, layersParams.regionType);
 	});
 
-	let _dataLoaded = $state(false);
+	let _styleLoaded = $state(false);
 
-	export const dataLoaded = () => {
-		return _dataLoaded;
+	export const styleLoaded = () => {
+		return _styleLoaded;
 	};
 
 	export const mlmMap = () => mlMap;
 
-	$effect(() => {
-		if (!mlMap) return;
+	// $effect(() => {
+	// 	if (!mlMap) return;
 
-		const style = basemapStyles[layersParams.baseStyleId];
-		mlMap.setStyle(style, { transformStyle });
-	});
+	// 	const style = basemapStyles[layersParams.baseStyleId];
+	// 	mlMap.setStyle(style, { transformStyle });
+	// });
 
 	onMount(() => {
 		const style = basemapStyles[layersParams.baseStyleId];
@@ -81,20 +100,24 @@
 		// mlMap.addControl(new ml.AttributionControl(), 'bottom-right');
 		mlMap.addControl(new ml.ScaleControl({ maxWidth: 160, unit: "imperial" }), "bottom-left");
 		mlMap.addControl(new ml.NavigationControl(), "bottom-right");
-		defineGlobal('mlMap', mlMap);
+		defineGlobal("mlMap", mlMap);
 
 		// only fires for the initial style, not for map.setStyle
 		mlMap.once("idle", () => {
 			mlMap!.resize();
-			addMlmSources(mlMap!).then(() => {
-				// addLayers(mlMap!);
-				const style = basemapStyles[layersParams.baseStyleId];
-				mlMap!.setStyle(style, { transformStyle }); // force transformStyle to reorder layers
-				toggleRiverLayerVisibility(mlMap!, layersParams.riverLayerVisible);
-				selectRegionTypeLayers(mlMap!, layersParams.regionType);
+			// addMlmSources(mlMap!).then(() => {
+			// addLayers(mlMap!);
+			const style = basemapStyles[layersParams.baseStyleId];
+			mlMap!.setStyle(style, { transformStyle }); // force transformStyle to reorder layers
+			toggleRiverLayerVisibility(mlMap!, layersParams.riverLayerVisible);
+			selectRegionTypeLayers(mlMap!, layersParams.regionType);
 
-				mlMap!.once("idle", () => (_dataLoaded = true));
+			mlMap!.once("idle", () => {
+				_styleLoaded = true;
+
+				addData(mlMap!);
 			});
+			// });
 		});
 
 		// global state for mouse x,y and lonlat location
