@@ -78,7 +78,7 @@
 		a {
 			font-size: 1.1rem;
 			line-height: 40px;
-			margin-right: 16px;
+			margin-right: 8px;
 			color: var(--stjoe-blue);
 			white-space: nowrap;
 		}
