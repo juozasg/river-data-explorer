@@ -9,6 +9,13 @@
 	import { mapSelectionMode } from "$src/appstate/selection/objectInteractionState.svelte";
 
 	let mlMapComponent: MapLibreMap;
+	let hoveredFeature = $state<ml.MapGeoJSONFeature>();
+
+	$effect(() => {
+		console.log("hoveredFeature", hoveredFeature);
+	});
+
+
 	onMount(() => {
 		console.log("mlmap", mlMapComponent);
 		mapSelectionMode.mode = "river";
@@ -52,13 +59,31 @@
 		const geojsonData = pointFeatureCollection(10);
 		console.log("geojsonData", geojsonData);
 
-		map.addSource("riverapp-sitez", {
-			type: "geojson",
-			data: geojsonData
-			// generateId: true,
-		});
+		// map.addSource("riverapp-sitez", {
+		// 	type: "geojson",
+		// 	data: geojsonData
+		// 	// generateId: true,
+		// });
 
 		map.addSource("riverapp-regions", {
+			generateId: true,
+			type: "geojson",
+			data: {
+				type: "FeatureCollection",
+				features: []
+			}
+		});
+
+		map.addSource("riverapp-hovered-regions", {
+			generateId: true,
+			type: "geojson",
+			data: {
+				type: "FeatureCollection",
+				features: []
+			}
+		});
+
+		map.addSource("riverapp-selected-regions", {
 			generateId: true,
 			type: "geojson",
 			data: {
@@ -76,8 +101,8 @@
 				type: "line",
 				paint: {
 					"line-color": "#088",
-					"line-width": 2
-					// "fill-opacity": 0.5
+					"line-width": 2,
+					"line-opacity": 0
 				}
 			},
 			insertBeforeLayer
@@ -90,7 +115,26 @@
 				type: "fill",
 				paint: {
 					"fill-opacity": 0.2,
+					// "fill-opacity": 0,
 					"fill-color": "#088"
+				}
+			},
+			insertBeforeLayer
+		);
+
+		// two options:
+		// 1. use riverapp-regions source and set "highlighed" feature-state to set opacity here
+		// 2. use a separate source and layer for the outline
+		// 2 is better. try to avoid maplibre feature-state and complicated expressions as much as possible
+		map.addLayer(
+			{
+				id: "riverapp-regions-hover-outline",
+				source: "riverapp-hovered-regions",
+				type: "line",
+				paint: {
+					"line-color": "#E3E676",
+					"line-width": 3
+					// "fill-opacity": 0.5
 				}
 			},
 			insertBeforeLayer
@@ -124,15 +168,47 @@
 
 		// map.setFilter("regions-fill", ["has", "huc12"]);
 
-		// map.on('mousemove', 'regions-fill', (e) => {
-		// 	console.log(' layer MMove', e.features?.map((f) => f.properties));
-		// });
+		map.on('mousemove', 'riverapp-regions-fill', (e) => {
+			// console.log(' layer MMove', e.features?.map((f) => f.properties));
+			// console.log('mousemove', e.features);
 
-		// map.on('mouseleave', 'regions-fill', (e) => {
-		// 	console.log(' layer mLEAVE', e.features?.map((f) => f.properties));
-		// });
+			if(e.features && e.features.length > 0) {
+				const feature = e.features[0];
+				const hoveredRegions = map.getSource("riverapp-hovered-regions") as ml.GeoJSONSource;
+				// const sourceHoveredFeature = hoveredRegions.
+				const hoveredRegionsData = hoveredRegions._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+				const hoveredRegionsFeature = hoveredRegionsData.features[0];
 
-		// map.on('mouseover', 'regions-fill', (e) => {
+				if(hoveredFeature && hoveredFeature.id === feature.id) {
+					return;
+				}
+				// console.log('hoveredRegions', hoveredRegions);
+
+
+				hoveredRegions.setData({
+					type: "FeatureCollection",
+					// features: e.features
+					features: [feature]
+				});
+				hoveredFeature = feature;
+			}
+
+
+		});
+
+		map.on('mouseleave', 'riverapp-regions-fill', (e) => {
+			// console.log(' layer mLEAVE', e.features?.map((f) => f.properties));
+
+			const hoveredRegions = map.getSource("riverapp-hovered-regions") as ml.GeoJSONSource;
+			hoveredRegions.setData({
+				type: "FeatureCollection",
+				features: []
+			});
+
+			hoveredFeature = undefined;
+		});
+
+		// map.on('mouseover', 'riverapp-regions-fill', (e) => {
 		// 	console.log(' mouse OVER', e.features?.map((f) => f.properties));
 		// });
 
@@ -192,7 +268,8 @@
 		const map = mlMapComponent.mlmMap()!;
 
 		// pick random from huc8, huc10, huc12 and county geojson
-		const regionTypes = ["huc8", "huc10", "huc12", "county"];
+		// const regionTypes = ["huc8", "huc10", "huc12", "county"];
+		const regionTypes = ["huc10", "huc12", "county"];
 		const regionType = regionTypes[Math.floor(Math.random() * regionTypes.length)];
 		const data = regionFeatures.getFeatureCollection(regionType);
 
@@ -202,18 +279,19 @@
 		const allFeatures = regionTypes.map((rt) => regionFeatures.getFeatureCollection(rt).features).flat();
 		console.log("allFeatures", allFeatures);
 
-		const featureCollection = {
+		const allFeatureCollection = {
 			type: "FeatureCollection",
 			features: allFeatures,
 			name: "allRegions"
 		};
 
-		console.log("featureCollection", featureCollection);
+		// console.log("featureCollection", featureCollection);
 
 		console.log("data", data);
 
 		const source = map.getSource("riverapp-regions") as ml.GeoJSONSource;
-		source.setData(featureCollection as any);
+		// source.setData(featureCollection as any);
+		source.setData(data as any);
 
 		// const layer = map.getLayer("riverapp-regions-fill");
 		// layer?.setLayoutProperty("filter",  ["has", "huc12"]);
@@ -232,8 +310,8 @@
 <!-- <div>Panel map</div> -->
 
 <div class="debug-controls">
-	<input type="range" min="1" max="10000" onmousemove={randomizeFS} />
-	<button class="debug" onclick={randomizeFS}>Randomize colors</button>
+	<!-- <input type="range" min="1" max="10000" onmousemove={randomizeFS} /> -->
+	<!-- <button class="debug" onclick={randomizeFS}>Randomize colors</button> -->
 	<button class="debug" onclick={randomizeRegionsSource}>Randomize Regions</button>
 	<button class="debug" onclick={() => mlMapComponent.setBasemapStyle("TOPO")}>TOPO</button>
 	<button class="debug" onclick={() => mlMapComponent.setBasemapStyle("SATELLITE")}>SAT</button>
