@@ -7,144 +7,31 @@
 	import { regionFeatures } from "$src/appstate/data/regionFeatures.svelte";
 	import { loadGeometries_old } from "$src/lib/data/map/layers/mapSources";
 	import { mapSelectionMode } from "$src/appstate/selection/objectInteractionState.svelte";
-	import { loadGeometries } from "$src/appstate/data/geometries.svelte";
+	import { loadRiverappFeatureCollections } from "$src/appstate/data/riverappFeatureCollections";
+	import { setBasemapStyleId } from "$src/appstate/ui/layers.svelte";
+	import { MLMapController } from "$src/appstate/map/mlmapController.svelte";
+	import VarDataMarkers from "../mlmap/VarDataMarkers.svelte";
 
+
+	// svelte-ignore non_reactive_update
 	let mlMapComponent: MapLibreMap;
 	let hoveredFeature = $state<ml.MapGeoJSONFeature>();
-	loadGeometries();
 
-	$effect(() => {
-		console.log("hoveredFeature", hoveredFeature);
-	});
+	let mapController: MLMapController | undefined;
+	let mlMap = $state<ml.Map>();
+
+	loadRiverappFeatureCollections();
+
+	// $effect(() => {
+	// 	console.log("hoveredFeature", hoveredFeature);
+	// });
 
 
-	onMount(() => {
-		console.log("mlmap", mlMapComponent);
-		mapSelectionMode.mode = "river";
-	});
-
-	function randCoord() {
-		return [-86.0 + Math.random(), 41.2 + Math.random()];
-		// return [41.2 + Math.random(), -85.0 + Math.random()];
-	}
-
-	function randCoords() {
-		return Array.from({ length: 1000 }, () => randCoord());
-	}
-
-	function randomHexColor() {
-		return "#" + Math.floor(Math.random() * 16777215).toString(16);
-	}
-
-	function pointFeatureCollection(numPoints: number) {
-		return {
-			type: "FeatureCollection",
-			features: Array.from({ length: numPoints }, (_, v) => ({
-				type: "Feature",
-				id: v + 1,
-				// id: "site-" + v,
-				properties: {
-					name: "site-" + v
-				},
-				geometry: {
-					type: "Point",
-					coordinates: randCoord()
-				}
-			}))
-		};
-	}
-
-	async function sauce() {
-		await loadGeometries_old();
-		const map = mlMapComponent.mlmMap()!;
-
-		const geojsonData = pointFeatureCollection(10);
-		console.log("geojsonData", geojsonData);
-
-		// map.addSource("riverapp-sitez", {
-		// 	type: "geojson",
-		// 	data: geojsonData
-		// 	// generateId: true,
-		// });
-
-		map.addSource("riverapp-regions", {
-			generateId: true,
-			type: "geojson",
-			data: {
-				type: "FeatureCollection",
-				features: []
-			}
-		});
-
-		map.addSource("riverapp-hovered-regions", {
-			generateId: true,
-			type: "geojson",
-			data: {
-				type: "FeatureCollection",
-				features: []
-			}
-		});
-
-		map.addSource("riverapp-selected-regions", {
-			generateId: true,
-			type: "geojson",
-			data: {
-				type: "FeatureCollection",
-				features: []
-			}
-		});
-
-		const insertBeforeLayer = "Water line/label/Default";
-
-		map.addLayer(
-			{
-				id: "riverapp-regions",
-				source: "riverapp-regions",
-				type: "line",
-				paint: {
-					"line-color": "#088",
-					"line-width": 2,
-					"line-opacity": 0
-				}
-			},
-			insertBeforeLayer
-		);
-
-		map.addLayer(
-			{
-				id: "riverapp-regions-fill",
-				source: "riverapp-regions",
-				type: "fill",
-				paint: {
-					"fill-opacity": 0.2,
-					// "fill-opacity": 0,
-					"fill-color": "#088"
-				}
-			},
-			insertBeforeLayer
-		);
-
-		// two options:
-		// 1. use riverapp-regions source and set "highlighed" feature-state to set opacity here
-		// 2. use a separate source and layer for the outline
-		// 2 is better. try to avoid maplibre feature-state and complicated expressions as much as possible
-		map.addLayer(
-			{
-				id: "riverapp-regions-hover-outline",
-				source: "riverapp-hovered-regions",
-				type: "line",
-				paint: {
-					"line-color": "#E3E676",
-					"line-width": 3
-					// "fill-opacity": 0.5
-				}
-			},
-			insertBeforeLayer
-		);
-	}
 
 	$effect(() => {
 		if (!mlMapComponent.styleLoaded()) return;
+
+		mapController = new MLMapController(mlMapComponent.mlmMap()!);
 
 		const map = mlMapComponent.mlmMap()!;
 		// defineGlobal("map", map);
@@ -153,25 +40,9 @@
 		// 	console.log("map load-2");
 		// });
 
-		map.once("idle", () => {
-			console.log("map idle-2");
-			randomizeRegionsSource();
-		});
 
-		// map.on(''
-
-		// map.loadImage("./shop-15.png", (error, image) => {
-		// if (error) throw error;
-		// map.addImage("store-icon", image as any, { sdf: true });
-		// map.addSource("food-stores", {
-		// 	type: "vector",
-		// 	url: "mapbox://examples.dl46ljcs"
-		// });
-
-		// map.setFilter("regions-fill", ["has", "huc12"]);
 
 		map.on('mousemove', 'riverapp-regions-fill', (e) => {
-			// console.log(' layer MMove', e.features?.map((f) => f.properties));
 			// console.log('mousemove', e.features);
 
 			if(e.features && e.features.length > 0) {
@@ -194,12 +65,9 @@
 				});
 				hoveredFeature = feature;
 			}
-
-
 		});
 
 		map.on('mouseleave', 'riverapp-regions-fill', (e) => {
-			// console.log(' layer mLEAVE', e.features?.map((f) => f.properties));
 
 			const hoveredRegions = map.getSource("riverapp-hovered-regions") as ml.GeoJSONSource;
 			hoveredRegions.setData({
@@ -209,47 +77,10 @@
 
 			hoveredFeature = undefined;
 		});
-
-		// map.on('mouseover', 'riverapp-regions-fill', (e) => {
-		// 	console.log(' mouse OVER', e.features?.map((f) => f.properties));
-		// });
-
-		// 		geojsonData.features.forEach((feature) => {
-		// 			console.log("inital feature", feature);
-
-		// 			map.setFeatureState({ source: "sitez", id: feature.id }, { color: randomHexColor(), r: 20 });
-		// 		});
-
-		// 		geojsonData.features.forEach((feature) => {
-		// 			console.log("READ inital feature", map.getFeatureState({ source: "sitez", id: feature.id }));
-
-		// 		});
-		// //
-		// map.once('idle', () => {
-		// console.log('map idle. adding layers');
-		// randomizeFS();
-		// map.addLayer({
-		// 	id: "sitez",
-		// 	source: "sitez",
-		// 	type: "circle",
-		// 	layout: {
-		// 		// "icon-image": "store-icon",
-		// 		// "icon-size": 1,
-		// 		// "icon-allow-overlap": true,
-		// 		// "allow-overlap":
-		// 		// "icon-ignore-placement": true
-		// 	},
-		// 	paint: {
-		// 		// "icon-color": ["feature-state", "color"]
-		// 		"circle-color": ["feature-state", "color"],
-		// 		// 'circle-color': '#CCCC00',
-		// 		"circle-radius": 15
-		// 	}
-		// });
-		// });
-
-		// });
 	});
+
+
+
 
 	function randomizeFS() {
 		const map = mlMapComponent.mlmMap()!;
@@ -315,11 +146,26 @@
 	<!-- <input type="range" min="1" max="10000" onmousemove={randomizeFS} /> -->
 	<!-- <button class="debug" onclick={randomizeFS}>Randomize colors</button> -->
 	<button class="debug" onclick={randomizeRegionsSource}>Randomize Regions</button>
-	<button class="debug" onclick={() => mlMapComponent.setBasemapStyle("TOPO")}>TOPO</button>
-	<button class="debug" onclick={() => mlMapComponent.setBasemapStyle("SATELLITE")}>SAT</button>
+	<button class="debug" onclick={() => setBasemapStyleId("TOPO")}>TOPO</button>
+	<button class="debug" onclick={() => setBasemapStyleId("SATELLITE")}>SAT</button>
 </div>
 
-<MapLibreMap bind:this={mlMapComponent} addData={sauce} />
+<MapLibreMap bind:this={mlMapComponent} />
+
+{#if mlMap}
+	<VarDataMarkers
+		{mlMap}
+		{varname}
+		{vardate}
+		{sites}
+		ghostSitesVisible={layersParams.ghostSitesVisible}
+		yVarSite={dataSelection.yVar ? dataSelection.ySite : undefined}
+		zVarSite={dataSelection.zVar ? dataSelection.zSite : undefined}
+		{emphasizedSites}
+		{selectedSite}
+		bind:hoveredSite={_hoveredSite}
+		{...others} />
+{/if}
 
 <style>
 	.debug-controls {

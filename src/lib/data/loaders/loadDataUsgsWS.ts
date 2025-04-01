@@ -37,8 +37,8 @@ export async function loadDatasetsUsgsWS() {
 		// console.log('usgsSiteTimeseries', usgsSiteTimeseries);
 		usgsTimeseriesToSiteTables(usgsSiteTimeseries);
 	} catch (error) {
-		console.error('Error loading USGS sites', error);
-		notify(`Error loading USGS sites ${dailiesUrl}`, 'error', 6000);
+		console.error('Error loading USGS datasets', error);
+		notify(`Error loading USGS datasets ${dailiesUrl}`, 'error', 6000);
 	} finally {
 		finishedLoading();
 	}

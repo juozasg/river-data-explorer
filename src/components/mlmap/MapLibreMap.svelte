@@ -10,7 +10,7 @@
 	import { addMlmSources } from "$src/lib/data/map/layers/mapSources";
 	import { addMapLayers } from "$src/lib/data/map/layers/regionsMapLayers";
 	import { toggleRiverLayerVisibility } from "$src/lib/data/map/layers/riverLayers";
-	import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
+	import { basemapStyleId, defaultLayersParams, setBasemapStyleId } from "$src/appstate/ui/layers.svelte";
 	import { selectRegionTypeLayers } from "$src/lib/data/map/layers/mapLayers";
 	import { defineGlobal } from "$src/lib/utils";
 	import type { MapLayersParams } from "$src/lib/types/mapControls";
@@ -18,18 +18,21 @@
 	interface Props {
 		zoom?: number;
 		center?: ml.LngLatLike;
+		// baseStyleId?: keyof typeof basemapStyles;
 
-		layersParams?: MapLayersParams;
 		mlMap?: ml.Map;
-		addData: (map: ml.Map) => Promise<void>;
+		// onInitialStyleLoaded?: (map: ml.Map) => void;
+		// addData: (map: ml.Map) => Promise<void>;
 	}
 
 	let {
 		mlMap = $bindable(),
 		zoom = 8,
-		center = [-85.49182050000002, 41.82128218341444],
-		layersParams = defaultLayersParams,
-		addData
+		center = [-85.49182, 41.82128],
+		// onInitialStyleLoaded
+		// baseStyleId = "TOPO",
+		// layersParams = defaultLayersParams,
+		// addData
 	}: Props = $props();
 
 	let mapDiv = $state<HTMLDivElement>();
@@ -50,27 +53,6 @@
 		HILLSHADE: `${arcgisServicesStyles}/arcgis/hillshade/light/?token=${apiKey}`
 	};
 
-	$effect(() => {
-		if (!mlMap) return;
-		toggleRiverLayerVisibility(mlMap, layersParams.riverLayerVisible);
-	});
-
-	export function setBasemapStyle(style: keyof typeof basemapStyles) {
-		// layersParams.baseStyleId = style;
-		// console.log('setBasemapStyle', style);
-
-		const s = basemapStyles[style];
-		mlMap!.setStyle(s, { transformStyle });
-
-		// mlMap.setStyle(style);
-	}
-
-	$effect(() => {
-		if (!mlMap) return;
-		// console.log('layers regionType', layersParams.regionType);
-		selectRegionTypeLayers(mlMap, layersParams.regionType);
-	});
-
 	let _styleLoaded = $state(false);
 
 	export const styleLoaded = () => {
@@ -79,15 +61,16 @@
 
 	export const mlmMap = () => mlMap;
 
-	// $effect(() => {
-	// 	if (!mlMap) return;
+	// basemap style change
+	$effect(() => {
+		if (!mlMap) return;
 
-	// 	const style = basemapStyles[layersParams.baseStyleId];
-	// 	mlMap.setStyle(style, { transformStyle });
-	// });
+		const style = basemapStyles[basemapStyleId()];
+		mlMap.setStyle(style, { transformStyle });
+	});
 
 	onMount(() => {
-		const style = basemapStyles[layersParams.baseStyleId];
+		const style = basemapStyles[basemapStyleId()];
 		mlMap = new ml.Map({
 			container: mapDiv!, // container's id or the HTML element to render the map
 			style,
@@ -105,17 +88,12 @@
 		// only fires for the initial style, not for map.setStyle
 		mlMap.once("idle", () => {
 			mlMap!.resize();
-			// addMlmSources(mlMap!).then(() => {
-			// addLayers(mlMap!);
-			const style = basemapStyles[layersParams.baseStyleId];
+			// const style = basemapStyles[basemapStyleId()];
 			mlMap!.setStyle(style, { transformStyle }); // force transformStyle to reorder layers
-			toggleRiverLayerVisibility(mlMap!, layersParams.riverLayerVisible);
-			selectRegionTypeLayers(mlMap!, layersParams.regionType);
 
 			mlMap!.once("idle", () => {
 				_styleLoaded = true;
-
-				addData(mlMap!);
+				// if(onInitialStyleLoaded) onInitialStyleLoaded(mlMap!);
 			});
 			// });
 		});

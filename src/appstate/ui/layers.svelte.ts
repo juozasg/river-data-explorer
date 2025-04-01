@@ -1,6 +1,13 @@
 import type { MapLayersParams } from '$src/lib/types/mapControls';
 import { aremove } from '$src/lib/utils/arrays';
 
+type BasemapStyleId = 'TOPO' | 'SATELLITE';
+let _basemapStyleId: BasemapStyleId = $state('TOPO');
+export const basemapStyleId = () => _basemapStyleId;
+export function setBasemapStyleId(styleId: BasemapStyleId) {
+	_basemapStyleId = styleId;
+}
+
 
 export const defaultLayersParams: MapLayersParams = {
 	riverLayerVisible: true,

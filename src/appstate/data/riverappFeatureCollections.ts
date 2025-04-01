@@ -10,32 +10,17 @@ export const riverappFeatureCollections = new SvelteMap<RiverappFeaturesType, Ge
 export async function loadRiverappFeatureCollections() {
 	const promises = riverappFeatures.map(loadGeojsonData);
 	await Promise.all(promises);
-
-	return Promise.resolve();
 }
 
 export async function loadGeojsonData(name: RiverappFeaturesType) {
+	const path = `geojson/${name}.geojson`;
 	try {
-		const data = await loadDataJson(`geojson/${name}.geojson`);
+		const data = await loadDataJson(path);
 
 		riverappFeatureCollections.set(name, data);
 		console.log('loaded', name);
 	} catch(e) {
-		console.error('Error loading geometry', name, e);
+		console.error('Error loading geometry', path, e);
 	}
 }
 
-
-	// await Promise.all([
-	// 	loadGeojsonData('sites'),
-	// 	loadGeojsonData('states'),
-	// 	loadGeojsonData('counties'),
-	// 	loadGeojsonData('huc12'),
-	// 	loadGeojsonData('huc10'),
-	// 	loadGeojsonData('huc8'),
-	// 	loadGeojsonData('rivers'),
-	// 	loadGeojsonData('river_catchments'),
-	// 	loadGeojsonData('site_catchments'),
-	// ]);
-
-	// type RiverappFeaturesType = 'sites' | 'huc8' | 'huc10' | 'huc12' | 'states' | 'counties' | 'rivers' | 'site-catchments' | 'river-catchments';
