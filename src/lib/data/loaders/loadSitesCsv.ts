@@ -7,7 +7,7 @@ import { splitSiteId, sites } from "../../../appstate/data/sites.svelte";
 
 
 
-export async function loadSitesCsv() {
+export async function loadSitesCsv(datasetIds: Map<string, number>) {
 	const finishedLoading = startedLoading("Sites");
 
 	const promises = dataPathsStartingWith('sites/').map(async (path) => {
@@ -19,10 +19,14 @@ export async function loadSitesCsv() {
 
 	for (const r of records) {
 		// console.log('site', r);
+		const dataset = splitSiteId(r.siteId).dataset;
+		const num = splitSiteId(r.siteId).num;
+		const intId = datasetIds.get(dataset)! + num;
 		const site: Site = {
 			id: r.siteId.trim(),
-			dataset: splitSiteId(r.siteId).dataset,
-			num: splitSiteId(r.siteId).num,
+			intId,
+			dataset,
+			num,
 			name: r.name,
 			lat: parseFloat(r.lat),
 			lon: parseFloat(r.lon),

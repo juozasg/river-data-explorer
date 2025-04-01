@@ -36,6 +36,7 @@ function usgsTimeseriesToSites(timeSeries: any) {
 		const loc = ts.sourceInfo.geoLocation.geogLocation;
 		const site: Site = {
 			id: siteId,
+			intId: parseInt(siteCode),
 			dataset: 'usgs',
 			num: parseInt(siteCode),
 			name: ts.sourceInfo.siteName,

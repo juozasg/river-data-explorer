@@ -24,6 +24,7 @@ export class MLMapController {
 
 
 	siteHovered(site: Site | undefined) {
+		console.log('siteHovered', site);
 	}
 
 

@@ -14,6 +14,7 @@
 	import { sites as globalSites, Sites } from "$src/appstate/data/sites.svelte";
 	import { aremove } from "$src/lib/utils/arrays";
 	import { todayDate } from "$src/lib/utils/date";
+	import type { Site } from "$src/lib/types/site";
 
 
 
@@ -22,6 +23,11 @@
 
 	let mapController: MLMapController | undefined;
 	let mlMap = $state<ml.Map>();
+
+
+	const onSiteHovered = (site?: Site) => {
+		if(mapController) mapController.siteHovered(site);
+	};
 
 	$effect(() => {
 		setEnabledDatasets(aremove(globalSites.allDatasets, "invert"));
@@ -80,6 +86,7 @@
 		ghostSitesVisible={true}
 		yVarSite={undefined}
 		zVarSite={undefined}
+		{onSiteHovered}
  />
 {/if}
 

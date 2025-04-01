@@ -2,11 +2,13 @@ import { StateCountyFips, StateFips } from "./fips";
 
 export type Site = {
 	id: string; // 'elkhart-123'
+	intId: number; // unique integer based on datasets.csv
 	dataset: string; // 'elkhart'
 	num: number; // 123
 	name: string; // 'New Miller Stutsman - CR 28'
 	lat: number;
 	lon: number;
+
 
 	state: StateFips; // '18' (statefp='18' is indiana)
 	county: StateCountyFips; // '18039' (countyfp='18039' is elkhart co)
