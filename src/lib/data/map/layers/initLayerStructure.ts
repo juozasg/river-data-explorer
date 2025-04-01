@@ -153,13 +153,12 @@ function addRiverLayers(map: ml.Map): void {
 			],
 			'line-width': [
 				'case',
-				['boolean', ['feature-state', 'hover'], false],
-				6,
-				['case',
+
+
 					['==', ['get', 'name'], 'Saint Joseph River'],
-					4.5,
-					2
-				]
+					6,
+					3.5
+
 			],
 			'line-opacity': 1,
 		}
@@ -184,8 +183,8 @@ function addRiverLayers(map: ml.Map): void {
 				6,
 				['case',
 					['==', ['get', 'name'], 'Saint Joseph River'],
-					4.5,
-					2
+					8,
+					6
 				]
 			],
 			'line-opacity': 1,
