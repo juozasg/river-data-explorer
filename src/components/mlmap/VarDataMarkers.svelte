@@ -16,6 +16,7 @@
 		zVarSite?: Site;
 		emphasizedSites?: Site[];
 		ghostSitesVisible?: boolean;
+		onSiteHovered?: (site?: Site) => void;
 	};
 
 	let {
@@ -28,17 +29,20 @@
 		yVarSite,
 		zVarSite,
 		emphasizedSites = [],
-		ghostSitesVisible = true
+		ghostSitesVisible = true,
+		onSiteHovered,
 	}: Props = $props();
 
 	const markerMouseEnter = (e: MouseEvent, site: Site) => {
 		hoveredSite = site;
 		mlmapHovered.site = site;
+		if(onSiteHovered) onSiteHovered(site);
 	};
 
 	const markerMouseLeave = (e: MouseEvent, site: Site) => {
 		hoveredSite = undefined;
 		mlmapHovered.site = site;
+		if(onSiteHovered) onSiteHovered(undefined);
 	};
 </script>
 
