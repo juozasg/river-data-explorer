@@ -13,7 +13,7 @@ if [[ $1 = "--local" ]]; then
 else
 	curl -L "https://github.com/$REPO/archive/refs/heads/$BRANCH.zip" -o data.zip
 	unzip data.zip
-	mv SJRBC-web-map-data-main data
+	mv SJRBC-web-map-data-ui2 data
 
 	# get the latest commit hash
 	json=$(curl -s "https://api.github.com/repos/$REPO/branches/$BRANCH")
