@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 REPO="juozasg/SJRBC-web-map-data"
+# BRANCH="main"
+BRANCH="ui2"
 rm -rf tmp
 mkdir -p tmp
 cd tmp
@@ -9,12 +11,12 @@ if [[ $1 = "--local" ]]; then
 	rm -rf data/.git
 	echo "Data: local" > data/versions.txt
 else
-	curl -L "https://github.com/$REPO/archive/refs/heads/main.zip" -o data.zip
+	curl -L "https://github.com/$REPO/archive/refs/heads/$BRANCH.zip" -o data.zip
 	unzip data.zip
 	mv SJRBC-web-map-data-main data
 
 	# get the latest commit hash
-	json=$(curl -s "https://api.github.com/repos/$REPO/branches/main")
+	json=$(curl -s "https://api.github.com/repos/$REPO/branches/$BRANCH")
 	sha=$(echo "$json" | jq -r '.commit.sha' | cut -c1-8)
 	echo "Data: $sha" > data/versions.txt
 fi
