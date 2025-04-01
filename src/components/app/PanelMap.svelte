@@ -5,11 +5,13 @@
 	import MapLibreMap from "../mlmap/MapLibreMap.svelte";
 	import { defineGlobal } from "$src/lib/utils";
 	import { regionFeatures } from "$src/appstate/data/regionFeatures.svelte";
-	import { loadGeometries } from "$src/lib/data/map/layers/mapSources";
+	import { loadGeometries_old } from "$src/lib/data/map/layers/mapSources";
 	import { mapSelectionMode } from "$src/appstate/selection/objectInteractionState.svelte";
+	import { loadGeometries } from "$src/appstate/data/geometries.svelte";
 
 	let mlMapComponent: MapLibreMap;
 	let hoveredFeature = $state<ml.MapGeoJSONFeature>();
+	loadGeometries();
 
 	$effect(() => {
 		console.log("hoveredFeature", hoveredFeature);
@@ -53,7 +55,7 @@
 	}
 
 	async function sauce() {
-		await loadGeometries();
+		await loadGeometries_old();
 		const map = mlMapComponent.mlmMap()!;
 
 		const geojsonData = pointFeatureCollection(10);

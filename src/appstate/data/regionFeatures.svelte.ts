@@ -3,13 +3,13 @@ import type ColumnTable from "arquero/dist/types/table/column-table";
 import { defineGlobal } from "$src/lib/utils";
 
 const geometriesIds = new SvelteMap<string, string>();
-const geometries = new SvelteMap<string, GeoJSON.FeatureCollection>();
+const geometries_old = new SvelteMap<string, GeoJSON.FeatureCollection>();
 
 export function geomFeatureName(source: string | undefined, id: string | number | undefined): string {
 	if (!source) return !!id ? id.toString() : '';
 	const col = source.replace(/^riverapp-/, '');
 	const idProperty = geometriesIds.get(col) || 'id';
-	const feature = geometries.get(col)?.features.find(f => f.properties?.[idProperty] === id);
+	const feature = geometries_old.get(col)?.features.find(f => f.properties?.[idProperty] === id);
 	return feature?.properties?.name || id?.toString() || '';
 }
 
@@ -43,7 +43,7 @@ export class RegionFeatures {
 	addGeoJSONCollection(regionType: RegionType | string, idField: string, data: GeoJSON.FeatureCollection) {
 		const regionCollection = this.#regionFeatureCollections.get(regionType) || [];
 
-		geometries.set(regionType, data);
+		geometries_old.set(regionType, data);
 		data.features.forEach((f: GeoJSON.Feature) => {
 			const id = f.properties?.[idField] || f.id || '';
 			const key = `${regionType}-${id}`;
@@ -79,13 +79,13 @@ export class RegionFeatures {
 	}
 
 	getFeatureCollection(regionType: string): GeoJSON.FeatureCollection {
-		return geometries.get(regionType) || { type: 'FeatureCollection', features: [] };
+		return geometries_old.get(regionType) || { type: 'FeatureCollection', features: [] };
 	}
 
 }
 
 export const regionFeatures = new RegionFeatures();
 
-defineGlobal('geometries', geometries);
+defineGlobal('geometries', geometries_old);
 defineGlobal('geometriesIds', geometriesIds);
 defineGlobal('regionFeatures', regionFeatures);

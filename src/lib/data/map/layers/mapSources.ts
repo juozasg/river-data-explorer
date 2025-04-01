@@ -6,24 +6,28 @@ import { regionFeatures } from '$src/appstate/data/regionFeatures.svelte';
 
 // const geometriesLoaded
 
-export async function loadGeometries() {
+export async function loadGeometries_old() {
 	await Promise.all([
-		loadGeometry('state', 'statefp'),
-		loadGeometry('county', 'countyfp'),
-		loadGeometry('huc12', 'huc12'),
-		loadGeometry('huc10', 'huc10'),
-		loadGeometry('huc8', 'huc8'),
-		loadGeometry('river', 'id')
+		loadGeometry('states'),
+		loadGeometry('counties'),
+		loadGeometry('huc12'),
+		loadGeometry('huc10'),
+		loadGeometry('huc8'),
+		loadGeometry('rivers')
 	]);
 
 	return Promise.resolve();
 }
 
 
-export async function loadGeometry(name: string, promoteId?: string | undefined) {
-	const data = await loadDataJson(`geojson/${name}.geojson`);
+export async function loadGeometry(name: string) {
+	try {
+		const data = await loadDataJson(`geojson/${name}.geojson`);
 
-	regionFeatures.addGeoJSONCollection(name, promoteId || 'id', data);
+		regionFeatures.addGeoJSONCollection(name, 'id', data);
+	} catch(e) {
+		console.error('Error loading geometry', name, e);
+	}
 }
 
 
