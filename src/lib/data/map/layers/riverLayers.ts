@@ -2,15 +2,15 @@ import * as ml from 'maplibre-gl';
 
 
 export function addRiverLayers(map: ml.Map): void {
-	if(map.getLayer('riverapp-river')) map.removeLayer('riverapp-river');
+	// if(map.getLayer('riverapp-river')) map.removeLayer('riverapp-river');
 
 	const mainstemColor = '#17a0d1';
 	const tributariesColor = '#1db2e7';
 
 	map.addLayer({
-		id: 'riverapp-river',
+		id: 'riverapp-rivers',
 		type: 'line',
-		source: 'riverapp-river',
+		source: 'riverapp-rivers',
 		layout: {
 			'visibility': 'visible',
 			'line-join': 'bevel',

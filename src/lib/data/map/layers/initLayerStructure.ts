@@ -12,7 +12,8 @@ export async function initLayerStructure(map: ml.Map) {
 
 
 	map.addSource("riverapp-regions", {
-		generateId: true,
+		// generateId: true,
+		promoteId: 'id',
 		type: "geojson",
 		data: {
 			type: "FeatureCollection",
@@ -21,7 +22,8 @@ export async function initLayerStructure(map: ml.Map) {
 	});
 
 	map.addSource("riverapp-hovered-regions", {
-		generateId: true,
+		// generateId: true,
+		promoteId: 'id',
 		type: "geojson",
 		data: {
 			type: "FeatureCollection",
@@ -30,7 +32,28 @@ export async function initLayerStructure(map: ml.Map) {
 	});
 
 	map.addSource("riverapp-selected-regions", {
-		generateId: true,
+		// generateId: true,
+		promoteId: 'id',
+		type: "geojson",
+		data: {
+			type: "FeatureCollection",
+			features: []
+		}
+	});
+
+	map.addSource("riverapp-rivers", {
+		// generateId: true,
+		promoteId: 'id',
+		type: "geojson",
+		data: {
+			type: "FeatureCollection",
+			features: []
+		}
+	});
+
+	map.addSource("riverapp-hovered-rivers", {
+		// generateId: true,
+		promoteId: 'id',
 		type: "geojson",
 		data: {
 			type: "FeatureCollection",
@@ -77,11 +100,97 @@ export async function initLayerStructure(map: ml.Map) {
 			source: "riverapp-hovered-regions",
 			type: "line",
 			paint: {
-				"line-color": "#E3E676",
+				// "line-color": "#E3E676",
+				"line-color": "#200",
 				"line-width": 3
 				// "fill-opacity": 0.5
 			}
 		},
+		mlmInsertBeforeLayer
+	);
+
+
+	map.addLayer(
+		{
+			id: "riverapp-regions-hovered-fill",
+			source: "riverapp-hovered-regions",
+			type: "fill",
+			paint: {
+				"fill-opacity": 0.2,
+				// "fill-opacity": 0,
+				"fill-color": "#088"
+			}
+		},
+		mlmInsertBeforeLayer
+	);
+
+	addRiverLayers(map);
+}
+
+
+
+
+function addRiverLayers(map: ml.Map): void {
+	const mainstemColor = '#17a0d1';
+	const tributariesColor = '#1db2e7';
+
+	map.addLayer({
+		id: 'riverapp-rivers',
+		type: 'line',
+		source: 'riverapp-rivers',
+		layout: {
+			'visibility': 'visible',
+			'line-join': 'bevel',
+			'line-cap': 'round'
+		},
+		paint: {
+			'line-color': [
+				'case',
+				['==', ['get', 'name'], 'Saint Joseph River'],
+				mainstemColor,
+				tributariesColor
+
+			],
+			'line-width': [
+				'case',
+				['boolean', ['feature-state', 'hover'], false],
+				6,
+				['case',
+					['==', ['get', 'name'], 'Saint Joseph River'],
+					4.5,
+					2
+				]
+			],
+			'line-opacity': 1,
+		}
+	},
+		mlmInsertBeforeLayer
+	);
+
+	map.addLayer({
+		id: 'riverapp-hovered-rivers',
+		type: 'line',
+		source: 'riverapp-hovered-rivers',
+		layout: {
+			'visibility': 'visible',
+			'line-join': 'bevel',
+			'line-cap': 'round'
+		},
+		paint: {
+			'line-color':'#97E817',
+			'line-width': [
+				'case',
+				['boolean', ['feature-state', 'hover'], false],
+				6,
+				['case',
+					['==', ['get', 'name'], 'Saint Joseph River'],
+					4.5,
+					2
+				]
+			],
+			'line-opacity': 1,
+		}
+	},
 		mlmInsertBeforeLayer
 	);
 }

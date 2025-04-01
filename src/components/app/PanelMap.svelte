@@ -7,7 +7,7 @@
 	import { regionFeatures } from "$src/appstate/data/regionFeatures.svelte";
 	import { loadGeometries_old } from "$src/lib/data/map/layers/mapSources";
 	import { mapSelectionMode } from "$src/appstate/selection/objectInteractionState.svelte";
-	import { loadRiverappFeatureCollections } from "$src/appstate/data/riverappFeatureCollections";
+	import { loadRiverappFeatureCollections, riverappFeatureCollections } from "$src/appstate/data/riverappFeatureCollections";
 	import { setBasemapStyleId, setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
 	import { MLMapController } from "$src/appstate/map/mlmapController.svelte";
 	import VarDataMarkers from "../mlmap/VarDataMarkers.svelte";
@@ -21,7 +21,7 @@
 	// svelte-ignore non_reactive_update
 	let mlMapComponent: MapLibreMap;
 
-	let mapController: MLMapController | undefined;
+	let mapController: MLMapController | undefined = $state();
 	let mlMap = $state<ml.Map>();
 
 
@@ -40,6 +40,9 @@
 
 	loadRiverappFeatureCollections();
 
+
+
+
 	// $effect(() => {
 	// 	console.log("hoveredFeature", hoveredFeature);
 	// });
@@ -57,6 +60,22 @@
 		// map.on("load", () => {
 		// 	console.log("map load-2");
 		// });
+	});
+
+
+	$effect(() => {
+		if(!mlMapComponent.styleLoaded()) return;
+		if (!mapController || !mapController.dataModelReady) return;
+
+
+
+		const riversFeatures = riverappFeatureCollections.get('rivers');
+		const riversSource = mlMap?.getSource("riverapp-rivers") as ml.GeoJSONSource;
+		if(riversSource && riversFeatures) {
+			riversSource.setData(riversFeatures);
+		}
+
+
 	});
 
 
