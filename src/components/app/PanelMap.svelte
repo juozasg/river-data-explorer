@@ -41,25 +41,12 @@
 	loadRiverappFeatureCollections();
 
 
-
-
-	// $effect(() => {
-	// 	console.log("hoveredFeature", hoveredFeature);
-	// });
-
-
-
 	$effect(() => {
 		if (!mlMapComponent.styleLoaded()) return;
 
 		mlMap = mlMapComponent.mlmMap()!;
 		mapController = new MLMapController(mlMapComponent.mlmMap()!);
 
-		// defineGlobal("map", mlMap);
-
-		// map.on("load", () => {
-		// 	console.log("map load-2");
-		// });
 	});
 
 
@@ -67,17 +54,13 @@
 		if(!mlMapComponent.styleLoaded()) return;
 		if (!mapController || !mapController.dataModelReady) return;
 
-
-
 		const riversFeatures = riverappFeatureCollections.get('rivers');
 		const riversSource = mlMap?.getSource("riverapp-rivers") as ml.GeoJSONSource;
 		if(riversSource && riversFeatures) {
 			riversSource.setData(riversFeatures);
 		}
 
-
 	});
-
 
 
 
@@ -86,13 +69,10 @@
 
 <!-- <div>Panel map</div> -->
 
-<div class="debug-controls">
-	<!-- <input type="range" min="1" max="10000" onmousemove={randomizeFS} /> -->
-	<!-- <button class="debug" onclick={randomizeFS}>Randomize colors</button> -->
-	<!-- <button class="debug" onclick={randomizeRegionsSource}>Randomize Regions</button> -->
+<!-- <div class="debug-controls">
 	<button class="debug" onclick={() => setBasemapStyleId("TOPO")}>TOPO</button>
 	<button class="debug" onclick={() => setBasemapStyleId("SATELLITE")}>SAT</button>
-</div>
+</div> -->
 
 <MapLibreMap bind:this={mlMapComponent} />
 
