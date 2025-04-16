@@ -18,6 +18,7 @@ export async function loadRiverappFeatureCollections() {
 export async function loadGeojsonData(name: RiverappFeaturesType) {
 	const path = `geojson/${name}.geojson`;
 	try {
+
 		const data = await loadDataJson(path);
 
 		riverappFeatureCollections.set(name, data);
@@ -27,3 +28,8 @@ export async function loadGeojsonData(name: RiverappFeaturesType) {
 	}
 }
 
+
+// if(name === 'rivers') {
+// 	console.log('SLEEEEP');
+// 	await new Promise(r => setTimeout(r, 9000));
+// }

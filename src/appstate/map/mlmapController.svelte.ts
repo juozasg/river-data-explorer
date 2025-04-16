@@ -6,7 +6,7 @@ import { riverappFeatureCollections } from '../data/riverappFeatureCollections';
 export class MLMapController {
 	#map: ml.Map;
 	#hoveredRegionFeature = $state<ml.MapGeoJSONFeature>();
-	#hoveredRiverFeature = $state<ml.MapGeoJSONFeature>();
+	#hoveredRiverFeature = $state<GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties>>();
 
 	dataModelReady = $state(false)
 
@@ -17,14 +17,22 @@ export class MLMapController {
 		initLayerStructure(map);
 
 		map.once("idle", () => {
-			console.log("mlmap data model is ready");
+			// console.log("mlmap data model is ready");
 			this.dataModelReady = true;
 			this.addHoverListeners(map);
 			// now safe to modify map sources and layers
-			// randomizeRegionsSource();
 		});
 
-
+		$effect.root(() => {
+			$effect(() => {
+				const riversFeatures = riverappFeatureCollections.get('rivers');
+				const riversSource = this.#map.getSource("riverapp-rivers") as ml.GeoJSONSource;
+				if(this.dataModelReady && riversSource && riversFeatures) {
+					// console.log('adding rivers geojson mlmap source data');
+					riversSource.setData(riversFeatures);
+				}
+			});
+		});
 	}
 
 
@@ -60,14 +68,14 @@ export class MLMapController {
 	}
 
 	riverHovered(id: number | undefined) {
-		console.log('riverHovered', id);
+		// console.log('riverHovered', id);
 
 		if (id) {
 			const catchments = riverappFeatureCollections.get('river-catchments');
 
 			if (catchments) {
 				const riverCatchment = catchments.features.find(f => f.properties?.id === id);
-				console.log('riverCatchment', riverCatchment);
+				// console.log('riverCatchment', riverCatchment);
 
 				if (riverCatchment) {
 					const hoveredRegions = this.#map.getSource("riverapp-hovered-regions") as ml.GeoJSONSource;
@@ -100,6 +108,7 @@ export class MLMapController {
 				}
 				// console.log('hoveredRegions', hoveredRegions);
 
+
 				hoveredRegions.setData({
 					type: "FeatureCollection",
 					// features: e.features
@@ -122,33 +131,33 @@ export class MLMapController {
 
 
 		/// RIVERS
-		map.on('mousemove', 'riverapp-rivers', (e) => {
+		map.on('mousemove', 'riverapp-rivers-hitbox', (e) => {
 			// console.log('mousemove', e.features);
 
 			if (e.features && e.features.length > 0) {
 				const feature = e.features[0];
 				const hoveredRivers = map.getSource("riverapp-hovered-rivers") as ml.GeoJSONSource;
-				// const sourceHoveredFeature = hoveredRegions.
-				const hoveredRiversData = hoveredRivers._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
-				const hoveredRiversFeature = hoveredRiversData.features[0];
+				// const hoveredRiversData = hoveredRivers._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+				// const hoveredRiversFeature = hoveredRiversData.features[0];
 
 				if (this.#hoveredRiverFeature && this.#hoveredRiverFeature.id === feature.id) {
 					return;
 				}
 
-				hoveredRivers.setData({
-					type: "FeatureCollection",
-					// features: e.features
-					features: [feature]
-				});
-				this.#hoveredRiverFeature = feature;
-				// console.log('hoveredRiver', this.#hoveredRiverFeature);
-				this.riverHovered(feature.id as number);
+				const geojsonFeature = riverappFeatureCollections.get('rivers')?.features.find(f => f.properties && f.properties.id === feature.id);
 
+				if (geojsonFeature) {
+					hoveredRivers.setData({
+						type: "FeatureCollection",
+						features: [geojsonFeature]
+					});
+					this.#hoveredRiverFeature = geojsonFeature;
+				}
+				this.riverHovered(feature.id as number);
 			}
 		});
 
-		map.on('mouseleave', 'riverapp-rivers', (e) => {
+		map.on('mouseleave', 'riverapp-rivers-hitbox', (e) => {
 
 			const hoveredRivers = map.getSource("riverapp-hovered-rivers") as ml.GeoJSONSource;
 			hoveredRivers.setData({

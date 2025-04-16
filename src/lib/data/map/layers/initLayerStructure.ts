@@ -61,7 +61,13 @@ export async function initLayerStructure(map: ml.Map) {
 		}
 	});
 
+	// LAYERS
+	addRegionLayers(map);
+	addRiverLayers(map);
+}
 
+
+function addRegionLayers(map: ml.Map): void {
 	map.addLayer(
 		{
 			id: "riverapp-regions",
@@ -102,7 +108,7 @@ export async function initLayerStructure(map: ml.Map) {
 			paint: {
 				// "line-color": "#E3E676",
 				"line-color": "#200",
-				"line-width": 3
+				"line-width": 1.5
 				// "fill-opacity": 0.5
 			}
 		},
@@ -123,11 +129,7 @@ export async function initLayerStructure(map: ml.Map) {
 		},
 		mlmInsertBeforeLayer
 	);
-
-	addRiverLayers(map);
 }
-
-
 
 
 function addRiverLayers(map: ml.Map): void {
@@ -153,11 +155,9 @@ function addRiverLayers(map: ml.Map): void {
 			],
 			'line-width': [
 				'case',
-
-
-					['==', ['get', 'name'], 'Saint Joseph River'],
-					6,
-					3.5
+				['==', ['get', 'name'], 'Saint Joseph River'],
+				5,
+				2.5
 
 			],
 			'line-opacity': 1,
@@ -176,7 +176,7 @@ function addRiverLayers(map: ml.Map): void {
 			'line-cap': 'round'
 		},
 		paint: {
-			'line-color':'#97E817',
+			'line-color': '#97E817',
 			'line-width': [
 				'case',
 				['boolean', ['feature-state', 'hover'], false],
@@ -192,4 +192,31 @@ function addRiverLayers(map: ml.Map): void {
 	},
 		mlmInsertBeforeLayer
 	);
+
+
+	// HITBOX
+	map.addLayer({
+		id: 'riverapp-rivers-hitbox',
+		type: 'line',
+		source: 'riverapp-rivers',
+		layout: {
+			'visibility': 'visible',
+			'line-join': 'bevel',
+			'line-cap': 'round'
+		},
+		paint: {
+			'line-color': [
+				'case',
+				['==', ['get', 'name'], 'Saint Joseph River'],
+				mainstemColor,
+				tributariesColor
+
+			],
+			'line-width': 20,
+			'line-opacity': 0,
+		}
+	},
+		mlmInsertBeforeLayer
+	);
+
 }

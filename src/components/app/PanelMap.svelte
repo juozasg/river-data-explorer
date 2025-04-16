@@ -36,9 +36,8 @@
 		console.log('globalSites.allDatasets', globalSites.allDatasets);
 
 	});
-	const sites = $derived(globalSites.allEnabled);
 
-	loadRiverappFeatureCollections();
+	const sites = $derived(globalSites.allEnabled);
 
 
 	$effect(() => {
@@ -50,29 +49,21 @@
 	});
 
 
-	$effect(() => {
-		if(!mlMapComponent.styleLoaded()) return;
-		if (!mapController || !mapController.dataModelReady) return;
+	// $effect(() => {
+	// 	if(!mlMapComponent.styleLoaded()) return;
+	// 	if (!mapController || !mapController.dataModelReady) return;
 
-		const riversFeatures = riverappFeatureCollections.get('rivers');
-		const riversSource = mlMap?.getSource("riverapp-rivers") as ml.GeoJSONSource;
-		if(riversSource && riversFeatures) {
-			riversSource.setData(riversFeatures);
-		}
+	// 	const riversFeatures = riverappFeatureCollections.get('rivers');
+	// 	const riversSource = mlMap?.getSource("riverapp-rivers") as ml.GeoJSONSource;
+	// 	if(riversSource && riversFeatures) {
+	// 		riversSource.setData(riversFeatures);
+	// 	}
 
-	});
-
-
+	// });
 
 
 </script>
 
-<!-- <div>Panel map</div> -->
-
-<!-- <div class="debug-controls">
-	<button class="debug" onclick={() => setBasemapStyleId("TOPO")}>TOPO</button>
-	<button class="debug" onclick={() => setBasemapStyleId("SATELLITE")}>SAT</button>
-</div> -->
 
 <MapLibreMap bind:this={mlMapComponent} />
 
