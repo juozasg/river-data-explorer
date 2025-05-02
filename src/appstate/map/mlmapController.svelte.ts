@@ -56,7 +56,7 @@ export class MLMapController {
 			const catchments = riverappFeatureCollections.get('site-catchments');
 			if (catchments) {
 				const siteCatchment = catchments.features.find(f => f.properties?.id === site.id);
-				console.log('siteCatchment', siteCatchment, catchments);
+				// console.log('siteCatchment', siteCatchment);
 
 				if (siteCatchment) {
 					const hoveredRegions = this.#map.getSource("riverapp-hovered-regions") as ml.GeoJSONSource;
