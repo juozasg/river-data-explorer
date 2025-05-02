@@ -12,10 +12,10 @@
 
 	<h3 class="site-label">
 		<div class="selection-hints">
-			{#if dataSelection.ySite && dataSelection.ySite.id == site.id}
+			{#if dataSelection.ySite && dataSelection.ySite.siteId == site.siteId}
 				<div class="y-selection"></div>
 			{/if}
-			{#if dataSelection.zSite && dataSelection.zSite.id == site.id}
+			{#if dataSelection.zSite && dataSelection.zSite.siteId == site.siteId}
 				<div class="z-selection"></div>
 			{/if}
 		</div>
@@ -23,7 +23,7 @@
 		<span class="pill">site</span>
 		<span class="label">
 			<span style="font-weight: 400">{site.name}</span>
-			<span class="subtitle">{site.id}</span>
+			<span class="subtitle">{site.siteId}</span>
 		</span>
 	</h3>
 

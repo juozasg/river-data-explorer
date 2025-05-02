@@ -20,7 +20,7 @@
 
 	const yTable = $derived.by(() => {
 		if (dataSelection.ySite && dataSelection.yVar) {
-			const table = sitesTables.get(dataSelection.ySite.id);
+			const table = sitesTables.get(dataSelection.ySite.siteId);
 			return selectTableVar(table, dataSelection.yVar, "y");
 		}
 
@@ -34,7 +34,7 @@
 
 	const zTable = $derived.by(() => {
 		if (dataSelection.zSite && dataSelection.zVar) {
-			const table = sitesTables.get(dataSelection.zSite.id);
+			const table = sitesTables.get(dataSelection.zSite.siteId);
 			return selectTableVar(table, dataSelection.zVar, "z");
 		}
 
@@ -72,7 +72,7 @@
 
 	function locationName(site?: Site, region?: RegionFeature) {
 		if (site) {
-			return site.name + ` (${site.id.replace(/-/, "&#8209;")})`; // non-breaking hyphen
+			return site.name + ` (${site.siteId.replace(/-/, "&#8209;")})`; // non-breaking hyphen
 		}
 		if (region) {
 			return region.name + ` (${region.regionType}&nbsp;${region.id})`;

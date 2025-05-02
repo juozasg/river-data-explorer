@@ -26,7 +26,7 @@ export function sitesDataStats(sites: Site[]): SitesDataStats {
 		}
 
 		const numSites = sites.length;
-		const tables: ColumnTable[] = sites.map(site => sitesTables.get(site.id)).filter(t => t !== undefined && t.numRows() > 0) as ColumnTable[];
+		const tables: ColumnTable[] = sites.map(site => sitesTables.get(site.siteId)).filter(t => t !== undefined && t.numRows() > 0) as ColumnTable[];
 		if (tables.length === 0) {
 			return noSitesStats;
 		}
@@ -53,7 +53,7 @@ export function sitesDataStats(sites: Site[]): SitesDataStats {
 			dateToLabel,
 		};
 	} catch (e) {
-		console.error('sitesDataStats error', e, sites.map(s => s.id));
+		console.error('sitesDataStats error', e, sites.map(s => s.siteId));
 		return noSitesStats;
 	}
 }

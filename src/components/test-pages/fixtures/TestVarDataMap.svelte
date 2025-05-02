@@ -14,7 +14,7 @@
 	});
 
 	$effect(() => {
-		const s = sites.allEnabled.find((s) => s.id === "sjrbc-1");
+		const s = sites.allEnabled.find((s) => s.siteId === "sjrbc-1");
 		if (s) {
 			// selectedSite = s;
 		}

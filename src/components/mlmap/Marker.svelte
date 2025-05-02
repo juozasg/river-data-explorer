@@ -44,11 +44,10 @@
 		return makeSiteMarker(node, map, site);
 	};
 
-	export const siteId = site.id;
+	export const siteId = site.siteId;
 
 	$effect(() => {
-		const val = siteBeforeVardateValue(site.id, varname, vardate);
-		// console.log('marker val', val, site.id, varname, vardate);
+		const val = siteBeforeVardateValue(site.siteId, varname, vardate);
 
 		// const val = 200;
 		if (val === undefined) {
@@ -67,7 +66,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	class="marker"
-	data-site-id={site.id}
+	data-site-id={site.siteId}
 	onmouseenter={(e) => markerMouseEnter(e, site)}
 	onmouseleave={(e) => markerMouseLeave(e, site)}
 	class:is-selected={selected}

@@ -7,6 +7,7 @@ export class MLMapController {
 	#map: ml.Map;
 	#hoveredRegionFeature = $state<ml.MapGeoJSONFeature>();
 	#hoveredRiverFeature = $state<GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties>>();
+	// #hoveredSite
 
 	dataModelReady = $state(false)
 
@@ -51,10 +52,10 @@ export class MLMapController {
 	siteHovered(site: Site | undefined) {
 		console.log('siteHovered', site);
 
-		if (site && site.intId) {
+		if (site && site.id) {
 			const catchments = riverappFeatureCollections.get('site-catchments');
 			if (catchments) {
-				const siteCatchment = catchments.features.find(f => f.properties?.id === site.intId);
+				const siteCatchment = catchments.features.find(f => f.properties?.id === site.id);
 				console.log('siteCatchment', siteCatchment, catchments);
 
 				if (siteCatchment) {

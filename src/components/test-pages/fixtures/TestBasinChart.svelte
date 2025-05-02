@@ -25,8 +25,8 @@
 	};
 
 	$effect(() => {
-		console.log('ySite full Table', sitesTables.get(dataSelection.ySite?.id || '')?.objects());
-		console.log('zSite full Table', sitesTables.get(dataSelection.zSite?.id || '')?.objects());
+		console.log('ySite full Table', sitesTables.get(dataSelection.ySite?.siteId || '')?.objects());
+		console.log('zSite full Table', sitesTables.get(dataSelection.zSite?.siteId || '')?.objects());
 	});
 </script>
 

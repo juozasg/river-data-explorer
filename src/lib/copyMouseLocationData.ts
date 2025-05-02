@@ -19,7 +19,7 @@ export const copyMouseLocationData = (e: KeyboardEvent) => {
 		if(mapMouseLocation.lngLat || mapMouseLocation.site || mapMouseLocation.regionFeature) {
 			let text = "";
 			if(mapMouseLocation.site) {
-				text += `Site ID: ${mapMouseLocation.site.id}\n`;
+				text += `Site ID: ${mapMouseLocation.site.siteId}\n`;
 				text += `Site Name: ${mapMouseLocation.site.name}\n`;
 			}
 

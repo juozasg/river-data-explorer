@@ -71,12 +71,12 @@
 		items={sites.all}
 		labelFieldName="id"
 		valueFieldName="id"
-		keywordsFunction={(s: Site) => s.name + " " + s.dataset + " " + s.num + " " + s.id + " site"}
+		keywordsFunction={(s: Site) => s.name + " " + s.dataset + " " + s.num + " " + s.siteId + " site"}
 		bind:selectedItem={selectedSite}
 		placeholder=""
 		hideArrow={true}>
 		<div slot="item" let:item={s}>
-			<p><strong>Site</strong> <i class="siteid">{s.id}</i></p>
+			<p><strong>Site</strong> <i class="siteid">{s.siteId}</i></p>
 			<p>{s.name}</p>
 			<!-- <span style="color:{item.code}">{item.code}</span> -->
 		</div>

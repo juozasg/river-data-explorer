@@ -23,8 +23,8 @@ export async function loadSitesCsv(datasetIds: Map<string, number>) {
 		const num = splitSiteId(r.siteId).num;
 		const intId = datasetIds.get(dataset)! + num;
 		const site: Site = {
-			id: r.siteId.trim(),
-			intId,
+			siteId: r.siteId.trim(),
+			id: intId,
 			dataset,
 			num,
 			name: r.name,

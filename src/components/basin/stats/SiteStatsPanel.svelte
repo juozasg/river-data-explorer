@@ -21,7 +21,7 @@
 
 	const { varLabelClick, varGraphButtonClick, dataSelection, site, hoverColor }: Props = $props();
 
-	const table = $derived(site && sitesTables.get(site.id));
+	const table = $derived(site && sitesTables.get(site.siteId));
 
 	const rows: VariableStats[] = $derived.by(() => {
 		if (!table || table.numRows() == 0) return [];
@@ -46,8 +46,8 @@
 
 		{#snippet row(r: VariableStats)}
 			<TdStatsVariableLabel
-				ySelected={dataSelection.yVar === r.varname && dataSelection.ySite && dataSelection.ySite.id == site.id}
-				zSelected={dataSelection.zVar === r.varname && dataSelection.zSite && dataSelection.zSite.id == site.id}
+				ySelected={dataSelection.yVar === r.varname && dataSelection.ySite && dataSelection.ySite.siteId == site.siteId}
+				zSelected={dataSelection.zVar === r.varname && dataSelection.zSite && dataSelection.zSite.siteId == site.siteId}
 				yHinted={!!r.varname && dataSelection.yVar === r.varname}
 				zHinted={!!r.varname && dataSelection.zVar === r.varname}
 				varname={r.varname}

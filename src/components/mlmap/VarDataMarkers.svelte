@@ -47,8 +47,8 @@
 </script>
 
 {#if mlMap}
-	{#each sites as site (site.id)}
-		<!-- {#if site.id === 'steuben-1'} -->
+	{#each sites as site (site.siteId)}
+		<!-- {#if site.siteId === 'steuben-1'} -->
 		<Marker
 			map={mlMap}
 			{markerMouseEnter}
@@ -57,10 +57,10 @@
 			{varname}
 			{vardate}
 			{ghostSitesVisible}
-			selected={selectedSite && site.id == selectedSite?.id}
-			emphasized={emphasizedSites.some((s) => s.id == site.id)}
-			isYVar={site.id == yVarSite?.id}
-			isZVar={site.id == zVarSite?.id} />
+			selected={selectedSite && site.siteId == selectedSite?.siteId}
+			emphasized={emphasizedSites.some((s) => s.siteId == site.siteId)}
+			isYVar={site.siteId == yVarSite?.siteId}
+			isZVar={site.siteId == zVarSite?.siteId} />
 		<!-- {/if} -->
 	{/each}
 {/if}

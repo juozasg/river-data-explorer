@@ -29,7 +29,7 @@
 	const sitesInRegion = $derived(Sites.forRegionFeature(sites.allEnabled, region));
 
 	const sitesStats = $derived(sitesDataStats(sitesInRegion));
-	const sitesInAreaTables = $derived(sitesInRegion.map((s) => sitesTables.get(s.id)).filter((t) => t)) as ColumnTable[];
+	const sitesInAreaTables = $derived(sitesInRegion.map((s) => sitesTables.get(s.siteId)).filter((t) => t)) as ColumnTable[];
 
 	const rows: VariableStats[] = $derived.by(() => {
 		// dont bother with empty tables
@@ -37,7 +37,7 @@
 		// console.log("daily meads", dailyMedians.objects());
 
 		return allVariableStats(dailyMedians, {
-			errorLabel: sitesInRegion.map((s) => s.id).join(", ")
+			errorLabel: sitesInRegion.map((s) => s.siteId).join(", ")
 		});
 	});
 </script>

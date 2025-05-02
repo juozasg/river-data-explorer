@@ -103,7 +103,7 @@ export function tableIndexBeforeDate(table: ColumnTable, date: Date, fromIndex =
 
 
 export function siteGetBeforeDate(site: Site, varname: string, date?: Date): number | Date | undefined {
-	const table = sitesTables.get(site.id);
+	const table = sitesTables.get(site.siteId);
 	if (!table) return undefined;
 	return tableGetBeforeDate(table, varname, date);
 }

@@ -145,7 +145,7 @@
 		<h5 class="site" class:tooltip-section={!!hoveredRiver.feature || !!(showRegionTooltip && hoveredRegion.feature)}>
 			Site: {site.name || ""}
 		</h5>
-		<i>Site ID: {site.id}</i>
+		<i>Site ID: {site.siteId}</i>
 		{@render variableValueBeforeDate(site)}
 		{#if siteStats}
 			<TooltipSiteStats stats={siteStats} />

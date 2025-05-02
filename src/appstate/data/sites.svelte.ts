@@ -18,7 +18,7 @@ export class Sites {
 		// console.log('with data tables', sitesTables.size, this.#sites.length)
 		const keys = Array.from(sitesTables.keys());
 		const sts = onlyEnabled ? this.allEnabled : this.all;
-		return sts.filter(s => keys.includes(s.id));
+		return sts.filter(s => keys.includes(s.siteId));
 	}
 
 	static groupedBy(_sites: Site[], key: string, orderby: string = 'num') {
@@ -28,7 +28,7 @@ export class Sites {
 
 	get allEnabled() {
 		const datasets = enabledDatasets();
-		// return this.#sites.filter(s => s.id === 'sjrbc-20');
+		// return this.#sites.filter(s => s.siteId === 'sjrbc-20');
 		return this.#sites.filter(s => [...datasets].includes(s.dataset));
 	}
 
@@ -47,14 +47,14 @@ export class Sites {
 	}
 
 	findById(siteId: string) {
-		return this.#sites.find(s => s.id === siteId);
+		return this.#sites.find(s => s.siteId === siteId);
 	}
 
 	reindexGeometries() {
 		for (const site of this.#sites) {
 			regionTypes.forEach((rt) => {
 				if (rt !== 'custom') {
-					(site[rt] as any) = sitesGeoindex[site.id]?.[rt] as string || '';
+					(site[rt] as any) = sitesGeoindex[site.siteId]?.[rt] as string || '';
 				}
 			});
 		}
@@ -66,7 +66,7 @@ export const sites = new Sites();
 export const siteTablesForRegion = (sites: Site[], region: RegionFeature) => {
 	const regionType = region.regionType;
 	const regionSites = sites.filter(s => (s as any)[regionType] === region.id);
-	return regionSites.map(s => sitesTables.get(s.id)).filter(t => t) as ColumnTable[];
+	return regionSites.map(s => sitesTables.get(s.siteId)).filter(t => t) as ColumnTable[];
 }
 
 export function splitSiteId(siteId: string): { dataset: string, num: number } {

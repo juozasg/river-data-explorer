@@ -35,8 +35,8 @@ function usgsTimeseriesToSites(timeSeries: any) {
 
 		const loc = ts.sourceInfo.geoLocation.geogLocation;
 		const site: Site = {
-			id: siteId,
-			intId: parseInt(siteCode),
+			siteId: siteId,
+			id: parseInt(siteCode),
 			dataset: 'usgs',
 			num: parseInt(siteCode),
 			name: ts.sourceInfo.siteName,
@@ -53,5 +53,5 @@ function usgsTimeseriesToSites(timeSeries: any) {
 
 		sites.add(site);
 	}
-	// console.log('sites including USGS', [...sites.all.map(s => s.id)]);
+	// console.log('sites including USGS', [...sites.all.map(s => s.siteId)]);
 }
