@@ -41,7 +41,6 @@ export const tooltip = {
 };
 
 export function toggleHideTooltipsKeydown(e: KeyboardEvent) {
-
 	if(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
 		return;
 	}

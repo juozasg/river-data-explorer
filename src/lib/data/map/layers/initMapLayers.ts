@@ -1,73 +1,7 @@
 import * as ml from 'maplibre-gl';
+import { mlmInsertBeforeLayer } from './initMapData';
 
-export const mlmInsertBeforeLayer = "Water line/label/Default";
-
-export async function initLayerStructure(map: ml.Map) {
-
-	// map.addSource("riverapp-sitez", {
-	// 	type: "geojson",
-	// 	data: geojsonData
-	// 	// generateId: true,
-	// });
-
-
-	map.addSource("riverapp-regions", {
-		// generateId: true,
-		promoteId: 'id',
-		type: "geojson",
-		data: {
-			type: "FeatureCollection",
-			features: []
-		}
-	});
-
-	map.addSource("riverapp-hovered-regions", {
-		// generateId: true,
-		promoteId: 'id',
-		type: "geojson",
-		data: {
-			type: "FeatureCollection",
-			features: []
-		}
-	});
-
-	map.addSource("riverapp-selected-regions", {
-		// generateId: true,
-		promoteId: 'id',
-		type: "geojson",
-		data: {
-			type: "FeatureCollection",
-			features: []
-		}
-	});
-
-	map.addSource("riverapp-rivers", {
-		// generateId: true,
-		promoteId: 'id',
-		type: "geojson",
-		data: {
-			type: "FeatureCollection",
-			features: []
-		}
-	});
-
-	map.addSource("riverapp-hovered-rivers", {
-		// generateId: true,
-		promoteId: 'id',
-		type: "geojson",
-		data: {
-			type: "FeatureCollection",
-			features: []
-		}
-	});
-
-	// LAYERS
-	addRegionLayers(map);
-	addRiverLayers(map);
-}
-
-
-function addRegionLayers(map: ml.Map): void {
+export function addRegionLayers(map: ml.Map): void {
 	map.addLayer(
 		{
 			id: "riverapp-regions",
@@ -96,25 +30,6 @@ function addRegionLayers(map: ml.Map): void {
 		mlmInsertBeforeLayer
 	);
 
-	// two options:
-	// 1. use riverapp-regions source and set "highlighed" feature-state to set opacity here
-	// 2. use a separate source and layer for the outline
-	// 2 is better. try to avoid maplibre feature-state and complicated expressions as much as possible
-	map.addLayer(
-		{
-			id: "riverapp-regions-hover-outline",
-			source: "riverapp-hovered-regions",
-			type: "line",
-			paint: {
-				// "line-color": "#E3E676",
-				"line-color": "#200",
-				"line-width": 1.5
-				// "fill-opacity": 0.5
-			}
-		},
-		mlmInsertBeforeLayer
-	);
-
 
 	map.addLayer(
 		{
@@ -131,8 +46,7 @@ function addRegionLayers(map: ml.Map): void {
 	);
 }
 
-
-function addRiverLayers(map: ml.Map): void {
+export function addRiverLayers(map: ml.Map): void {
 	const mainstemColor = '#17a0d1';
 	const tributariesColor = '#1db2e7';
 
@@ -151,14 +65,12 @@ function addRiverLayers(map: ml.Map): void {
 				['==', ['get', 'name'], 'Saint Joseph River'],
 				mainstemColor,
 				tributariesColor
-
 			],
 			'line-width': [
 				'case',
 				['==', ['get', 'name'], 'Saint Joseph River'],
 				5,
 				2.5
-
 			],
 			'line-opacity': 1,
 		}
@@ -210,7 +122,6 @@ function addRiverLayers(map: ml.Map): void {
 				['==', ['get', 'name'], 'Saint Joseph River'],
 				mainstemColor,
 				tributariesColor
-
 			],
 			'line-width': 20,
 			'line-opacity': 0,
@@ -218,5 +129,21 @@ function addRiverLayers(map: ml.Map): void {
 	},
 		mlmInsertBeforeLayer
 	);
+}
 
+export function addOutlineLayers(map: ml.Map) {
+	map.addLayer(
+		{
+			id: "riverapp-regions-hover-outline",
+			source: "riverapp-hovered-regions",
+			type: "line",
+			paint: {
+				// "line-color": "#E3E676",
+				"line-color": "#200",
+				"line-width": 1
+				// "fill-opacity": 0.5
+			}
+		},
+		mlmInsertBeforeLayer
+	);
 }

@@ -1,20 +1,14 @@
 <script lang="ts">
 	import * as ml from "maplibre-gl";
 
-	import { onMount } from "svelte";
-	import MapLibreMap from "../mlmap/MapLibreMap.svelte";
-	import { defineGlobal } from "$src/lib/utils";
-	import { regionFeatures } from "$src/appstate/data/regionFeatures.svelte";
-	import { loadGeometries_old } from "$src/lib/data/map/layers/mapSources";
-	import { mapSelectionMode } from "$src/appstate/selection/objectInteractionState.svelte";
-	import { loadRiverappFeatureCollections, riverappFeatureCollections } from "$src/appstate/data/riverappFeatureCollections";
-	import { setBasemapStyleId, setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
+	import { sites as globalSites } from "$src/appstate/data/sites.svelte";
 	import { MLMapController } from "$src/appstate/map/mlmapController.svelte";
-	import VarDataMarkers from "../mlmap/VarDataMarkers.svelte";
-	import { sites as globalSites, Sites } from "$src/appstate/data/sites.svelte";
+	import { setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
+	import type { Site } from "$src/lib/types/site";
 	import { aremove } from "$src/lib/utils/arrays";
 	import { todayDate } from "$src/lib/utils/date";
-	import type { Site } from "$src/lib/types/site";
+	import MapLibreMap from "../mlmap/MapLibreMap.svelte";
+	import VarDataMarkers from "../mlmap/VarDataMarkers.svelte";
 
 
 
@@ -43,23 +37,11 @@
 	$effect(() => {
 		if (!mlMapComponent.styleLoaded()) return;
 
+		if(!mapController) {
+			mapController = new MLMapController(mlMapComponent.mlmMap()!);
+		}
 		mlMap = mlMapComponent.mlmMap()!;
-		mapController = new MLMapController(mlMapComponent.mlmMap()!);
-
 	});
-
-
-	// $effect(() => {
-	// 	if(!mlMapComponent.styleLoaded()) return;
-	// 	if (!mapController || !mapController.dataModelReady) return;
-
-	// 	const riversFeatures = riverappFeatureCollections.get('rivers');
-	// 	const riversSource = mlMap?.getSource("riverapp-rivers") as ml.GeoJSONSource;
-	// 	if(riversSource && riversFeatures) {
-	// 		riversSource.setData(riversFeatures);
-	// 	}
-
-	// });
 
 
 </script>
@@ -81,16 +63,5 @@
 {/if}
 
 <style>
-	.debug-controls {
-		position: absolute;
-		/* top: 50px; */
-		left: 10;
-		background-color: rgba(128, 128, 128, 0.289);
-		padding: 0.5rem;
-		z-index: 1000;
-		width: 100vw;
-		display: flex;
 
-		gap: 20px;
-	}
 </style>

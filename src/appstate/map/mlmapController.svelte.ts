@@ -1,5 +1,5 @@
 import * as ml from 'maplibre-gl';
-import { initLayerStructure } from '$src/lib/data/map/layers/initLayerStructure';
+import { initMapData } from '$src/lib/data/map/layers/initMapData';
 import type { Site } from '$src/lib/types/site';
 import { riverappFeatureCollections } from '../data/riverappFeatureCollections';
 
@@ -14,7 +14,9 @@ export class MLMapController {
 	constructor(map: ml.Map) {
 		this.#map = map;
 
-		initLayerStructure(map);
+		console.log('init mlmapController', map);
+
+		initMapData(map);
 
 		map.once("idle", () => {
 			// console.log("mlmap data model is ready");
@@ -25,6 +27,7 @@ export class MLMapController {
 
 		$effect.root(() => {
 			$effect(() => {
+				// this will run when the map data model (sources and layers) is ready and when the feature collections change
 				const riversFeatures = riverappFeatureCollections.get('rivers');
 				const riversSource = this.#map.getSource("riverapp-rivers") as ml.GeoJSONSource;
 				if(this.dataModelReady && riversSource && riversFeatures) {

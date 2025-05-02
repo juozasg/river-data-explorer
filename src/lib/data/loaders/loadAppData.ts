@@ -5,7 +5,7 @@ import { loadDatasetsUsgsWS } from "./loadDataUsgsWS";
 import { loadMarkdown } from "./loadMarkdown";
 import { loadSitesCsv } from "./loadSitesCsv";
 import { loadDataCsv } from "../cachedDataLoad";
-import { loadRiverappFeatureCollections } from "$src/appstate/data/riverappFeatureCollections";
+import { loadFeatureCollections } from "$src/appstate/data/riverappFeatureCollections";
 
 export type SHA1Digest = string;
 export type DataManifest = { [key: string]: SHA1Digest };
@@ -22,7 +22,7 @@ export async function loadAppData(manifest: DataManifest) {
 	console.log('datasetIds', datasetIds);
 
 	// async go brr
-	loadRiverappFeatureCollections();
+	loadFeatureCollections();
 	loadBasinFipsData();
 	loadSitesCsv(datasetIds);
 	loadGeoindexData();

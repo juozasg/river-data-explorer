@@ -3,17 +3,12 @@
 	import "maplibre-gl/dist/maplibre-gl.css";
 
 	import { mapMouseLocation } from "$src/appstate/map/mapMouse.svelte";
+	import { basemapStyleId } from "$src/appstate/ui/layers.svelte";
 	import { tooltip } from "$src/appstate/ui/tooltips.svelte";
 	import { transformStyle } from "$src/lib/data/map/helpers/transformMapStyle";
+	import { defineGlobal } from "$src/lib/utils";
 	import { toggleoffAttribution } from "$src/lib/utils/maplibre";
 	import { onMount } from "svelte";
-	import { addMlmSources } from "$src/lib/data/map/layers/mapSources";
-	import { addMapLayers } from "$src/lib/data/map/layers/regionsMapLayers";
-	import { toggleRiverLayerVisibility } from "$src/lib/data/map/layers/riverLayers";
-	import { basemapStyleId, defaultLayersParams, setBasemapStyleId } from "$src/appstate/ui/layers.svelte";
-	import { selectRegionTypeLayers } from "$src/lib/data/map/layers/mapLayers";
-	import { defineGlobal } from "$src/lib/utils";
-	import type { MapLayersParams } from "$src/lib/types/mapControls";
 
 	interface Props {
 		zoom?: number;

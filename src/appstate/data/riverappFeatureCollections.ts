@@ -7,8 +7,7 @@ export type RiverappFeaturesType = typeof riverappFeatures[number];
 
 export const riverappFeatureCollections = new SvelteMap<RiverappFeaturesType, GeoJSON.FeatureCollection>();
 
-
-export async function loadRiverappFeatureCollections() {
+export async function loadFeatureCollections() {
 	const promises = riverappFeatures.map(loadGeojsonData);
 	await Promise.all(promises);
 
