@@ -46,9 +46,14 @@ export class Sites {
 		return sites.filter(s => (s as any)[regionType] === region.id);
 	}
 
-	findById(siteId: string) {
+	findBySiteId(siteId: string) {
 		return this.#sites.find(s => s.siteId === siteId);
 	}
+
+	findById(id: number) {
+		return this.#sites.find(s => s.id === id);
+	}
+
 
 	reindexGeometries() {
 		for (const site of this.#sites) {

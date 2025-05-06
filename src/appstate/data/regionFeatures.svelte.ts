@@ -3,15 +3,11 @@ import type ColumnTable from "arquero/dist/types/table/column-table";
 import { defineGlobal } from "$src/lib/utils";
 
 const geometriesIds = new SvelteMap<string, string>();
-const geometries_old = new SvelteMap<string, GeoJSON.FeatureCollection>();
 
 export function geomFeatureName(source: string | undefined, id: string | number | undefined): string {
-	if (!source) return !!id ? id.toString() : '';
-	const col = source.replace(/^riverapp-/, '');
-	const idProperty = geometriesIds.get(col) || 'id';
-	const feature = geometries_old.get(col)?.features.find(f => f.properties?.[idProperty] === id);
-	return feature?.properties?.name || id?.toString() || '';
+	return '';
 }
+
 
 export const regionTypes = ['huc8', 'huc10', 'huc12', 'state', 'county', 'custom'] as const;
 
@@ -41,28 +37,7 @@ export class RegionFeatures {
 	#regionFeatureCollections = new SvelteMap<string, RegionFeature[]>();
 
 	addGeoJSONCollection(regionType: RegionType | string, idField: string, data: GeoJSON.FeatureCollection) {
-		const regionCollection = this.#regionFeatureCollections.get(regionType) || [];
 
-		geometries_old.set(regionType, data);
-		data.features.forEach((f: GeoJSON.Feature) => {
-			const id = f.properties?.[idField] || f.id || '';
-			const key = `${regionType}-${id}`;
-			const mlSource = `riverapp-${regionType}`;
-
-			const rf: RegionFeature = {
-				regionType: regionType as RegionType,
-				id,
-				name: f.properties?.name || id.toString(),
-				mlSource,
-				geometry: f.geometry,
-				properties: f.properties,
-			};
-
-			this.#regionFeatures.set(key, rf);
-			regionCollection.push(rf);
-		});
-
-		this.#regionFeatureCollections.set(regionType, regionCollection);
 	}
 
 	get(regionType: string, id: string | number): RegionFeature | undefined {
@@ -78,14 +53,11 @@ export class RegionFeatures {
 		return this.#regionFeatureCollections.get(regionType) || [];
 	}
 
-	getFeatureCollection(regionType: string): GeoJSON.FeatureCollection {
-		return geometries_old.get(regionType) || { type: 'FeatureCollection', features: [] };
+	getFeatureCollection(regionType: string): any {
+		return [];
 	}
 
 }
 
 export const regionFeatures = new RegionFeatures();
 
-defineGlobal('geometries', geometries_old);
-defineGlobal('geometriesIds', geometriesIds);
-defineGlobal('regionFeatures', regionFeatures);

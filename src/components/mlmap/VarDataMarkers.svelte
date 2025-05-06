@@ -3,7 +3,6 @@
 
 	import type { Site } from "$src/lib/types/site";
 	import Marker from "./Marker.svelte";
-	import { mlmapHovered } from "$src/appstate/selection/objectInteractionState.svelte";
 
 	type Props = {
 		sites: Site[];
@@ -35,13 +34,13 @@
 
 	const markerMouseEnter = (e: MouseEvent, site: Site) => {
 		hoveredSite = site;
-		mlmapHovered.site = site;
+		// mlmapHovered.site = site;
 		if(onSiteHovered) onSiteHovered(site);
 	};
 
 	const markerMouseLeave = (e: MouseEvent, site: Site) => {
 		hoveredSite = undefined;
-		mlmapHovered.site = site;
+		// mlmapHovered.site = site;
 		if(onSiteHovered) onSiteHovered(undefined);
 	};
 </script>

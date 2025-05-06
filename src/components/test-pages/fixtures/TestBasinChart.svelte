@@ -8,15 +8,15 @@
 
 	$effect(() => {
 		console.log('sites', sites.all.length);
-		dataSelection.ySite = sites.findById('sjrbc-1');
-		dataSelection.ySite = sites.findById('invert-1');
+		dataSelection.ySite = sites.findBySiteId('sjrbc-1');
+		dataSelection.ySite = sites.findBySiteId('invert-1');
 		// dataSelection.yVar = 'do';
 		dataSelection.yVar = 'invertNarrative';
-		dataSelection.zSite = sites.findById('sjrbc-1');
+		dataSelection.zSite = sites.findBySiteId('sjrbc-1');
 		// dataSelection.zVar = 'ecoli';
 		// dataSelection.zSite = sites.findById('sjrbc-2');
 		dataSelection.zVar = 'do';
-		dataSelection.zSite = sites.findById('invert-5');
+		dataSelection.zSite = sites.findBySiteId('invert-5');
 		dataSelection.zVar = 'invertNarrative';
 	});
 

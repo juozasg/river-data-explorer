@@ -67,17 +67,18 @@ export function safeQueryRenderedFeatures(map: ml.Map, queryGeom: ml.PointLike |
 
 
 export function queryMouseMoveHover(e: ml.MapMouseEvent, layers: string[], radius = 0): RegionFeature | undefined {
-	const map = e.target;
+	return undefined;
+	// const map = e.target;
 
-	let queryGeom: ml.PointLike | BBoxLike = e.point;
-	if (radius) {
-		queryGeom = [
-			[e.point.x - radius, e.point.y - radius],
-			[e.point.x + radius, e.point.y + radius]
-		];
-	}
+	// let queryGeom: ml.PointLike | BBoxLike = e.point;
+	// if (radius) {
+	// 	queryGeom = [
+	// 		[e.point.x - radius, e.point.y - radius],
+	// 		[e.point.x + radius, e.point.y + radius]
+	// 	];
+	// }
 
-	const features = safeQueryRenderedFeatures(map, queryGeom, layers);
-	if (features.length < 1) return undefined;
-	return regionFeatures.getForSource(features[0].source, features[0].id as string | number);
+	// const features = safeQueryRenderedFeatures(map, queryGeom, layers);
+	// if (features.length < 1) return undefined;
+	// return regionFeatures.getForSource(features[0].source, features[0].id as string | number);
 }

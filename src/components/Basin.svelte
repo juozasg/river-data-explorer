@@ -51,7 +51,7 @@
 		selectedSite = item;
 		if (!selectedRegion.feature) {
 			const rt = layersParams.regionType;
-			selectedRegion.feature = regionFeatures.get(rt, selectedSite[rt]);
+			// selectedRegion.feature = regionFeatures.get(rt, selectedSite[rt]);
 		}
 	};
 
@@ -70,7 +70,8 @@
 		} else {
 			mapWidth = "calc(100vw - 3.5rem)";
 			mapHeight = "calc(100vh - 5rem)";
-			const feature = regionFeatures.get("huc8", "04050001");
+			// const feature = regionFeatures.get("huc8", "04050001");
+			const feature = undefined;
 			setTimeout(() => {
 				if (feature) fitFeatureBounds(varDataMap?.mlmMap()!, feature);
 			}, 300);
