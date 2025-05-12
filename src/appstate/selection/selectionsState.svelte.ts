@@ -20,6 +20,11 @@ export class BasinObject {
 		if (this.id !== other.id) return false;
 		return true;
 	}
+
+	isSelected(): boolean {
+		if (this.objectType === undefined || this.id === undefined) return false;
+		return true;
+	}
 }
 
 export class BasinObjectVariable {
@@ -51,7 +56,7 @@ export const chartZSelection = new BasinObjectVariable();
 
 export type MapSelectionMode = 'auto' | 'site' | 'huc10' | 'huc12' | 'county' | 'river-catchment' | 'site-catchment'; // | 'custom-click' | 'custom-draw';
 
-
+// when mode is 'auto', target is picked based on emptiness of data1 or data2 and the hovered region
 export const mapSelectionMode = $state({
 	mode: 'auto' as MapSelectionMode,
 	target: '1' as '1' | '2',

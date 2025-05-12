@@ -2,7 +2,7 @@
 	import * as ml from "maplibre-gl";
 
 	import { sites as globalSites } from "$src/appstate/data/sites.svelte";
-	import { MLMapController } from "$src/appstate/map/mlmapController.svelte";
+	import { MapHoverSelectionController } from "$src/appstate/map/mapHoverSelectionController.svelte";
 	import { setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
 	import type { Site } from "$src/lib/types/site";
 	import { aremove } from "$src/lib/utils/arrays";
@@ -15,7 +15,7 @@
 	// svelte-ignore non_reactive_update
 	let mlMapComponent: MapLibreMap;
 
-	let mapController: MLMapController | undefined = $state();
+	let mapController: MapHoverSelectionController | undefined = $state();
 	let mlMap = $state<ml.Map>();
 
 
@@ -38,7 +38,7 @@
 		if (!mlMapComponent.styleLoaded()) return;
 
 		if(!mapController) {
-			mapController = new MLMapController(mlMapComponent.mlmMap()!);
+			mapController = new MapHoverSelectionController(mlMapComponent.mlmMap()!);
 		}
 		mlMap = mlMapComponent.mlmMap()!;
 	});

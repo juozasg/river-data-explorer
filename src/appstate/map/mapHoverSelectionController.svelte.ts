@@ -2,14 +2,21 @@ import * as ml from 'maplibre-gl';
 import { initMapData } from '$src/lib/data/map/layers/initMapData';
 import type { Site } from '$src/lib/types/site';
 import { riverappFeatureCollections } from '../data/riverappFeatureCollections';
-import { mapSelectionMode } from '../selection/selectionsState.svelte';
+import { basinObject1, basinObject2, mapSelectionMode } from '../selection/selectionsState.svelte';
 import { sites } from '../data/sites.svelte';
+import { autoSelectBasinObjectsOnClick } from '$src/lib/data/selectionHelpers';
 
-export class MLMapController {
+export type HoveredRegionType = 'huc8' | 'huc10' | 'huc12' | 'county';
+
+export class MapHoverSelectionController {
 	#map: ml.Map;
-	#hoveredRegionFeature = $state<ml.MapGeoJSONFeature>();
-	#hoveredRiverFeature = $state<GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties>>();
+	// #hoveredRegionFeature = $state<ml.MapGeoJSONFeature>();
+
+	// #hoveredRiverFeature = $state<GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties>>();
 	#hoveredSite = $state<Site>();
+	#hoveredRiverId = $state<number>();
+	#hoveredRegionId = $state<number>();
+	#hoveredRegionType = $state<HoveredRegionType>();
 	// #hoveredSite
 
 	dataModelReady = $state(false)
@@ -30,6 +37,11 @@ export class MLMapController {
 		});
 
 		$effect.root(() => {
+
+			// $effect(() => {
+			// 	console.log('hoveredregion', this.#hoveredRegionFeature);
+
+			// });
 			$effect(() => {
 				// this will run when the map data model (sources and layers) is ready and when the feature collections change
 				const riversFeatures = riverappFeatureCollections.get('rivers');
@@ -77,6 +89,7 @@ export class MLMapController {
 	}
 
 	riverHovered(id: number | undefined) {
+		this.#hoveredRiverId = id;
 		// in auto mode site takes precedence over river catchment
 		if (mapSelectionMode.mode === 'river-catchment' || (mapSelectionMode.mode === 'auto' && !this.#hoveredSite)) {
 			if (id) {
@@ -84,7 +97,7 @@ export class MLMapController {
 
 				if (catchments) {
 					const riverCatchment = catchments.features.find(f => f.properties?.id === id);
-					// console.log('riverCatchment', riverCatchment);
+					console.log('riverCatchment', riverCatchment);
 
 					if (riverCatchment) {
 						const hoveredRegions = this.#map.getSource("riverapp-hovered-regions") as ml.GeoJSONSource;
@@ -98,47 +111,56 @@ export class MLMapController {
 				this.clearHoveredRegions()
 			}
 		}
-
 	}
 
 
 
 	addHoverListeners(map: ml.Map) {
-		map.on('mousemove', 'riverapp-regions-fill', (e) => {
-			// console.log('mousemove', e.features);
 
-			if (e.features && e.features.length > 0) {
-				const feature = e.features[0];
-				const hoveredRegions = map.getSource("riverapp-hovered-regions") as ml.GeoJSONSource;
-				// const sourceHoveredFeature = hoveredRegions.
-				const hoveredRegionsData = hoveredRegions._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
-				const hoveredRegionsFeature = hoveredRegionsData.features[0];
+		map.on('click', (e) => {
+			if (mapSelectionMode.mode == 'auto') {
+				// select a site  into data1 if one is hovered, and a catchment into data2 if data 2 is empty
 
-				if (this.#hoveredRegionFeature && this.#hoveredRegionFeature.id === feature.id) {
-					return;
-				}
-				// console.log('hoveredRegions', hoveredRegions);
-
-
-				hoveredRegions.setData({
-					type: "FeatureCollection",
-					// features: e.features
-					features: [feature]
-				});
-				this.#hoveredRegionFeature = feature;
-			}
+				autoSelectBasinObjectsOnClick(this.#hoveredSite, this.#hoveredRiverId);
+			};
 		});
 
-		map.on('mouseleave', 'riverapp-regions-fill', (e) => {
+		// TODO: hucs and counties selection
+		// map.on('mousemove', 'riverapp-regions-fill', (e) => {
+		// 	// console.log('mousemove', e.features);
 
-			const hoveredRegions = map.getSource("riverapp-hovered-regions") as ml.GeoJSONSource;
-			hoveredRegions.setData({
-				type: "FeatureCollection",
-				features: []
-			});
+		// 	if (e.features && e.features.length > 0) {
+		// 		const feature = e.features[0];
+		// 		const hoveredRegions = map.getSource("riverapp-hovered-regions") as ml.GeoJSONSource;
+		// 		// const sourceHoveredFeature = hoveredRegions.
+		// 		const hoveredRegionsData = hoveredRegions._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+		// 		// const hoveredRegionsFeature = hoveredRegionsData.features[0];
 
-			this.#hoveredRegionFeature = undefined;
-		});
+		// 		if (this.#hoveredRegionFeature && this.#hoveredRegionFeature.id === feature.id) {
+		// 			return;
+		// 		}
+		// 		// console.log('hoveredRegions', hoveredRegions);
+
+
+		// 		hoveredRegions.setData({
+		// 			type: "FeatureCollection",
+		// 			// features: e.features
+		// 			features: [feature]
+		// 		});
+		// 		this.#hoveredRegionFeature = feature;
+		// 	}
+		// });
+
+		// map.on('mouseleave', 'riverapp-regions-fill', (e) => {
+
+		// 	const hoveredRegions = map.getSource("riverapp-hovered-regions") as ml.GeoJSONSource;
+		// 	hoveredRegions.setData({
+		// 		type: "FeatureCollection",
+		// 		features: []
+		// 	});
+
+		// 	this.#hoveredRegionFeature = undefined;
+		// });
 
 
 		/// RIVERS
@@ -151,7 +173,7 @@ export class MLMapController {
 				// const hoveredRiversData = hoveredRivers._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
 				// const hoveredRiversFeature = hoveredRiversData.features[0];
 
-				if (this.#hoveredRiverFeature && this.#hoveredRiverFeature.id === feature.id) {
+				if (this.#hoveredRiverId === feature.id) {
 					return;
 				}
 
@@ -162,7 +184,6 @@ export class MLMapController {
 						type: "FeatureCollection",
 						features: [geojsonFeature]
 					});
-					this.#hoveredRiverFeature = geojsonFeature;
 				}
 				this.riverHovered(feature.id as number);
 			}
@@ -176,7 +197,6 @@ export class MLMapController {
 				features: []
 			});
 
-			this.#hoveredRiverFeature = undefined;
 			// console.log('hoveredRiver', this.#hoveredRiverFeature);
 			this.riverHovered(undefined);
 
