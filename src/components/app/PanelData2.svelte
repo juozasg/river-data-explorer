@@ -1,4 +1,6 @@
 <script>
+	import { basinObject2 } from "$src/appstate/selection/selectionsState.svelte";
+	import PanelData from "./PanelData.svelte";
 	import SelectModeDropdown from "./SelectModeDropdown.svelte";
 
 	let showChange = $state(true);
@@ -6,7 +8,9 @@
 
 <div>
 	<span>Data 2</span>
-	<br />
+	<PanelData basinObject={basinObject2} />
+
+	<!-- <br />
 	<h2>Selected site: 'sjrbc-15'</h2>
 	{#if showChange}
 		<button class="button" onclick={()=>showChange = false}>Change selection</button>
@@ -23,7 +27,7 @@
 	{:else}
 		<SelectModeDropdown />
 	{/if}
-
+ -->
 
 </div>
 

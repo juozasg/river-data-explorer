@@ -65,13 +65,13 @@ export class MapHoverSelectionController {
 
 
 	siteHovered(site: Site | undefined) {
-		console.log('siteHovered', site);
+		// console.log('siteHovered', site);
 
 		if (site && site.id) {
 			const catchments = riverappFeatureCollections.get('site-catchments');
 			if (catchments) {
 				const siteCatchment = catchments.features.find(f => f.properties?.id === site.id);
-				console.log('siteCatchment', siteCatchment);
+				// console.log('siteCatchment', siteCatchment);
 
 				if (siteCatchment) {
 					const hoveredRegions = this.#map.getSource("riverapp-hovered-regions") as ml.GeoJSONSource;
@@ -97,7 +97,7 @@ export class MapHoverSelectionController {
 
 				if (catchments) {
 					const riverCatchment = catchments.features.find(f => f.properties?.id === id);
-					console.log('riverCatchment', riverCatchment);
+					// console.log('riverCatchment', riverCatchment);
 
 					if (riverCatchment) {
 						const hoveredRegions = this.#map.getSource("riverapp-hovered-regions") as ml.GeoJSONSource;

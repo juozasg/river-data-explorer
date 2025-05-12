@@ -1,3 +1,4 @@
+import { setMapMaximized } from "../ui/layout.svelte";
 
 export type BasinObjectType = 'site' | 'huc8' | 'huc10' | 'huc12' | 'state' | 'county' | 'river-catchment' | 'site-catchment'; // | 'custom';
 

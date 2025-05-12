@@ -1,11 +1,16 @@
 <script>
-	import SelectModeDropdown from "./SelectModeDropdown.svelte";
+	import { basinObject1 } from "$src/appstate/selection/selectionsState.svelte";
+	import PanelData from "./PanelData.svelte";
+	// import SelectModeDropdown from "./SelectModeDropdown.svelte";
+
+
 
 </script>
 <div>
 	<span>Data 1</span>
 
-	<SelectModeDropdown />
+	<PanelData basinObject={basinObject1} />
+	<!-- <SelectModeDropdown /> -->
 </div>
 
 

@@ -1,5 +1,6 @@
 <script lang="ts">
-	// import App from "$src/App.svelte";
+	import { basinObject1, basinObject2 } from "$src/appstate/selection/selectionsState.svelte";
+	import { mapMaximized, setMapMaximized } from "$src/appstate/ui/layout.svelte";
 	import AppMenu from "./AppMenu.svelte";
 	import AppPanelTabs from "./AppPanelTabs.svelte";
 	import PanelChart from "./PanelChart.svelte";
@@ -10,12 +11,21 @@
 	let clientWidth = $state(0);
 	let clientHeight = $state(0);
 	const mobile = $derived(clientWidth <= 720 || clientHeight < 720);
-	const mapMaximized = $state(true);
 
 	let selectedPanel:string = $state('map');
+
+
+	$effect(() => {
+		if(basinObject1.isSelected() || basinObject2.isSelected()) {
+			setMapMaximized(false);
+		} else {
+			setMapMaximized(true);
+		}
+
+	});
 </script>
 
-<main bind:clientWidth bind:clientHeight class:mobile class:map-maximized={mapMaximized}>
+<main bind:clientWidth bind:clientHeight class:mobile class:map-maximized={mapMaximized()}>
 	<div class="app-header">
 		<AppMenu {mobile}/>
 		{#if mobile}

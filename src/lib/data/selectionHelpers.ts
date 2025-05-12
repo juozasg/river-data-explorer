@@ -10,21 +10,20 @@ import type { Site } from "../types/site";
 // if a river is hovered, select a river catchment into first slot or data2
 export function autoSelectBasinObjectsOnClick(hoveredSite: Site | undefined, hoveredRiverId: number | undefined) {
 
-	if(!basinObject1.isSelected() && !basinObject2.isSelected()) {
+	// select both slots if both are empty and site is hovered
+	if(!basinObject1.isSelected() && !basinObject2.isSelected() && hoveredSite?.id) {
 		selectSiteAndCatchment(hoveredSite);
 		return;
 	}
 
+	// select 1 slot
 	let targetBasinObject: BasinObject | undefined;
-	if (basinObject1.isSelected() && !basinObject2.isSelected()) {
-		targetBasinObject = basinObject2;
-	} else if (basinObject1.isSelected() && basinObject2.isSelected()) {
-		targetBasinObject = basinObject2;
-	} else if (!basinObject1.isSelected() && basinObject2.isSelected()) {
+	if(!basinObject1.isSelected()) {
 		targetBasinObject = basinObject1;
+		console.log('selecting basinObject1');
 	} else {
-		console.error('autoSelectBasinObjectsOnClick: no target basin object');
-		return;
+		targetBasinObject = basinObject2;
+		console.log('selecting basinObject2');
 	}
 
 	if (hoveredSite?.id) {
