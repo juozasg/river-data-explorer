@@ -2,7 +2,7 @@ import * as ml from 'maplibre-gl';
 import { initMapData } from '$src/lib/data/map/layers/initMapData';
 import type { Site } from '$src/lib/types/site';
 import { riverappFeatureCollections } from '../data/riverappFeatureCollections';
-import { basinObject1, basinObject2, mapSelectionMode } from '../selection/selectionsState.svelte';
+import { basinObject1, basinObject2, mapSelectionMode, mapSelectionTargetObject } from '../selection/selectionsState.svelte';
 import { sites } from '../data/sites.svelte';
 import { autoSelectBasinObjectsOnClick } from '$src/lib/data/selectionHelpers';
 
@@ -116,13 +116,18 @@ export class MapHoverSelectionController {
 
 
 	addHoverListeners(map: ml.Map) {
-
 		map.on('click', (e) => {
 			if (mapSelectionMode.mode == 'auto') {
 				// select a site  into data1 if one is hovered, and a catchment into data2 if data 2 is empty
 
 				autoSelectBasinObjectsOnClick(this.#hoveredSite, this.#hoveredRiverId);
-			};
+			} else if (mapSelectionMode.mode == 'site') {
+				if (this.#hoveredSite) {
+
+					// basinObject1.set('site', this.#hoveredSite.id);
+					mapSelectionTargetObject().set('site', this.#hoveredSite.id);
+				}
+			}
 		});
 
 		// TODO: hucs and counties selection

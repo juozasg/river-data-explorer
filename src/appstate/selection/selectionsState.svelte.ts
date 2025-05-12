@@ -51,6 +51,7 @@ export class BasinObjectVariable {
 export const basinObject1 = new BasinObject();
 export const basinObject2 = new BasinObject();
 
+
 export const chartYSelection = new BasinObjectVariable();
 export const chartZSelection = new BasinObjectVariable();
 
@@ -63,6 +64,7 @@ export const mapSelectionMode = $state({
 	target: '1' as '1' | '2',
 });
 
+export const mapSelectionTargetObject = () =>  mapSelectionMode.target === '1' ? basinObject1 : basinObject2;
 
 
 
