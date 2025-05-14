@@ -18,6 +18,7 @@
 		<div class="header">
 
 			<div>{basinObject.objectLabel}</div>
+			<div>{basinObject.objectTypeLabel}</div>
 			<div class='controls'><button onclick={changeSelection}>Change</button></div>
 		</div>
 	{:else}
@@ -41,12 +42,16 @@
 		/* border: 1px solid #ccc; */
 	}
 
+	button {
+		font-size: 18px;
+	}
+
 	.header {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: nowrap;
 		gap: 3px;
-		border: 1px solid salmon;
+		/* border: 1px solid salmon; */
 		align-items: center;
 
 

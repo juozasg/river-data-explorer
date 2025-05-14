@@ -40,6 +40,19 @@ export class BasinObject {
 		if (this.objectType === 'site-catchment') return `${riverappFeatureName('site-catchments', this.id)}`;
 		return '';
 	}
+
+	get objectTypeLabel(): string {
+		if (this.objectType === undefined) return '';
+		if (this.objectType === 'site') return 'Site';
+		if (this.objectType === 'huc8') return 'HUC8';
+		if (this.objectType === 'huc10') return 'HUC10';
+		if (this.objectType === 'huc12') return 'HUC12';
+		if (this.objectType === 'state') return 'State';
+		if (this.objectType === 'county') return 'County';
+		if (this.objectType === 'river-catchment') return 'Catchment';
+		if (this.objectType === 'site-catchment') return 'Site Catchment';
+		return '';
+	}
 }
 
 export class BasinObjectVariable {

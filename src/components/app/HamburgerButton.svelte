@@ -8,7 +8,7 @@
 	// });
 </script>
 
-<button onclick={() => (open = !open)} aria-label="Hamburger Menu">
+<button class="reset" onclick={() => (open = !open)} aria-label="Hamburger Menu">
 	<div class:is-hidden={open}>
 		<InlineBlockIconify icon="lets-icons:meatballs-menu" size="40px" />
 		<span class="label">More</span>
@@ -18,11 +18,11 @@
 	</div>
 </button>
 
-
-
 <style>
 	button {
 		position: relative;
+		border: none;
+		box-shadow: none;
 
 		.label {
 			position: absolute;

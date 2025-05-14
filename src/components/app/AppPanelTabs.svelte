@@ -2,6 +2,7 @@
 	let { selectedPanel = $bindable("map") }: { selectedPanel: string } = $props();
 </script>
 
+
 <div class="app-panel-tabs">
 	<ul>
 		<li class:selected={selectedPanel === "map"}>
@@ -60,23 +61,24 @@
 			height: 100%;
 			width: 100%;
 			border: none;
-			font-weight: 500;
+			box-shadow: none;
+			font-weight: 600;
 			border-radius: 0;
 		}
-
+/*
 		&:hover {
 			background: var(--color-lightGrey);
 			button {
 				color: var(--stjoe-blue);
 			}
-		}
+		} */
 	}
 
 	li.selected {
 		background:var(--stjoe-blue);
 		button {
 			color: white;
-			font-weight: 500;
+			/* font-weight: 500 !important; */
 		}
 	}
 </style>

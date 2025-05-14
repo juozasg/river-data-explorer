@@ -43,8 +43,8 @@
 			<button onclick={() => (wizardStep = "region")}>Regions</button>
 			<button class="cancel" onclick={cancel}>Cancel</button>
 		{:else if wizardStep == "catchment"}
-			<button>A site catchment</button>
-			<button>A river catchment</button>
+			<button>Site catchment</button>
+			<button>River catchment</button>
 			<button class="cancel" onclick={cancel}>Cancel</button>
 		{:else if wizardStep == "region"}
 			<button>Hydrological Unit: Stream (HUC12)</button>
@@ -63,6 +63,13 @@
 		display: flex;
 		flex-direction: column;
 
+		button {
+			font-weight: 600;
+		}
+
+		button.cancel {
+			font-weight: 500;
+		}
 
 
 		.button-group {

@@ -25,6 +25,8 @@
 	});
 </script>
 
+
+
 <main bind:clientWidth bind:clientHeight class:mobile class:map-maximized={mapMaximized()}>
 	<div class="app-header">
 		<AppMenu {mobile}/>
