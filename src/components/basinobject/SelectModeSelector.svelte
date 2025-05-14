@@ -33,30 +33,35 @@
 	};
 </script>
 
-<div>
-	<h4>Select</h4>
-	<div class="button-group">
-		{#if wizardStep == "initial"}
-			<button onclick={autoMode}>Clear</button>
-			<button onclick={selectSiteMode}>Sites</button>
-			<button onclick={() => (wizardStep = "catchment")}>Catchments</button>
-			<button onclick={() => (wizardStep = "region")}>Regions</button>
-			<button class="cancel" onclick={cancel}>Cancel</button>
-		{:else if wizardStep == "catchment"}
-			<button>Site catchment</button>
-			<button>River catchment</button>
-			<button class="cancel" onclick={cancel}>Cancel</button>
-		{:else if wizardStep == "region"}
-			<button>Hydrological Unit: Stream (HUC12)</button>
-			<button>Hydrological Unit: River (HUC10)</button>
-			<button>St. Joseph River Basin (HUC8)</button>
-			<button>County</button>
-			<button>Indiana</button>
-			<button>Michigan</button>
-			<button class="cancel" onclick={cancel}>Cancel</button>
-		{/if}
+{#if show}
+	<div>
+		<div class="header">
+			<h4>Change Selection:</h4>
+			<div class="hline"></div>
+		</div>
+		<div class="button-group">
+			{#if wizardStep == "initial"}
+				<button onclick={autoMode}>Clear</button>
+				<button onclick={selectSiteMode}>Sites</button>
+				<button onclick={() => (wizardStep = "catchment")}>Catchments</button>
+				<button onclick={() => (wizardStep = "region")}>Regions</button>
+				<button class="cancel" onclick={cancel}>Cancel</button>
+			{:else if wizardStep == "catchment"}
+				<button>Site catchment</button>
+				<button>River catchment</button>
+				<button class="cancel" onclick={cancel}>Cancel</button>
+			{:else if wizardStep == "region"}
+				<button>Hydrological Unit: Stream (HUC12)</button>
+				<button>Hydrological Unit: River (HUC10)</button>
+				<button>St. Joseph River Basin (HUC8)</button>
+				<button>County</button>
+				<button>Indiana</button>
+				<button>Michigan</button>
+				<button class="cancel" onclick={cancel}>Cancel</button>
+			{/if}
+		</div>
 	</div>
-</div>
+{/if}
 
 <style>
 	div {
@@ -71,15 +76,35 @@
 			font-weight: 500;
 		}
 
-
 		.button-group {
 			display: flex;
 			flex-direction: row;
 			flex-wrap: wrap;
 			gap: 1rem;
 			width: 100%;
-
 		}
 
+		.header {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin: 10px 0;
+			/* gap: 1rem; */
+			/* margin-bottom: 1rem; */
+
+			h4 {
+				/* font-size: 1.5rem; */
+				font-weight: 600;
+				margin: 0;
+				padding-bottom: 6px;
+				display: block;
+			}
+		}
+		.hline {
+			/* flex-grow: 1; */
+			height: 1px;
+			width: 100%;
+			background-color: var(--color-darkGrey);
+		}
 	}
 </style>

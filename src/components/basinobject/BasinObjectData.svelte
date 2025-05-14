@@ -8,18 +8,21 @@
 	let showModeSelector = $state(false);
 
 
-	const changeSelection = () => {
-		showModeSelector = !showModeSelector;
-	};
+	// const changeSelection = () => {
+	// 	showModeSelector = !showModeSelector;
+	// };
 </script>
 
 <div class="data-panel">
 	{#if basinObject.isSelected}
 		<div class="header">
 
-			<div>{basinObject.objectLabel}</div>
-			<div>{basinObject.objectTypeLabel}</div>
-			<div class='controls'><button onclick={changeSelection}>Change</button></div>
+			<div class="label">{basinObject.objectLabel}</div>
+			<div class="typelabel">{basinObject.objectTypeLabel}</div>
+			{#if showModeSelector == false}
+				<div class='controls'><button onclick={() => showModeSelector = true}>Change</button></div>
+			{/if}
+
 		</div>
 	{:else}
 		<div>
@@ -42,9 +45,6 @@
 		/* border: 1px solid #ccc; */
 	}
 
-	button {
-		font-size: 18px;
-	}
 
 	.header {
 		display: flex;
@@ -54,10 +54,36 @@
 		/* border: 1px solid salmon; */
 		align-items: center;
 
+		font-size: 18px;
 
-		div {
-			/* border: 1px solid #ccc; */
+		.label {
+			font-size: 20px;
+			font-weight: 600;
+			/* color: #333; */
 		}
+
+		.typelabel {
+			/* font-size: 18px; */
+			/* font-variant: small-caps; */
+			/* font-style: italic; */
+			font-weight: 500;
+			/* border: 1px solid #ccc; */
+			padding: 7px;
+			background-color: var(--stjoe-blue);
+			color: white;
+			margin-left: 6px;
+			/* margin-right: 10px; */
+			border-radius: 3px;
+			/* color: var(--stjoe-green); */
+		}
+
+		button {
+			font-size: 18px;
+			margin-left: 10px;
+		}
+		/* div { */
+			/* border: 1px solid #ccc; */
+		/* } */
 
 		.controls {
 			align-self: center;
