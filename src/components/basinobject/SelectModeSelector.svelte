@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { basinObject1, basinObject2, mapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import BasinObjectSearchInput from "./BasinObjectSearchInput.svelte";
 
 	type Props = { target: "1" | "2"; show: boolean };
 	let { target, show = $bindable(false) }: Props = $props();
 
 	type WizardStep = "initial" | "catchment" | "region";
 	let wizardStep = $state("initial");
+
+	const targetBasinObject = $derived(target === "1" ? basinObject1 : basinObject2);
 
 	const cancel = () => {
 		wizardStep = "initial";
@@ -15,11 +18,8 @@
 
 	const autoMode = () => {
 		console.log("Auto mode");
-		if (target === "1") {
-			basinObject1.clear();
-		} else {
-			basinObject2.clear();
-		}
+		targetBasinObject.clear();
+
 		mapSelectionMode.mode = "auto";
 		cancel();
 	};
@@ -34,14 +34,19 @@
 </script>
 
 {#if show}
-	<div>
+	<div class="select-mode-selector">
 		<div class="header">
 			<h4>Change Selection:</h4>
 			<div class="hline"></div>
 		</div>
+		<div class="search-input"><BasinObjectSearchInput /></div>
+
 		<div class="button-group">
 			{#if wizardStep == "initial"}
-				<button onclick={autoMode}>Clear</button>
+				{#if targetBasinObject.isSelected}
+					<button class="clear" onclick={autoMode}>X Clear</button>
+				{/if}
+
 				<button onclick={selectSiteMode}>Sites</button>
 				<button onclick={() => (wizardStep = "catchment")}>Catchments</button>
 				<button onclick={() => (wizardStep = "region")}>Regions</button>
@@ -64,12 +69,16 @@
 {/if}
 
 <style>
-	div {
+	.select-mode-selector {
 		display: flex;
 		flex-direction: column;
 
 		button {
-			font-weight: 600;
+			font-weight: 800;
+		}
+
+		button.clear {
+			color: var(--color-darkGrey);
 		}
 
 		button.cancel {
@@ -80,7 +89,7 @@
 			display: flex;
 			flex-direction: row;
 			flex-wrap: wrap;
-			gap: 1rem;
+			gap: 8px;
 			width: 100%;
 		}
 
@@ -105,6 +114,14 @@
 			height: 1px;
 			width: 100%;
 			background-color: var(--color-darkGrey);
+		}
+
+		.search-input {
+			margin-bottom: 12px;
+			width: 100%;
+			/* border: 1px solid #ccc; */
+			/* height: 100%; */
+			/* padding: 10px; */
 		}
 	}
 </style>

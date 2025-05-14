@@ -1,4 +1,5 @@
 import { riverappFeatureName } from "../data/riverappFeatureCollection.svelte";
+import { sites } from "../data/sites.svelte";
 import { setMapMaximized } from "../ui/layout.svelte";
 
 export type BasinObjectType = 'site' | 'huc8' | 'huc10' | 'huc12' | 'state' | 'county' | 'river-catchment' | 'site-catchment'; // | 'custom';
@@ -30,7 +31,7 @@ export class BasinObject {
 
 	get objectLabel(): string {
 		if (this.objectType === undefined || this.id === undefined) return '';
-		if (this.objectType === 'site') return `Site ${this.id}`;
+		if (this.objectType === 'site') return `${sites.findById(this.id)?.name || ''}`;
 		if (this.objectType === 'huc8') return `HUC8 ${this.id}`;
 		if (this.objectType === 'huc10') return `HUC10 ${this.id}`;
 		if (this.objectType === 'huc12') return `HUC12 ${this.id}`;

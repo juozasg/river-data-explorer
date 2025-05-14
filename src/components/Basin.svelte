@@ -4,7 +4,6 @@
 	import { regionFeatures, type RegionFeature, type RegionType } from "$src/appstate/data/regionFeatures.svelte";
 	import { MapFeatureSelectionState, toggleSelectedFeatureState } from "$src/appstate/map/featureState.svelte";
 	import BasinChart from "$src/components/chart/BasinChart.svelte";
-	import BasinHeader from "$src/components/basinobject/BasinHeader.svelte";
 	import RegionStatsPanel from "$src/components/basinobject/stats/RegionStatsPanel.svelte";
 	import SiteStatsPanel from "$src/components/basinobject/stats/SiteStatsPanel.svelte";
 	import InlineBlockIconify from "$src/components/icons/InlineBlockIconify.svelte";
@@ -93,14 +92,14 @@
 	}
 </script>
 
-<BasinHeader
+<!-- <BasinHeader
 	{dataSelection}
 	{selectedSite}
 	{onSearchItemSelect}
 	regionFeature={selectedRegion.feature}
 	{onClickRegionType}
 	onClickClose={onHeaderClose}
-	regionType={layersParams.regionType} />
+	regionType={layersParams.regionType} /> -->
 
 <div class={["workflow", layoutType]} style="width: {mapWidth}; height: {mapHeight}">
 	<VarDataMap

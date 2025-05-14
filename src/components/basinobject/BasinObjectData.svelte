@@ -8,6 +8,11 @@
 	let showModeSelector = $state(false);
 
 
+	$effect(() => {
+		if (!basinObject.isSelected) {
+			showModeSelector = true;
+		}
+	});
 	// const changeSelection = () => {
 	// 	showModeSelector = !showModeSelector;
 	// };
@@ -26,7 +31,7 @@
 		</div>
 	{:else}
 		<div>
-			<span>Nothing selected</span>
+			<h4>Nothing selected</h4>
 		</div>
 	{/if}
 
