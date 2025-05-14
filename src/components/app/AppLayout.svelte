@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { basinObject1, basinObject2 } from "$src/appstate/selection/selectionsState.svelte";
+	import { basinObject1, basinObject2 } from "$src/appstate/selection/basinObjectSelection.svelte";
 	import { mapMaximized, setMapMaximized } from "$src/appstate/ui/layout.svelte";
 	import AppMenu from "./AppMenu.svelte";
 	import AppPanelTabs from "./AppPanelTabs.svelte";
@@ -16,7 +16,7 @@
 
 
 	$effect(() => {
-		if(basinObject1.isSelected() || basinObject2.isSelected()) {
+		if(basinObject1.isSelected || basinObject2.isSelected) {
 			setMapMaximized(false);
 		} else {
 			setMapMaximized(true);

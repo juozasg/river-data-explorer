@@ -1,12 +1,9 @@
 <script>
-	import { basinObject2 } from "$src/appstate/selection/selectionsState.svelte";
-	import PanelData from "./PanelData.svelte";
-	import SelectModeDropdown from "./SelectModeSelector.svelte";
-
-	let showChange = $state(true);
+	import { basinObject2 } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import BasinObjectData from "../basinobject/BasinObjectData.svelte";
 </script>
 
-<PanelData basinObject={basinObject2} selectionTarget="2" />
+<BasinObjectData basinObject={basinObject2} selectionTarget="2" />
 
 <style>
 </style>

@@ -1,10 +1,16 @@
 <script>
-	import { basinObject1 } from "$src/appstate/selection/selectionsState.svelte";
-	import PanelData from "./PanelData.svelte";
+	// import { basinObject1 } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import { onMount } from "svelte";
+	import BasinObjectData from "../basinobject/BasinObjectData.svelte";
+	import { basinObject1 } from "$src/appstate/selection/basinObjectSelection.svelte";
+
+	onMount(() => {
+		basinObject1.set('river-catchment', 1);
+	});
 </script>
 
-<PanelData basinObject={basinObject1} selectionTarget="1"/>
+<BasinObjectData basinObject={basinObject1} selectionTarget="1" />
+
 
 <style>
-
 </style>

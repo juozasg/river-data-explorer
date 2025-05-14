@@ -59,6 +59,9 @@
 			color: var(--stjoe-blue);
 			height: 100%;
 			width: 100%;
+			border: none;
+			font-weight: 500;
+			border-radius: 0;
 		}
 
 		&:hover {

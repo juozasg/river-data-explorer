@@ -1,5 +1,5 @@
-import { riverappFeatureCollections } from "$src/appstate/data/riverappFeatureCollections";
-import { BasinObject, basinObject1, basinObject2 } from "$src/appstate/selection/selectionsState.svelte";
+import { riverappFeatureCollections } from "$src/appstate/data/riverappFeatureCollection.svelte";
+import { BasinObject, basinObject1, basinObject2 } from "$src/appstate/selection/basinObjectSelection.svelte";
 import type { Site } from "../types/site";
 
 // auto mode:
@@ -11,14 +11,14 @@ import type { Site } from "../types/site";
 export function autoSelectBasinObjectsOnClick(hoveredSite: Site | undefined, hoveredRiverId: number | undefined) {
 
 	// select both slots if both are empty and site is hovered
-	if(!basinObject1.isSelected() && !basinObject2.isSelected() && hoveredSite?.id) {
+	if(!basinObject1.isSelected && !basinObject2.isSelected && hoveredSite?.id) {
 		selectSiteAndCatchment(hoveredSite);
 		return;
 	}
 
 	// select 1 slot
 	let targetBasinObject: BasinObject | undefined;
-	if(!basinObject1.isSelected()) {
+	if(!basinObject1.isSelected) {
 		targetBasinObject = basinObject1;
 		console.log('selecting basinObject1');
 	} else {

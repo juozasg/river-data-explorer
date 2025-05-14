@@ -5,7 +5,7 @@ import { loadDatasetsUsgsWS } from "./loadDataUsgsWS";
 import { loadMarkdown } from "./loadMarkdown";
 import { loadSitesCsv } from "./loadSitesCsv";
 import { loadDataCsv } from "../cachedDataLoad";
-import { loadFeatureCollections } from "$src/appstate/data/riverappFeatureCollections";
+import { loadFeatureCollections } from "$src/appstate/data/riverappFeatureCollection.svelte";
 
 export type SHA1Digest = string;
 export type DataManifest = { [key: string]: SHA1Digest };

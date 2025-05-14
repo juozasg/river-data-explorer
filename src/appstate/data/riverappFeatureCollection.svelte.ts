@@ -27,6 +27,19 @@ export async function loadGeojsonData(name: RiverappFeaturesType) {
 	}
 }
 
+export function findRiverappFeatureById(featureType: RiverappFeaturesType, id: number) {
+	const featureCollection = riverappFeatureCollections.get(featureType);
+	return featureCollection?.features.find(f => f.properties?.id === id);
+}
+
+export const riverappFeatureName = (featureType: RiverappFeaturesType, id: number) => {
+	const feature = findRiverappFeatureById(featureType, id);
+	if (feature) {
+		return feature.properties?.name || `${featureType} ${id}`;
+	}
+
+}
+
 
 // if(name === 'rivers') {
 // 	console.log('SLEEEEP');

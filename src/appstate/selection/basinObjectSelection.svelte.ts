@@ -1,3 +1,4 @@
+import { riverappFeatureName } from "../data/riverappFeatureCollection.svelte";
 import { setMapMaximized } from "../ui/layout.svelte";
 
 export type BasinObjectType = 'site' | 'huc8' | 'huc10' | 'huc12' | 'state' | 'county' | 'river-catchment' | 'site-catchment'; // | 'custom';
@@ -22,9 +23,22 @@ export class BasinObject {
 		return true;
 	}
 
-	isSelected(): boolean {
+	get isSelected(): boolean {
 		if (this.objectType === undefined || this.id === undefined) return false;
 		return true;
+	}
+
+	get objectLabel(): string {
+		if (this.objectType === undefined || this.id === undefined) return '';
+		if (this.objectType === 'site') return `Site ${this.id}`;
+		if (this.objectType === 'huc8') return `HUC8 ${this.id}`;
+		if (this.objectType === 'huc10') return `HUC10 ${this.id}`;
+		if (this.objectType === 'huc12') return `HUC12 ${this.id}`;
+		if (this.objectType === 'state') return `State ${this.id}`;
+		if (this.objectType === 'county') return `County ${this.id}`;
+		if (this.objectType === 'river-catchment') return `${riverappFeatureName('rivers', this.id)}`;
+		if (this.objectType === 'site-catchment') return `${riverappFeatureName('site-catchments', this.id)}`;
+		return '';
 	}
 }
 
@@ -65,6 +79,4 @@ export const mapSelectionMode = $state({
 });
 
 export const mapSelectionTargetObject = () =>  mapSelectionMode.target === '1' ? basinObject1 : basinObject2;
-
-
 

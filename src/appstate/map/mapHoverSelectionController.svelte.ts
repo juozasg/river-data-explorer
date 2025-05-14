@@ -1,8 +1,8 @@
 import * as ml from 'maplibre-gl';
 import { initMapData } from '$src/lib/data/map/layers/initMapData';
 import type { Site } from '$src/lib/types/site';
-import { riverappFeatureCollections } from '../data/riverappFeatureCollections';
-import { basinObject1, basinObject2, mapSelectionMode, mapSelectionTargetObject } from '../selection/selectionsState.svelte';
+import { findRiverappFeatureById, riverappFeatureCollections } from '../data/riverappFeatureCollection.svelte';
+import { basinObject1, basinObject2, mapSelectionMode, mapSelectionTargetObject } from '../selection/basinObjectSelection.svelte';
 import { sites } from '../data/sites.svelte';
 import { autoSelectBasinObjectsOnClick } from '$src/lib/data/selectionHelpers';
 
@@ -68,19 +68,17 @@ export class MapHoverSelectionController {
 		// console.log('siteHovered', site);
 
 		if (site && site.id) {
-			const catchments = riverappFeatureCollections.get('site-catchments');
-			if (catchments) {
-				const siteCatchment = catchments.features.find(f => f.properties?.id === site.id);
-				// console.log('siteCatchment', siteCatchment);
+			const siteCatchment = findRiverappFeatureById('site-catchments', site.id);
+			// console.log('siteCatchment', siteCatchment);
 
-				if (siteCatchment) {
-					const hoveredRegions = this.#map.getSource("riverapp-hovered-regions") as ml.GeoJSONSource;
-					hoveredRegions.setData({
-						type: "FeatureCollection",
-						features: [siteCatchment]
-					});
-				}
+			if (siteCatchment) {
+				const hoveredRegions = this.#map.getSource("riverapp-hovered-regions") as ml.GeoJSONSource;
+				hoveredRegions.setData({
+					type: "FeatureCollection",
+					features: [siteCatchment]
+				});
 			}
+
 			this.#hoveredSite = sites.findById(site.id);
 		} else {
 			this.clearHoveredRegions();
@@ -93,20 +91,18 @@ export class MapHoverSelectionController {
 		// in auto mode site takes precedence over river catchment
 		if (mapSelectionMode.mode === 'river-catchment' || (mapSelectionMode.mode === 'auto' && !this.#hoveredSite)) {
 			if (id) {
-				const catchments = riverappFeatureCollections.get('river-catchments');
 
-				if (catchments) {
-					const riverCatchment = catchments.features.find(f => f.properties?.id === id);
-					// console.log('riverCatchment', riverCatchment);
+				const riverCatchment = findRiverappFeatureById('river-catchments', id);
+				// console.log('riverCatchment', riverCatchment);
 
-					if (riverCatchment) {
-						const hoveredRegions = this.#map.getSource("riverapp-hovered-regions") as ml.GeoJSONSource;
-						hoveredRegions.setData({
-							type: "FeatureCollection",
-							features: [riverCatchment]
-						});
-					}
+				if (riverCatchment) {
+					const hoveredRegions = this.#map.getSource("riverapp-hovered-regions") as ml.GeoJSONSource;
+					hoveredRegions.setData({
+						type: "FeatureCollection",
+						features: [riverCatchment]
+					});
 				}
+
 			} else {
 				this.clearHoveredRegions()
 			}
@@ -182,7 +178,8 @@ export class MapHoverSelectionController {
 					return;
 				}
 
-				const geojsonFeature = riverappFeatureCollections.get('rivers')?.features.find(f => f.properties && f.properties.id === feature.id);
+				// const geojsonFeature = riverappFeatureCollections.get('rivers')?.features.find(f => f.properties && f.properties.id === feature.id);
+				const geojsonFeature = findRiverappFeatureById('rivers', feature.id as number);
 
 				if (geojsonFeature) {
 					hoveredRivers.setData({

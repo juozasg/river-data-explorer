@@ -54,6 +54,27 @@ body {
 	background-color: rgba(0, 0, 0, 0.5);
 }
 
+button {
+	font-weight: 600;
+	padding: 6px;
+	background-color: transparent;
+	border-radius: var(--border-radius);
+	box-shadow: var(--box-shadow);
+	border: 1px solid var(--color-darkGrey);
+	color: var(--stjoe-blue);
+
+	&:hover {
+		background-color: rgb(0 0 0/5%);
+	}
+}
+
+button.cancel {
+	border-color: var(--color-darkGrey);
+	color: var(--color-darkGrey);
+	box-shadow: none;
+	font-weight: 400;
+}
+
 // reset button
 button.reset {
 	border: none;
