@@ -7,7 +7,7 @@
 	import { selectTableVar } from "$src/lib/data/siteTableHelpers";
 	import type { Site } from "$src/lib/types/site";
 	import { varChartDomain, YZChartParams } from "$src/lib/utils/YZChartParams";
-	import BrushedYzChart from "../chart/BrushedYZChart.svelte";
+	import BrushedYzChart from "./BrushedYZChart.svelte";
 	import InlineBlockIconify from "../icons/InlineBlockIconify.svelte";
 
 	type Props = {

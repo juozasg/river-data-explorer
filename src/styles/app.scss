@@ -55,7 +55,7 @@ body {
 }
 
 // reset button
-button {
+button.reset {
 	border: none;
 	border-radius: 0;
 	outline: none;
@@ -81,20 +81,20 @@ button {
 	-webkit-appearance: none;
 }
 
-button::-moz-focus-inner {
+button.reset::-moz-focus-inner {
 	border: 0;
 	padding: 0;
 }
 
-button:focus {
+button.reset:focus {
 	outline: none;
 }
 
-button:focus:not(:focus-visible) {
+button.reset:focus:not(:focus-visible) {
 	outline: none;
 }
 
-button:focus:not(:-moz-focusring) {
+button.reset:focus:not(:-moz-focusring) {
 	outline: none;
 }
 

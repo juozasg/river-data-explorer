@@ -3,10 +3,10 @@
 	import { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
 	import { regionFeatures, type RegionFeature, type RegionType } from "$src/appstate/data/regionFeatures.svelte";
 	import { MapFeatureSelectionState, toggleSelectedFeatureState } from "$src/appstate/map/featureState.svelte";
-	import BasinChart from "$src/components/basin/BasinChart.svelte";
-	import BasinHeader from "$src/components/basin/BasinHeader.svelte";
-	import RegionStatsPanel from "$src/components/basin/stats/RegionStatsPanel.svelte";
-	import SiteStatsPanel from "$src/components/basin/stats/SiteStatsPanel.svelte";
+	import BasinChart from "$src/components/chart/BasinChart.svelte";
+	import BasinHeader from "$src/components/data/BasinHeader.svelte";
+	import RegionStatsPanel from "$src/components/data/stats/RegionStatsPanel.svelte";
+	import SiteStatsPanel from "$src/components/data/stats/SiteStatsPanel.svelte";
 	import InlineBlockIconify from "$src/components/icons/InlineBlockIconify.svelte";
 	import VarDataMap from "$src/components/mlmap/VarDataMap.svelte";
 	import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";

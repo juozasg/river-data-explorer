@@ -2,7 +2,7 @@
 	import { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
 	import { sitesTables } from "$src/appstate/data/datasets.svelte";
 	import { sites } from "$src/appstate/data/sites.svelte";
-	import BasinChart from "$src/components/basin/BasinChart.svelte";
+	import BasinChart from "$src/components/chart/BasinChart.svelte";
 
 	const dataSelection: ChartDataSelectionState = new ChartDataSelectionState();
 
