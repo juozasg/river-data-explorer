@@ -179,10 +179,12 @@
 		padding: 0px;
 		z-index: 3 !important;
 		.marker-box {
-			width: 22px;
-			height: 22px;
-			border-radius: 13px;
+			width: 30px;
+			height: 30px;
+			border-radius: 15px;
 			border-width: 2px;
+			border-color: var(--color-map-hover-highlight);
+			/* border-color: green; */
 		}
 	}
 

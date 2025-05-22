@@ -7,6 +7,8 @@ export const chartYColor = '#ab00d6';
 export const chartZColor = '#00d6ab';
 export const chartZDarker = '#00af8c';
 
+export const mapHoverHighlightColor = '#97E817';
+
 
 
 export function interpolateVarColor(varname: string, value?: number | string, valueFraction?: number): string {

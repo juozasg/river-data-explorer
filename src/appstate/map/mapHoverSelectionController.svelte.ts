@@ -65,9 +65,18 @@ export class MapHoverSelectionController {
 
 
 	siteHovered(site: Site | undefined) {
-		// console.log('siteHovered', site);
+		if (!site?.id) {
+			this.#hoveredSite = undefined;
+			if (mapSelectionMode.mode === 'auto' || mapSelectionMode.mode === 'site-catchment') {
+				this.clearHoveredRegions();
+			}
 
-		if (site && site.id) {
+			return;
+		}
+
+		this.#hoveredSite = sites.findById(site.id);
+
+		if (mapSelectionMode.mode === 'auto' || mapSelectionMode.mode === 'site-catchment') {
 			const siteCatchment = findRiverappFeatureById('site-catchments', site.id);
 			// console.log('siteCatchment', siteCatchment);
 
@@ -78,11 +87,6 @@ export class MapHoverSelectionController {
 					features: [siteCatchment]
 				});
 			}
-
-			this.#hoveredSite = sites.findById(site.id);
-		} else {
-			this.clearHoveredRegions();
-			this.#hoveredSite = undefined;
 		}
 	}
 
@@ -126,43 +130,6 @@ export class MapHoverSelectionController {
 			}
 		});
 
-		// TODO: hucs and counties selection
-		// map.on('mousemove', 'riverapp-regions-fill', (e) => {
-		// 	// console.log('mousemove', e.features);
-
-		// 	if (e.features && e.features.length > 0) {
-		// 		const feature = e.features[0];
-		// 		const hoveredRegions = map.getSource("riverapp-hovered-regions") as ml.GeoJSONSource;
-		// 		// const sourceHoveredFeature = hoveredRegions.
-		// 		const hoveredRegionsData = hoveredRegions._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
-		// 		// const hoveredRegionsFeature = hoveredRegionsData.features[0];
-
-		// 		if (this.#hoveredRegionFeature && this.#hoveredRegionFeature.id === feature.id) {
-		// 			return;
-		// 		}
-		// 		// console.log('hoveredRegions', hoveredRegions);
-
-
-		// 		hoveredRegions.setData({
-		// 			type: "FeatureCollection",
-		// 			// features: e.features
-		// 			features: [feature]
-		// 		});
-		// 		this.#hoveredRegionFeature = feature;
-		// 	}
-		// });
-
-		// map.on('mouseleave', 'riverapp-regions-fill', (e) => {
-
-		// 	const hoveredRegions = map.getSource("riverapp-hovered-regions") as ml.GeoJSONSource;
-		// 	hoveredRegions.setData({
-		// 		type: "FeatureCollection",
-		// 		features: []
-		// 	});
-
-		// 	this.#hoveredRegionFeature = undefined;
-		// });
-
 
 		/// RIVERS
 		map.on('mousemove', 'riverapp-rivers-hitbox', (e) => {
@@ -178,14 +145,16 @@ export class MapHoverSelectionController {
 					return;
 				}
 
-				// const geojsonFeature = riverappFeatureCollections.get('rivers')?.features.find(f => f.properties && f.properties.id === feature.id);
-				const geojsonFeature = findRiverappFeatureById('rivers', feature.id as number);
+				// highlight the hovered river if map is in river selection mode
+				if ((mapSelectionMode.mode === 'auto' || mapSelectionMode.mode === 'river-catchment') && this.#hoveredSite === undefined) {
+					const geojsonFeature = findRiverappFeatureById('rivers', feature.id as number);
 
-				if (geojsonFeature) {
-					hoveredRivers.setData({
-						type: "FeatureCollection",
-						features: [geojsonFeature]
-					});
+					if (geojsonFeature) {
+						hoveredRivers.setData({
+							type: "FeatureCollection",
+							features: [geojsonFeature]
+						});
+					}
 				}
 				this.riverHovered(feature.id as number);
 			}

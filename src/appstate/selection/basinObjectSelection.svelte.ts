@@ -1,4 +1,4 @@
-import { riverappFeatureName } from "../data/riverappFeatureCollection.svelte";
+import { riverappFeatureCollections, riverappFeatureName, riverappFeatures } from "../data/riverappFeatureCollection.svelte";
 import { sites } from "../data/sites.svelte";
 import { setMapMaximized } from "../ui/layout.svelte";
 
@@ -16,6 +16,13 @@ export class BasinObject {
 	set(objectType: BasinObjectType, id: number) {
 		this.objectType = objectType;
 		this.id = id;
+	}
+
+	setNamedObject(objectType: 'huc8' | 'indiana' | 'michigan') {
+		this.objectType = objectType == 'huc8' ? 'huc8' : 'state';
+
+
+		this.id = objectType == 'huc8' ? 4050001 : objectType == 'indiana' ? 18 : 26;
 	}
 
 	equals(other: BasinObject): boolean {

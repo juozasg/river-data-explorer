@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { basinObject1, basinObject2, mapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import { basinObject1, basinObject2, mapSelectionMode, type MapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
 	import BasinObjectSearchInput from "./BasinObjectSearchInput.svelte";
 
 	type Props = { target: "1" | "2"; show: boolean };
@@ -18,21 +18,45 @@
 		console.log("cancel", targetBasinObject, targetBasinObject.isSelected);
 	};
 
-	const autoMode = () => {
-		console.log("Auto mode");
-		targetBasinObject.clear();
-
-		mapSelectionMode.mode = "auto";
-		cancel();
-	};
-
-	const selectSiteMode = () => {
-		console.log("Select site mode");
+	const setSelectMode = (mode: MapSelectionMode) => {
+		console.log("setSelectMode", mode);
 		wizardStep = "initial";
-		mapSelectionMode.mode = "site";
+
+		mapSelectionMode.mode = mode;
 		mapSelectionMode.target = target;
 		cancel();
 	};
+
+	const autoMode = () => {
+		targetBasinObject.clear();
+		setSelectMode("auto");
+	};
+
+	const selectBasinObject = (objectType: 'huc8' | 'indiana' | 'michigan') => {
+		console.log("selectBasinObject", objectType);
+		targetBasinObject.setNamedObject(objectType);
+
+		cancel();
+	};
+
+	// const selectSiteMode = () => {
+	// 	setSelectMode("site");
+	// };
+
+	// const selectRiverCatchmentMode = () => {
+	// 	wizardStep = "initial";
+	// 	mapSelectionMode.mode = "river-catchment";
+	// 	mapSelectionMode.target = target;
+	// 	cancel();
+	// };
+
+	// const selectCatchmentMode = (catchmentType: 'river-catchment' | 'site-catchment') => {
+	// 	console.log("Select catchment mode");
+	// 	wizardStep = "initial";
+	// 	mapSelectionMode.mode = catchmentType;
+	// 	mapSelectionMode.target = target;
+	// 	cancel();
+	// };
 </script>
 
 {#if show}
@@ -49,25 +73,24 @@
 					<button class="clear" onclick={autoMode}>X Clear</button>
 				{/if}
 
-				<button onclick={selectSiteMode}>Sites</button>
+				<button onclick={() => setSelectMode('site')}>Sites</button>
 				<button onclick={() => (wizardStep = "catchment")}>Catchments</button>
 				<button onclick={() => (wizardStep = "region")}>Regions</button>
 				{#if targetBasinObject.isSelected}
 					{@render cancelButton()}
-
 				{/if}
 
 			{:else if wizardStep == "catchment"}
-				<button>Site catchment</button>
-				<button>River catchment</button>
+				<button onclick={() => setSelectMode('site-catchment')}>Site catchment</button>
+				<button onclick={() => setSelectMode('river-catchment')}>River catchment</button>
 				{@render cancelButton()}
 			{:else if wizardStep == "region"}
-				<button>Hydrological Unit: Stream (HUC12)</button>
-				<button>Hydrological Unit: River (HUC10)</button>
-				<button>St. Joseph River Basin (HUC8)</button>
-				<button>Counties</button>
-				<button>Indiana</button>
-				<button>Michigan</button>
+				<button onclick={() => setSelectMode('huc12')}>Hydrological Unit: Stream (HUC12)</button>
+				<button onclick={() => setSelectMode('huc10')}>Hydrological Unit: River (HUC10)</button>
+				<button onclick={() => selectBasinObject('huc8')}>St. Joseph River Basin (HUC8)</button>
+				<button onclick={() => setSelectMode('county')}>Counties</button>
+				<button onclick={() => selectBasinObject('indiana')}>Indiana</button>
+				<button onclick={() => selectBasinObject('michigan')}>Michigan</button>
 				{@render cancelButton()}
 			{/if}
 		</div>

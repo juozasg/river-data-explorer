@@ -2,6 +2,7 @@
 	import HamburgerButton from "./HamburgerButton.svelte";
 	import { clickOutside } from "$src/lib/svelte/clickOutside";
 	import InlineBlockIconify from "../icons/InlineBlockIconify.svelte";
+	import { mapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
 
 	const { mobile }: { mobile: boolean } = $props();
 
@@ -38,6 +39,8 @@
 				<span class="github-icon">
 					<InlineBlockIconify icon="uiw:github" size="20px" />
 				</span>
+
+				<span>{mapSelectionMode.mode} {mapSelectionMode.target}</span>
 			</a>
 		</li>
 	</ul>

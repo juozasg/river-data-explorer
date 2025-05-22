@@ -1,5 +1,6 @@
 import * as ml from 'maplibre-gl';
 import { mlmInsertBeforeLayer } from './initMapData';
+import { mapHoverHighlightColor } from '$src/lib/utils/colors';
 
 export function addRegionLayers(map: ml.Map): void {
 	map.addLayer(
@@ -88,7 +89,7 @@ export function addRiverLayers(map: ml.Map): void {
 			'line-cap': 'round'
 		},
 		paint: {
-			'line-color': '#97E817',
+			'line-color': mapHoverHighlightColor,
 			'line-width': [
 				'case',
 				['boolean', ['feature-state', 'hover'], false],
