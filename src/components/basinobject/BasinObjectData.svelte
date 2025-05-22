@@ -5,12 +5,12 @@
 
 	type Props = { selectionTarget: "1" | "2", basinObject: BasinObject };
 	const { selectionTarget, basinObject }: Props = $props();
-	let showModeSelector = $state(false);
+	let showModeSelector = $state(true);
 
 
 	$effect(() => {
-		if (!basinObject.isSelected) {
-			showModeSelector = true;
+		if (basinObject.isSelected) {
+			showModeSelector = false;
 		}
 	});
 	// const changeSelection = () => {
@@ -35,7 +35,10 @@
 		</div>
 	{/if}
 
-	<SelectModeSelector target={selectionTarget} bind:show={showModeSelector}/>
+
+	{#if showModeSelector}
+		<SelectModeSelector target={selectionTarget} bind:show={showModeSelector}/>
+	{/if}
 </div>
 
 

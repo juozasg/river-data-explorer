@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { basinObject1, basinObject2 } from "$src/appstate/selection/basinObjectSelection.svelte";
 	import { mapMaximized, setMapMaximized } from "$src/appstate/ui/layout.svelte";
+	import { set } from "date-fns";
 	import AppMenu from "./AppMenu.svelte";
 	import AppPanelTabs from "./AppPanelTabs.svelte";
 	import PanelChart from "./PanelChart.svelte";
@@ -21,7 +22,6 @@
 		} else {
 			setMapMaximized(true);
 		}
-
 	});
 </script>
 

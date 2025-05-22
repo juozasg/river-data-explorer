@@ -12,8 +12,10 @@
 
 	const cancel = () => {
 		wizardStep = "initial";
-		show = false;
-		console.log("cancel");
+		if(targetBasinObject.isSelected) {
+			show = false;
+		}
+		console.log("cancel", targetBasinObject, targetBasinObject.isSelected);
 	};
 
 	const autoMode = () => {
@@ -36,7 +38,7 @@
 {#if show}
 	<div class="select-mode-selector">
 		<div class="header">
-			<h4>Change Selection:</h4>
+			<h4>Change Selection {target}:</h4>
 			<div class="hline"></div>
 		</div>
 		<div class="search-input"><BasinObjectSearchInput /></div>
@@ -50,23 +52,31 @@
 				<button onclick={selectSiteMode}>Sites</button>
 				<button onclick={() => (wizardStep = "catchment")}>Catchments</button>
 				<button onclick={() => (wizardStep = "region")}>Regions</button>
-				<button class="cancel" onclick={cancel}>Cancel</button>
+				{#if targetBasinObject.isSelected}
+					{@render cancelButton()}
+
+				{/if}
+
 			{:else if wizardStep == "catchment"}
 				<button>Site catchment</button>
 				<button>River catchment</button>
-				<button class="cancel" onclick={cancel}>Cancel</button>
+				{@render cancelButton()}
 			{:else if wizardStep == "region"}
 				<button>Hydrological Unit: Stream (HUC12)</button>
 				<button>Hydrological Unit: River (HUC10)</button>
 				<button>St. Joseph River Basin (HUC8)</button>
-				<button>County</button>
+				<button>Counties</button>
 				<button>Indiana</button>
 				<button>Michigan</button>
-				<button class="cancel" onclick={cancel}>Cancel</button>
+				{@render cancelButton()}
 			{/if}
 		</div>
 	</div>
 {/if}
+
+{#snippet cancelButton()}
+	<button class="cancel" onclick={cancel}>Cancel</button>
+{/snippet}
 
 <style>
 	.select-mode-selector {
