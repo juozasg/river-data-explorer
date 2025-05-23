@@ -2,6 +2,8 @@ import { riverappFeatureCollections } from "$src/appstate/data/riverappFeatureCo
 import { BasinObject, basinObject1, basinObject2 } from "$src/appstate/selection/basinObjectSelection.svelte";
 import type { Site } from "../types/site";
 
+
+// TODO: remake this to work with target 1 and 2 most  of the time since Clear button is clicked should behave the same.
 // auto mode:
 // select a site into first free selectio slot (data1 or data2)
 // if both slots are open select a side and a catchment into data1 and data2

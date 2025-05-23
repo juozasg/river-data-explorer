@@ -9,9 +9,9 @@ export function addRegionLayers(map: ml.Map): void {
 			source: "riverapp-regions",
 			type: "line",
 			paint: {
-				"line-color": "#088",
-				"line-width": 2,
-				"line-opacity": 0
+				"line-color": "#333",
+				"line-width": 0.5,
+				"line-opacity": 1
 			}
 		},
 		mlmInsertBeforeLayer
@@ -23,7 +23,7 @@ export function addRegionLayers(map: ml.Map): void {
 			source: "riverapp-regions",
 			type: "fill",
 			paint: {
-				"fill-opacity": 0.2,
+				"fill-opacity": 0.05,
 				// "fill-opacity": 0,
 				"fill-color": "#088"
 			}

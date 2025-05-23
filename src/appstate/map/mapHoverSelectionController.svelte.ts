@@ -38,10 +38,7 @@ export class MapHoverSelectionController {
 
 		$effect.root(() => {
 
-			// $effect(() => {
-			// 	console.log('hoveredregion', this.#hoveredRegionFeature);
-
-			// });
+			// set mlm rivers data source when ready
 			$effect(() => {
 				// this will run when the map data model (sources and layers) is ready and when the feature collections change
 				const riversFeatures = riverappFeatureCollections.get('rivers');
@@ -51,6 +48,35 @@ export class MapHoverSelectionController {
 					riversSource.setData(riversFeatures);
 				}
 			});
+
+
+			// set huc12, huc10 and county regions data source when select mode is set to huc12, huc10 or county
+			// and the features are ready
+			$effect(() => {
+				const huc12Features = riverappFeatureCollections.get('huc12');
+				if(this.dataModelReady && huc12Features &&  mapSelectionMode.mode === 'huc12') {
+					const regionsSource = this.#map.getSource("riverapp-regions") as ml.GeoJSONSource;
+					regionsSource.setData(huc12Features);
+				}
+			});
+
+			$effect(() => {
+				const huc10Features = riverappFeatureCollections.get('huc10');
+				if(this.dataModelReady && huc10Features &&  mapSelectionMode.mode === 'huc10') {
+					const regionsSource = this.#map.getSource("riverapp-regions") as ml.GeoJSONSource;
+					regionsSource.setData(huc10Features);
+				}
+			});
+
+			$effect(() => {
+				const countiesFeatures = riverappFeatureCollections.get('counties');
+				if(this.dataModelReady && countiesFeatures &&  mapSelectionMode.mode === 'county') {
+					const regionsSource = this.#map.getSource("riverapp-regions") as ml.GeoJSONSource;
+					regionsSource.setData(countiesFeatures);
+				}
+			});
+
+
 		});
 	}
 
@@ -117,17 +143,40 @@ export class MapHoverSelectionController {
 
 	addHoverListeners(map: ml.Map) {
 		map.on('click', (e) => {
-			if (mapSelectionMode.mode == 'auto') {
-				// select a site  into data1 if one is hovered, and a catchment into data2 if data 2 is empty
+			switch (mapSelectionMode.mode) {
+				case 'auto':
+					autoSelectBasinObjectsOnClick(this.#hoveredSite, this.#hoveredRiverId);
+					break;
+				case 'site':
+					if (this.#hoveredSite) {
+						mapSelectionTargetObject().set('site', this.#hoveredSite.id);
+					}
+					break;
+				case 'site-catchment':
+					if (this.#hoveredSite) {
+						mapSelectionTargetObject().set('site-catchment', this.#hoveredSite.id);
+						// const siteCatchment = findRiverappFeatureById('site-catchments', this.#hoveredSite.id);
+						// if (siteCatchment) {
+						// 	basinObject2.set('site-catchment', siteCatchment.properties?.id);
+						// }
+					}
 
-				autoSelectBasinObjectsOnClick(this.#hoveredSite, this.#hoveredRiverId);
-			} else if (mapSelectionMode.mode == 'site') {
-				if (this.#hoveredSite) {
-
-					// basinObject1.set('site', this.#hoveredSite.id);
-					mapSelectionTargetObject().set('site', this.#hoveredSite.id);
-				}
+					break;
+				case 'river-catchment':
+					if (this.#hoveredRiverId) {
+						mapSelectionTargetObject().set('river-catchment', this.#hoveredRiverId);
+					}
+					break;
+				case 'county':
+				case 'huc10':
+				case 'huc12':
+					if (this.#hoveredRegionId) {
+						mapSelectionTargetObject().set(mapSelectionMode.mode, this.#hoveredRegionId);
+					}
+					break;
 			}
+			// basinObject1.set('site', this.#hoveredSite.id);
+
 		});
 
 
