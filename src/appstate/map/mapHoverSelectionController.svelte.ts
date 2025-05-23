@@ -54,25 +54,43 @@ export class MapHoverSelectionController {
 			// and the features are ready
 			$effect(() => {
 				const huc12Features = riverappFeatureCollections.get('huc12');
-				if(this.dataModelReady && huc12Features &&  mapSelectionMode.mode === 'huc12') {
+				if (this.dataModelReady && huc12Features && mapSelectionMode.mode === 'huc12') {
 					const regionsSource = this.#map.getSource("riverapp-regions") as ml.GeoJSONSource;
 					regionsSource.setData(huc12Features);
+					this.#map.redraw();
 				}
 			});
 
 			$effect(() => {
 				const huc10Features = riverappFeatureCollections.get('huc10');
-				if(this.dataModelReady && huc10Features &&  mapSelectionMode.mode === 'huc10') {
+				if (this.dataModelReady && huc10Features && mapSelectionMode.mode === 'huc10') {
 					const regionsSource = this.#map.getSource("riverapp-regions") as ml.GeoJSONSource;
 					regionsSource.setData(huc10Features);
+					this.#map.redraw();
+
 				}
 			});
 
 			$effect(() => {
 				const countiesFeatures = riverappFeatureCollections.get('counties');
-				if(this.dataModelReady && countiesFeatures &&  mapSelectionMode.mode === 'county') {
+				if (this.dataModelReady && countiesFeatures && mapSelectionMode.mode === 'county') {
 					const regionsSource = this.#map.getSource("riverapp-regions") as ml.GeoJSONSource;
 					regionsSource.setData(countiesFeatures);
+					this.#map.redraw();
+
+				}
+			});
+
+			// clear regions when mode is not set to huc12, huc10 or county
+			$effect(() => {
+				if (this.dataModelReady && mapSelectionMode.mode !== 'huc12' && mapSelectionMode.mode !== 'huc10' && mapSelectionMode.mode !== 'county') {
+					const regionsSource = this.#map.getSource("riverapp-regions") as ml.GeoJSONSource;
+					regionsSource.setData({
+						type: "FeatureCollection",
+						features: []
+					});
+					this.#map.redraw();
+
 				}
 			});
 

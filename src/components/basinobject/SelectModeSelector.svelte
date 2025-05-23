@@ -37,6 +37,8 @@
 		targetBasinObject.setNamedObject(objectType);
 
 		cancel();
+		setSelectMode("auto");
+
 	};
 
 	// const selectSiteMode = () => {
