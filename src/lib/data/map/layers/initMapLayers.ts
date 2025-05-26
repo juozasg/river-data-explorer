@@ -140,8 +140,8 @@ export function addOutlineLayers(map: ml.Map) {
 			type: "line",
 			paint: {
 				// "line-color": "#E3E676",
-				"line-color": "#200",
-				"line-width": 1
+				"line-color": "#97E817",
+				"line-width": 2
 				// "fill-opacity": 0.5
 			}
 		},
