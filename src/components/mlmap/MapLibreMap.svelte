@@ -2,7 +2,7 @@
 	import * as ml from "maplibre-gl";
 	import "maplibre-gl/dist/maplibre-gl.css";
 
-	import { mapMouseLocation } from "$src/appstate/map/mapMouse.svelte";
+	import { mapCursor, mapMouseLocation } from "$src/appstate/map/mapMouse.svelte";
 	import { basemapStyleId } from "$src/appstate/ui/layers.svelte";
 	import { tooltip } from "$src/appstate/ui/tooltips.svelte";
 	import { transformStyle } from "$src/lib/data/map/helpers/transformMapStyle";
@@ -23,7 +23,7 @@
 	let {
 		mlMap = $bindable(),
 		zoom = 8,
-		center = [-85.49182, 41.82128],
+		center = [-85.49182, 41.82128]
 		// onInitialStyleLoaded
 		// baseStyleId = "TOPO",
 		// layersParams = defaultLayersParams,
@@ -108,7 +108,7 @@
 	}
 </script>
 
-<div class="map" bind:this={mapDiv} {onmouseleave} role="figure" bind:clientWidth></div>
+<div class={["map", mapCursor() + "-cursor"]} bind:this={mapDiv} {onmouseleave} role="figure" bind:clientWidth></div>
 
 <style>
 	.map {
@@ -131,5 +131,18 @@
 		:global(.maplibregl-ctrl-scale) {
 			margin-bottom: 44px;
 		}
+	}
+
+	:global(
+			.map.default-cursor .maplibregl-canvas-container.maplibregl-interactive,
+			.map.default-cursor .maplibregl-ctrl-group button.maplibregl-ctrl-compass
+		) {
+		cursor: default;
+	}
+	:global(
+			.map.pointer-cursor .maplibregl-canvas-container.maplibregl-interactive,
+			.map.pointer-cursor .maplibregl-ctrl-group button.maplibregl-ctrl-compass
+		) {
+		cursor: pointer;
 	}
 </style>

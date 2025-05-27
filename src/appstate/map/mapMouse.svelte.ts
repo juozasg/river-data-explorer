@@ -32,3 +32,7 @@ export class MapMouseLocation {
 
 export const mapMouseLocation = new MapMouseLocation();
 
+
+let _mapCursor = $state<string>('default');
+export const setMapCursor = (cursor: string) => _mapCursor = cursor;
+export const mapCursor = () => _mapCursor;

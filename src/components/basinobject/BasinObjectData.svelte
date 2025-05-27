@@ -25,7 +25,11 @@
 			<div class="label">{basinObject.objectLabel}</div>
 			<div class="typelabel">{basinObject.objectTypeLabel}</div>
 			{#if showModeSelector == false}
-				<div class='controls'><button onclick={() => showModeSelector = true}>Change</button></div>
+				<div class='controls'>
+					<div class="vbar"></div>
+					<button onclick={() => showModeSelector = true}>Change</button>
+
+				</div>
 			{/if}
 
 		</div>
@@ -87,14 +91,24 @@
 
 		button {
 			font-size: 18px;
-			margin-left: 10px;
 		}
-		/* div { */
-			/* border: 1px solid #ccc; */
-		/* } */
 
 		.controls {
 			align-self: center;
+
+			display: flex;
+			flex-direction: row;
+			justify-content: left;
+			gap: 0px;
+
+			.vbar {
+				width: 1.5px;
+				/* height: 100%; */
+				height: 28px;
+				background-color: var(--color-lightGrey);
+				margin: 2px 8px 0 4px;
+
+			}
 		}
 		/* overflow: scroll; */
 		/* justify-content: space-between; */
