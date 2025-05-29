@@ -22,7 +22,7 @@ export function autoSelectBasinObjectsOnClick(hoveredSite: Site | undefined, hov
 
 	// select 1 slot
 	let targetBasinObject: BasinObject | undefined;
-	if(!basinObject1.isSelected) {
+	if(mapSelectionMode.target === '1') {
 		targetBasinObject = basinObject1;
 		mapSelectionMode.mode = 'auto';
 		mapSelectionMode.target = '2';

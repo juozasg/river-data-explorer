@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { basinObject1, basinObject2 } from "$src/appstate/selection/basinObjectSelection.svelte";
-	import { mapMaximized, setMapMaximized } from "$src/appstate/ui/layout.svelte";
-	import { set } from "date-fns";
+	import { mapMaximized, selectedPanel, setMapMaximized, setSelectedPanel } from "$src/appstate/ui/layout.svelte";
 	import AppMenu from "./AppMenu.svelte";
 	import AppPanelTabs from "./AppPanelTabs.svelte";
 	import PanelChart from "./PanelChart.svelte";
@@ -13,7 +11,6 @@
 	let clientHeight = $state(0);
 	const mobile = $derived(clientWidth <= 720 || clientHeight < 720);
 
-	let selectedPanel:string = $state('map');
 
 	let mapWidth = $state(0);
 	let mapHeight = $state(0);
@@ -35,26 +32,26 @@
 	<div class="app-header">
 		<AppMenu {mobile}/>
 		{#if mobile}
-			<AppPanelTabs bind:selectedPanel />
+			<AppPanelTabs bind:selectedPanel={selectedPanel, setSelectedPanel} />
 		{/if}
 	</div>
 
-	<div class="panel panel-map" class:selected={selectedPanel === 'map'}
+	<div class="panel panel-map" class:selected={selectedPanel() === 'map'}
 		bind:clientWidth={mapWidth} bind:clientHeight={mapHeight}>
 		<div class="map-container" style="--map-width: {mapWidth}px; --map-height: {mapHeight}px;" >
 			<PanelMap />
 		</div>
 	</div>
 
-	<div class="panel panel-data1" class:selected={selectedPanel === 'data1'}>
+	<div class="panel panel-data1" class:selected={selectedPanel() === 'data1'}>
 		<PanelData1 />
 	</div>
 
-	<div class="panel panel-data2" class:selected={selectedPanel === 'data2'}>
+	<div class="panel panel-data2" class:selected={selectedPanel() === 'data2'}>
 		<PanelData2	/>
 	</div>
 
-	<div class="panel panel-chart" class:selected={selectedPanel === 'chart'}>
+	<div class="panel panel-chart" class:selected={selectedPanel() === 'chart'}>
 		<PanelChart />
 	</div>
 </main>

@@ -8,6 +8,7 @@ import { autoSelectBasinObjectsOnClick } from '$src/lib/data/selectionHelpers';
 import { safeQueryRenderedFeatures } from '$src/lib/utils/maplibre';
 import { setMapCursor } from './mapMouse.svelte';
 import { set } from 'date-fns';
+import { setSelectedPanel } from '../ui/layout.svelte';
 
 export type HoveredRegionType = 'huc8' | 'huc10' | 'huc12' | 'county';
 
@@ -177,13 +178,16 @@ export class MapHoverSelectionController {
 
 	addHoverListeners(map: ml.Map) {
 		map.on('click', (e) => {
+			const selectionPanel = `data${mapSelectionMode.target}` as 'data1' | 'data2';
 			switch (mapSelectionMode.mode) {
 				case 'auto':
 					autoSelectBasinObjectsOnClick(this.#hoveredSite, this.#hoveredRiverId);
+					setSelectedPanel(selectionPanel);
 					break;
 				case 'site':
 					if (this.#hoveredSite) {
 						mapSelectionTargetObject().set('site', this.#hoveredSite.id);
+						setSelectedPanel(selectionPanel);
 						mapSelectionMode.mode = 'auto';
 						mapSelectionMode.target = '2'; // reset target to 1 after selection
 					}
@@ -191,6 +195,7 @@ export class MapHoverSelectionController {
 				case 'site-catchment':
 					if (this.#hoveredSite) {
 						mapSelectionTargetObject().set('site-catchment', this.#hoveredSite.id);
+						setSelectedPanel(selectionPanel);
 						mapSelectionMode.mode = 'auto';
 						mapSelectionMode.target = '2'; // reset target to 1 after selection
 					}
@@ -199,6 +204,7 @@ export class MapHoverSelectionController {
 				case 'river-catchment':
 					if (this.#hoveredRiverId) {
 						mapSelectionTargetObject().set('river-catchment', this.#hoveredRiverId);
+						setSelectedPanel(selectionPanel);
 						mapSelectionMode.mode = 'auto';
 						mapSelectionMode.target = '2'; // reset target to 1 after selection
 					}
@@ -208,6 +214,7 @@ export class MapHoverSelectionController {
 				case 'huc12':
 					if (this.#hoveredRegionId) {
 						mapSelectionTargetObject().set(mapSelectionMode.mode, this.#hoveredRegionId);
+						setSelectedPanel(selectionPanel);
 					}
 					mapSelectionMode.mode = 'auto';
 					mapSelectionMode.target = '2'; // reset target to 1 after selection
