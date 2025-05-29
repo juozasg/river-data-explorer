@@ -184,21 +184,23 @@ export class MapHoverSelectionController {
 				case 'site':
 					if (this.#hoveredSite) {
 						mapSelectionTargetObject().set('site', this.#hoveredSite.id);
+						mapSelectionMode.mode = 'auto';
+						mapSelectionMode.target = '2'; // reset target to 1 after selection
 					}
 					break;
 				case 'site-catchment':
 					if (this.#hoveredSite) {
 						mapSelectionTargetObject().set('site-catchment', this.#hoveredSite.id);
-						// const siteCatchment = findRiverappFeatureById('site-catchments', this.#hoveredSite.id);
-						// if (siteCatchment) {
-						// 	basinObject2.set('site-catchment', siteCatchment.properties?.id);
-						// }
+						mapSelectionMode.mode = 'auto';
+						mapSelectionMode.target = '2'; // reset target to 1 after selection
 					}
 
 					break;
 				case 'river-catchment':
 					if (this.#hoveredRiverId) {
 						mapSelectionTargetObject().set('river-catchment', this.#hoveredRiverId);
+						mapSelectionMode.mode = 'auto';
+						mapSelectionMode.target = '2'; // reset target to 1 after selection
 					}
 					break;
 				case 'county':
@@ -207,6 +209,8 @@ export class MapHoverSelectionController {
 					if (this.#hoveredRegionId) {
 						mapSelectionTargetObject().set(mapSelectionMode.mode, this.#hoveredRegionId);
 					}
+					mapSelectionMode.mode = 'auto';
+					mapSelectionMode.target = '2'; // reset target to 1 after selection
 					break;
 			}
 			// basinObject1.set('site', this.#hoveredSite.id);

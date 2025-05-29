@@ -1,5 +1,5 @@
 import { riverappFeatureCollections } from "$src/appstate/data/riverappFeatureCollection.svelte";
-import { BasinObject, basinObject1, basinObject2 } from "$src/appstate/selection/basinObjectSelection.svelte";
+import { BasinObject, basinObject1, basinObject2, mapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
 import type { Site } from "../types/site";
 
 
@@ -15,6 +15,8 @@ export function autoSelectBasinObjectsOnClick(hoveredSite: Site | undefined, hov
 	// select both slots if both are empty and site is hovered
 	if(!basinObject1.isSelected && !basinObject2.isSelected && hoveredSite?.id) {
 		selectSiteAndCatchment(hoveredSite);
+		mapSelectionMode.mode = 'auto';
+		mapSelectionMode.target = '2';
 		return;
 	}
 
@@ -22,10 +24,14 @@ export function autoSelectBasinObjectsOnClick(hoveredSite: Site | undefined, hov
 	let targetBasinObject: BasinObject | undefined;
 	if(!basinObject1.isSelected) {
 		targetBasinObject = basinObject1;
-		console.log('selecting basinObject1');
+		mapSelectionMode.mode = 'auto';
+		mapSelectionMode.target = '2';
+		// console.log('selecting basinObject1');
 	} else {
 		targetBasinObject = basinObject2;
-		console.log('selecting basinObject2');
+		mapSelectionMode.mode = 'auto';
+		mapSelectionMode.target = '1';
+		// console.log('selecting basinObject2');
 	}
 
 	if (hoveredSite?.id) {

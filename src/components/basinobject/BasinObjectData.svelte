@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type { BasinObject } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import { mapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import SelectModeHint from "./SelectModeHint.svelte";
 	import SelectModeSelector from "./SelectModeSelector.svelte";
 
-
-	type Props = { selectionTarget: "1" | "2", basinObject: BasinObject };
+	type Props = { selectionTarget: "1" | "2"; basinObject: BasinObject };
 	const { selectionTarget, basinObject }: Props = $props();
 	let showModeSelector = $state(true);
-
 
 	$effect(() => {
 		if (basinObject.isSelected) {
@@ -21,17 +21,14 @@
 <div class="data-panel">
 	{#if basinObject.isSelected}
 		<div class="header">
-
 			<div class="label">{basinObject.objectLabel}</div>
 			<div class="typelabel">{basinObject.objectTypeLabel}</div>
 			{#if showModeSelector == false}
-				<div class='controls'>
+				<div class="controls">
 					<div class="vbar"></div>
-					<button onclick={() => showModeSelector = true}>Change</button>
-
+					<button onclick={() => (showModeSelector = true)}>Change</button>
 				</div>
 			{/if}
-
 		</div>
 	{:else}
 		<div>
@@ -39,12 +36,15 @@
 		</div>
 	{/if}
 
+	{#if (mapSelectionMode.mode !== "auto" && mapSelectionMode.target === selectionTarget) || (
+		!basinObject.isSelected && mapSelectionMode.target === selectionTarget)}
+		<SelectModeHint />
+	{/if}
 
 	{#if showModeSelector}
-		<SelectModeSelector target={selectionTarget} bind:show={showModeSelector}/>
+		<SelectModeSelector target={selectionTarget} bind:show={showModeSelector} />
 	{/if}
 </div>
-
 
 <style>
 	.data-panel {
@@ -56,7 +56,6 @@
 		height: 100%;
 		/* border: 1px solid #ccc; */
 	}
-
 
 	.header {
 		display: flex;
@@ -107,7 +106,6 @@
 				height: 28px;
 				background-color: var(--color-lightGrey);
 				margin: 2px 8px 0 4px;
-
 			}
 		}
 		/* overflow: scroll; */

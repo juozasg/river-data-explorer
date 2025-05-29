@@ -18,15 +18,15 @@
 	let mapWidth = $state(0);
 	let mapHeight = $state(0);
 
-	// setMapMaximized(false);
+	setMapMaximized(false);
 
-	$effect(() => {
-		if(basinObject1.isSelected || basinObject2.isSelected) {
-			setMapMaximized(false);
-		} else {
-			setMapMaximized(true);
-		}
-	});
+	// $effect(() => {
+	// 	if(basinObject1.isSelected || basinObject2.isSelected) {
+	// 		setMapMaximized(false);
+	// 	} else {
+	// 		setMapMaximized(true);
+	// 	}
+	// });
 </script>
 
 

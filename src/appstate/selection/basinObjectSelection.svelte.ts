@@ -1,3 +1,4 @@
+import { basinObjectTypeLabel } from "$src/lib/utils/prettyNames";
 import { riverappFeatureCollections, riverappFeatureName, riverappFeatures } from "../data/riverappFeatureCollection.svelte";
 import { sites } from "../data/sites.svelte";
 import { setMapMaximized } from "../ui/layout.svelte";
@@ -50,16 +51,7 @@ export class BasinObject {
 	}
 
 	get objectTypeLabel(): string {
-		if (this.objectType === undefined) return '';
-		if (this.objectType === 'site') return 'Site';
-		if (this.objectType === 'huc8') return 'HUC8';
-		if (this.objectType === 'huc10') return 'HUC10';
-		if (this.objectType === 'huc12') return 'HUC12';
-		if (this.objectType === 'state') return 'State';
-		if (this.objectType === 'county') return 'County';
-		if (this.objectType === 'river-catchment') return 'Catchment';
-		if (this.objectType === 'site-catchment') return 'Site Catchment';
-		return '';
+		return basinObjectTypeLabel(this.objectType);
 	}
 }
 

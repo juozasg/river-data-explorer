@@ -15,11 +15,11 @@
 		if(targetBasinObject.isSelected) {
 			show = false;
 		}
-		console.log("cancel", targetBasinObject, targetBasinObject.isSelected);
+		// console.log("cancel", targetBasinObject, targetBasinObject.isSelected);
 	};
 
 	const setSelectMode = (mode: MapSelectionMode) => {
-		console.log("setSelectMode", mode);
+		// console.log("setSelectMode", mode);
 		wizardStep = "initial";
 
 		mapSelectionMode.mode = mode;
@@ -33,32 +33,14 @@
 	};
 
 	const selectBasinObject = (objectType: 'huc8' | 'indiana' | 'michigan') => {
-		console.log("selectBasinObject", objectType);
+		// console.log("selectBasinObject", objectType);
 		targetBasinObject.setNamedObject(objectType);
 
 		cancel();
 		setSelectMode("auto");
-
 	};
 
-	// const selectSiteMode = () => {
-	// 	setSelectMode("site");
-	// };
 
-	// const selectRiverCatchmentMode = () => {
-	// 	wizardStep = "initial";
-	// 	mapSelectionMode.mode = "river-catchment";
-	// 	mapSelectionMode.target = target;
-	// 	cancel();
-	// };
-
-	// const selectCatchmentMode = (catchmentType: 'river-catchment' | 'site-catchment') => {
-	// 	console.log("Select catchment mode");
-	// 	wizardStep = "initial";
-	// 	mapSelectionMode.mode = catchmentType;
-	// 	mapSelectionMode.target = target;
-	// 	cancel();
-	// };
 </script>
 
 {#if show}
