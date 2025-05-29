@@ -33,9 +33,6 @@
 	let mapDiv = $state<HTMLDivElement>();
 	export const mapDivElement = () => mapDiv;
 
-	let clientWidth = $state(0);
-	// $effect(() => {console.log('CW', clientWidth)});
-
 	const arcgisServicesStyles =
 		// 'cached://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles';
 		"https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles";
@@ -108,12 +105,13 @@
 	}
 </script>
 
-<div class={["map", mapCursor() + "-cursor"]} bind:this={mapDiv} {onmouseleave} role="figure" bind:clientWidth></div>
+<div class={["map", mapCursor() + "-cursor"]} bind:this={mapDiv} {onmouseleave} role="figure"></div>
 
 <style>
 	.map {
 		height: var(--map-height, 100%);
-		/* width: var(--map-width, 100%); */
+		width: var(--map-width, 100%);
+		/* overflow: hidden; */
 		z-index: 1;
 		& :global(.maplibregl-ctrl-bottom-right .maplibregl-ctrl-group) {
 			margin-bottom: 3rem;

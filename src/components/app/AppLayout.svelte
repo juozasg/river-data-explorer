@@ -15,6 +15,10 @@
 
 	let selectedPanel:string = $state('map');
 
+	let mapWidth = $state(0);
+	let mapHeight = $state(0);
+
+	// setMapMaximized(false);
 
 	$effect(() => {
 		if(basinObject1.isSelected || basinObject2.isSelected) {
@@ -35,8 +39,11 @@
 		{/if}
 	</div>
 
-	<div class="panel panel-map" class:selected={selectedPanel === 'map'}>
-		<PanelMap />
+	<div class="panel panel-map" class:selected={selectedPanel === 'map'}
+		bind:clientWidth={mapWidth} bind:clientHeight={mapHeight}>
+		<div class="map-container" style="--map-width: {mapWidth}px; --map-height: {mapHeight}px;" >
+			<PanelMap />
+		</div>
 	</div>
 
 	<div class="panel panel-data1" class:selected={selectedPanel === 'data1'}>
@@ -87,6 +94,7 @@
 		top: var(--headerHeight);
 		left: 0;
 		height: calc(50% - var(--headerHeight));
+		width: 50vw;
 		/* background: rgb(184, 183, 255); */
 	}
 
@@ -138,7 +146,14 @@
 			display: block;
 			height: calc(100% - var(--headerHeight));
 			top: var(--headerHeight);
-			width: 100%;
+			width: 100vw;
 		}
+	}
+
+	.map-container {
+		width: 100%;
+		height: 100%;
+		position: relative;
+		overflow: hidden;
 	}
 </style>

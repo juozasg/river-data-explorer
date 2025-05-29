@@ -18,7 +18,6 @@
 	let mapController: MapHoverSelectionController | undefined = $state();
 	let mlMap = $state<ml.Map>();
 
-
 	const onSiteHovered = (site?: Site) => {
 		if(mapController) mapController.siteHovered(site);
 	};
