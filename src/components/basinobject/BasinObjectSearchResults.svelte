@@ -1,8 +1,10 @@
 <script lang="ts">
+	import { basinObjectTypeLabel } from '$src/lib/utils/prettyNames';
+
 
 	const results = Array.from({ length: 50 }, (_, i) => ({
-		label: `Result ${i + 1} Result ${i + 1} Result ${i + 1} Result ${i + 1} Result ${i + 1} Result ${i + 1} Result ${i + 1} Result ${i + 1}`,
-		objectType: 'site',
+		label: `Result ${i + 1} Result ${i + 1} Result ${i + 1} Result ${i + 1} Result ${i + 1} Result ${i + 1}`,
+		objectType: i % 2 == 0 ? 'huc12' : 'site-catchment',
 		id: i + 1
 	}));
 
@@ -18,9 +20,9 @@
 
 
 {#snippet resultItem(label: string, objectType: string, id: number)}
-	<div class="result-item">
-		<span class="result-type">{objectType}</span>
-		<span class="result-label">{label}</span>
+<div class="result-item">
+	<span class="result-label">{label}</span>
+	<span class="result-type object-type-pill">{basinObjectTypeLabel(objectType)}</span>
 	</div>
 {/snippet}
 
@@ -42,19 +44,15 @@
 		border-radius: 4px;
 		padding: 10px;
 		padding-top: 0px;
-		/* max-height: 300px; */
+		padding-right: 6px;
 		overflow-y: hidden;
 		position: absolute;
-		/* background-color: tomato; */
 		z-index: 1;
-		/* position: fixed; */
 		max-width: calc(100% - 32px);
-		/* height: 300px; */
 		top: 28px;
 		left: 32px;
-		/* bottom: -100px; */
 		overflow: scroll;
-		max-height: calc(50vh - 120px);
+		max-height: calc(50vh - 96px);
 	}
 
 
@@ -73,6 +71,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		justify-content: space-between;
 		gap: 10px;
 		padding: 6px;
 		border-bottom: 1px solid var(--color-lightGrey);
@@ -84,11 +83,18 @@
 	}
 
 	.result-label {
-		font-weight: bold;
+		font-weight: 500;
 	}
 
 	.result-type {
-		color: #666;
+		justify-self: right;
+		/* color: #666; */
+		width: fit-content;
+		white-space: nowrap;
+		margin: 0;
+		padding: 4px;
+		font-size: 16px;
+		height: 24px;
 	}
 
 </style>

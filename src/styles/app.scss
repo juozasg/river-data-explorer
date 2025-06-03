@@ -15,6 +15,15 @@ a:hover {
 	color: inherit;
 }
 
+.object-type-pill {
+	font-weight: 500;
+	padding: 7px;
+	background-color: var(--stjoe-blue);
+	color: white;
+	margin-left: 6px;
+	border-radius: 3px;
+}
+
 // choda 16px=1rem reset
 [type="checkbox"],
 [type="radio"] {
