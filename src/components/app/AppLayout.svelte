@@ -58,9 +58,9 @@
 
 <style>
 	/* TODO: delete later */
-	:global(*) {
+	/* :global(*) {
 		overflow: visible;
-	}
+	} */
 
 	main {
 		padding: 0;
@@ -68,6 +68,7 @@
 		width: 100vw;
 		height: 100vh;
 		position: absolute;
+		overflow: hidden;
 	}
 
 	.app-header {

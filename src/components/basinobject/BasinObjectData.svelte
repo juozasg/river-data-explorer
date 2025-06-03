@@ -32,7 +32,7 @@
 		</div>
 	{:else}
 		<div>
-			<h4>Nothing selected</h4>
+			<h4>Data {selectionTarget}: Nothing selected</h4>
 		</div>
 	{/if}
 

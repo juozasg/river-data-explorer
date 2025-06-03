@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { basinObject1, basinObject2, mapSelectionMode, type MapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
-	import BasinObjectSearchInput from "./BasinObjectSearchInput.svelte";
+	import BasinObjectSearch from "./BasinObjectSearch.svelte";
 
 	type Props = { target: "1" | "2"; show: boolean };
 	let { target, show = $bindable(false) }: Props = $props();
@@ -46,10 +46,14 @@
 {#if show}
 	<div class="select-mode-selector">
 		<div class="header">
-			<h4>Change Selection {target}:</h4>
+			<!-- <h4>Change Selection {target}:</h4> -->
 			<div class="hline"></div>
 		</div>
-		<div class="search-input"><BasinObjectSearchInput /></div>
+		{#if target == "1"}
+		<div class="object-search"><BasinObjectSearch /></div>
+
+		{/if}
+
 
 		<div class="button-group">
 			{#if wizardStep == "initial"}
@@ -133,7 +137,7 @@
 			background-color: var(--color-darkGrey);
 		}
 
-		.search-input {
+		.object-search {
 			margin-bottom: 12px;
 			width: 100%;
 			/* border: 1px solid #ccc; */

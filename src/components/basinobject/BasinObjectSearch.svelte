@@ -2,9 +2,11 @@
 	import { onMount } from "svelte";
 	import { writable } from "svelte/store";
 	import InlineBlockIconify from "../icons/InlineBlockIconify.svelte";
+	import Basin from "../Basin.svelte";
+	import BasinObjectSearchResults from "./BasinObjectSearchResults.svelte";
 
-	export let searchPlaceholder: string = "Search";
-	export let searchFocused: boolean = false;
+	let searchPlaceholder: string = "Search";
+	let searchFocused: boolean = false;
 
 	// onMount(() => {
 	// 	const input = document.querySelector("input");
@@ -18,7 +20,6 @@
 	// 	}
 	// });
 </script>
-
 <div class="basin-object-search-input">
 	<div class="search-icon"><InlineBlockIconify icon="fluent:search-12-filled" size="28px" /></div>
 	<input
@@ -28,6 +29,8 @@
 		}}
 		placeholder={searchPlaceholder} />
 </div>
+
+<BasinObjectSearchResults />
 
 
 <style>
