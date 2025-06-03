@@ -46,13 +46,10 @@
 {#if show}
 	<div class="select-mode-selector">
 		<div class="header">
-			<!-- <h4>Change Selection {target}:</h4> -->
 			<div class="hline"></div>
 		</div>
-		{#if target == "1"}
 		<div class="object-search"><BasinObjectSearch /></div>
 
-		{/if}
 
 
 		<div class="button-group">
@@ -140,6 +137,7 @@
 		.object-search {
 			margin-bottom: 12px;
 			width: 100%;
+			position: relative;
 			/* border: 1px solid #ccc; */
 			/* height: 100%; */
 			/* padding: 10px; */

@@ -1,7 +1,7 @@
 <script lang="ts">
 
 	const results = Array.from({ length: 50 }, (_, i) => ({
-		label: `Result ${i + 1}`,
+		label: `Result ${i + 1} Result ${i + 1} Result ${i + 1} Result ${i + 1} Result ${i + 1} Result ${i + 1} Result ${i + 1} Result ${i + 1}`,
 		objectType: 'site',
 		id: i + 1
 	}));
@@ -19,8 +19,8 @@
 
 {#snippet resultItem(label: string, objectType: string, id: number)}
 	<div class="result-item">
-		<span class="result-label">{label}</span>
 		<span class="result-type">{objectType}</span>
+		<span class="result-label">{label}</span>
 	</div>
 {/snippet}
 
@@ -36,21 +36,37 @@
 
 <style>
 	.basin-object-search-results {
-		background-color: #f9f9f9;
-		border: 1px solid #ddd;
+		/* background-color: #f9f9f9; */
+		background-color: white;
+		border: 1px solid var(--color-darkGrey);
 		border-radius: 4px;
 		padding: 10px;
+		padding-top: 0px;
 		/* max-height: 300px; */
 		overflow-y: hidden;
 		position: absolute;
-		height: 100vh;
-		top: 10px;
+		/* background-color: tomato; */
+		z-index: 1;
+		/* position: fixed; */
+		max-width: calc(100% - 32px);
+		/* height: 300px; */
+		top: 28px;
+		left: 32px;
+		/* bottom: -100px; */
+		overflow: scroll;
+		max-height: calc(50vh - 120px);
+	}
+
+
+	:global(.mobile .basin-object-search-results) {
+		max-height: calc(80vh - 120px);
 	}
 
 	.results-list {
 		display: flex;
 		flex-direction: column;
-		gap: 5px;
+		padding-top: 8px;
+		/* gap: 5px; */
 	}
 
 	.result-item {
@@ -58,8 +74,8 @@
 		flex-direction: row;
 		align-items: center;
 		gap: 10px;
-		padding: 5px;
-		border-bottom: 1px solid #eee;
+		padding: 6px;
+		border-bottom: 1px solid var(--color-lightGrey);
 		cursor: pointer;
 	}
 
