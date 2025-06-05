@@ -1,14 +1,12 @@
-import * as ml from 'maplibre-gl';
 import { initMapData } from '$src/lib/data/map/layers/initMapData';
-import type { Site } from '$src/lib/types/site';
-import { findRiverappFeatureById, riverappFeatureCollections } from '../data/riverappFeatureCollection.svelte';
-import { basinObject1, basinObject2, mapSelectionMode, mapSelectionTargetObject } from '../selection/basinObjectSelection.svelte';
-import { sites } from '../data/sites.svelte';
 import { autoSelectBasinObjectsOnClick } from '$src/lib/data/selectionHelpers';
-import { safeQueryRenderedFeatures } from '$src/lib/utils/maplibre';
-import { setMapCursor } from './mapMouse.svelte';
-import { set } from 'date-fns';
+import type { Site } from '$src/lib/types/site';
+import * as ml from 'maplibre-gl';
+import { findRiverappFeatureById, riverappFeatureCollections } from '../data/riverappFeatureCollection.svelte';
+import { sites } from '../data/sites.svelte';
+import { mapSelectionMode, mapSelectionTargetObject } from '../selection/basinObjectSelection.svelte';
 import { setSelectedPanel } from '../ui/layout.svelte';
+import { setMapCursor } from './mapMouse.svelte';
 
 export type HoveredRegionType = 'huc8' | 'huc10' | 'huc12' | 'county';
 

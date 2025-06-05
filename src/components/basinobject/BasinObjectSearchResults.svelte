@@ -1,32 +1,43 @@
 <script lang="ts">
-	import { basinObjectTypeLabel } from '$src/lib/utils/prettyNames';
+	import type { BasinObjectType } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import { basinObjectTypeLabel } from "$src/lib/utils/prettyNames";
 
+	type Props = { query: string };
+	const { query }: Props = $props();
 
-	const results = Array.from({ length: 50 }, (_, i) => ({
-		label: `Result ${i + 1} Result ${i + 1} Result ${i + 1} Result ${i + 1} Result ${i + 1} Result ${i + 1}`,
-		objectType: i % 2 == 0 ? 'huc12' : 'site-catchment',
-		id: i + 1
-	}));
+	type ResultItem = {
+		label: string;
+		objectType: BasinObjectType;
+		id: number;
+	};
+
+	let results = $state<ResultItem[]>([]);
+
+	$effect(() => {
+		results = Array.from({ length: 50 }, (_, i) => ({
+			label: `${query} ${i + 1} ${query} ${i + 1} ${query} ${i + 1} ${query} ${i + 1} ${query} ${i + 1} ${query} ${i + 1}`,
+			objectType: i % 2 == 0 ? "huc12" : "site-catchment",
+			id: i + 1
+		}));
+	});
 
 	let contentRect = $state<DOMRect>();
 
 	$effect(() => {
 		if (contentRect) {
-			console.log('Content Rect Content Rect Content Rect Content Rect:', contentRect);
+			console.log("Content Rect Content Rect Content Rect Content Rect:", contentRect);
 		}
 	});
 </script>
 
-
-
-{#snippet resultItem(label: string, objectType: string, id: number)}
-<div class="result-item">
-	<span class="result-label">{label}</span>
-	<span class="result-type object-type-pill">{basinObjectTypeLabel(objectType)}</span>
+{#snippet resultItem(label: string, objectType: BasinObjectType, id: number)}
+	<div class="result-item">
+		<span class="result-label">{label}</span>
+		<span class="result-type object-type-pill">{basinObjectTypeLabel(objectType)}</span>
 	</div>
 {/snippet}
 
-<div class="basin-object-search-results" bind:contentRect={contentRect}>
+<div class="basin-object-search-results" bind:contentRect>
 	<div class="results-list">
 		<!-- Placeholder for search results -->
 		{#each results as result}
@@ -34,7 +45,6 @@
 		{/each}
 	</div>
 </div>
-
 
 <style>
 	.basin-object-search-results {
@@ -54,7 +64,6 @@
 		overflow: scroll;
 		max-height: calc(50vh - 96px);
 	}
-
 
 	:global(.mobile .basin-object-search-results) {
 		max-height: calc(80vh - 120px);
@@ -96,5 +105,4 @@
 		font-size: 16px;
 		height: 24px;
 	}
-
 </style>

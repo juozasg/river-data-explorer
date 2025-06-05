@@ -1,18 +1,25 @@
+
+
 import { loadDataJson } from "$src/lib/data/cachedDataLoad";
 import { defineGlobal } from "$src/lib/utils";
 import { SvelteMap } from "svelte/reactivity";
+import { buildFeatureSearchIndex } from "./riverappFeatureSearchIndex.svelte";
 
 export const riverappFeatures = ['sites', 'huc8', 'huc10', 'huc12', 'states', 'counties', 'rivers', 'site-catchments', 'river-catchments'] as const;
 export type RiverappFeaturesType = typeof riverappFeatures[number];
 
 export const riverappFeatureCollections = new SvelteMap<RiverappFeaturesType, GeoJSON.FeatureCollection>();
 
+
 export async function loadFeatureCollections() {
 	const promises = riverappFeatures.map(loadGeojsonData);
 	await Promise.all(promises);
 
 	defineGlobal('features', riverappFeatureCollections);
+
+	buildFeatureSearchIndex();
 }
+
 
 export async function loadGeojsonData(name: RiverappFeaturesType) {
 	const path = `geojson/${name}.geojson`;
@@ -22,7 +29,7 @@ export async function loadGeojsonData(name: RiverappFeaturesType) {
 
 		riverappFeatureCollections.set(name, data);
 		console.log('loaded', name);
-	} catch(e) {
+	} catch (e) {
 		console.error('Error loading geometry', path, e);
 	}
 }
@@ -33,6 +40,9 @@ export function findRiverappFeatureById(featureType: RiverappFeaturesType, id: n
 }
 
 export const riverappFeatureName = (featureType: RiverappFeaturesType, id: number) => {
+	if(featureType === 'site-catchments') featureType = 'sites';
+	if(featureType === 'river-catchments') featureType = 'rivers';
+
 	const feature = findRiverappFeatureById(featureType, id);
 	if (feature) {
 		return feature.properties?.name || `${featureType} ${id}`;

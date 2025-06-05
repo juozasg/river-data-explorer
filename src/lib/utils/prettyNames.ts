@@ -1,4 +1,6 @@
-export function basinObjectTypeLabel(objectType: string | undefined): string {
+import type { BasinObjectType } from "$src/appstate/selection/basinObjectSelection.svelte";
+
+export function basinObjectTypeLabel(objectType: BasinObjectType | undefined): string {
 	if (objectType === undefined) return '';
 	if (objectType === 'site') return 'Site';
 	if (objectType === 'huc8') return 'HUC8';
@@ -11,7 +13,7 @@ export function basinObjectTypeLabel(objectType: string | undefined): string {
 	return '';
 }
 
-export function basinObjectTypePluralLabel(objectType: string | undefined): string {
+export function basinObjectTypePluralLabel(objectType: BasinObjectType | undefined): string {
 	if (objectType === undefined) return '';
 	if (objectType === 'site') return 'Sites';
 	if (objectType === 'huc8') return 'HUC8s';

@@ -3,15 +3,7 @@ import { BasinObject, basinObject1, basinObject2, mapSelectionMode } from "$src/
 import type { Site } from "../types/site";
 
 
-// TODO: remake this to work with target 1 and 2 most  of the time since Clear button is clicked should behave the same.
-// auto mode:
-// select a site into first free selectio slot (data1 or data2)
-// if both slots are open select a side and a catchment into data1 and data2
-// if both slots are filled replace data2
-// if data1 is filled and data2 is empty, select a site into data2
-// if a river is hovered, select a river catchment into first slot or data2
 export function autoSelectBasinObjectsOnClick(hoveredSite: Site | undefined, hoveredRiverId: number | undefined) {
-
 	// select both slots if both are empty and site is hovered
 	if(!basinObject1.isSelected && !basinObject2.isSelected && hoveredSite?.id) {
 		selectSiteAndCatchment(hoveredSite);
@@ -34,6 +26,7 @@ export function autoSelectBasinObjectsOnClick(hoveredSite: Site | undefined, hov
 		// console.log('selecting basinObject2');
 	}
 
+	// select site or river catchment into the target basin object slot
 	if (hoveredSite?.id) {
 		targetBasinObject.set('site', hoveredSite?.id);
 	} else if (hoveredRiverId) {

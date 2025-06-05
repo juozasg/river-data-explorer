@@ -6,32 +6,31 @@
 	import BasinObjectSearchResults from "./BasinObjectSearchResults.svelte";
 
 	let searchPlaceholder: string = "Search";
-	let searchFocused: boolean = false;
+	let searchFocused: boolean = $state(false);
 
-	// onMount(() => {
-	// 	const input = document.querySelector("input");
-	// 	if (input) {
-	// 		input.addEventListener("focus", () => {
-	// 			searchFocused.set(true);
-	// 		});
-	// 		input.addEventListener("blur", () => {
-	// 			searchFocused.set(false);
-	// 		});
-	// 	}
-	// });
+	let value: string = $state("");
+	const onfocus = () => (searchFocused = true);
+	const showResults = $derived(searchFocused && value.length > 0);
+
+	const onblur = () => (searchFocused = false);
 </script>
+
 <div class="basin-object-search-input">
 	<div class="search-icon"><InlineBlockIconify icon="fluent:search-12-filled" size="28px" /></div>
 	<input
 		type="text"
+		{onblur}
+		{onfocus}
+		bind:value
 		onkeydown={(e) => {
 			if (e.key === "Escape") e.currentTarget?.blur();
 		}}
 		placeholder={searchPlaceholder} />
 </div>
 
-<BasinObjectSearchResults />
-
+{#if showResults}
+	<BasinObjectSearchResults query={value}/>
+{/if}
 
 <style>
 	.basin-object-search-input {
@@ -58,6 +57,4 @@
 		flex-direction: row;
 		margin
 	} */
-
-
 </style>
