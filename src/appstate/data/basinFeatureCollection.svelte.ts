@@ -2,6 +2,7 @@ import { loadDataJson } from "$src/lib/data/cachedDataLoad";
 import { defineGlobal } from "$src/lib/utils";
 import { SvelteMap } from "svelte/reactivity";
 import { buildFeatureSearchIndex } from "./basinFeatureSearchIndex.svelte";
+import { add } from "date-fns";
 
 
 // basin features are geometries used for MLM map
@@ -40,19 +41,33 @@ export function findRiverappFeatureById(featureType: BasinFeatureType, id: numbe
 	return featureCollection?.features.find(f => f.properties?.id === id);
 }
 
-export const basinFeatureName = (featureType: BasinFeatureType, id: number) => {
-	if(featureType === 'site-catchment') featureType = 'site';
-	if(featureType === 'river-catchment') featureType = 'river';
+export const basinFeatureName = (featureType: BasinFeatureType, id: number, addSiteId = false) => {
+	if (featureType === 'site-catchment') featureType = 'site';
+	if (featureType === 'river-catchment') featureType = 'river';
 
 	const feature = findRiverappFeatureById(featureType, id);
-	if (feature) {
-		return feature.properties?.name || `${featureType} ${id}`;
+	let name = `${featureType} ${id}`;
+	if (feature?.properties?.name) {
+		name = feature.properties?.name || `${featureType} ${id}`;
 	}
+
+	if (featureType == 'county' && feature?.properties?.stusab) {
+		name = `${name}, ${feature.properties.stusab}`;
+	}
+
+	if (addSiteId) {
+		const siteId = basinFeatureSiteId(featureType, id);
+		if (siteId) {
+			name = `${name} (${siteId})`;
+		}
+	}
+
+	return name;
 }
 
 export function basinFeatureSiteId(featureType: BasinFeatureType, id: number): string | undefined {
-	if(featureType === 'site-catchment') featureType = 'site';
-	if(featureType !== 'site') return;
+	if (featureType === 'site-catchment') featureType = 'site';
+	if (featureType !== 'site') return;
 
 
 	const feature = findRiverappFeatureById(featureType, id);

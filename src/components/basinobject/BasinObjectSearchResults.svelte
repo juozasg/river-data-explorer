@@ -9,19 +9,19 @@
 
 	let results: BasinSearchResult[] = $derived(searchBasinFeatures(query));
 
-	const resultLabel = (objectType: BasinObjectType, id: number) => {
-		const name = basinFeatureName(objectType, id);
-		const siteId = basinFeatureSiteId(objectType, id);
+	// const resultLabel = (objectType: BasinObjectType, id: number) => {
+	// 	const name = basinFeatureName(objectType, id);
+	// 	const siteId = basinFeatureSiteId(objectType, id);
 
-		const siteIdLabel = siteId ? ` (${siteId})` : "";
-		return `${name}${siteIdLabel}`;
-	};
+	// 	const siteIdLabel = siteId ? ` (${siteId})` : "";
+	// 	return `${name}${siteIdLabel}`;
+	// };
 
 </script>
 
 {#snippet resultItem(objectType: BasinObjectType, id: number)}
 	<div class="result-item" onclick={() => selectObject(objectType, id)}>
-		<span class="result-label">{resultLabel(objectType, id)}</span>
+		<span class="result-label">{basinFeatureName(objectType, id, true)}</span>
 		<span class="result-type object-type-pill">{basinObjectTypeLabel(objectType)}</span>
 	</div>
 {/snippet}

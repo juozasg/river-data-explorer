@@ -39,17 +39,19 @@ export class BasinObject {
 		return true;
 	}
 
-	get objectLabel(): string {
-		if (this.objectType === undefined || this.id === undefined) return '';
-		if (this.objectType === 'site') return `${sites.findById(this.id)?.name || ''}`;
-		if (this.objectType === 'huc8') return `HUC8 ${this.id}`;
-		if (this.objectType === 'huc10') return `HUC10 ${this.id}`;
-		if (this.objectType === 'huc12') return `HUC12 ${this.id}`;
-		if (this.objectType === 'state') return `State ${this.id}`;
-		if (this.objectType === 'county') return `County ${this.id}`;
-		if (this.objectType === 'river-catchment') return `${basinFeatureName('river', this.id)}`;
-		if (this.objectType === 'site-catchment') return `${basinFeatureName('site-catchment', this.id)}`;
-		return '';
+	get objectLabelName(): string {
+		if(this.objectType === undefined || this.id === undefined) return '';
+		return basinFeatureName(this.objectType as BasinFeatureType, this.id, false);
+	}
+
+	get objectSiteId(): string | undefined {
+		if(!this.id) return;
+
+		if (this.objectType === 'site' || this.objectType === 'site-catchment') {
+			// const otype = 'site';
+			const site = sites.findById(this.id);
+			return site?.siteId;
+		}
 	}
 
 	get objectTypeLabel(): string {

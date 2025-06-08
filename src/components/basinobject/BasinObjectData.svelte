@@ -18,7 +18,11 @@
 <div class="data-panel">
 	{#if basinObject.isSelected}
 		<div class="header">
-			<div class="label">{basinObject.objectLabel}</div>
+			<div class="label">{basinObject.objectLabelName}
+				{#if basinObject.objectSiteId}
+					<span class="site-id">({basinObject.objectSiteId})</span>
+				{/if}
+			</div>
 			<div class="object-type-pill">{basinObject.objectTypeLabel}</div>
 			{#if showModeSelector == false}
 				<div class="controls">
@@ -62,6 +66,12 @@
 		.label {
 			font-size: 20px;
 			font-weight: 600;
+		}
+
+		.site-id {
+			font-size: 16px;
+			font-weight: 400;
+			color: var(--color-darkGrey);
 		}
 		button {
 			font-size: 18px;
