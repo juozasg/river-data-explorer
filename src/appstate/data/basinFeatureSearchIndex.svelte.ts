@@ -1,6 +1,6 @@
 import { defineGlobal } from '$src/lib/utils';
 import lunr from 'lunr';
-import { riverappFeatureCollections, riverappFeatureName, type BasinFeatureType } from './riverappFeatureCollection.svelte';
+import { riverappFeatureCollections, riverappFeatureName, type BasinFeatureType } from './basinFeatureCollection.svelte';
 import type { BasinObjectType } from '$src/appstate/data/basinObject.svelte';
 
 const searchTags = {

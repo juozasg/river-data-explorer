@@ -3,7 +3,7 @@
 import { loadDataJson } from "$src/lib/data/cachedDataLoad";
 import { defineGlobal } from "$src/lib/utils";
 import { SvelteMap } from "svelte/reactivity";
-import { buildFeatureSearchIndex } from "./riverappFeatureSearchIndex.svelte";
+import { buildFeatureSearchIndex } from "./basinFeatureSearchIndex.svelte";
 
 export const riverappFeatures = ['site', 'huc8', 'huc10', 'huc12', 'state', 'county', 'river', 'site-catchment', 'river-catchment'] as const;
 export type BasinFeatureType = typeof riverappFeatures[number];

@@ -2,7 +2,7 @@ import { initMapData } from '$src/lib/data/map/layers/initMapData';
 import { autoSelectBasinObjectsOnClick } from '$src/lib/data/selectionHelpers';
 import type { Site } from '$src/lib/types/site';
 import * as ml from 'maplibre-gl';
-import { findRiverappFeatureById, riverappFeatureCollections } from '../data/riverappFeatureCollection.svelte';
+import { findRiverappFeatureById, riverappFeatureCollections } from '../data/basinFeatureCollection.svelte';
 import { sites } from '../data/sites.svelte';
 import { mapSelectionMode, mapSelectionTargetObject } from '../selection/basinObjectSelection.svelte';
 import { setSelectedPanel } from '../ui/layout.svelte';

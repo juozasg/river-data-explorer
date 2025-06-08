@@ -1,4 +1,4 @@
-import { riverappFeatureCollections } from "$src/appstate/data/riverappFeatureCollection.svelte";
+import { riverappFeatureCollections } from "$src/appstate/data/basinFeatureCollection.svelte";
 import { basinObject1, basinObject2, mapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
 import type { BasinObject } from "../../appstate/data/basinObject.svelte";
 import type { Site } from "../types/site";

@@ -1,4 +1,4 @@
-import { riverappFeatureName } from "$src/appstate/data/riverappFeatureCollection.svelte";
+import { riverappFeatureName } from "$src/appstate/data/basinFeatureCollection.svelte";
 import { sites } from "$src/appstate/data/sites.svelte";
 import { basinObjectTypeLabel } from "$src/lib/utils/prettyNames";
 
