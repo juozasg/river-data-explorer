@@ -1,8 +1,8 @@
 import { BasinObject, BasinObjectVariable } from "$src/appstate/data/basinObject.svelte";
 
 
-export const basinObject1 = new BasinObject();
-export const basinObject2 = new BasinObject();
+export const basinObject1 = new BasinObject('1');
+export const basinObject2 = new BasinObject('2');
 
 
 export const chartYSelection = new BasinObjectVariable();

@@ -10,22 +10,36 @@ export type BasinObjectType = Exclude<BasinFeatureType, 'river'>;
 export class BasinObject {
 	objectType: BasinObjectType | undefined = $state();
 	id: number | undefined = $state();
+	readonly #target: '1' | '2' | undefined;
+
+	constructor(target?: '1' | '2') {
+		this.#target = target;
+	}
+
+	selectedCallback: ((target: '1' | '2' | undefined, objectType: BasinObjectType | undefined, id: number | undefined) => void) | undefined = undefined;
 
 	clear() {
 		this.objectType = undefined;
 		this.id = undefined;
+		if (this.selectedCallback) {
+			this.selectedCallback(this.#target, undefined, undefined);
+		}
 	}
 
 	set(objectType: BasinObjectType, id: number) {
 		this.objectType = objectType;
 		this.id = id;
+		if (this.selectedCallback) {
+			this.selectedCallback(this.#target, objectType, id);
+		}
 	}
 
 	setNamedObject(objectType: 'huc8' | 'indiana' | 'michigan') {
 		this.objectType = objectType == 'huc8' ? 'huc8' : 'state';
-
-
 		this.id = objectType == 'huc8' ? 4050001 : objectType == 'indiana' ? 18 : 26;
+		if (this.selectedCallback) {
+			this.selectedCallback(this.#target, this.objectType, this.id);
+		}
 	}
 
 	equals(other: BasinObject): boolean {
@@ -40,12 +54,12 @@ export class BasinObject {
 	}
 
 	get objectLabelName(): string {
-		if(this.objectType === undefined || this.id === undefined) return '';
+		if (this.objectType === undefined || this.id === undefined) return '';
 		return basinFeatureName(this.objectType as BasinFeatureType, this.id, false);
 	}
 
 	get objectSiteId(): string | undefined {
-		if(!this.id) return;
+		if (!this.id) return;
 
 		if (this.objectType === 'site' || this.objectType === 'site-catchment') {
 			// const otype = 'site';

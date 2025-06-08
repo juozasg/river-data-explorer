@@ -4,7 +4,7 @@ import type { Site } from '$src/lib/types/site';
 import * as ml from 'maplibre-gl';
 import { findBasinFeatureById, basinFeatureCollections } from '../data/basinFeatureCollection.svelte';
 import { sites } from '../data/sites.svelte';
-import { mapSelectionMode, mapSelectionTargetObject } from '../selection/basinObjectSelection.svelte';
+import { basinObject1, basinObject2, mapSelectionMode, mapSelectionTargetObject } from '../selection/basinObjectSelection.svelte';
 import { setSelectedPanel } from '../ui/layout.svelte';
 import { setMapCursor } from './mapMouse.svelte';
 import type { BasinObjectType } from '../data/basinObject.svelte';
@@ -36,6 +36,7 @@ export class MapHoverSelectionController {
 			// console.log("mlmap data model is ready");
 			this.dataModelReady = true;
 			this.addHoverListeners(map);
+			this.addBasinObjectSelectionListeners();
 			// now safe to modify map sources and layers
 		});
 
@@ -96,7 +97,6 @@ export class MapHoverSelectionController {
 
 				}
 			});
-
 
 		});
 	}
@@ -174,7 +174,15 @@ export class MapHoverSelectionController {
 	}
 
 
-	setSelectedRegion(target: '1' | '2', objectType: BasinObjectType, id: number) {
+	setSelectedRegion(target: '1' | '2' | undefined, objectType: BasinObjectType | undefined, id: number | undefined) {
+		console.log('setSelectedRegion', target, objectType, id);
+
+		if(!target) return;
+		if (!objectType || !id || objectType === 'site') {
+			this.clearSelectedRegions(target);
+			return;
+		}
+
 		const feature = findBasinFeatureById(objectType, id);
 		if (!feature) {
 			console.warn(`No feature found for ${objectType} with id ${id}`);
@@ -198,16 +206,24 @@ export class MapHoverSelectionController {
 	}
 
 
+	addBasinObjectSelectionListeners() {
+		basinObject1.selectedCallback = (target, objectType, id) => {
+			this.setSelectedRegion(target, objectType, id);
+		}
+
+		basinObject2.selectedCallback = (target, objectType, id) => {
+			this.setSelectedRegion(target, objectType, id);
+		}
+	}
+
+
 	addHoverListeners(map: ml.Map) {
 		map.on('click', (e) => {
 			const selectionPanel = `data${mapSelectionMode.target}` as 'data1' | 'data2';
 			switch (mapSelectionMode.mode) {
 				case 'auto':
-					const selectionResult = autoSelectBasinObjectsOnClick(this.#hoveredSite, this.#hoveredRiverId);
+					autoSelectBasinObjectsOnClick(this.#hoveredSite, this.#hoveredRiverId);
 					setSelectedPanel(selectionPanel);
-					if (selectionResult && (selectionResult.selectedType == 'site-catchment' || selectionResult.selectedType == 'river-catchment')) {
-						this.setSelectedRegion(selectionResult.selectedTarget, selectionResult.selectedType, selectionResult.selectedId);
-					}
 					break;
 				case 'site':
 					if (this.#hoveredSite) {
@@ -221,7 +237,7 @@ export class MapHoverSelectionController {
 					if (this.#hoveredSite) {
 						mapSelectionTargetObject().set('site-catchment', this.#hoveredSite.id);
 						setSelectedPanel(selectionPanel);
-						this.setSelectedRegion(mapSelectionMode.target, 'site-catchment', this.#hoveredSite.id);
+						// this.setSelectedRegion(mapSelectionMode.target, 'site-catchment', this.#hoveredSite.id);
 
 						mapSelectionMode.mode = 'auto';
 						mapSelectionMode.target = '2'; // reset target to 1 after selection
@@ -232,7 +248,7 @@ export class MapHoverSelectionController {
 					if (this.#hoveredRiverId) {
 						mapSelectionTargetObject().set('river-catchment', this.#hoveredRiverId);
 						setSelectedPanel(selectionPanel);
-						this.setSelectedRegion(mapSelectionMode.target, 'river-catchment', this.#hoveredRiverId);
+						// this.setSelectedRegion(mapSelectionMode.target, 'river-catchment', this.#hoveredRiverId);
 						mapSelectionMode.mode = 'auto';
 						mapSelectionMode.target = '2'; // reset target to 1 after selection
 					}
@@ -243,7 +259,7 @@ export class MapHoverSelectionController {
 					if (this.#hoveredRegionId) {
 						mapSelectionTargetObject().set(mapSelectionMode.mode, this.#hoveredRegionId);
 						setSelectedPanel(selectionPanel);
-						this.setSelectedRegion(mapSelectionMode.target, mapSelectionMode.mode, this.#hoveredRegionId);
+						// this.setSelectedRegion(mapSelectionMode.target, mapSelectionMode.mode, this.#hoveredRegionId);
 
 					}
 					mapSelectionMode.mode = 'auto';
