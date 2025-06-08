@@ -1,8 +1,9 @@
 import * as ml from 'maplibre-gl';
 import { mlmInsertBeforeLayer } from './initMapData';
-import { mapHoverHighlightColor } from '$src/lib/utils/colors';
+import { data1Color, data2Color, mapHoverHighlightColor } from '$src/lib/utils/colors';
 
 export function addRegionLayers(map: ml.Map): void {
+	// REGIONS FOR HOVER
 	map.addLayer(
 		{
 			id: "riverapp-regions",
@@ -31,7 +32,7 @@ export function addRegionLayers(map: ml.Map): void {
 		mlmInsertBeforeLayer
 	);
 
-
+	// HOVERED REGIONS
 	map.addLayer(
 		{
 			id: "riverapp-regions-hovered-fill",
@@ -41,6 +42,35 @@ export function addRegionLayers(map: ml.Map): void {
 				"fill-opacity": 0.2,
 				// "fill-opacity": 0,
 				"fill-color": "#088"
+			}
+		},
+		mlmInsertBeforeLayer
+	);
+
+	// SELECTED REGIONS
+	map.addLayer(
+		{
+			id: "riverapp-regions-selected-1",
+			source: "riverapp-selected-region-1",
+			type: "line",
+			paint: {
+				"line-color": data1Color,
+				"line-width": 3,
+				"line-opacity": 1
+			}
+		},
+		mlmInsertBeforeLayer
+	);
+
+	map.addLayer(
+		{
+			id: "riverapp-regions-selected-2",
+			source: "riverapp-selected-region-2",
+			type: "line",
+			paint: {
+				"line-color": data2Color,
+				"line-width": 3,
+				"line-opacity": 1
 			}
 		},
 		mlmInsertBeforeLayer

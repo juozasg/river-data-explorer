@@ -9,6 +9,10 @@ export const chartZDarker = '#00af8c';
 
 export const mapHoverHighlightColor = '#97E817';
 
+export const data1Color = '#CC79A7';
+export const data2Color = '#D55E00';
+
+
 
 
 export function interpolateVarColor(varname: string, value?: number | string, valueFraction?: number): string {

@@ -36,7 +36,7 @@ export async function loadGeojsonData(name: BasinFeatureType) {
 	}
 }
 
-export function findRiverappFeatureById(featureType: BasinFeatureType, id: number) {
+export function findBasinFeatureById(featureType: BasinFeatureType, id: number) {
 	const featureCollection = basinFeatureCollections.get(featureType);
 	return featureCollection?.features.find(f => f.properties?.id === id);
 }
@@ -45,7 +45,7 @@ export const basinFeatureName = (featureType: BasinFeatureType, id: number, addS
 	if (featureType === 'site-catchment') featureType = 'site';
 	if (featureType === 'river-catchment') featureType = 'river';
 
-	const feature = findRiverappFeatureById(featureType, id);
+	const feature = findBasinFeatureById(featureType, id);
 	let name = `${featureType} ${id}`;
 	if (feature?.properties?.name) {
 		name = feature.properties?.name || `${featureType} ${id}`;
@@ -70,7 +70,7 @@ export function basinFeatureSiteId(featureType: BasinFeatureType, id: number): s
 	if (featureType !== 'site') return;
 
 
-	const feature = findRiverappFeatureById(featureType, id);
+	const feature = findBasinFeatureById(featureType, id);
 	if (feature) {
 		return feature.properties?.siteId || undefined;
 	}

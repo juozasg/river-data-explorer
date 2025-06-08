@@ -15,7 +15,7 @@
 	});
 </script>
 
-<div class="data-panel">
+<div class={`data-panel data-${selectionTarget}`}>
 	{#if basinObject.isSelected}
 		<div class="header">
 			<div class="label">{basinObject.objectLabelName}
@@ -97,4 +97,16 @@
 		/* justify-content: space-between; */
 		/* align-items: center; */
 	}
+
+
+	.data-1 .object-type-pill {
+		background-color: var(--color-data-1);
+	}
+
+
+	.data-2 .object-type-pill {
+		background-color: var(--color-data-2);
+	}
+
+
 </style>

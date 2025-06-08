@@ -22,7 +22,17 @@ export function initMapSources(map: ml.Map) {
 		}
 	});
 
-	map.addSource("riverapp-selected-regions", {
+	map.addSource("riverapp-selected-region-1", {
+		// generateId: true,
+		promoteId: 'id',
+		type: "geojson",
+		data: {
+			type: "FeatureCollection",
+			features: []
+		}
+	});
+
+	map.addSource("riverapp-selected-region-2", {
 		// generateId: true,
 		promoteId: 'id',
 		type: "geojson",

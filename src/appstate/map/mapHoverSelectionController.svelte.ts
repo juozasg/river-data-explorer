@@ -2,11 +2,12 @@ import { initMapData } from '$src/lib/data/map/layers/initMapData';
 import { autoSelectBasinObjectsOnClick } from '$src/lib/data/selectionHelpers';
 import type { Site } from '$src/lib/types/site';
 import * as ml from 'maplibre-gl';
-import { findRiverappFeatureById, basinFeatureCollections } from '../data/basinFeatureCollection.svelte';
+import { findBasinFeatureById, basinFeatureCollections } from '../data/basinFeatureCollection.svelte';
 import { sites } from '../data/sites.svelte';
 import { mapSelectionMode, mapSelectionTargetObject } from '../selection/basinObjectSelection.svelte';
 import { setSelectedPanel } from '../ui/layout.svelte';
 import { setMapCursor } from './mapMouse.svelte';
+import type { BasinObjectType } from '../data/basinObject.svelte';
 
 export type HoveredRegionType = 'huc8' | 'huc10' | 'huc12' | 'county';
 
@@ -123,7 +124,7 @@ export class MapHoverSelectionController {
 		this.#hoveredSite = sites.findById(site.id);
 
 		if (mapSelectionMode.mode === 'auto' || mapSelectionMode.mode === 'site-catchment') {
-			const siteCatchment = findRiverappFeatureById('site-catchment', site.id);
+			const siteCatchment = findBasinFeatureById('site-catchment', site.id);
 			// console.log('siteCatchment', siteCatchment);
 
 			if (siteCatchment) {
@@ -148,7 +149,7 @@ export class MapHoverSelectionController {
 			if (id) {
 				setMapCursor('pointer');
 
-				const riverCatchment = findRiverappFeatureById('river-catchment', id);
+				const riverCatchment = findBasinFeatureById('river-catchment', id);
 				// console.log('riverCatchment', riverCatchment);
 
 				if (riverCatchment) {
@@ -173,14 +174,40 @@ export class MapHoverSelectionController {
 	}
 
 
+	setSelectedRegion(target: '1' | '2', objectType: BasinObjectType, id: number) {
+		const feature = findBasinFeatureById(objectType, id);
+		if (!feature) {
+			console.warn(`No feature found for ${objectType} with id ${id}`);
+			this.clearSelectedRegions(target);
+			return;
+		}
+
+		const selectedRegionSource = this.#map.getSource(`riverapp-selected-region-${target}`) as ml.GeoJSONSource;
+		selectedRegionSource.setData({
+			type: "FeatureCollection",
+			features: [feature]
+		});
+	}
+
+	clearSelectedRegions(target: '1' | '2') {
+		const selectedRegionSource = this.#map.getSource(`riverapp-selected-region-${target}`) as ml.GeoJSONSource;
+		selectedRegionSource.setData({
+			type: "FeatureCollection",
+			features: []
+		});
+	}
+
 
 	addHoverListeners(map: ml.Map) {
 		map.on('click', (e) => {
 			const selectionPanel = `data${mapSelectionMode.target}` as 'data1' | 'data2';
 			switch (mapSelectionMode.mode) {
 				case 'auto':
-					autoSelectBasinObjectsOnClick(this.#hoveredSite, this.#hoveredRiverId);
+					const selectionResult = autoSelectBasinObjectsOnClick(this.#hoveredSite, this.#hoveredRiverId);
 					setSelectedPanel(selectionPanel);
+					if (selectionResult && (selectionResult.selectedType == 'site-catchment' || selectionResult.selectedType == 'river-catchment')) {
+						this.setSelectedRegion(selectionResult.selectedTarget, selectionResult.selectedType, selectionResult.selectedId);
+					}
 					break;
 				case 'site':
 					if (this.#hoveredSite) {
@@ -194,6 +221,8 @@ export class MapHoverSelectionController {
 					if (this.#hoveredSite) {
 						mapSelectionTargetObject().set('site-catchment', this.#hoveredSite.id);
 						setSelectedPanel(selectionPanel);
+						this.setSelectedRegion(mapSelectionMode.target, 'site-catchment', this.#hoveredSite.id);
+
 						mapSelectionMode.mode = 'auto';
 						mapSelectionMode.target = '2'; // reset target to 1 after selection
 					}
@@ -203,6 +232,7 @@ export class MapHoverSelectionController {
 					if (this.#hoveredRiverId) {
 						mapSelectionTargetObject().set('river-catchment', this.#hoveredRiverId);
 						setSelectedPanel(selectionPanel);
+						this.setSelectedRegion(mapSelectionMode.target, 'river-catchment', this.#hoveredRiverId);
 						mapSelectionMode.mode = 'auto';
 						mapSelectionMode.target = '2'; // reset target to 1 after selection
 					}
@@ -213,6 +243,8 @@ export class MapHoverSelectionController {
 					if (this.#hoveredRegionId) {
 						mapSelectionTargetObject().set(mapSelectionMode.mode, this.#hoveredRegionId);
 						setSelectedPanel(selectionPanel);
+						this.setSelectedRegion(mapSelectionMode.target, mapSelectionMode.mode, this.#hoveredRegionId);
+
 					}
 					mapSelectionMode.mode = 'auto';
 					mapSelectionMode.target = '2'; // reset target to 1 after selection
@@ -220,7 +252,10 @@ export class MapHoverSelectionController {
 			}
 			// basinObject1.set('site', this.#hoveredSite.id);
 
+
+
 		});
+
 
 		/// HOVERED REGIONS
 
@@ -265,7 +300,7 @@ export class MapHoverSelectionController {
 
 				// highlight the hovered river if map is in river selection mode
 				if (mapSelectionMode.mode === 'auto' && this.#hoveredSite === undefined || mapSelectionMode.mode === 'river-catchment') {
-					const geojsonFeature = findRiverappFeatureById('river', feature.id as number);
+					const geojsonFeature = findBasinFeatureById('river', feature.id as number);
 
 					if (geojsonFeature) {
 						hoveredRivers.setData({
