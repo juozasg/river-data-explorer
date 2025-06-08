@@ -4,7 +4,7 @@ import type { Site } from "$lib/types/site";
 import { sitesTables } from "./datasets.svelte";
 import { sitesGeoindex } from "./geoindexes.svelte";
 import { enabledDatasets } from '../ui/layers.svelte';
-import { regionTypes, type RegionFeature } from './regionFeatures.svelte';
+import { regionTypes, type RegionFeature } from './_regionFeatures.svelte';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
 
 export class Sites {

@@ -1,5 +1,5 @@
 import type { Site } from "$lib/types/site";
-import type { RegionFeature } from "../data/regionFeatures.svelte";
+import type { RegionFeature } from "../data/_regionFeatures.svelte";
 
 
 // GOOD

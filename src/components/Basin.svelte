@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as ml from "maplibre-gl";
 	import { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
-	import { regionFeatures, type RegionFeature, type RegionType } from "$src/appstate/data/regionFeatures.svelte";
+	import { regionFeatures, type RegionFeature, type RegionType } from "$src/appstate/data/_regionFeatures.svelte";
 	import { MapFeatureSelectionState, toggleSelectedFeatureState } from "$src/appstate/map/featureState.svelte";
 	import BasinChart from "$src/components/chart/BasinChart.svelte";
 	import RegionStatsPanel from "$src/components/basinobject/stats/RegionStatsPanel.svelte";

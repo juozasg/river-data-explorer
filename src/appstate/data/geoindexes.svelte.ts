@@ -1,7 +1,7 @@
 import { startedLoading } from "../ui/loadingItem.svelte";
 import { loadDataCsv } from "$src/lib/data/cachedDataLoad";
 import { sites } from "./sites.svelte";
-import { regionTypes, type RegionType } from "./regionFeatures.svelte";
+import { regionTypes, type RegionType } from "./_regionFeatures.svelte";
 import { defineGlobal } from "$src/lib/utils";
 
 export type RegionsIndex = {[key in RegionType]: string };

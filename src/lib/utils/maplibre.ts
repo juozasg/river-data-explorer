@@ -2,7 +2,7 @@ import * as ml from 'maplibre-gl';
 import { bounds } from './geoutils';
 import type { Site } from '../types/site';
 import { type BBoxLike } from '../types/map';
-import { regionFeatures, type RegionFeature } from '$src/appstate/data/regionFeatures.svelte';
+import { regionFeatures, type RegionFeature } from '$src/appstate/data/_regionFeatures.svelte';
 
 export function onceIdle(map: ml.Map) {
 	if (map.loaded()) return Promise.resolve();

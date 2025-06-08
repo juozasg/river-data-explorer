@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
 	import { sitesTables } from "$src/appstate/data/datasets.svelte";
-	import type { RegionFeature } from "$src/appstate/data/regionFeatures.svelte";
+	import type { RegionFeature } from "$src/appstate/data/_regionFeatures.svelte";
 	import { sites, siteTablesForRegion } from "$src/appstate/data/sites.svelte";
 	import { varDailyMedian } from "$src/lib/data/stats";
 	import { selectTableVar } from "$src/lib/data/siteTableHelpers";

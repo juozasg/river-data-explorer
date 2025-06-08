@@ -14,7 +14,7 @@
 	import TooltipSiteStats from "../tooltips/TooltipContentSiteStats.svelte";
 	import { Sites } from "$src/appstate/data/sites.svelte";
 	import { mapMouseLocation } from "$src/appstate/map/mapMouse.svelte";
-	import { regionEqual, regionTypes, type RegionFeature } from "$src/appstate/data/regionFeatures.svelte";
+	import { regionEqual, regionTypes, type RegionFeature } from "$src/appstate/data/_regionFeatures.svelte";
 
 	type Props = {
 		sites: Site[];
