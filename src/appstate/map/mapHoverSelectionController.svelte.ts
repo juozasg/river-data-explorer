@@ -177,29 +177,47 @@ export class MapHoverSelectionController {
 	setSelectedRegion(target: '1' | '2' | undefined, objectType: BasinObjectType | undefined, id: number | undefined) {
 		console.log('setSelectedRegion', target, objectType, id);
 
-		if(!target) return;
-		if (!objectType || !id || objectType === 'site') {
-			this.clearSelectedRegions(target);
+		if (!target) return;
+		this.clearSelectedRegions(target);
+
+		if (!objectType || !id) {
 			return;
 		}
 
 		const feature = findBasinFeatureById(objectType, id);
 		if (!feature) {
 			console.warn(`No feature found for ${objectType} with id ${id}`);
-			this.clearSelectedRegions(target);
 			return;
 		}
 
-		const selectedRegionSource = this.#map.getSource(`riverapp-selected-region-${target}`) as ml.GeoJSONSource;
-		selectedRegionSource.setData({
-			type: "FeatureCollection",
-			features: [feature]
-		});
+		if (objectType === 'site') {
+			const selectedRegionSource = this.#map.getSource(`riverapp-selected-site-${target}`) as ml.GeoJSONSource;
+			selectedRegionSource.setData({
+				type: "FeatureCollection",
+				features: [feature]
+			});
+
+
+		} else {
+			const selectedRegionSource = this.#map.getSource(`riverapp-selected-region-${target}`) as ml.GeoJSONSource;
+			selectedRegionSource.setData({
+				type: "FeatureCollection",
+				features: [feature]
+			});
+		}
 	}
 
+	// CLEAR SELECTED REGION/SITE
 	clearSelectedRegions(target: '1' | '2') {
 		const selectedRegionSource = this.#map.getSource(`riverapp-selected-region-${target}`) as ml.GeoJSONSource;
 		selectedRegionSource.setData({
+			type: "FeatureCollection",
+			features: []
+		});
+
+
+		const selectedSiteSource = this.#map.getSource(`riverapp-selected-site-${target}`) as ml.GeoJSONSource;
+		selectedSiteSource.setData({
 			type: "FeatureCollection",
 			features: []
 		});

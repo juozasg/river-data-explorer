@@ -35,7 +35,7 @@ export function addRegionLayers(map: ml.Map): void {
 	// HOVERED REGIONS
 	map.addLayer(
 		{
-			id: "riverapp-regions-hovered-fill",
+			id: "riverapp-hovered-regions-fill",
 			source: "riverapp-hovered-regions",
 			type: "fill",
 			paint: {
@@ -50,7 +50,7 @@ export function addRegionLayers(map: ml.Map): void {
 	// SELECTED REGIONS
 	map.addLayer(
 		{
-			id: "riverapp-regions-selected-1",
+			id: "riverapp-selected-region-1",
 			source: "riverapp-selected-region-1",
 			type: "line",
 			paint: {
@@ -64,7 +64,7 @@ export function addRegionLayers(map: ml.Map): void {
 
 	map.addLayer(
 		{
-			id: "riverapp-regions-selected-2",
+			id: "riverapp-selected-regions-2",
 			source: "riverapp-selected-region-2",
 			type: "line",
 			paint: {
@@ -75,6 +75,7 @@ export function addRegionLayers(map: ml.Map): void {
 		},
 		mlmInsertBeforeLayer
 	);
+
 }
 
 export function addRiverLayers(map: ml.Map): void {
@@ -173,6 +174,42 @@ export function addOutlineLayers(map: ml.Map) {
 				"line-color": "#97E817",
 				"line-width": 2
 				// "fill-opacity": 0.5
+			}
+		},
+		mlmInsertBeforeLayer
+	);
+}
+
+
+export function addSiteLayers(map: ml.Map): void {
+	// SELECTED SITES
+	map.addLayer(
+		{
+			id: "riverapp-selected-site-1",
+			source: "riverapp-selected-site-1",
+			type: "circle",
+			paint: {
+				"circle-stroke-color": data1Color,
+				"circle-stroke-width": 4,
+				"circle-stroke-opacity": 1,
+				"circle-radius": 12,
+				"circle-opacity": 0
+			}
+		},
+		mlmInsertBeforeLayer
+	);
+
+	map.addLayer(
+		{
+			id: "riverapp-selected-sites-2",
+			source: "riverapp-selected-site-2",
+			type: "circle",
+			paint: {
+				"circle-stroke-color": data2Color,
+				"circle-stroke-width": 4,
+				"circle-stroke-opacity": 1,
+				"circle-radius": 12,
+				"circle-opacity": 0
 			}
 		},
 		mlmInsertBeforeLayer

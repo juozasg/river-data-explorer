@@ -3,6 +3,7 @@ import { bounds } from './geoutils';
 import type { Site } from '../types/site';
 import { type BBoxLike } from '../types/map';
 import { regionFeatures, type RegionFeature } from '$src/appstate/data/_regionFeatures.svelte';
+import { findBasinFeatureById } from '$src/appstate/data/basinFeatureCollection.svelte';
 
 export function onceIdle(map: ml.Map) {
 	if (map.loaded()) return Promise.resolve();
@@ -46,7 +47,10 @@ export function toggleoffAttribution(divElement: HTMLElement) {
 
 
 export function makeSiteMarker(node: HTMLElement, map: ml.Map, site: Site) {
-	const marker = new ml.Marker({ element: node }).setLngLat([site.lon, site.lat]).addTo(map);
+	let lon = site.lon;
+	let lat = site.lat;
+
+	const marker = new ml.Marker({ element: node }).setLngLat([lon, lat]).addTo(map);
 	return {
 		destroy() {
 			marker.remove();

@@ -22,9 +22,11 @@ export async function loadAppData(manifest: DataManifest) {
 	console.log('datasetIds', datasetIds);
 
 	// async go brr
-	loadFeatureCollections();
+	loadSitesCsv(datasetIds).then(() => {
+		// needs to remap sites lon/lat after loading sites csv
+		loadFeatureCollections();
+	})
 	loadBasinFipsData();
-	loadSitesCsv(datasetIds);
 	loadGeoindexData();
 	loadDatasetsUsgsWS();
 	loadDatasets();

@@ -42,6 +42,27 @@ export function initMapSources(map: ml.Map) {
 		}
 	});
 
+
+		map.addSource("riverapp-selected-site-1", {
+		// generateId: true,
+		promoteId: 'id',
+		type: "geojson",
+		data: {
+			type: "FeatureCollection",
+			features: []
+		}
+	});
+
+	map.addSource("riverapp-selected-site-2", {
+		// generateId: true,
+		promoteId: 'id',
+		type: "geojson",
+		data: {
+			type: "FeatureCollection",
+			features: []
+		}
+	});
+
 	map.addSource("riverapp-rivers", {
 		// generateId: true,
 		promoteId: 'id',
