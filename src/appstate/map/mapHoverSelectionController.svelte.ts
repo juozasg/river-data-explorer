@@ -43,7 +43,7 @@ export class MapHoverSelectionController {
 			// set mlm rivers data source when ready
 			$effect(() => {
 				// this will run when the map data model (sources and layers) is ready and when the feature collections change
-				const riversFeatures = riverappFeatureCollections.get('rivers');
+				const riversFeatures = riverappFeatureCollections.get('river');
 				const riversSource = this.#map.getSource("riverapp-rivers") as ml.GeoJSONSource;
 				if (this.dataModelReady && riversSource && riversFeatures) {
 					// console.log('adding rivers geojson mlmap source data');
@@ -74,7 +74,7 @@ export class MapHoverSelectionController {
 			});
 
 			$effect(() => {
-				const countiesFeatures = riverappFeatureCollections.get('counties');
+				const countiesFeatures = riverappFeatureCollections.get('county');
 				if (this.dataModelReady && countiesFeatures && mapSelectionMode.mode === 'county') {
 					const regionsSource = this.#map.getSource("riverapp-regions") as ml.GeoJSONSource;
 					regionsSource.setData(countiesFeatures);
@@ -123,7 +123,7 @@ export class MapHoverSelectionController {
 		this.#hoveredSite = sites.findById(site.id);
 
 		if (mapSelectionMode.mode === 'auto' || mapSelectionMode.mode === 'site-catchment') {
-			const siteCatchment = findRiverappFeatureById('site-catchments', site.id);
+			const siteCatchment = findRiverappFeatureById('site-catchment', site.id);
 			// console.log('siteCatchment', siteCatchment);
 
 			if (siteCatchment) {
@@ -148,7 +148,7 @@ export class MapHoverSelectionController {
 			if (id) {
 				setMapCursor('pointer');
 
-				const riverCatchment = findRiverappFeatureById('river-catchments', id);
+				const riverCatchment = findRiverappFeatureById('river-catchment', id);
 				// console.log('riverCatchment', riverCatchment);
 
 				if (riverCatchment) {
@@ -265,7 +265,7 @@ export class MapHoverSelectionController {
 
 				// highlight the hovered river if map is in river selection mode
 				if (mapSelectionMode.mode === 'auto' && this.#hoveredSite === undefined || mapSelectionMode.mode === 'river-catchment') {
-					const geojsonFeature = findRiverappFeatureById('rivers', feature.id as number);
+					const geojsonFeature = findRiverappFeatureById('river', feature.id as number);
 
 					if (geojsonFeature) {
 						hoveredRivers.setData({
@@ -292,8 +292,3 @@ export class MapHoverSelectionController {
 	}
 
 }
-
-// onMount(() => {
-// 	console.log("mlmap", mlMapComponent);
-// 	mapSelectionMode.mode = "river";
-// });

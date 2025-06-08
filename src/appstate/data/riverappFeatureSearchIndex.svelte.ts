@@ -1,26 +1,25 @@
 import { defineGlobal } from '$src/lib/utils';
-import Fuse from 'fuse.js'
 import lunr from 'lunr';
-import { riverappFeatureCollections, riverappFeatureName, type RiverappFeaturesType } from './riverappFeatureCollection.svelte';
+import { riverappFeatureCollections, riverappFeatureName, type BasinFeatureType } from './riverappFeatureCollection.svelte';
+import type { BasinObjectType } from '$src/appstate/data/basinObject.svelte';
 
 const searchTags = {
-	'sites': ['site'],
+	'site': ['site'],
 	'huc8': ['huc8'],
 	'huc10': ['huc10'],
 	'huc12': ['huc12'],
-	'states': ['state'],
-	'counties': ['county'],
+	'state': ['state'],
+	'county': ['county'],
 	// 'rivers': ['river'],
-	'site-catchments': ['site', 'catchment', 'site-catchment'],
-	'river-catchments': ['river', 'catchment', 'river-catchment']
+	'site-catchment': ['site', 'catchment', 'site-catchment'],
+	'river-catchment': ['river', 'catchment', 'river-catchment']
 }
 
-export type SearchableRiverappFeatures = Exclude<RiverappFeaturesType, 'rivers'>;
 
 export type FeatureSearchItem = {
 	name: string;
 	tags: string[];
-	featureType: RiverappFeaturesType;
+	featureType: BasinFeatureType;
 	id: number;
 	ref: string;
 }
@@ -31,9 +30,7 @@ export const riverappFeatureSearchIndex = () => _riverappFeatureSearchIndex;
 
 
 
-
-
-function makeItems(featureType: SearchableRiverappFeatures): FeatureSearchItem[] {
+function makeItems(featureType: BasinObjectType): FeatureSearchItem[] {
 	const items = [] as FeatureSearchItem[];
 	const collection = riverappFeatureCollections.get(featureType);
 	if (!collection) return items;
@@ -49,7 +46,7 @@ function makeItems(featureType: SearchableRiverappFeatures): FeatureSearchItem[]
 		};
 
 		// get dataset id
-		if (properties.siteId && featureType === 'sites' || featureType === 'site-catchments') {
+		if (properties.siteId && featureType === 'site' || featureType === 'site-catchment') {
 			const datasetId = (properties.siteId || '').split('-')[0];
 			if (datasetId.length > 0) {
 				item.tags.push(datasetId);
@@ -66,7 +63,7 @@ export async function buildFeatureSearchIndex() {
 	let list = [] as FeatureSearchItem[];
 
 	Object.keys(searchTags).forEach((featureType) => {
-		const items = makeItems(featureType as SearchableRiverappFeatures);
+		const items = makeItems(featureType as BasinObjectType);
 		list = list.concat(items);
 	});
 
@@ -87,30 +84,6 @@ export async function buildFeatureSearchIndex() {
 
 
 
-	// const options = {
-	// 	includeScore: true,
-	// 	ignoreDiacritics: true,
-	// 	minMatchCharLength: 2,
-	//   useExtendedSearch: true,
-	// 	// ignoreLocation: true,
-
-	// 	// Search in `author` and in `tags` array
-	// 	keys: [
-	// 		'name',
-	// 		{
-	// 			name: 'tags',
-	// 			// weight: 1
-	// 		},
-	// 		'featureType',
-
-
-	// 	]
-	// }
-
-	// _riverappFeatureSearchIndex = new Fuse(list, options)
-
-
-
 	defineGlobal('featuresSearch', _riverappFeatureSearchIndex);
 
 	defineGlobal('search', searchRiverappFeatures);
@@ -124,7 +97,7 @@ export function searchRiverappFeatures(query: string): any[] {
 
 	const refToFeature = (ref: string): any | undefined => {
 		const [featureType, id] = ref.split('+');
-		const feature = riverappFeatureCollections.get(featureType as SearchableRiverappFeatures)?.features.find(f => f.properties?.id === parseInt(id));
+		const feature = riverappFeatureCollections.get(featureType as BasinObjectType)?.features.find(f => f.properties?.id === parseInt(id));
 		if (!feature) return [featureType, id];
 		return [featureType, feature.properties]
 	}

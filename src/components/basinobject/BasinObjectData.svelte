@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { BasinObject } from "$src/appstate/selection/basinObjectSelection.svelte";
 	import { mapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import type { BasinObject } from "$src/appstate/data/basinObject.svelte";
 	import SelectModeHint from "./SelectModeHint.svelte";
 	import SelectModeSelector from "./SelectModeSelector.svelte";
 

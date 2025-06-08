@@ -5,10 +5,10 @@ import { defineGlobal } from "$src/lib/utils";
 import { SvelteMap } from "svelte/reactivity";
 import { buildFeatureSearchIndex } from "./riverappFeatureSearchIndex.svelte";
 
-export const riverappFeatures = ['sites', 'huc8', 'huc10', 'huc12', 'states', 'counties', 'rivers', 'site-catchments', 'river-catchments'] as const;
-export type RiverappFeaturesType = typeof riverappFeatures[number];
+export const riverappFeatures = ['site', 'huc8', 'huc10', 'huc12', 'state', 'county', 'river', 'site-catchment', 'river-catchment'] as const;
+export type BasinFeatureType = typeof riverappFeatures[number];
 
-export const riverappFeatureCollections = new SvelteMap<RiverappFeaturesType, GeoJSON.FeatureCollection>();
+export const riverappFeatureCollections = new SvelteMap<BasinFeatureType, GeoJSON.FeatureCollection>();
 
 
 export async function loadFeatureCollections() {
@@ -21,7 +21,7 @@ export async function loadFeatureCollections() {
 }
 
 
-export async function loadGeojsonData(name: RiverappFeaturesType) {
+export async function loadGeojsonData(name: BasinFeatureType) {
 	const path = `geojson/${name}.geojson`;
 	try {
 
@@ -34,14 +34,14 @@ export async function loadGeojsonData(name: RiverappFeaturesType) {
 	}
 }
 
-export function findRiverappFeatureById(featureType: RiverappFeaturesType, id: number) {
+export function findRiverappFeatureById(featureType: BasinFeatureType, id: number) {
 	const featureCollection = riverappFeatureCollections.get(featureType);
 	return featureCollection?.features.find(f => f.properties?.id === id);
 }
 
-export const riverappFeatureName = (featureType: RiverappFeaturesType, id: number) => {
-	if(featureType === 'site-catchments') featureType = 'sites';
-	if(featureType === 'river-catchments') featureType = 'rivers';
+export const riverappFeatureName = (featureType: BasinFeatureType, id: number) => {
+	if(featureType === 'site-catchment') featureType = 'site';
+	if(featureType === 'river-catchment') featureType = 'river';
 
 	const feature = findRiverappFeatureById(featureType, id);
 	if (feature) {

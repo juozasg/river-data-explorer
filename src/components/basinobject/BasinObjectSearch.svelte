@@ -1,8 +1,5 @@
 <script lang="ts">
-	import { onMount } from "svelte";
-	import { writable } from "svelte/store";
 	import InlineBlockIconify from "../icons/InlineBlockIconify.svelte";
-	import Basin from "../Basin.svelte";
 	import BasinObjectSearchResults from "./BasinObjectSearchResults.svelte";
 
 	let searchPlaceholder: string = "Search";

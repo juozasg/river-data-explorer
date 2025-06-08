@@ -1,4 +1,4 @@
-import type { BasinObjectType } from "$src/appstate/selection/basinObjectSelection.svelte";
+import type { BasinObjectType } from "../../appstate/data/basinObject.svelte";
 
 export function basinObjectTypeLabel(objectType: BasinObjectType | undefined): string {
 	if (objectType === undefined) return '';

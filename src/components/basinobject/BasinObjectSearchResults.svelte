@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { BasinObjectType } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import type { BasinObjectType } from "$src/appstate/data/basinObject.svelte";
 	import { basinObjectTypeLabel } from "$src/lib/utils/prettyNames";
 
 	type Props = { query: string };
