@@ -8,12 +8,12 @@ export function basinObjectTypeLabel(objectType: BasinObjectType | undefined): s
 	if (objectType === 'huc12') return 'HUC12';
 	if (objectType === 'state') return 'State';
 	if (objectType === 'county') return 'County';
-	if (objectType === 'river-catchment') return 'Catchment';
+	if (objectType === 'river-catchment') return 'River Catchment';
 	if (objectType === 'site-catchment') return 'Site Catchment';
 	return '';
 }
 
-export function basinObjectTypePluralLabel(objectType: BasinObjectType | undefined): string {
+export function selectModeTypePluralLabel(objectType: BasinObjectType | undefined): string {
 	if (objectType === undefined) return '';
 	if (objectType === 'site') return 'Sites';
 	if (objectType === 'huc8') return 'HUC8s';
@@ -21,7 +21,7 @@ export function basinObjectTypePluralLabel(objectType: BasinObjectType | undefin
 	if (objectType === 'huc12') return 'HUC12s';
 	if (objectType === 'state') return 'States';
 	if (objectType === 'county') return 'Counties';
-	if (objectType === 'river-catchment') return 'Catchments';
+	if (objectType === 'river-catchment') return 'Rivers';
 	if (objectType === 'site-catchment') return 'Site Catchments';
 	return '';
 }

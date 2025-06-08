@@ -1,4 +1,4 @@
-import { riverappFeatureCollections } from "$src/appstate/data/basinFeatureCollection.svelte";
+import { basinFeatureCollections } from "$src/appstate/data/basinFeatureCollection.svelte";
 import { basinObject1, basinObject2, mapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
 import type { BasinObject } from "../../appstate/data/basinObject.svelte";
 import type { Site } from "../types/site";
@@ -31,7 +31,7 @@ export function autoSelectBasinObjectsOnClick(hoveredSite: Site | undefined, hov
 	if (hoveredSite?.id) {
 		targetBasinObject.set('site', hoveredSite?.id);
 	} else if (hoveredRiverId) {
-		const catchments = riverappFeatureCollections.get('river-catchment');
+		const catchments = basinFeatureCollections.get('river-catchment');
 		if (catchments) {
 			const riverCatchment = catchments.features.find(f => f.properties?.id === hoveredRiverId);
 			// console.log('riverCatchment', riverCatchment);
@@ -47,7 +47,7 @@ function selectSiteAndCatchment(hoveredSite: Site | undefined) {
 		basinObject1.set('site', hoveredSite?.id);
 	}
 
-	const catchments = riverappFeatureCollections.get('site-catchment');
+	const catchments = basinFeatureCollections.get('site-catchment');
 	if (catchments) {
 		const siteCatchment = catchments.features.find(f => f.properties?.id === hoveredSite!.id);
 

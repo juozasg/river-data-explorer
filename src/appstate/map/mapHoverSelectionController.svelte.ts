@@ -2,7 +2,7 @@ import { initMapData } from '$src/lib/data/map/layers/initMapData';
 import { autoSelectBasinObjectsOnClick } from '$src/lib/data/selectionHelpers';
 import type { Site } from '$src/lib/types/site';
 import * as ml from 'maplibre-gl';
-import { findRiverappFeatureById, riverappFeatureCollections } from '../data/basinFeatureCollection.svelte';
+import { findRiverappFeatureById, basinFeatureCollections } from '../data/basinFeatureCollection.svelte';
 import { sites } from '../data/sites.svelte';
 import { mapSelectionMode, mapSelectionTargetObject } from '../selection/basinObjectSelection.svelte';
 import { setSelectedPanel } from '../ui/layout.svelte';
@@ -43,7 +43,7 @@ export class MapHoverSelectionController {
 			// set mlm rivers data source when ready
 			$effect(() => {
 				// this will run when the map data model (sources and layers) is ready and when the feature collections change
-				const riversFeatures = riverappFeatureCollections.get('river');
+				const riversFeatures = basinFeatureCollections.get('river');
 				const riversSource = this.#map.getSource("riverapp-rivers") as ml.GeoJSONSource;
 				if (this.dataModelReady && riversSource && riversFeatures) {
 					// console.log('adding rivers geojson mlmap source data');
@@ -55,7 +55,7 @@ export class MapHoverSelectionController {
 			// set huc12, huc10 and county regions data source when select mode is set to huc12, huc10 or county
 			// and the features are ready
 			$effect(() => {
-				const huc12Features = riverappFeatureCollections.get('huc12');
+				const huc12Features = basinFeatureCollections.get('huc12');
 				if (this.dataModelReady && huc12Features && mapSelectionMode.mode === 'huc12') {
 					const regionsSource = this.#map.getSource("riverapp-regions") as ml.GeoJSONSource;
 					regionsSource.setData(huc12Features);
@@ -64,7 +64,7 @@ export class MapHoverSelectionController {
 			});
 
 			$effect(() => {
-				const huc10Features = riverappFeatureCollections.get('huc10');
+				const huc10Features = basinFeatureCollections.get('huc10');
 				if (this.dataModelReady && huc10Features && mapSelectionMode.mode === 'huc10') {
 					const regionsSource = this.#map.getSource("riverapp-regions") as ml.GeoJSONSource;
 					regionsSource.setData(huc10Features);
@@ -74,7 +74,7 @@ export class MapHoverSelectionController {
 			});
 
 			$effect(() => {
-				const countiesFeatures = riverappFeatureCollections.get('county');
+				const countiesFeatures = basinFeatureCollections.get('county');
 				if (this.dataModelReady && countiesFeatures && mapSelectionMode.mode === 'county') {
 					const regionsSource = this.#map.getSource("riverapp-regions") as ml.GeoJSONSource;
 					regionsSource.setData(countiesFeatures);

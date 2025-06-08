@@ -48,7 +48,7 @@
 		<div class="header">
 			<div class="hline"></div>
 		</div>
-		<div class="object-search"><BasinObjectSearch /></div>
+		<div class="object-search"><BasinObjectSearch {target} /></div>
 
 
 

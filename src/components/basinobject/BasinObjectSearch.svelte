@@ -1,33 +1,69 @@
 <script lang="ts">
+	import type { BasinObjectType } from "$src/appstate/data/basinObject.svelte";
+	import { basinObject1, basinObject2 } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import { clickOutside } from "$src/lib/svelte/clickOutside";
 	import InlineBlockIconify from "../icons/InlineBlockIconify.svelte";
 	import BasinObjectSearchResults from "./BasinObjectSearchResults.svelte";
+
+	type Props = {
+		target: "1" | "2";
+	};
+
+	const { target }: Props = $props();
 
 	let searchPlaceholder: string = "Search";
 	let searchFocused: boolean = $state(false);
 
 	let value: string = $state("");
-	const onfocus = () => (searchFocused = true);
-	const showResults = $derived(searchFocused && value.length > 0);
+	let showResults = $state(false);
 
+	let inputElement = $state<HTMLInputElement>();
+
+	$effect(() => {
+		if (searchFocused && value.length > 1) showResults = true;
+	});
+
+	const onfocus = () => (searchFocused = true);
 	const onblur = () => (searchFocused = false);
+
+	const selectObject = (objectType: BasinObjectType, id: number) => {
+		console.log("selectObject", objectType, id);
+		if (target === "1") {
+			basinObject1.set(objectType, id);
+		} else {
+			basinObject2.set(objectType, id);
+		}
+		value = "";
+	};
 </script>
 
-<div class="basin-object-search-input">
-	<div class="search-icon"><InlineBlockIconify icon="fluent:search-12-filled" size="28px" /></div>
-	<input
-		type="text"
-		{onblur}
-		{onfocus}
-		bind:value
-		onkeydown={(e) => {
-			if (e.key === "Escape") e.currentTarget?.blur();
-		}}
-		placeholder={searchPlaceholder} />
-</div>
+<div
+	use:clickOutside={() => {
+		showResults = false;
+		inputElement?.blur();
+	}}>
 
-{#if showResults}
-	<BasinObjectSearchResults query={value}/>
-{/if}
+	<div class="basin-object-search-input">
+		<div class="search-icon"><InlineBlockIconify icon="fluent:search-12-filled" size="28px" /></div>
+		<input
+			type="text"
+			{onblur}
+			{onfocus}
+			bind:value
+			bind:this={inputElement}
+			onkeydown={(e) => {
+				if (e.key === "Escape") {
+					e.currentTarget?.blur();
+					showResults = false;
+				}
+			}}
+			placeholder={searchPlaceholder} />
+	</div>
+
+	{#if showResults}
+		<BasinObjectSearchResults {selectObject} query={value} />
+	{/if}
+</div>
 
 <style>
 	.basin-object-search-input {

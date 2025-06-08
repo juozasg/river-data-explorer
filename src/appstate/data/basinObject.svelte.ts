@@ -1,9 +1,12 @@
-import { riverappFeatureName } from "$src/appstate/data/basinFeatureCollection.svelte";
+import { basinFeatureName, type BasinFeatureType } from "$src/appstate/data/basinFeatureCollection.svelte";
 import { sites } from "$src/appstate/data/sites.svelte";
 import { basinObjectTypeLabel } from "$src/lib/utils/prettyNames";
 
-export type BasinObjectType = 'site' | 'huc8' | 'huc10' | 'huc12' | 'state' | 'county' | 'river-catchment' | 'site-catchment'; // | 'custom';
+// export type BasinObjectType = 'site' | 'huc8' | 'huc10' | 'huc12' | 'state' | 'county' | 'river-catchment' | 'site-catchment'; // | 'custom';
+export type BasinObjectType = Exclude<BasinFeatureType, 'river'>;
 
+// basin features are geometries used for MLM map
+// basin objects are logical objects that can be selected in the app and have data associated with them
 export class BasinObject {
 	objectType: BasinObjectType | undefined = $state();
 	id: number | undefined = $state();
@@ -44,8 +47,8 @@ export class BasinObject {
 		if (this.objectType === 'huc12') return `HUC12 ${this.id}`;
 		if (this.objectType === 'state') return `State ${this.id}`;
 		if (this.objectType === 'county') return `County ${this.id}`;
-		if (this.objectType === 'river-catchment') return `${riverappFeatureName('river', this.id)}`;
-		if (this.objectType === 'site-catchment') return `${riverappFeatureName('site-catchment', this.id)}`;
+		if (this.objectType === 'river-catchment') return `${basinFeatureName('river', this.id)}`;
+		if (this.objectType === 'site-catchment') return `${basinFeatureName('site-catchment', this.id)}`;
 		return '';
 	}
 

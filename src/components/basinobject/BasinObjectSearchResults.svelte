@@ -1,54 +1,46 @@
 <script lang="ts">
+	import { basinFeatureName, basinFeatureSiteId } from "$src/appstate/data/basinFeatureCollection.svelte";
+	import { searchBasinFeatures, type BasinSearchResult } from "$src/appstate/data/basinFeatureSearchIndex.svelte";
 	import type { BasinObjectType } from "$src/appstate/data/basinObject.svelte";
 	import { basinObjectTypeLabel } from "$src/lib/utils/prettyNames";
 
-	type Props = { query: string };
-	const { query }: Props = $props();
+	type Props = { query: string, selectObject: (objectType: BasinObjectType, id: number) => void };
+	const { query, selectObject }: Props = $props();
 
-	type ResultItem = {
-		label: string;
-		objectType: BasinObjectType;
-		id: number;
+	let results: BasinSearchResult[] = $derived(searchBasinFeatures(query));
+
+	const resultLabel = (objectType: BasinObjectType, id: number) => {
+		const name = basinFeatureName(objectType, id);
+		const siteId = basinFeatureSiteId(objectType, id);
+
+		const siteIdLabel = siteId ? ` (${siteId})` : "";
+		return `${name}${siteIdLabel}`;
 	};
 
-	let results = $state<ResultItem[]>([]);
-
-	$effect(() => {
-		results = Array.from({ length: 50 }, (_, i) => ({
-			label: `${query} ${i + 1} ${query} ${i + 1} ${query} ${i + 1} ${query} ${i + 1} ${query} ${i + 1} ${query} ${i + 1}`,
-			objectType: i % 2 == 0 ? "huc12" : "site-catchment",
-			id: i + 1
-		}));
-	});
-
-	let contentRect = $state<DOMRect>();
-
-	$effect(() => {
-		if (contentRect) {
-			console.log("Content Rect Content Rect Content Rect Content Rect:", contentRect);
-		}
-	});
 </script>
 
-{#snippet resultItem(label: string, objectType: BasinObjectType, id: number)}
-	<div class="result-item">
-		<span class="result-label">{label}</span>
+{#snippet resultItem(objectType: BasinObjectType, id: number)}
+	<div class="result-item" onclick={() => selectObject(objectType, id)}>
+		<span class="result-label">{resultLabel(objectType, id)}</span>
 		<span class="result-type object-type-pill">{basinObjectTypeLabel(objectType)}</span>
 	</div>
 {/snippet}
 
-<div class="basin-object-search-results" bind:contentRect>
-	<div class="results-list">
-		<!-- Placeholder for search results -->
-		{#each results as result}
-			{@render resultItem(result.label, result.objectType, result.id)}
-		{/each}
-	</div>
+<div class="basin-object-search-results">
+	{#if results.length === 0}
+		<h4 class="no-results">No results for '{query}'</h4>
+	{:else}
+		<div class="results-list">
+			<!-- Placeholder for search results -->
+			{#each results as result}
+				{@render resultItem(result[0], result[1])}
+			{/each}
+		</div>
+	{/if}
 </div>
 
 <style>
 	.basin-object-search-results {
-		/* background-color: #f9f9f9; */
 		background-color: white;
 		border: 1px solid var(--color-darkGrey);
 		border-radius: 4px;
@@ -104,5 +96,9 @@
 		padding: 4px;
 		font-size: 16px;
 		height: 24px;
+	}
+
+	.no-results {
+		margin-bottom: -8px;
 	}
 </style>

@@ -44,6 +44,8 @@ export function binaryClosestSearch(arr: number[], target: number, lo = 0, hi = 
 				: arr[mid];
 }
 
+export const compact = <T>(arr: T[]): T[] => arr.filter(e => e !== null && e !== undefined);
+
 if (typeof window !== 'undefined') {
 	(window as any).binaryClosestSearch = binaryClosestSearch;
 }
