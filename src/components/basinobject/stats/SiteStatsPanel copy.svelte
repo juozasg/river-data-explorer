@@ -31,7 +31,7 @@
 </script>
 
 <div id="site-stats-panel">
-	<SelectedSiteHeader {site} {dataSelection}/>
+	<!-- <SelectedSiteHeader {site} {dataSelection}/>
 	<StatsDataTable data={rows}>
 		<th>Variable</th>
 		<th>Last</th>
@@ -69,7 +69,7 @@
 				<td class="date">{r.dateToLabel}</td>
 			{/key}
 		{/snippet}
-	</StatsDataTable>
+	</StatsDataTable> -->
 </div>
 
 <style>

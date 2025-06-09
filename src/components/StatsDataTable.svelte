@@ -3,10 +3,10 @@
 
 	type Props = {
 		data:	T[];
-		children: Snippet;
+		thead: Snippet;
 		row: Snippet<[T]>;
 	};
-	let { data, children, row }: Props = $props();
+	let { data, thead, row }: Props = $props();
 </script>
 
 
@@ -15,11 +15,11 @@
 	<div class="table-container">
 		<table class="table is-striped is-narrow">
 			<thead>
-				<tr>{@render children()}</tr>
+				{@render thead()}
 			</thead>
 			<tbody>
 				{#each data as d}
-				<tr>{@render row(d)}</tr>
+				{@render row(d)}
 				{/each}
 			</tbody>
 		</table>

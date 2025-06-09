@@ -1,106 +1,99 @@
 <script lang="ts">
-	import * as ml from "maplibre-gl";
-	import { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
-	import { regionFeatures, type RegionFeature, type RegionType } from "$src/appstate/data/_regionFeatures.svelte";
-	import { MapFeatureSelectionState, toggleSelectedFeatureState } from "$src/appstate/map/featureState.svelte";
-	import BasinChart from "$src/components/chart/BasinChart.svelte";
-	import RegionStatsPanel from "$src/components/basinobject/stats/RegionStatsPanel.svelte";
-	import SiteStatsPanel from "$src/components/basinobject/stats/SiteStatsPanel.svelte";
-	import InlineBlockIconify from "$src/components/icons/InlineBlockIconify.svelte";
-	import VarDataMap from "$src/components/mlmap/VarDataMap.svelte";
-	import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
-	import type { Site } from "$src/lib/types/site";
-	import { chartYColor } from "$src/lib/utils/colors";
-	import { fitFeatureBounds } from "$src/lib/utils/maplibre";
+	// import * as ml from "maplibre-gl";
+	// import { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
+	// import { regionFeatures, type RegionFeature, type RegionType } from "$src/appstate/data/_regionFeatures.svelte";
+	// import { MapFeatureSelectionState, toggleSelectedFeatureState } from "$src/appstate/map/featureState.svelte";
+	// import BasinChart from "$src/components/chart/BasinChart.svelte";
+	// import RegionStatsPanel from "$src/components/basinobject/stats/RegionStatsPanel.svelte";
+	// import SiteStatsPanel from "$src/components/basinobject/stats/StatsSiteTable.svelte";
+	// import InlineBlockIconify from "$src/components/icons/InlineBlockIconify.svelte";
+	// import VarDataMap from "$src/components/mlmap/VarDataMap.svelte";
+	// import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
+	// import type { Site } from "$src/lib/types/site";
+	// import { chartYColor } from "$src/lib/utils/colors";
+	// import { fitFeatureBounds } from "$src/lib/utils/maplibre";
 
-	const dataSelection: ChartDataSelectionState = new ChartDataSelectionState();
-	let varDataMap = $state<VarDataMap>();
+	// const dataSelection: ChartDataSelectionState = new ChartDataSelectionState();
+	// let varDataMap = $state<VarDataMap>();
 
-	const updatedRegionSelection = (curr?: RegionFeature, u?: RegionFeature) => {
-		toggleSelectedFeatureState(varDataMap?.mlmMap(), curr, u);
-	};
+	// const updatedRegionSelection = (curr?: RegionFeature, u?: RegionFeature) => {
+	// 	toggleSelectedFeatureState(varDataMap?.mlmMap(), curr, u);
+	// };
 
-	const selectedRegion = new MapFeatureSelectionState(updatedRegionSelection);
-	let selectedSite = $state<Site>();
+	// const selectedRegion = new MapFeatureSelectionState(updatedRegionSelection);
+	// let selectedSite = $state<Site>();
 
-	let layersParams = $state(defaultLayersParams);
-	function onClickRegionType(regionType: string) {
-		// console.log("regionType", regionType);
-		layersParams.regionType = regionType as RegionType;
-	}
+	// let layersParams = $state(defaultLayersParams);
+	// function onClickRegionType(regionType: string) {
+	// 	// console.log("regionType", regionType);
+	// 	layersParams.regionType = regionType as RegionType;
+	// }
 
-	const onDateSelect = (d: Date) => {
-		console.log("date selected", d);
-		varDataMap?.setDate(d);
-	};
-	const onMapClick = (map: ml.Map, p: ml.PointLike, site?: Site, region?: RegionFeature, river?: RegionFeature) => {
-		// console.log("map clicked", map, p, site, region, river);
+	// const onDateSelect = (d: Date) => {
+	// 	console.log("date selected", d);
+	// 	varDataMap?.setDate(d);
+	// };
+	// const onMapClick = (map: ml.Map, p: ml.PointLike, site?: Site, region?: RegionFeature, river?: RegionFeature) => {
+	// 	// console.log("map clicked", map, p, site, region, river);
 
-		// clicking a site in another region will select that region
-		// only if no region is already selected
-		if (!selectedRegion.feature) selectedRegion.feature = region;
-		if (!site) selectedRegion.feature = region;
+	// 	// clicking a site in another region will select that region
+	// 	// only if no region is already selected
+	// 	if (!selectedRegion.feature) selectedRegion.feature = region;
+	// 	if (!site) selectedRegion.feature = region;
 
-		// only clear site selection if clicking outside any region
-		if (site || !region) selectedSite = site;
-	};
+	// 	// only clear site selection if clicking outside any region
+	// 	if (site || !region) selectedSite = site;
+	// };
 
-	const onSearchItemSelect = (item: Site) => {
-		console.log("search item selected", $state.snapshot(item));
-		selectedSite = item;
-		if (!selectedRegion.feature) {
-			const rt = layersParams.regionType;
-			// selectedRegion.feature = regionFeatures.get(rt, selectedSite[rt]);
-		}
-	};
+	// const onSearchItemSelect = (item: Site) => {
+	// 	console.log("search item selected", $state.snapshot(item));
+	// 	selectedSite = item;
+	// 	if (!selectedRegion.feature) {
+	// 		const rt = layersParams.regionType;
+	// 		// selectedRegion.feature = regionFeatures.get(rt, selectedSite[rt]);
+	// 	}
+	// };
 
-	const onHeaderClose = () => {
-		selectedRegion.feature = undefined;
-	};
+	// const onHeaderClose = () => {
+	// 	selectedRegion.feature = undefined;
+	// };
 
-	$effect(() => {
-		if (selectedRegion.feature) {
-			mapWidth = "calc(50vw - 2rem)";
-			mapHeight = "calc(50vh - 5rem)";
-			const feature = selectedRegion.feature;
-			setTimeout(() => {
-				fitFeatureBounds(varDataMap?.mlmMap()!, feature);
-			}, 300);
-		} else {
-			mapWidth = "calc(100vw - 3.5rem)";
-			mapHeight = "calc(100vh - 5rem)";
-			// const feature = regionFeatures.get("huc8", "04050001");
-			const feature = undefined;
-			setTimeout(() => {
-				if (feature) fitFeatureBounds(varDataMap?.mlmMap()!, feature);
-			}, 300);
-		}
-	});
+	// $effect(() => {
+	// 	if (selectedRegion.feature) {
+	// 		mapWidth = "calc(50vw - 2rem)";
+	// 		mapHeight = "calc(50vh - 5rem)";
+	// 		const feature = selectedRegion.feature;
+	// 		setTimeout(() => {
+	// 			fitFeatureBounds(varDataMap?.mlmMap()!, feature);
+	// 		}, 300);
+	// 	} else {
+	// 		mapWidth = "calc(100vw - 3.5rem)";
+	// 		mapHeight = "calc(100vh - 5rem)";
+	// 		// const feature = regionFeatures.get("huc8", "04050001");
+	// 		const feature = undefined;
+	// 		setTimeout(() => {
+	// 			if (feature) fitFeatureBounds(varDataMap?.mlmMap()!, feature);
+	// 		}, 300);
+	// 	}
+	// });
 
-	let mapWidth = $state("calc(100vw - 3rem)");
-	let mapHeight = $state("calc(100vh - 5rem)");
+	// let mapWidth = $state("calc(100vw - 3rem)");
+	// let mapHeight = $state("calc(100vh - 5rem)");
 
 
-	let siteStatsVarHoverColor = chartYColor + "33";
-	const layoutType = 'mobile';
+	// let siteStatsVarHoverColor = chartYColor + "33";
+	// const layoutType = 'mobile';
 
-	let varname = $state("ecoli");
+	// let varname = $state("ecoli");
 
-	function varLabelClick(vname: string) {
-		console.log("var clicked", varname);
-		varname = vname;
-	}
+	// function varLabelClick(vname: string) {
+	// 	console.log("var clicked", varname);
+	// 	varname = vname;
+	// }
 </script>
 
-<!-- <BasinHeader
-	{dataSelection}
-	{selectedSite}
-	{onSearchItemSelect}
-	regionFeature={selectedRegion.feature}
-	{onClickRegionType}
-	onClickClose={onHeaderClose}
-	regionType={layersParams.regionType} /> -->
 
+<!--
 <div class={["workflow", layoutType]} style="width: {mapWidth}; height: {mapHeight}">
 	<VarDataMap
 		{varname}
@@ -147,7 +140,7 @@
 	</span>
 </span>
 <a class="github" target="_blank" href="https://github.com/Limnogirl90/SJRBC-web-map-data/tree/webapp/datasets"
-	>Download Datasets <InlineBlockIconify icon="uiw:github" size="0.9rem" /></a>
+	>Download Datasets <InlineBlockIconify icon="uiw:github" size="0.9rem" /></a> -->
 
 <style>
 
