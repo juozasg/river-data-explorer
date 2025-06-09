@@ -12,7 +12,7 @@
 
 	const cancel = () => {
 		wizardStep = "initial";
-		if(targetBasinObject.isSelected) {
+		if(targetBasinObject.isSet) {
 			show = false;
 		}
 		// console.log("cancel", targetBasinObject, targetBasinObject.isSelected);
@@ -54,14 +54,14 @@
 
 		<div class="button-group">
 			{#if wizardStep == "initial"}
-				{#if targetBasinObject.isSelected}
+				{#if targetBasinObject.isSet}
 					<button class="clear" onclick={autoMode}>X Clear</button>
 				{/if}
 
 				<button onclick={() => setSelectMode('site')}>Sites</button>
 				<button onclick={() => (wizardStep = "catchment")}>Catchments</button>
 				<button onclick={() => (wizardStep = "region")}>Regions</button>
-				{#if targetBasinObject.isSelected}
+				{#if targetBasinObject.isSet}
 					{@render cancelButton()}
 				{/if}
 

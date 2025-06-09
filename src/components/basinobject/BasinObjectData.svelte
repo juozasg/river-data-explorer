@@ -3,22 +3,24 @@
 	import type { BasinObject } from "$src/appstate/data/basinObject.svelte";
 	import SelectModeHint from "./SelectModeHint.svelte";
 	import SelectModeSelector from "./SelectModeSelector.svelte";
+	import BasinObjectStats from "./stats/BasinObjectStats.svelte";
 
 	type Props = { selectionTarget: "1" | "2"; basinObject: BasinObject };
 	const { selectionTarget, basinObject }: Props = $props();
 	let showModeSelector = $state(true);
 
 	$effect(() => {
-		if (basinObject.isSelected) {
+		if (basinObject.isSet) {
 			showModeSelector = false;
 		}
 	});
 </script>
 
 <div class={`data-panel data-${selectionTarget}`}>
-	{#if basinObject.isSelected}
+	{#if basinObject.isSet}
 		<div class="header">
-			<div class="label">{basinObject.objectLabelName}
+			<div class="label">
+				{basinObject.objectLabelName}
 				{#if basinObject.objectSiteId}
 					<span class="site-id">({basinObject.objectSiteId})</span>
 				{/if}
@@ -37,13 +39,18 @@
 		</div>
 	{/if}
 
-	{#if (mapSelectionMode.mode !== "auto" && mapSelectionMode.target === selectionTarget) || (
-		!basinObject.isSelected && mapSelectionMode.target === selectionTarget)}
+	{#if (mapSelectionMode.mode !== "auto" && mapSelectionMode.target === selectionTarget) || (!basinObject.isSet && mapSelectionMode.target === selectionTarget)}
 		<SelectModeHint />
 	{/if}
 
 	{#if showModeSelector}
 		<SelectModeSelector target={selectionTarget} bind:show={showModeSelector} />
+	{/if}
+
+	{#if basinObject.isSet}
+		<div class="basin-object-stats">
+			<BasinObjectStats {basinObject} />
+		</div>
 	{/if}
 </div>
 
@@ -93,20 +100,18 @@
 				margin: 2px 8px 0 4px;
 			}
 		}
-		/* overflow: scroll; */
-		/* justify-content: space-between; */
-		/* align-items: center; */
 	}
-
 
 	.data-1 .object-type-pill {
 		background-color: var(--color-data-1);
 	}
 
-
 	.data-2 .object-type-pill {
 		background-color: var(--color-data-2);
 	}
 
-
+	.basin-object-stats {
+		height: calc(100% - 20px);
+		overflow: auto;
+	}
 </style>

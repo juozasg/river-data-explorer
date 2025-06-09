@@ -1,6 +1,9 @@
 import { basinFeatureName, type BasinFeatureType } from "$src/appstate/data/basinFeatureCollection.svelte";
 import { sites } from "$src/appstate/data/sites.svelte";
+import { allVariableStats } from "$src/lib/data/stats";
+import type { VariableStats } from "$src/lib/types/analysis";
 import { basinObjectTypeLabel } from "$src/lib/utils/prettyNames";
+import { sitesTables } from "./datasets.svelte";
 
 // export type BasinObjectType = 'site' | 'huc8' | 'huc10' | 'huc12' | 'state' | 'county' | 'river-catchment' | 'site-catchment'; // | 'custom';
 export type BasinObjectType = Exclude<BasinFeatureType, 'river'>;
@@ -48,7 +51,7 @@ export class BasinObject {
 		return true;
 	}
 
-	get isSelected(): boolean {
+	get isSet(): boolean {
 		if (this.objectType === undefined || this.id === undefined) return false;
 		return true;
 	}
@@ -70,6 +73,23 @@ export class BasinObject {
 
 	get objectTypeLabel(): string {
 		return basinObjectTypeLabel(this.objectType);
+	}
+
+
+	get allVariableStats(): VariableStats[] {
+		if (!this.isSet) return [];
+		switch (this.objectType) {
+			case 'site':
+				// allVariableStats(table)
+				const site = sites.findById(this.id!);
+				if (!site) return [];
+				const table = sitesTables.get(site.siteId);
+				return allVariableStats(table!);
+
+			default:
+				return [];
+		}
+
 	}
 }
 

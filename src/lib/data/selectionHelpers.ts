@@ -6,7 +6,7 @@ import type { Site } from "../types/site";
 
 export function autoSelectBasinObjectsOnClick(hoveredSite: Site | undefined, hoveredRiverId: number | undefined) {
 	// select both slots if both are empty and site is hovered
-	if(!basinObject1.isSelected && !basinObject2.isSelected && hoveredSite?.id) {
+	if(!basinObject1.isSet && !basinObject2.isSet && hoveredSite?.id) {
 		selectSiteAndCatchment(hoveredSite);
 		mapSelectionMode.mode = 'auto';
 		mapSelectionMode.target = '2';
