@@ -3097,11 +3097,6 @@ signal-exit@^4.0.1:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-4.1.0.tgz#952188c1cbd546070e2dd20d0f41c0ae0530cb04"
   integrity sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==
 
-simple-svelte-autocomplete@^2.5.2:
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/simple-svelte-autocomplete/-/simple-svelte-autocomplete-2.5.2.tgz#0608a0fabe95a46da77b988b4542b4dadaa287cc"
-  integrity sha512-6+kZP3XQGb7zs0djTWoFv8tQorBZdv64YfCKrlsYIYBCFsEeikSiNsBSSYw1Om+LYmFeMEOAYSSKoEw+qpnBXQ==
-
 sirv@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/sirv/-/sirv-3.0.0.tgz#f8d90fc528f65dff04cb597a88609d4e8a4361ce"

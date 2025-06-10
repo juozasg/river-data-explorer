@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
 	import { _sitesTables } from "$src/appstate/data/datasets.svelte";
 	import { _sites } from "$src/appstate/data/sites.svelte";
@@ -36,4 +36,4 @@
 		{dataSelection}
 		{onDateSelect}
 	/>
-</div>
+</div> -->

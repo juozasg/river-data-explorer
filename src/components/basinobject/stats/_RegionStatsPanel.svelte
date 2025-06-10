@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import * as aq from "arquero";
 
 	import TdStatsVariableLabel from "./TdStatsVariableLabel.svelte";
@@ -135,4 +135,4 @@
 		margin-bottom: 0.5rem;
 		/* padding-right: 1rem; */
 	}
-</style>
+</style> -->

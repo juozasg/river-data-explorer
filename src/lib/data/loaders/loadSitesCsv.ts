@@ -1,7 +1,7 @@
 import { loadDataCsv } from "$lib/data/cachedDataLoad";
 import { dataPathsStartingWith } from "$lib/data/loaders/loadAppData";
 import type { Site } from "$lib/types/site";
-import { siteIds, sites, splitSiteId } from "$src/appstate/data/sites.svelte";
+import { siteIds, sites } from "$src/appstate/data/sites.svelte";
 import { startedLoading } from "../../../appstate/ui/loadingItem.svelte";
 
 
@@ -46,4 +46,10 @@ export async function loadSitesCsv(datasetIds: Map<string, number>) {
 	}
 
 	finishedLoading();
+}
+
+
+function splitSiteId(siteId: string): { dataset: string, num: number } {
+	const [dataset, ns] = siteId.split('-');
+	return { dataset, num: parseInt(ns) };
 }

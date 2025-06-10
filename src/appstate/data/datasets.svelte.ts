@@ -8,7 +8,7 @@ import { startedLoading } from '../ui/loadingItem.svelte';
 import { dataPathsStartingWith } from '$src/lib/data/loaders/loadAppData';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
 import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
-import { _sites, siteIds } from './sites.svelte';
+import { siteIds, sites } from './sites.svelte';
 import { parseUTC1700Date } from '$src/lib/utils/date';
 import { defineGlobal } from '$src/lib/utils';
 
@@ -85,8 +85,8 @@ export async function loadDatasets() {
 	});
 
 	defineGlobal('aq', aq);
-	defineGlobal('sites', _sites);
-	defineGlobal('sitesTables', _sitesTables);
+	defineGlobal('sites', sites);
+	defineGlobal('siteDatasets', siteDatasets);
 
 	finishedLoading();
 }

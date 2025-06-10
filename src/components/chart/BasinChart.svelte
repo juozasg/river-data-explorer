@@ -1,8 +1,7 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import type { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
 	import { _sitesTables } from "$src/appstate/data/datasets.svelte";
-	import type { RegionFeature } from "$src/appstate/data/_regionFeatures.svelte";
-	import { _sites, siteTablesForRegion } from "$src/appstate/data/sites.svelte";
+
 	import { varDailyMedian } from "$src/lib/data/stats";
 	import { selectTableVar } from "$src/lib/data/siteTableHelpers";
 	import type { Site } from "$src/lib/types/site";
@@ -130,7 +129,6 @@
 		top: 0.5rem;
 	}
 	.graph-button {
-		/* margin-bottom: 3px; */
 		position: relative;
 
 
@@ -150,11 +148,5 @@
 
 
 	}
-	/*
-	.y-button-label {
-		color: var(--color-chart-y);
-	}
-	.z-button-label {
-		color: var(--color-chart-z);
-	} */
-</style>
+
+</style> -->

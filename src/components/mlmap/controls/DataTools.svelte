@@ -6,7 +6,6 @@
 	import "$src/styles/map-controls.scss";
 
 	// import ArrowDropRight from '$src/components/icons/ArrowDropRight.svelte';
-	import { _sites } from "$src/appstate/data/sites.svelte";
 	import { isDatasetEnabled, setEnabledDatasets, toggleDatasetEnable } from "$src/appstate/ui/layers.svelte";
 	import DetailsOpenIcon from "$src/components/icons/DetailsOpenIcon.svelte";
 	import { type MapLayersParams } from "$src/lib/types/mapControls";
@@ -66,7 +65,7 @@
 			>
 				<summary class="outline">Datasets<DetailsOpenIcon open={datasetsOpen} /></summary>
 				<div class="card">
-					{#each _sites.allDatasets as dsname}
+					<!-- {#each _sites.allDatasets as dsname}
 						<label for={dsname}>
 							<input
 								type="checkbox"
@@ -75,14 +74,14 @@
 								onclick={() => toggleDatasetEnable(dsname)} />
 							<tt>{dsname}</tt>
 						</label>
-					{/each}
+					{/each} -->
 
 					<hr />
-					<div class="dataset-buttons">
+					<!-- <div class="dataset-buttons">
 						<a class="all-button" onclick={() => setEnabledDatasets(_sites.allDatasets)}>All</a><a
 							class="none-button"
 							onclick={() => setEnabledDatasets([])}>None</a>
-					</div>
+					</div> -->
 				</div>
 			</details>
 			<hr />

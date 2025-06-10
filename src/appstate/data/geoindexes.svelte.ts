@@ -1,6 +1,5 @@
 import { startedLoading } from "../ui/loadingItem.svelte";
 import { loadDataCsv } from "$src/lib/data/cachedDataLoad";
-import { _sites } from "./sites.svelte";
 // import { regionTypes, type RegionType } from "./_regionFeatures.svelte";
 import { defineGlobal } from "$src/lib/utils";
 

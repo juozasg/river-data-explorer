@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as ml from "maplibre-gl";
 
-	import { _sites as globalSites, sites } from "$src/appstate/data/sites.svelte";
+	import { sites } from "$src/appstate/data/sites.svelte";
 	import { MapHoverSelectionController } from "$src/appstate/map/mapHoverSelectionController.svelte";
 	import { setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
 	import type { Site } from "$src/lib/types/site";
@@ -22,14 +22,6 @@
 	const onSiteHovered = (site?: Site) => {
 		if(mapController) mapController.siteHovered(site);
 	};
-
-	$effect(() => {
-		setEnabledDatasets(aremove(globalSites.allDatasets, "invert"));
-		// setEnabledDatasets(['sjrbc']);
-
-		console.log('globalSites.allDatasets', globalSites.allDatasets);
-
-	});
 
 
 	const selectedSites = $derived([...sites.values()].filter(s => s.dataset !== "invert"));

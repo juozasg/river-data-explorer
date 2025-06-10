@@ -1,6 +1,5 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import type { Site } from "$lib/types/site";
-	import { _sites, Sites } from "$src/appstate/data/sites.svelte";
 	import { aremove } from "$src/lib/utils/arrays";
 	import { chartYColor, chartZDarker } from "$src/lib/utils/colors";
 
@@ -12,16 +11,11 @@
 		// console.log(tableName)
 	});
 
-	// let yVar: string = $state('bod');
-	// let zVar: string = $state('bodPercent');
-
-	// const { table, yParams, zParams }: {table: ColumnTable, yParams: YZChartParams, zParams: YZChartParams}  = $props()
 	let {
 		table,
 		yVar = $bindable("bod"),
 		zVar = $bindable("bodPercent"),
 		tableName = $bindable()
-		// datasetNum = $bindable(1),
 	}: any = $props();
 
 	const availableVars = $derived(aremove(table?.columnNames(), "invertNarrative", "date") || []);
@@ -76,4 +70,4 @@
 		margin-bottom: 1rem;
 		font-size: 110%;
 	}
-</style>
+</style> -->

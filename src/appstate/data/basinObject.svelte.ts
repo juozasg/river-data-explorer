@@ -1,5 +1,5 @@
 import { basinFeatureName, type BasinFeatureType } from "$src/appstate/data/basinFeatureCollection.svelte";
-import { _sites, sites } from "$src/appstate/data/sites.svelte";
+import { sites } from "$src/appstate/data/sites.svelte";
 import { allVariableStats } from "$src/lib/data/stats";
 import type { VariableStats } from "$src/lib/types/analysis";
 import { basinObjectTypeLabel } from "$src/lib/utils/prettyNames";

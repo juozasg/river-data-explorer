@@ -7,7 +7,6 @@
 	import MapLibreMap from "./MapLibreMap.svelte";
 
 	import type { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
-	import { _sites as globalSites, Sites } from "$src/appstate/data/sites.svelte";
 	import { defaultLayersParams, setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
 	import { type MapLayersParams } from "$src/lib/types/mapControls";
 	import type { Site } from "$src/lib/types/site";
@@ -26,12 +25,7 @@
 		vardate?: Date;
 		layersParams?: MapLayersParams;
 
-		// onMapClick?: (map: ml.Map, p: ml.PointLike, site?: Site, region?: RegionFeature, river?: RegionFeature) => void;
-		// onSearchItemSelect?: (item: Site) => void;
 	};
-
-	// let layersParams = $state<MapLayersParams>(defaultLayersParams);
-	// export function
 
 	let {
 		// selectedRegion,
@@ -51,10 +45,6 @@
 	export const mlmComponent = () => _mlmComponent;
 
 	let clientWidth = $state(0);
-
-	$effect(() => {
-		setEnabledDatasets(aremove(globalSites.allDatasets, "usgs"));
-	});
 
 	// const sites = $derived(globalSites.allEnabled);
 	// const emphasizedSites = $derived(Sites.forRegionFeature(sites, selectedRegion?.feature));
@@ -104,7 +94,7 @@
 	<MapLibreMap bind:this={_mlmComponent} bind:mlMap {layersParams} {...others} /> -->
 </div>
 
-{#if mlMap}
+<!-- {#if mlMap} -->
 	<!-- <MapTooltip
 		{selectedRegion}
 		{showRegionTooltip}
@@ -128,7 +118,7 @@
 		{selectedSite}
 		bind:hoveredSite={_hoveredSite}
 		{...others} /> -->
-{/if}
+<!-- {/if} -->
 
 <style>
 </style>
