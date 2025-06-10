@@ -11,21 +11,15 @@ import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import { siteIds, sites } from './sites.svelte';
 import { parseUTC1700Date } from '$src/lib/utils/date';
 import { defineGlobal } from '$src/lib/utils';
-
-export type SiteId = string;
-export const _sitesTables: Map<SiteId, ColumnTable> = new SvelteMap();
-
+import type { SiteId } from '$src/lib/types/site';
 
 export const siteDatasets = new SvelteMap<number, ColumnTable>();
 
-
-
-export const totalRecords = () => [..._sitesTables.values()].reduce((acc, tbl) => acc + tbl.numRows(), 0);
-
+export const totalRecords = () => [...siteDatasets.values()].reduce((acc, tbl) => acc + tbl.numRows(), 0);
 
 export async function loadDatasets() {
 	type DatasetRecord = Record<string, any> & { date: Date } & { siteId: SiteId };
-	const sitesRecords: Map<SiteId, DatasetRecord[]> = new Map();
+	const sitesRecords: Map<string, DatasetRecord[]> = new Map();
 
 	const finishedLoading = startedLoading("Datasets");
 
@@ -75,7 +69,6 @@ export async function loadDatasets() {
 
 	sitesRecords.forEach((records, siteId) => {
 		const tbl = aq.from(records).orderby('date').reify();
-		// _sitesTables.set(siteId, tbl);
 		const id = siteIds.get(siteId);
 		if (id === undefined) {
 			console.error(`Site integer ID not found for siteId: ${siteId}`);
@@ -85,7 +78,6 @@ export async function loadDatasets() {
 	});
 
 	defineGlobal('aq', aq);
-	defineGlobal('sites', sites);
 	defineGlobal('siteDatasets', siteDatasets);
 
 	finishedLoading();

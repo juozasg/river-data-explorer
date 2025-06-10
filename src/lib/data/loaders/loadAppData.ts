@@ -19,6 +19,7 @@ export async function loadAppData(manifest: DataManifest) {
 	console.log('Loading app data...');
 
 	loadMarkdown();
+	loadGeoindexData();
 
 	await loadDatasetsCsv();
 	console.log('datasetIds', datasetIds);
@@ -27,7 +28,6 @@ export async function loadAppData(manifest: DataManifest) {
 
 	loadFeatureCollections();
 	loadDatasets();
-	loadGeoindexData();
 	loadDatasetsUsgsWS();
 	// loadBasinFipsData();
 

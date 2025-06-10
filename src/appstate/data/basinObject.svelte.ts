@@ -1,9 +1,11 @@
 import { basinFeatureName, type BasinFeatureType } from "$src/appstate/data/basinFeatureCollection.svelte";
 import { sites } from "$src/appstate/data/sites.svelte";
-import { allVariableStats } from "$src/lib/data/stats";
+import { allVariableStats, allVarsDailyMedians, sitesDataStats } from "$src/lib/data/stats";
 import type { VariableStats } from "$src/lib/types/analysis";
 import { basinObjectTypeLabel } from "$src/lib/utils/prettyNames";
-import { _sitesTables, siteDatasets } from "./datasets.svelte";
+import type ColumnTable from "arquero/dist/types/table/column-table";
+import { siteDatasets } from "./datasets.svelte";
+import { sitesInRegion } from "./geoindexes.svelte";
 
 // export type BasinObjectType = 'site' | 'huc8' | 'huc10' | 'huc12' | 'state' | 'county' | 'river-catchment' | 'site-catchment'; // | 'custom';
 export type BasinObjectType = Exclude<BasinFeatureType, 'river'>;
@@ -85,6 +87,23 @@ export class BasinObject {
 				if (!table) return [];
 
 				return allVariableStats(table!);
+			case 'huc8':
+			case 'huc10':
+			case 'huc12':
+			case 'state':
+			case 'county':
+			case 'river-catchment':
+			case 'site-catchment':
+				const sites = sitesInRegion(this.objectType, this.id!);
+				// const sitesStats = sitesDataStats(sites);
+				const tables = sites.map((s) => siteDatasets.get(s.id)).filter((t) => t) as ColumnTable[];
+
+				const dailyMedians = allVarsDailyMedians(tables);
+
+				return allVariableStats(dailyMedians, {
+					errorLabel: sites.map((s) => s.siteId).join(", ")
+				});
+
 			default:
 				return [];
 		}

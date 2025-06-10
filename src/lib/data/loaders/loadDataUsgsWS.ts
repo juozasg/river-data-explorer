@@ -5,10 +5,12 @@ import { notify } from "$src/appstate/ui/notifications.svelte";
 // import { strftime } from "$lib/utils/strftime";
 // import { oneMonthAgo } from "$lib/utils";
 // import { usgsStationIds } from "./loadSitesUsgsWS";
-import { _sitesTables, type SiteId } from "$src/appstate/data/datasets.svelte";
 import { variablesMetadata, type VariablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import { retryingFetch } from '$src/lib/utils/retryingFetch';
 import { parseUTC1700Date } from '$src/lib/utils/date';
+import type { SiteId } from '$src/lib/types/site';
+import { siteDatasets } from '$src/appstate/data/datasets.svelte';
+import { siteIds } from '$src/appstate/data/sites.svelte';
 
 export async function loadDatasetsUsgsWS() {
 	const finishedLoading = startedLoading("USGS Datasets");
@@ -82,7 +84,12 @@ function usgsTimeseriesToSiteTables(timeSeries: any) {
 	for (const [siteId, dateValues] of Object.entries(siteDateValues)) {
 		const records = Object.entries(dateValues).map(([, v]) => v);
 		const table = aq.from(records).orderby('date').reify();
-		_sitesTables.set(siteId, table);
+		const id = siteIds.get(siteId);
+		if (id === undefined) {
+			console.error(`Site integer ID not found for siteId: ${siteId}`);
+			continue;
+		}
+		siteDatasets.set(id, table);
 		// console.log('usg site table sample', siteId, table.sample(5).objects());
 	}
 }

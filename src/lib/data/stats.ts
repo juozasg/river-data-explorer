@@ -4,10 +4,10 @@ import type ColumnTable from 'arquero/dist/types/table/column-table';
 import type { SitesDataStats, VariableStats } from "$lib/types/analysis";
 import type { Site } from "$lib/types/site";
 import { fmtDateDMonY } from '../utils/date';
-import { _sitesTables } from '$src/appstate/data/datasets.svelte';
 import { concatTablesAllColumns } from './siteTableHelpers';
 import { isCategoricalVar, variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import { varcategories, varlabel } from '../utils/varHelpers';
+import { siteDatasets } from '$src/appstate/data/datasets.svelte';
 
 
 export function columnMeans(table: ColumnTable): any {
@@ -26,7 +26,7 @@ export function sitesDataStats(sites: Site[]): SitesDataStats {
 		}
 
 		const numSites = sites.length;
-		const tables: ColumnTable[] = sites.map(site => _sitesTables.get(site.siteId)).filter(t => t !== undefined && t.numRows() > 0) as ColumnTable[];
+		const tables: ColumnTable[] = sites.map(site => siteDatasets.get(site.id)).filter(t => t !== undefined && t.numRows() > 0) as ColumnTable[];
 		if (tables.length === 0) {
 			return noSitesStats;
 		}

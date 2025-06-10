@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import  * as aq from 'arquero';
 
 	import { _sitesTables } from '$src/appstate/data/datasets.svelte';
@@ -42,4 +42,4 @@
 		width: 100%;
 		font-size: 0.8rem;
 	}
-</style>
+</style> -->

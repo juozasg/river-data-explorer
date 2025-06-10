@@ -2,6 +2,7 @@ import { loadDataCsv } from "$lib/data/cachedDataLoad";
 import { dataPathsStartingWith } from "$lib/data/loaders/loadAppData";
 import type { Site } from "$lib/types/site";
 import { siteIds, sites } from "$src/appstate/data/sites.svelte";
+import { defineGlobal } from "$src/lib/utils";
 import { startedLoading } from "../../../appstate/ui/loadingItem.svelte";
 
 
@@ -44,6 +45,9 @@ export async function loadSitesCsv(datasetIds: Map<string, number>) {
 		siteIds.set(site.siteId, site.id);
 		sites.set(site.id, site);
 	}
+
+	defineGlobal('sites', sites);
+	defineGlobal('siteIds', siteIds);
 
 	finishedLoading();
 }

@@ -3,7 +3,7 @@ import snarkdown from 'snarkdown';
 import { variablesBriefMarkdown } from '$src/appstate/variablesMetadata.svelte';
 import * as aq from 'arquero';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
-import { _sitesTables, siteDatasets } from '$src/appstate/data/datasets.svelte';
+import { siteDatasets } from '$src/appstate/data/datasets.svelte';
 import type { Site } from '../types/site';
 import { varcategories } from '../utils/varHelpers';
 import { dateEqualYMD } from '../utils/date';
@@ -103,14 +103,13 @@ export function tableIndexBeforeDate(table: ColumnTable, date: Date, fromIndex =
 
 
 export function siteGetBeforeDate(site: Site, varname: string, date?: Date): number | Date | undefined {
-	const table = _sitesTables.get(site.siteId);
+	const table = siteDatasets.get(site.id);
 	if (!table) return undefined;
 	return tableGetBeforeDate(table, varname, date);
 }
 
 export function siteBeforeVardateValue(id: number, varname: string, beforeDate?: Date): number | string | undefined {
 	try {
-		// const table = _sitesTables.get(siteid);
 		const table = siteDatasets.get(id);
 		if (!table) return;
 
