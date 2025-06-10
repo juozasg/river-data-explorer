@@ -73,16 +73,23 @@
 
 	.variable-label {
 		padding-left: 0 !important;
+		/* width: 300px !important; */
 	}
 
 	.flexblock {
+		/* width: 100px !important; */
 		display: flex;
 		flex-wrap: nowrap;
 		flex-direction: row;
+		/* min-width: 100px !important; */
 	}
 
 	.text-block {
+		/* min-width: 100px !important; */
+		/* width: 200px;; */
 		position: relative;
-		width: 100%;
+		/* width: 100%; */
+		display: inline-block;
+		min-width: 120px;
 	}
 </style>

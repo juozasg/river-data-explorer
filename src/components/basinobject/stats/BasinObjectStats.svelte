@@ -64,6 +64,7 @@
 <style>
 	.stats-table-container {
 		height: 100%;
+		overflow-x: hidden;
 
 		font-size: 90%;
 		display: flex;

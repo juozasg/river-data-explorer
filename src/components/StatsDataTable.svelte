@@ -11,7 +11,7 @@
 
 
 
-<div class="fade-container">
+<!-- <div class="fade-container"> -->
 	<div class="table-container">
 		<table class="table is-striped is-narrow">
 			<thead>
@@ -24,7 +24,7 @@
 			</tbody>
 		</table>
 	</div>
-</div>
+<!-- </div> -->
 
 <style>
 	table {
@@ -87,11 +87,11 @@
 		content: '';
 		position: absolute;
 		z-index: 1;
-		bottom: 0;
+		bottom: 5px;
 		left: 0;
 		/* background-color: green; */
 		pointer-events: none;
-		background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
+		background-image: linear				N/A-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
 		width: 100%;
 		height: 2.5em;
 	}
