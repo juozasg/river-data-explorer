@@ -1,5 +1,5 @@
 import { startedLoading } from "$src/appstate/ui/loadingItem.svelte";
-import { sites } from "$src/appstate/data/sites.svelte";
+import { _sites } from "$src/appstate/data/sites.svelte";
 import { notify } from "$src/appstate/ui/notifications.svelte";
 import type { Site } from "$src/lib/types/site";
 import { StateFips, StateCountyFips } from "$src/lib/types/fips";
@@ -31,7 +31,7 @@ function usgsTimeseriesToSites(timeSeries: any) {
 		const siteCode = ts.sourceInfo.siteCode[0].value;
 		const siteId = `usgs-${siteCode}`;
 
-		if(sites.findBySiteId(siteId)) continue;
+		if(_sites.findBySiteId(siteId)) continue;
 
 		const loc = ts.sourceInfo.geoLocation.geogLocation;
 		const site: Site = {
@@ -51,7 +51,7 @@ function usgsTimeseriesToSites(timeSeries: any) {
 			huc8: '',
 		};
 
-		sites.add(site);
+		_sites.add(site);
 	}
 	// console.log('sites including USGS', [...sites.all.map(s => s.siteId)]);
 }

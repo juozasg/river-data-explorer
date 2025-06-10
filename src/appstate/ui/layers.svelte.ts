@@ -12,7 +12,6 @@ export function setBasemapStyleId(styleId: BasemapStyleId) {
 export const defaultLayersParams: MapLayersParams = {
 	riverLayerVisible: true,
 	baseStyleId: 'TOPO',
-	regionType: 'huc10',
 	ghostSitesVisible: false
 };
 

@@ -8,14 +8,16 @@ import { startedLoading } from '../ui/loadingItem.svelte';
 import { dataPathsStartingWith } from '$src/lib/data/loaders/loadAppData';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
 import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
-import { sites } from './sites.svelte';
+import { _sites } from './sites.svelte';
 import { parseUTC1700Date } from '$src/lib/utils/date';
 import { defineGlobal } from '$src/lib/utils';
 
 export type SiteId = string;
-export const sitesTables: Map<SiteId, ColumnTable> = new SvelteMap();
+export const _sitesTables: Map<SiteId, ColumnTable> = new SvelteMap();
 
-export const totalRecords = () => [...sitesTables.values()].reduce((acc, tbl) => acc + tbl.numRows(), 0);
+
+
+export const totalRecords = () => [..._sitesTables.values()].reduce((acc, tbl) => acc + tbl.numRows(), 0);
 
 
 export async function loadDatasets() {
@@ -70,12 +72,12 @@ export async function loadDatasets() {
 
 	sitesRecords.forEach((records, siteId) => {
 		const tbl = aq.from(records).orderby('date').reify();
-		sitesTables.set(siteId, tbl);
+		_sitesTables.set(siteId, tbl);
 	});
 
 	defineGlobal('aq', aq);
-	defineGlobal('sites', sites);
-	defineGlobal('sitesTables', sitesTables);
+	defineGlobal('sites', _sites);
+	defineGlobal('sitesTables', _sitesTables);
 
 	finishedLoading();
 }

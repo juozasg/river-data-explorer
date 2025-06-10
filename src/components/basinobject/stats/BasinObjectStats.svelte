@@ -10,8 +10,8 @@
 
 	type Props = {
 		basinObject: BasinObject;
-		varLabelClick: (name: string) => void;
-		varGraphButtonClick: (name: string, axis: "y" | "z", clearGraph: boolean) => void;
+		varLabelClick?: (name: string) => void;
+		varGraphButtonClick?: (name: string, axis: "y" | "z", clearGraph: boolean) => void;
 	};
 
 	const {
@@ -24,7 +24,7 @@
 		}
 	}: Props = $props();
 
-	const rows: VariableStats[] = $derived(basinObject.allVariableStats);
+	const rows: VariableStats[] = $derived(basinObject.allVariableStats.concat(basinObject.allVariableStats));
 </script>
 
 <div class="stats-table-container">

@@ -3,7 +3,7 @@ import { autoSelectBasinObjectsOnClick } from '$src/lib/data/selectionHelpers';
 import type { Site } from '$src/lib/types/site';
 import * as ml from 'maplibre-gl';
 import { findBasinFeatureById, basinFeatureCollections } from '../data/basinFeatureCollection.svelte';
-import { sites } from '../data/sites.svelte';
+import { _sites } from '../data/sites.svelte';
 import { basinObject1, basinObject2, mapSelectionMode, mapSelectionTargetObject } from '../selection/basinObjectSelection.svelte';
 import { setSelectedPanel } from '../ui/layout.svelte';
 import { setMapCursor } from './mapMouse.svelte';
@@ -121,7 +121,7 @@ export class MapHoverSelectionController {
 			return;
 		}
 
-		this.#hoveredSite = sites.findById(site.id);
+		this.#hoveredSite = _sites.findById(site.id);
 
 		if (mapSelectionMode.mode === 'auto' || mapSelectionMode.mode === 'site-catchment') {
 			const siteCatchment = findBasinFeatureById('site-catchment', site.id);

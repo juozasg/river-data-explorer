@@ -3,7 +3,7 @@ import { dataPathsStartingWith } from "$lib/data/loaders/loadAppData";
 import type { Site } from "$lib/types/site";
 import { StateCountyFips, StateFips } from "$src/lib/types/fips";
 import { startedLoading } from "../../../appstate/ui/loadingItem.svelte";
-import { splitSiteId, sites } from "../../../appstate/data/sites.svelte";
+import { splitSiteId, _sites } from "../../../appstate/data/sites.svelte";
 
 
 
@@ -43,10 +43,10 @@ export async function loadSitesCsv(datasetIds: Map<string, number>) {
 		// 	continue;
 		// }
 
-		sites.add(site);
+		_sites.add(site);
 	}
 
-	sites.reindexGeometries();
+	_sites.reindexGeometries();
 
 	finishedLoading();
 }

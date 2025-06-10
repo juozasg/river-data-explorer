@@ -1,11 +1,10 @@
 import * as aq from 'arquero';
 
 import type { Site } from "$lib/types/site";
-import { sitesTables } from "./datasets.svelte";
-import { sitesGeoindex } from "./geoindexes.svelte";
+import { _sitesTables } from "./datasets.svelte";
 import { enabledDatasets } from '../ui/layers.svelte';
-import { regionTypes, type RegionFeature } from './_regionFeatures.svelte';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
+import type { BasinObject, BasinObjectType } from './basinObject.svelte';
 
 export class Sites {
 	#sites: Site[] = $state([]);
@@ -16,7 +15,7 @@ export class Sites {
 
 	withDataTables(onlyEnabled = false) {
 		// console.log('with data tables', sitesTables.size, this.#sites.length)
-		const keys = Array.from(sitesTables.keys());
+		const keys = Array.from(_sitesTables.keys());
 		const sts = onlyEnabled ? this.allEnabled : this.all;
 		return sts.filter(s => keys.includes(s.siteId));
 	}
@@ -40,10 +39,19 @@ export class Sites {
 		return [...Sites.groupedBy(this.#sites, 'dataset').keys()];
 	}
 
-	static forRegionFeature(sites: Site[], region?: RegionFeature) {
-		if (!region) return [];
-		const regionType = region.regionType; // for example: 'huc10'
-		return sites.filter(s => (s as any)[regionType] === region.id);
+	// static forRegionFeature(sites: Site[], region?: RegionFeature) {
+
+	// }
+
+	forBasinObject(object: BasinObject) {
+		return this.forBasinObjectId(object.objectType, object.id);
+	}
+
+	forBasinObjectId(objectType?: BasinObjectType, id?: number) {
+		if (!objectType || id === undefined) return [];
+		// return this.#sites.filter(s => (s as any)[objectType] === id);
+		// TODO: implement this properly
+		return [];
 	}
 
 	findBySiteId(siteId: string) {
@@ -56,23 +64,24 @@ export class Sites {
 
 
 	reindexGeometries() {
-		for (const site of this.#sites) {
-			regionTypes.forEach((rt) => {
-				if (rt !== 'custom') {
-					(site[rt] as any) = sitesGeoindex[site.siteId]?.[rt] as string || '';
-				}
-			});
-		}
+		// TODO: implement this properly
+		// 		for (const site of this.#sites) {
+		// 			regionTypes.forEach((rt) => {
+		// 				if (rt !== 'custom') {
+		// 					(site[rt] as any) = sitesGeoindex[site.siteId]?.[rt] as string || '';
+		// 				}
+		// 			});
+		// 		}
 	}
 }
 
-export const sites = new Sites();
+export const _sites = new Sites();
 
-export const siteTablesForRegion = (sites: Site[], region: RegionFeature) => {
-	const regionType = region.regionType;
-	const regionSites = sites.filter(s => (s as any)[regionType] === region.id);
-	return regionSites.map(s => sitesTables.get(s.siteId)).filter(t => t) as ColumnTable[];
-}
+// export const siteTablesForRegion = (sites: Site[], region: RegionFeature) => {
+// 	const regionType = region.regionType;
+// 	const regionSites = sites.filter(s => (s as any)[regionType] === region.id);
+// 	return regionSites.map(s => sitesTables.get(s.siteId)).filter(t => t) as ColumnTable[];
+// }
 
 export function splitSiteId(siteId: string): { dataset: string, num: number } {
 	const [dataset, ns] = siteId.split('-');

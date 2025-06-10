@@ -3,9 +3,9 @@
 
 	import TdStatsVariableLabel from "./TdStatsVariableLabel.svelte";
 
-	import { sitesTables } from "$src/appstate/data/datasets.svelte";
+	import { _sitesTables } from "$src/appstate/data/datasets.svelte";
 	import { regionEqual, type RegionFeature } from "$src/appstate/data/_regionFeatures.svelte";
-	import { Sites, sites } from "$src/appstate/data/sites.svelte";
+	import { Sites, _sites } from "$src/appstate/data/sites.svelte";
 	import { allVariableStats, allVarsDailyMedians, sitesDataStats } from "$src/lib/data/stats";
 	import type { VariableStats } from "$src/lib/types/analysis";
 	import { fmtVarNum, varunits } from "$src/lib/utils/varHelpers";
@@ -26,10 +26,10 @@
 	let { varLabelClick, varGraphButtonClick, region, dataSelection }: Props = $props();
 
 	// const sitesInRegion = $derived(sites.allEnabled.filter((s) => s.huc10 === region?.id));
-	const sitesInRegion = $derived(Sites.forRegionFeature(sites.allEnabled, region));
+	const sitesInRegion = $derived(Sites.forRegionFeature(_sites.allEnabled, region));
 
 	const sitesStats = $derived(sitesDataStats(sitesInRegion));
-	const sitesInAreaTables = $derived(sitesInRegion.map((s) => sitesTables.get(s.siteId)).filter((t) => t)) as ColumnTable[];
+	const sitesInAreaTables = $derived(sitesInRegion.map((s) => _sitesTables.get(s.siteId)).filter((t) => t)) as ColumnTable[];
 
 	const rows: VariableStats[] = $derived.by(() => {
 		// dont bother with empty tables

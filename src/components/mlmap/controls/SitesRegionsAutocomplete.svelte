@@ -1,7 +1,7 @@
 <script lang="ts">
 	// import ArrowDropRight from '$src/components/icons/ArrowDropRight.svelte';
 	import AutoComplete from "simple-svelte-autocomplete";
-	import { sites } from "$src/appstate/data/sites.svelte";
+	import { _sites } from "$src/appstate/data/sites.svelte";
 	import type { Site } from "$src/lib/types/site";
 	import { onMount, untrack } from "svelte";
 	import InlineBlockIconify from "../../icons/InlineBlockIconify.svelte";
@@ -68,7 +68,7 @@
 	<!-- style="--maxWidth: {maxWidth}" -->
 	<!-- items={sites.allEnabled.sort(itemSortFunction)} -->
 	<AutoComplete
-		items={sites.all}
+		items={_sites.all}
 		labelFieldName="id"
 		valueFieldName="id"
 		keywordsFunction={(s: Site) => s.name + " " + s.dataset + " " + s.num + " " + s.siteId + " site"}

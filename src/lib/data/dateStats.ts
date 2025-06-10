@@ -1,5 +1,5 @@
 
-import { sitesTables } from "$src/appstate/data/datasets.svelte";
+import { _sitesTables } from "$src/appstate/data/datasets.svelte";
 import type ColumnTable from "arquero/dist/types/table/column-table";
 import type { Site } from "../types/site";
 import { todayDate } from "$src/lib/utils/date";
@@ -17,7 +17,7 @@ export function sitesLatestDate(sites: Site[]): Date {
 	// after slow loading USGS datasets become available
 	if (sites.find(s => s.dataset == 'usgs')) return todayDate;
 
-	const tables = sites.map((s) => sitesTables.get(s.siteId)).filter((t) => t);
+	const tables = sites.map((s) => _sitesTables.get(s.siteId)).filter((t) => t);
 	const lastDates = tables.map((t) => t?.get('date', t.numRows() - 1)).filter((d) => d) as Date[];
 	if (lastDates.length === 0) return todayDate;
 	return new Date(Math.max(...lastDates.map((d) => d.valueOf())));
@@ -25,7 +25,7 @@ export function sitesLatestDate(sites: Site[]): Date {
 
 
 export function sitesValidDates(sites: Site[], varname: string): Date[] {
-	const fullTables = sites.map((s) => sitesTables.get(s.siteId))
+	const fullTables = sites.map((s) => _sitesTables.get(s.siteId))
 		.filter((t) => t)
 		.filter((t) => t?.columnNames().includes(varname) && t?.columnNames().includes('date') && t?.numRows() > 0) as ColumnTable[];
 

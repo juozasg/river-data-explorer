@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Site } from "$lib/types/site";
-	import { sites, Sites } from "$src/appstate/data/sites.svelte";
+	import { _sites, Sites } from "$src/appstate/data/sites.svelte";
 	import { aremove } from "$src/lib/utils/arrays";
 	import { chartYColor, chartZDarker } from "$src/lib/utils/colors";
 
@@ -25,7 +25,7 @@
 	}: any = $props();
 
 	const availableVars = $derived(aremove(table?.columnNames(), "invertNarrative", "date") || []);
-	const availableDatasetSites = $derived(Sites.groupedBy(sites.withDataTables(), "dataset"));
+	const availableDatasetSites = $derived(Sites.groupedBy(_sites.withDataTables(), "dataset"));
 	const availableDatasetNames = $derived([...availableDatasetSites.keys()]);
 	const availableTableNums = $derived(availableDatasetSites.get(dataset)?.map((s: Site) => s.num) || []);
 

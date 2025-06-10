@@ -2,7 +2,7 @@
 	import * as ml from "maplibre-gl";
 	import { onMount } from "svelte";
 
-	import { MapFeatureSelectionState } from "$src/appstate/map/featureState.svelte";
+	// import { MapFeatureSelectionState } from "$src/appstate/map/_featureState.svelte";
 	import { tooltip } from "$src/appstate/ui/tooltips.svelte";
 	import { sitesDataStats } from "$src/lib/data/stats";
 	import { siteGetBeforeDate } from "$src/lib/data/siteTableHelpers";
@@ -14,7 +14,8 @@
 	import TooltipSiteStats from "../tooltips/TooltipContentSiteStats.svelte";
 	import { Sites } from "$src/appstate/data/sites.svelte";
 	import { mapMouseLocation } from "$src/appstate/map/mapMouse.svelte";
-	import { regionEqual, regionTypes, type RegionFeature } from "$src/appstate/data/_regionFeatures.svelte";
+	import type { BasinObject } from "$src/appstate/data/basinObject.svelte";
+	// import { regionEqual, regionTypes, type RegionFeature } from "$src/appstate/data/_regionFeatures.svelte";
 
 	type Props = {
 		sites: Site[];
@@ -23,9 +24,7 @@
 		varname: string;
 		vardate: Date;
 		showRegionTooltip?: boolean;
-		hoveredRegion: MapFeatureSelectionState;
-		hoveredRiver: MapFeatureSelectionState;
-		selectedRegion?: MapFeatureSelectionState;
+		hoveredObject?: BasinObject;
 	};
 
 	let {
@@ -35,26 +34,27 @@
 		varname,
 		vardate,
 		showRegionTooltip = false,
-		hoveredRiver,
-		hoveredRegion,
-		selectedRegion
+		hoveredObject = undefined,
+		// hoveredRegion,
+		// selectedRegion
 	}: Props = $props();
 
 	const siteStats = $derived(site ? sitesDataStats([site]) : undefined);
-	const regionSites = $derived(Sites.forRegionFeature(sites, hoveredRegion.feature));
+	// const regionSites = $derived(Sites.forRegionFeature(sites, hoveredRegion.feature));
+	const regionSites = [] as Site[];
 
 	// const getStats = (sites: Site[]) => {
 	// 	return bm('siteDataStats', () => sitesDataStats(sites));
 	// };
 	const regionStats = $derived(regionSites.length > 0 ? sitesDataStats(regionSites) : undefined);
 
-	const regionNameLabel = (feature: RegionFeature) => {
-		const rt = feature.regionType;
-		if (rt == "county") return feature.name + " County";
-		// if (rt == "state") return feature.name + " State";
-		if (rt == "huc8") return "St. Joseph River Basin";
-		return feature.name;
-	};
+	// const regionNameLabel = (feature: RegionFeature) => {
+	// 	const rt = feature.regionType;
+	// 	if (rt == "county") return feature.name + " County";
+	// 	// if (rt == "state") return feature.name + " State";
+	// 	if (rt == "huc8") return "St. Joseph River Basin";
+	// 	return feature.name;
+	// };
 
 
 
@@ -67,34 +67,34 @@
 		// });
 		mlMap.on("mousemove", (e: ml.MapMouseEvent) => {
 
-			hoveredRiver.feature = queryMouseMoveHover(e, ["riverapp-river"], 10);
-			hoveredRegion.feature = queryMouseMoveHover(
-				e,
-				regionTypes.map((rt) => `riverapp-${rt}`),
-				10
-			);
+		// 	hoveredRiver.feature = queryMouseMoveHover(e, ["riverapp-river"], 10);
+		// 	hoveredRegion.feature = queryMouseMoveHover(
+		// 		e,
+		// 		regionTypes.map((rt) => `riverapp-${rt}`),
+		// 		10
+		// 	);
 
-			if (hoveredRiver.feature || (showRegionTooltip && hoveredRegion.feature) || site) {
-				// console.log('show tooltuip', e.originalEvent.x, e.originalEvent.y, site, hoveredRegion.feature, hoveredRiver.feature);
-				tooltip.show(e.originalEvent.x, e.originalEvent.y, true);
-				tooltip.content = tooltipContent;
-				mapMouseLocation.onHover(site, hoveredRegion.feature);
-				// console.log(hoveredRegion.feature);
-			} else {
-				tooltip.hide();
-			}
+		// 	if (hoveredRiver.feature || (showRegionTooltip && hoveredRegion.feature) || site) {
+		// 		// console.log('show tooltuip', e.originalEvent.x, e.originalEvent.y, site, hoveredRegion.feature, hoveredRiver.feature);
+		// 		tooltip.show(e.originalEvent.x, e.originalEvent.y, true);
+		// 		tooltip.content = tooltipContent;
+		// 		mapMouseLocation.onHover(site, hoveredRegion.feature);
+		// 		// console.log(hoveredRegion.feature);
+		// 	} else {
+		// 		tooltip.hide();
+		// 	}
 
-			if((hoveredRegion.feature && !selectedRegion?.feature) ||
-			(!site && hoveredRegion.feature && selectedRegion?.feature && !regionEqual(hoveredRegion?.feature, selectedRegion?.feature)))
-			 {
-				// console.log('make hovered region yellow')
-				mlMap.setFeatureState({ source: hoveredRegion?.feature.mlSource, id: hoveredRegion.feature.id }, { willbeselected: true });
+		// 	if((hoveredRegion.feature && !selectedRegion?.feature) ||
+		// 	(!site && hoveredRegion.feature && selectedRegion?.feature && !regionEqual(hoveredRegion?.feature, selectedRegion?.feature)))
+		// 	 {
+		// 		// console.log('make hovered region yellow')
+		// 		mlMap.setFeatureState({ source: hoveredRegion?.feature.mlSource, id: hoveredRegion.feature.id }, { willbeselected: true });
 
-				// selectedRegion.feature = hoveredRegion.feature;
-			} else if(hoveredRegion.feature) {
-				// console.log('not yellow!')
-				mlMap.setFeatureState({ source: hoveredRegion?.feature.mlSource, id: hoveredRegion.feature.id }, { willbeselected: false });
-			}
+		// 		// selectedRegion.feature = hoveredRegion.feature;
+		// 	} else if(hoveredRegion.feature) {
+		// 		// console.log('not yellow!')
+		// 		mlMap.setFeatureState({ source: hoveredRegion?.feature.mlSource, id: hoveredRegion.feature.id }, { willbeselected: false });
+		// 	}
 		});
 	});
 
@@ -126,9 +126,8 @@
 {/snippet}
 
 {#snippet tooltipContent()}
-	{#if hoveredRiver.feature}
+	<!-- {#if hoveredRiver.feature}
 		<h5 class="river">River: {hoveredRiver.name}</h5>
-		<!-- <i>ID: {hoveredRiver.id}</i> -->
 	{/if}
 	{#if showRegionTooltip && hoveredRegion.feature}
 		<h5 class="region" class:tooltip-section={!!hoveredRiver.feature}>
@@ -150,7 +149,7 @@
 		{#if siteStats}
 			<TooltipSiteStats stats={siteStats} />
 		{/if}
-	{/if}
+	{/if} -->
 {/snippet}
 
 <style>

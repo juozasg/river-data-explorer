@@ -1,15 +1,15 @@
 <script lang="ts">
 	import  * as aq from 'arquero';
 
-	import { sitesTables } from '$src/appstate/data/datasets.svelte';
+	import { _sitesTables } from '$src/appstate/data/datasets.svelte';
 	import { columnMeans } from '$src/lib/data/stats';
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
 	import { onMount } from 'svelte';
 
-	const invert1: ColumnTable | undefined = $derived(sitesTables.get('invert-1'));
+	const invert1: ColumnTable | undefined = $derived(_sitesTables.get('invert-1'));
 	const invert1Means = $derived(invert1 && columnMeans(invert1));
 
-	const invertTables = $derived([...sitesTables].filter(([k, v]) => k.includes('invert')).map(([k, v]) => v));
+	const invertTables = $derived([..._sitesTables].filter(([k, v]) => k.includes('invert')).map(([k, v]) => v));
 	const inverts = $derived(invertTables.length > 0 ? invertTables.reduce((acc, t) => acc.concat(t)) : undefined);
 
 	onMount(() => {

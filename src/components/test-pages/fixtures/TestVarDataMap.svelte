@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
-	import { sites } from "$src/appstate/data/sites.svelte";
+	import { _sites } from "$src/appstate/data/sites.svelte";
 	import VarDataMap from "$src/components/mlmap/VarDataMap.svelte";
 	import type { Site } from "$src/lib/types/site";
 	import { onMount } from "svelte";
@@ -14,7 +14,7 @@
 	});
 
 	$effect(() => {
-		const s = sites.allEnabled.find((s) => s.siteId === "sjrbc-1");
+		const s = _sites.allEnabled.find((s) => s.siteId === "sjrbc-1");
 		if (s) {
 			// selectedSite = s;
 		}

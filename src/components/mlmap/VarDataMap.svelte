@@ -4,13 +4,10 @@
 
 	import VarDataMarkers from "./VarDataMarkers.svelte";
 
-	import type { MapLibreMapProps } from "$src/lib/types/components";
 	import MapLibreMap from "./MapLibreMap.svelte";
 
 	import type { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
-	import type { RegionFeature } from "$src/appstate/data/_regionFeatures.svelte";
-	import { MapFeatureSelectionState, toggleHoveredFeatureState } from "$src/appstate/map/featureState.svelte";
-	import { sites as globalSites, Sites } from "$src/appstate/data/sites.svelte";
+	import { _sites as globalSites, Sites } from "$src/appstate/data/sites.svelte";
 	import { defaultLayersParams, setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
 	import { type MapLayersParams } from "$src/lib/types/mapControls";
 	import type { Site } from "$src/lib/types/site";
@@ -21,27 +18,27 @@
 
 	type Props = {
 		dataSelection: ChartDataSelectionState;
-		selectedRegion?: MapFeatureSelectionState;
-		selectedRiver?: MapFeatureSelectionState;
+		// selectedRegion?: MapFeatureSelectionState;
+		// selectedRiver?: MapFeatureSelectionState;
 		selectedSite?: Site;
 		showRegionTooltip?: boolean;
 		varname?: string;
 		vardate?: Date;
 		layersParams?: MapLayersParams;
 
-		onMapClick?: (map: ml.Map, p: ml.PointLike, site?: Site, region?: RegionFeature, river?: RegionFeature) => void;
-		onSearchItemSelect?: (item: Site) => void;
-	} & Partial<MapLibreMapProps>;
+		// onMapClick?: (map: ml.Map, p: ml.PointLike, site?: Site, region?: RegionFeature, river?: RegionFeature) => void;
+		// onSearchItemSelect?: (item: Site) => void;
+	};
 
 	// let layersParams = $state<MapLayersParams>(defaultLayersParams);
 	// export function
 
 	let {
-		selectedRegion,
-		selectedRiver,
+		// selectedRegion,
+		// selectedRiver,
 		selectedSite,
-		onMapClick,
-		onSearchItemSelect,
+		// onMapClick,
+		// onSearchItemSelect,
 		showRegionTooltip = true,
 		dataSelection,
 		varname = $bindable("ecoli"),
@@ -57,36 +54,35 @@
 
 	$effect(() => {
 		setEnabledDatasets(aremove(globalSites.allDatasets, "usgs"));
-		// setEnabledDatasets(['sjrbc']);
 	});
 
-	const sites = $derived(globalSites.allEnabled);
-	const emphasizedSites = $derived(Sites.forRegionFeature(sites, selectedRegion?.feature));
+	// const sites = $derived(globalSites.allEnabled);
+	// const emphasizedSites = $derived(Sites.forRegionFeature(sites, selectedRegion?.feature));
 
-	let mlMap = $state<ml.Map>();
-	export const mlmMap = () => mlMap;
+	// let mlMap = $state<ml.Map>();
+	// export const mlmMap = () => mlMap;
 
-	let _hoveredSite = $state<Site>();
-	export const hoveredSite = () => _hoveredSite;
-	export const hoveredRegion = new MapFeatureSelectionState((c, u) =>
-		toggleHoveredFeatureState(mlMap, c, u, selectedRegion?.feature, _hoveredSite)
-	);
-	export const hoveredRiver = new MapFeatureSelectionState((c, u) =>
-		toggleHoveredFeatureState(mlMap, c, u, undefined, undefined)
-	);
+	// let _hoveredSite = $state<Site>();
+	// export const hoveredSite = () => _hoveredSite;
+	// export const hoveredRegion = new MapFeatureSelectionState((c, u) =>
+	// 	toggleHoveredFeatureState(mlMap, c, u, selectedRegion?.feature, _hoveredSite)
+	// );
+	// export const hoveredRiver = new MapFeatureSelectionState((c, u) =>
+	// 	toggleHoveredFeatureState(mlMap, c, u, undefined, undefined)
+	// );
 
-	onMount(() => {
-		mlMap!.on("click", (e) => onMapClick?.(mlMap!, e.point, _hoveredSite, hoveredRegion.feature, hoveredRiver.feature));
-		_mlmComponent?.mapDivElement()?.addEventListener("mouseleave", () => {
-			hoveredRegion.feature = undefined;
-			hoveredRiver.feature = undefined;
-		});
-	});
+	// onMount(() => {
+	// 	mlMap!.on("click", (e) => onMapClick?.(mlMap!, e.point, _hoveredSite, hoveredRegion.feature, hoveredRiver.feature));
+	// 	_mlmComponent?.mapDivElement()?.addEventListener("mouseleave", () => {
+	// 		hoveredRegion.feature = undefined;
+	// 		hoveredRiver.feature = undefined;
+	// 	});
+	// });
 
-	let dataMapControls = $state<DataMapControls>();
-	export function setDate(d: Date) {
-		dataMapControls?.setDate(d);
-	}
+	// let dataMapControls = $state<DataMapControls>();
+	// export function setDate(d: Date) {
+	// 	dataMapControls?.setDate(d);
+	// }
 
 	// $effect(() => {
 	// 	console.log('VDM vardate', vardate)
@@ -95,7 +91,7 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="map-with-controls" style="position: relative; height:100%" bind:clientWidth>
-	<DataMapControls
+	<!-- <DataMapControls
 		bind:this={dataMapControls}
 		{sites}
 		{selectedSite}
@@ -105,11 +101,11 @@
 		bind:vardate
 		mapWidth={clientWidth} />
 
-	<MapLibreMap bind:this={_mlmComponent} bind:mlMap {layersParams} {...others} />
+	<MapLibreMap bind:this={_mlmComponent} bind:mlMap {layersParams} {...others} /> -->
 </div>
 
 {#if mlMap}
-	<MapTooltip
+	<!-- <MapTooltip
 		{selectedRegion}
 		{showRegionTooltip}
 		{mlMap}
@@ -131,7 +127,7 @@
 		{emphasizedSites}
 		{selectedSite}
 		bind:hoveredSite={_hoveredSite}
-		{...others} />
+		{...others} /> -->
 {/if}
 
 <style>

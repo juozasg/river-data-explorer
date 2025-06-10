@@ -1,14 +1,14 @@
 <script lang="ts">
 	import  * as aq from 'arquero';
 
-	import { sitesTables } from '$src/appstate/data/datasets.svelte';
+	import { _sitesTables } from '$src/appstate/data/datasets.svelte';
 	import { columnMeans } from '$src/lib/data/stats';
 	import type ColumnTable from 'arquero/dist/types/table/column-table';
 	import { onMount } from 'svelte';
 	import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 
-	const sjrbcSites = $derived([...sitesTables.keys()].filter(k => k.startsWith('')));
-	const sjrbcCols = $derived([...new Set(sjrbcSites.map(k => sitesTables.get(k)?.columnNames()).flat())]);
+	const sjrbcSites = $derived([..._sitesTables.keys()].filter(k => k.startsWith('')));
+	const sjrbcCols = $derived([...new Set(sjrbcSites.map(k => _sitesTables.get(k)?.columnNames()).flat())]);
 	onMount(() => {
 		console.log('variablesMetadata', variablesMetadata)
 	});

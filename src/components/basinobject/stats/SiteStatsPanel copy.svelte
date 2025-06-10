@@ -2,7 +2,7 @@
   import SelectedSiteHeader from './SelectedSiteHeader.svelte';
 
 	import type { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
-	import { sitesTables } from "$src/appstate/data/datasets.svelte";
+	import { _sitesTables } from "$src/appstate/data/datasets.svelte";
 	import { allVariableStats } from "$src/lib/data/stats";
 	import type { VariableStats } from "$src/lib/types/analysis";
 	import type { Site } from "$src/lib/types/site";
@@ -21,7 +21,7 @@
 
 	const { varLabelClick, varGraphButtonClick, dataSelection, site, hoverColor }: Props = $props();
 
-	const table = $derived(site && sitesTables.get(site.siteId));
+	const table = $derived(site && _sitesTables.get(site.siteId));
 
 	const rows: VariableStats[] = $derived.by(() => {
 		if (!table || table.numRows() == 0) return [];

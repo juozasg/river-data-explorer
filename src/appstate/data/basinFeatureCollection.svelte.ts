@@ -3,7 +3,7 @@ import { defineGlobal } from "$src/lib/utils";
 import { SvelteMap } from "svelte/reactivity";
 import { buildFeatureSearchIndex } from "./basinFeatureSearchIndex.svelte";
 import { add } from "date-fns";
-import { sites } from "./sites.svelte";
+import { _sites } from "./sites.svelte";
 
 
 // basin features are geometries used for MLM map
@@ -41,14 +41,14 @@ export async function loadGeojsonData(name: BasinFeatureType) {
 }
 
 function remapSitesLonLat() {
-	sites.all.forEach(site => {
+	_sites.all.forEach(site => {
 		const feature = findBasinFeatureById('site', site.id);
 		if (feature && feature.geometry.type === 'Point') {
 			site.lon = feature.geometry.coordinates[0];
 			site.lat = feature.geometry.coordinates[1];
 		}
 	});
-	console.log('remapped sites lon/lat from features', sites.all.length, 'sites');
+	console.log('remapped sites lon/lat from features', _sites.all.length, 'sites');
 
 }
 

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as ml from "maplibre-gl";
 
-	import { sites as globalSites } from "$src/appstate/data/sites.svelte";
+	import { _sites as globalSites } from "$src/appstate/data/sites.svelte";
 	import { MapHoverSelectionController } from "$src/appstate/map/mapHoverSelectionController.svelte";
 	import { setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
 	import type { Site } from "$src/lib/types/site";

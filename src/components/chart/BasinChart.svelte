@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
-	import { sitesTables } from "$src/appstate/data/datasets.svelte";
+	import { _sitesTables } from "$src/appstate/data/datasets.svelte";
 	import type { RegionFeature } from "$src/appstate/data/_regionFeatures.svelte";
-	import { sites, siteTablesForRegion } from "$src/appstate/data/sites.svelte";
+	import { _sites, siteTablesForRegion } from "$src/appstate/data/sites.svelte";
 	import { varDailyMedian } from "$src/lib/data/stats";
 	import { selectTableVar } from "$src/lib/data/siteTableHelpers";
 	import type { Site } from "$src/lib/types/site";
@@ -20,12 +20,12 @@
 
 	const yTable = $derived.by(() => {
 		if (dataSelection.ySite && dataSelection.yVar) {
-			const table = sitesTables.get(dataSelection.ySite.siteId);
+			const table = _sitesTables.get(dataSelection.ySite.siteId);
 			return selectTableVar(table, dataSelection.yVar, "y");
 		}
 
 		if (dataSelection.yRegion && dataSelection.yVar) {
-			const tables = siteTablesForRegion(sites.allEnabled, dataSelection.yRegion);
+			const tables = siteTablesForRegion(_sites.allEnabled, dataSelection.yRegion);
 			const dailyMediansTable = varDailyMedian(tables, dataSelection.yVar);
 			// console.log('dailyMediansTable', dailyMediansTable.objects());
 			return selectTableVar(dailyMediansTable, dataSelection.yVar, "y");
@@ -34,12 +34,12 @@
 
 	const zTable = $derived.by(() => {
 		if (dataSelection.zSite && dataSelection.zVar) {
-			const table = sitesTables.get(dataSelection.zSite.siteId);
+			const table = _sitesTables.get(dataSelection.zSite.siteId);
 			return selectTableVar(table, dataSelection.zVar, "z");
 		}
 
 		if (dataSelection.zRegion && dataSelection.zVar) {
-			const tables = siteTablesForRegion(sites.allEnabled, dataSelection.zRegion);
+			const tables = siteTablesForRegion(_sites.allEnabled, dataSelection.zRegion);
 			const dailyMediansTable = varDailyMedian(tables, dataSelection.zVar);
 			return selectTableVar(dailyMediansTable, dataSelection.zVar, "z");
 		}

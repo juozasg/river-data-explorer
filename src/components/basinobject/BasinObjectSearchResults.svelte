@@ -49,7 +49,7 @@
 		padding-right: 6px;
 		overflow-y: hidden;
 		position: absolute;
-		z-index: 1;
+		z-index: 1000;
 		max-width: calc(100% - 32px);
 		top: 28px;
 		left: 32px;

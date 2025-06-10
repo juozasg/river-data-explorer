@@ -1,13 +1,14 @@
 import type { Point } from "$lib/types/map";
 import type { Site } from "$src/lib/types/site";
 import type { LngLat, MapMouseEvent } from "maplibre-gl";
-import type { RegionFeature } from "../data/_regionFeatures.svelte";
+import type { BasinObject } from "../data/basinObject.svelte";
 
 export class MapMouseLocation {
   lngLat? = $state<LngLat>();
   point? = $state<Point>();
   site? = $state<Site>();
-  regionFeature? = $state<RegionFeature>();
+  // TODO: make sure this works
+  basinObject? = $state<BasinObject>();
   map: any = $state();
 
   onMouseMove(map: any, e: MapMouseEvent & any) {
@@ -16,16 +17,16 @@ export class MapMouseLocation {
     this.map = map;
   }
 
-  onHover(site?: Site, regionFeature?: RegionFeature) {
+  onHover(site?: Site, basinObject?: BasinObject) {
     this.site = site;
-    this.regionFeature = regionFeature;
+    this.basinObject = basinObject;
   }
 
   onMouseOut() {
     this.lngLat = undefined;
     this.point = undefined;
     this.map = undefined;
-    this.regionFeature = undefined;
+    this.basinObject = undefined;
     this.site = undefined;
   }
 }
