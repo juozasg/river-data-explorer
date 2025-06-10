@@ -1,13 +1,14 @@
+import * as ml from 'maplibre-gl';
+
 import { initMapData } from '$src/lib/data/map/layers/initMapData';
 import { autoSelectBasinObjectsOnClick } from '$src/lib/data/selectionHelpers';
 import type { Site } from '$src/lib/types/site';
-import * as ml from 'maplibre-gl';
 import { findBasinFeatureById, basinFeatureCollections } from '../data/basinFeatureCollection.svelte';
-import { _sites } from '../data/sites.svelte';
 import { basinObject1, basinObject2, mapSelectionMode, mapSelectionTargetObject } from '../selection/basinObjectSelection.svelte';
 import { setSelectedPanel } from '../ui/layout.svelte';
 import { setMapCursor } from './mapMouse.svelte';
 import type { BasinObjectType } from '../data/basinObject.svelte';
+import { sites } from '../data/sites.svelte';
 
 export type HoveredRegionType = 'huc8' | 'huc10' | 'huc12' | 'county';
 
@@ -121,7 +122,7 @@ export class MapHoverSelectionController {
 			return;
 		}
 
-		this.#hoveredSite = _sites.findById(site.id);
+		this.#hoveredSite = sites.get(site.id);
 
 		if (mapSelectionMode.mode === 'auto' || mapSelectionMode.mode === 'site-catchment') {
 			const siteCatchment = findBasinFeatureById('site-catchment', site.id);
@@ -174,7 +175,7 @@ export class MapHoverSelectionController {
 	}
 
 
-	setSelectedRegion(target: '1' | '2' | undefined, objectType: BasinObjectType | undefined, id: number | undefined) {
+	setSelectedObjectFeature(target: '1' | '2' | undefined, objectType: BasinObjectType | undefined, id: number | undefined) {
 		console.log('setSelectedRegion', target, objectType, id);
 
 		if (!target) return;
@@ -226,11 +227,11 @@ export class MapHoverSelectionController {
 
 	addBasinObjectSelectionListeners() {
 		basinObject1.selectedCallback = (target, objectType, id) => {
-			this.setSelectedRegion(target, objectType, id);
+			this.setSelectedObjectFeature(target, objectType, id);
 		}
 
 		basinObject2.selectedCallback = (target, objectType, id) => {
-			this.setSelectedRegion(target, objectType, id);
+			this.setSelectedObjectFeature(target, objectType, id);
 		}
 	}
 

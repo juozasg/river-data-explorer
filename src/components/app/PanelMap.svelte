@@ -9,6 +9,7 @@
 	import { todayDate } from "$src/lib/utils/date";
 	import MapLibreMap from "../mlmap/MapLibreMap.svelte";
 	import VarDataMarkers from "../mlmap/VarDataMarkers.svelte";
+	import { basinObject1 } from "$src/appstate/selection/basinObjectSelection.svelte";
 
 
 
@@ -39,7 +40,15 @@
 		if(!mapController) {
 			mapController = new MapHoverSelectionController(mlMapComponent.mlmMap()!);
 		}
+
 		mlMap = mlMapComponent.mlmMap()!;
+	});
+
+	// DEBUG
+	$effect(() => {
+		if(mapController && mapController.dataModelReady) {
+				basinObject1.set('site', 10002);
+		}
 	});
 
 
