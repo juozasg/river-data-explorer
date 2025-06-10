@@ -28,11 +28,7 @@
 
 <style>
 	table {
-		/* TODO: fix them scrollybars */
-		/* scrollbar-width: 30; */
 		scrollbar-width:initial;
-		/* scrollbar-height: 20; */
-
 	}
 
 
@@ -75,25 +71,6 @@
 		height: 100%;
 		overflow-y: auto;
 		position: relative;
-	}
-
-	.fade-container {
-		position: relative;
-		height: 100%;
-		overflow: hidden;
-	}
-
-	.fade-container:after {
-		content: '';
-		position: absolute;
-		z-index: 1;
-		bottom: 5px;
-		left: 0;
-		/* background-color: green; */
-		pointer-events: none;
-		background-image: linear				N/A-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
-		width: 100%;
-		height: 2.5em;
 	}
 
 	.table-container :global(.table.is-narrow td), .table-container  :global(.table.is-narrow th) {

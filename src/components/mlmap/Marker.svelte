@@ -47,9 +47,8 @@
 	export const siteId = site.siteId;
 
 	$effect(() => {
-		const val = siteBeforeVardateValue(site.siteId, varname, vardate);
+		const val = siteBeforeVardateValue(site.id, varname, vardate);
 
-		// const val = 200;
 		if (val === undefined) {
 			isGhost = true;
 			color = ghost;

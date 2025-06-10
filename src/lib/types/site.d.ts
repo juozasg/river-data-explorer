@@ -10,10 +10,10 @@ export type Site = {
 	lon: number;
 
 
-	state: StateFips; // '18' (statefp='18' is indiana)
-	county: StateCountyFips; // '18039' (countyfp='18039' is elkhart co)
-	huc8: string;  // '04050001'
-	huc10: string; // '0405000119'
-	huc12: string; // '040500011902'
+	// state: StateFips; // '18' (statefp='18' is indiana)
+	// county: StateCountyFips; // '18039' (countyfp='18039' is elkhart co)
+	// huc8: string;  // '04050001'
+	// huc10: string; // '0405000119'
+	// huc12: string; // '040500011902'
 
 };

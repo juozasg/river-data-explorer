@@ -8,12 +8,15 @@ import { startedLoading } from '../ui/loadingItem.svelte';
 import { dataPathsStartingWith } from '$src/lib/data/loaders/loadAppData';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
 import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
-import { _sites } from './sites.svelte';
+import { _sites, siteIds } from './sites.svelte';
 import { parseUTC1700Date } from '$src/lib/utils/date';
 import { defineGlobal } from '$src/lib/utils';
 
 export type SiteId = string;
 export const _sitesTables: Map<SiteId, ColumnTable> = new SvelteMap();
+
+
+export const siteDatasets = new SvelteMap<number, ColumnTable>();
 
 
 
@@ -72,7 +75,13 @@ export async function loadDatasets() {
 
 	sitesRecords.forEach((records, siteId) => {
 		const tbl = aq.from(records).orderby('date').reify();
-		_sitesTables.set(siteId, tbl);
+		// _sitesTables.set(siteId, tbl);
+		const id = siteIds.get(siteId);
+		if (id === undefined) {
+			console.error(`Site integer ID not found for siteId: ${siteId}`);
+			return;
+		}
+		siteDatasets.set(id, tbl);
 	});
 
 	defineGlobal('aq', aq);

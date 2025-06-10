@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as ml from "maplibre-gl";
 
-	import { _sites as globalSites } from "$src/appstate/data/sites.svelte";
+	import { _sites as globalSites, sites } from "$src/appstate/data/sites.svelte";
 	import { MapHoverSelectionController } from "$src/appstate/map/mapHoverSelectionController.svelte";
 	import { setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
 	import type { Site } from "$src/lib/types/site";
@@ -30,8 +30,8 @@
 
 	});
 
-	const sites = $derived(globalSites.allEnabled);
 
+	const selectedSites = $derived([...sites.values()].filter(s => s.dataset !== "invert"));
 
 	$effect(() => {
 		if (!mlMapComponent.styleLoaded()) return;
@@ -53,7 +53,7 @@
 		{mlMap}
 		varname='ecoli'
 		vardate={todayDate}
-		{sites}
+		sites={selectedSites}
 		ghostSitesVisible={true}
 		yVarSite={undefined}
 		zVarSite={undefined}

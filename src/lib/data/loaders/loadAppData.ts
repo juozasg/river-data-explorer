@@ -1,4 +1,4 @@
-import { loadBasinFipsData } from "$src/appstate/data/basinFipsAreas.svelte";
+// import { loadBasinFipsData } from "$src/appstate/data/basinFipsAreas.svelte";
 import { loadDatasets } from "$src/appstate/data/datasets.svelte";
 import { loadGeoindexData } from "$src/appstate/data/geoindexes.svelte";
 import { loadDatasetsUsgsWS } from "./loadDataUsgsWS";
@@ -18,19 +18,19 @@ export async function loadAppData(manifest: DataManifest) {
 
 	console.log('Loading app data...');
 
+	loadMarkdown();
+
 	await loadDatasetsCsv();
 	console.log('datasetIds', datasetIds);
+	await loadSitesCsv(datasetIds)
+	console.log('sites.csv loaded');
 
-	// async go brr
-	loadSitesCsv(datasetIds).then(() => {
-		// needs to remap sites lon/lat after loading sites csv
-		loadFeatureCollections();
-	})
-	loadBasinFipsData();
+	loadFeatureCollections();
+	loadDatasets();
 	loadGeoindexData();
 	loadDatasetsUsgsWS();
-	loadDatasets();
-	loadMarkdown();
+	// loadBasinFipsData();
+
 }
 
 export function dataPathsStartingWith(prefix: string) {

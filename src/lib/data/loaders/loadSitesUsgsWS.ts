@@ -1,13 +1,13 @@
-import { startedLoading } from "$src/appstate/ui/loadingItem.svelte";
-import { _sites } from "$src/appstate/data/sites.svelte";
-import { notify } from "$src/appstate/ui/notifications.svelte";
-import type { Site } from "$src/lib/types/site";
-import { StateFips, StateCountyFips } from "$src/lib/types/fips";
+// import { startedLoading } from "$src/appstate/ui/loadingItem.svelte";
+// import { _sites } from "$src/appstate/data/sites.svelte";
+// import { notify } from "$src/appstate/ui/notifications.svelte";
+// import type { Site } from "$src/lib/types/site";
+// import { StateFips, StateCountyFips } from "$src/lib/types/fips";
 
-export const usgsStationIds = '04096405,04096515,04097500,040975299,04097540,04099000,04100500,04101000,04101500,04101535,04101800,04102500,04099750';
+// export const usgsStationIds = '04096405,04096515,04097500,040975299,04097540,04099000,04100500,04101000,04101500,04101535,04101800,04102500,04099750';
 
 
-export async function loadSitesUsgsWS() {
+// export async function loadSitesUsgsWS() {
 	// const finishedLoading = startedLoading("USGS Sites");
 	// const url = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${usgsStationIds}&siteStatus=all`;
 
@@ -23,35 +23,35 @@ export async function loadSitesUsgsWS() {
 	// 	finishedLoading();
 	// 	sites.reindexGeometries();
 	// }
-}
+// }
 
 
-function usgsTimeseriesToSites(timeSeries: any) {
-	for(const ts of timeSeries) {
-		const siteCode = ts.sourceInfo.siteCode[0].value;
-		const siteId = `usgs-${siteCode}`;
+// function usgsTimeseriesToSites(timeSeries: any) {
+// 	for(const ts of timeSeries) {
+// 		const siteCode = ts.sourceInfo.siteCode[0].value;
+// 		const siteId = `usgs-${siteCode}`;
 
-		if(_sites.findBySiteId(siteId)) continue;
+// 		if(_sites.findBySiteId(siteId)) continue;
 
-		const loc = ts.sourceInfo.geoLocation.geogLocation;
-		const site: Site = {
-			siteId: siteId,
-			id: parseInt(siteCode),
-			dataset: 'usgs',
-			num: parseInt(siteCode),
-			name: ts.sourceInfo.siteName,
-			lat: parseFloat(loc.latitude),
-			lon: parseFloat(loc.longitude),
+// 		const loc = ts.sourceInfo.geoLocation.geogLocation;
+// 		const site: Site = {
+// 			siteId: siteId,
+// 			id: parseInt(siteCode),
+// 			dataset: 'usgs',
+// 			num: parseInt(siteCode),
+// 			name: ts.sourceInfo.siteName,
+// 			lat: parseFloat(loc.latitude),
+// 			lon: parseFloat(loc.longitude),
 
-			// calculated when everything is loaded
-			state: StateFips.UnknownState,
-			county: StateCountyFips.UnknownCounty,
-			huc10: '',
-			huc12: '',
-			huc8: '',
-		};
+// 			// // calculated when everything is loaded
+// 			// state: StateFips.UnknownState,
+// 			// county: StateCountyFips.UnknownCounty,
+// 			// huc10: '',
+// 			// huc12: '',
+// 			// huc8: '',
+// 		};
 
-		_sites.add(site);
-	}
-	// console.log('sites including USGS', [...sites.all.map(s => s.siteId)]);
-}
+// 		_sites.add(site);
+// 	}
+// 	// console.log('sites including USGS', [...sites.all.map(s => s.siteId)]);
+// }

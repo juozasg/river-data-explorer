@@ -1,10 +1,8 @@
 import { loadDataCsv } from "$lib/data/cachedDataLoad";
 import { dataPathsStartingWith } from "$lib/data/loaders/loadAppData";
 import type { Site } from "$lib/types/site";
-import { StateCountyFips, StateFips } from "$src/lib/types/fips";
+import { siteIds, sites, splitSiteId } from "$src/appstate/data/sites.svelte";
 import { startedLoading } from "../../../appstate/ui/loadingItem.svelte";
-import { splitSiteId, _sites } from "../../../appstate/data/sites.svelte";
-
 
 
 export async function loadSitesCsv(datasetIds: Map<string, number>) {
@@ -32,21 +30,20 @@ export async function loadSitesCsv(datasetIds: Map<string, number>) {
 			lon: parseFloat(r.lon),
 
 			// calculated when everything is loaded
-			state: StateFips.UnknownState,
-			county: StateCountyFips.UnknownCounty,
-			huc8: '',
-			huc10: '',
-			huc12: '',
+			// state: StateFips.UnknownState,
+			// county: StateCountyFips.UnknownCounty,
+			// huc8: '',
+			// huc10: '',
+			// huc12: '',
 		};
 
 		// if(r.siteId !== 'invert-436') {
 		// 	continue;
 		// }
 
-		_sites.add(site);
+		siteIds.set(site.siteId, site.id);
+		sites.set(site.id, site);
 	}
-
-	_sites.reindexGeometries();
 
 	finishedLoading();
 }

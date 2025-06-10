@@ -3,6 +3,7 @@ import lunr from 'lunr';
 import { basinFeatureCollections, basinFeatureName, type BasinFeatureType } from './basinFeatureCollection.svelte';
 import type { BasinObjectType } from '$src/appstate/data/basinObject.svelte';
 import { compact } from '$src/lib/utils/arrays';
+import { sites } from './sites.svelte';
 
 const searchTags = {
 	'site': ['site'],
@@ -47,11 +48,19 @@ function makeItems(featureType: BasinObjectType): FeatureSearchItem[] {
 		};
 
 		// get dataset id
-		if (properties.siteId && featureType === 'site' || featureType === 'site-catchment') {
-			const datasetId = (properties.siteId || '').split('-')[0];
-			if (datasetId.length > 0) {
-				item.tags.push(datasetId);
+		if (featureType === 'site' || featureType === 'site-catchment') {
+			const site = sites.get(feature.properties!.id!);
+			if(site) {
+				item.tags.push(site.dataset);
+				item.tags.push(String(site.num));
+
 			}
+			// const datasetId = (properties.siteId || '').split('-')[0];
+			// if (datasetId.length > 0) {
+			// 	item.tags.push(datasetId);
+			// }
+
+
 		}
 		items.push(item);
 	}
@@ -84,7 +93,6 @@ export async function buildFeatureSearchIndex() {
 	})
 
 
-
 	defineGlobal('featuresSearch', _lunrFeatureSearchIndex);
 
 	defineGlobal('search', searchBasinFeatures);
@@ -96,12 +104,6 @@ const refToFeature = (ref: string): BasinSearchResult => {
 	const [featureType, id] = ref.split('+');
 
 	return [featureType as BasinObjectType, parseInt(id)] as BasinSearchResult;
-	// const feature = basinFeatureCollections.get(featureType as BasinObjectType)?.features.find(f => f.properties?.id === parseInt(id));
-	// let name = feature!.properties!.name;
-	// if (!name && featureType === 'site-catchment') {
-
-	// // if (!feature) return [featureType as BasinObjectType, { id: parseInt(id), name: `${featureType} ${id}` }];
-	// return [featureType, feature?.properties] as BasinSearchResult;
 }
 
 

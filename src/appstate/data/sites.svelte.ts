@@ -5,6 +5,12 @@ import { _sitesTables } from "./datasets.svelte";
 import { enabledDatasets } from '../ui/layers.svelte';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
 import type { BasinObject, BasinObjectType } from './basinObject.svelte';
+import { SvelteMap } from 'svelte/reactivity';
+
+// ecoli-1 -> 10001
+export const siteIds = new SvelteMap<string, number>();
+export const sites = new SvelteMap<number, Site>();
+
 
 export class Sites {
 	#sites: Site[] = $state([]);
