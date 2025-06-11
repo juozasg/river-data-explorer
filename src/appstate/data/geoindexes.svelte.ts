@@ -30,6 +30,8 @@ export const regionsSitesGeoindex: Record<BasinRegionType, SvelteMap<number, Sit
 
 
 export function sitesInRegion(regionType: BasinRegionType, regionId: number): Site[] {
+	return [...sites.values()].splice(0, 10);
+
 	const ids = regionsSitesGeoindex[regionType].get(regionId) || [];
 	return ids.map(id => sites.get(id)).filter((site): site is Site => !!site);
 }

@@ -37,26 +37,26 @@
 		pointer-events: none;
 
 		.y-selection {
-			background-color: #ab00d6;
+			background-color: var(--color-chart-y);
 			width: 6px;
 			height: 100%;
 		}
 
 		.z-selection {
-			background-color: #00d6ab;
+			background-color: var(--color-chart-z);
 			width: 6px;
 			height: 100%;
 		}
 
 		.y-hint {
-			border: 2px dashed #ab00d6;
+			border: 2px dashed var(--color-chart-y);
 
 			width: 6px;
 			height: 100%;
 		}
 
 		.z-hint {
-			border: 2px dashed #00d6ab;
+			border: 2px dashed var(--color-chart-z);
 			width: 6px;
 			height: 100%;
 		}

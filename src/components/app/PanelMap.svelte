@@ -39,7 +39,7 @@
 	// DEBUG
 	$effect(() => {
 		if(mapController && mapController.dataModelReady) {
-				basinObject1.set('site', 10002);
+				// basinObject1.set('site', 10002);
 		}
 	});
 

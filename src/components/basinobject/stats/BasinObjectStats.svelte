@@ -31,7 +31,7 @@
 	<StatsDataTable data={rows}>
 		{#snippet thead()}
 			<tr>
-				<StatsCommonTh includeLast={true} />
+				<StatsCommonTh includeLast={basinObject.objectType === 'site'} />
 			</tr>
 		{/snippet}
 
@@ -51,10 +51,7 @@
 				</TdStatsVariableLabel>
 
 				{#key r.varname}
-					<td>
-						<VarValueStandards v={r.varname} value={r.lastObservation} />
-					</td>
-					<StatsCommonTd stats={r} />
+					<StatsCommonTd stats={r} includeLast={basinObject.objectType === 'site'} />
 				{/key}
 			</tr>
 		{/snippet}

@@ -176,7 +176,7 @@ export class MapHoverSelectionController {
 
 
 	setSelectedObjectFeature(target: '1' | '2' | undefined, objectType: BasinObjectType | undefined, id: number | undefined) {
-		console.log('setSelectedRegion', target, objectType, id);
+		// console.log('setSelectedRegion', target, objectType, id);
 
 		if (!target) return;
 		this.clearSelectedRegions(target);

@@ -5,11 +5,17 @@
 
 	type Props = {
 		stats: VariableStats;
+		includeLast?: boolean;
 	};
 
-	let { stats }: Props = $props();
+	let { stats, includeLast = false }: Props = $props();
 </script>
 
+{#if includeLast}
+	<td>
+		<VarValueStandards v={stats.varname} value={stats.lastObservation} />
+	</td>
+{/if}
 <td>{stats.numObservations}</td>
 <td class="stat"><VarValueStandards v={stats.varname} value={stats.min} /></td>
 <td class="stat"><VarValueStandards v={stats.varname} value={stats.max} /></td>
@@ -18,7 +24,6 @@
 <td class="stat">{fmtVarNum(stats.varname, stats.stdDev)}</td>
 <td class="date">{stats.dateFromLabel}</td>
 <td class="date">{stats.dateToLabel}</td>
-
 
 <style>
 	td.date {
@@ -31,5 +36,4 @@
 		overflow-x: hidden;
 		padding-right: 0.5rem;
 	}
-
 </style>

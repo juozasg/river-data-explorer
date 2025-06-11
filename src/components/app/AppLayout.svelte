@@ -57,11 +57,6 @@
 </main>
 
 <style>
-	/* TODO: delete later */
-	/* :global(*) {
-		overflow: visible;
-	} */
-
 	main {
 		padding: 0;
 		margin: 0;
@@ -78,7 +73,6 @@
 		left: 0;
 		width: 50%;
 		height: var(--headerHeight);
-		/* background: #ffbcee; */
 	}
 
 	.panel {
