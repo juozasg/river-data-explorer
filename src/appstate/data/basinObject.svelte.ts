@@ -7,6 +7,7 @@ import type ColumnTable from "arquero/dist/types/table/column-table";
 import { siteDatasets, sitesDatasets } from "./datasets.svelte";
 import { sitesInRegion } from "./geoindexes.svelte";
 import { selectTableVar } from "$src/lib/data/siteTableHelpers";
+import type { Site } from "$src/lib/types/site";
 
 // export type BasinObjectType = 'site' | 'huc8' | 'huc10' | 'huc12' | 'state' | 'county' | 'river-catchment' | 'site-catchment'; // | 'custom';
 export type BasinObjectType = Exclude<BasinFeatureType, 'river'>;
@@ -77,6 +78,24 @@ export class BasinObject {
 
 	get objectTypeLabel(): string {
 		return basinObjectTypeLabel(this.objectType);
+	}
+
+
+	get sites(): Site[] {
+		console.log('BasinObject sites', this.objectType, this.id);
+
+		if (!this.isSet) return [];
+		if (this.objectType === undefined || this.id === undefined) return [];
+
+		if (this.objectType === 'site') {
+			const site = sites.get(this.id!);
+			return site ? [site] : [];
+		}
+
+		const sz = sitesInRegion(this.objectType, this.id);
+		console.log('BasinObject sites', sz, this.objectType, this.id);
+		return sz;
+
 	}
 
 

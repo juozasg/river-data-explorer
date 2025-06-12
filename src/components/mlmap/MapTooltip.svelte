@@ -12,14 +12,15 @@
 	import { queryMouseMoveHover } from "$src/lib/utils/maplibre";
 	import { varlabel, varstdmax, varstdmin, varunits } from "$src/lib/utils/varHelpers";
 	import TooltipSiteStats from "../tooltips/TooltipContentSiteStats.svelte";
-	import { Sites } from "$src/appstate/data/sites.svelte";
 	import { mapMouseLocation } from "$src/appstate/map/mapMouse.svelte";
 	import type { BasinObject } from "$src/appstate/data/basinObject.svelte";
+	import { basinFeatureName } from "$src/appstate/data/basinFeatureCollection.svelte";
+	import { basinObjectTypeLabel } from "$src/lib/utils/prettyNames";
 	// import { regionEqual, regionTypes, type RegionFeature } from "$src/appstate/data/_regionFeatures.svelte";
 
 	type Props = {
-		sites: Site[];
 		site?: Site;
+		regionObject?: BasinObject;
 		mlMap: ml.Map;
 		varname: string;
 		vardate: Date;
@@ -29,72 +30,39 @@
 
 	let {
 		site,
+		regionObject,
 		mlMap,
-		sites,
 		varname,
 		vardate,
 		showRegionTooltip = false,
-		hoveredObject = undefined,
 		// hoveredRegion,
 		// selectedRegion
 	}: Props = $props();
 
 	const siteStats = $derived(site ? sitesDataStats([site]) : undefined);
-	// const regionSites = $derived(Sites.forRegionFeature(sites, hoveredRegion.feature));
-	const regionSites = [] as Site[];
 
-	// const getStats = (sites: Site[]) => {
-	// 	return bm('siteDataStats', () => sitesDataStats(sites));
-	// };
+	const regionSites = $derived(regionObject?.isSet ? regionObject.sites : []);
 	const regionStats = $derived(regionSites.length > 0 ? sitesDataStats(regionSites) : undefined);
 
-	// const regionNameLabel = (feature: RegionFeature) => {
-	// 	const rt = feature.regionType;
-	// 	if (rt == "county") return feature.name + " County";
-	// 	// if (rt == "state") return feature.name + " State";
-	// 	if (rt == "huc8") return "St. Joseph River Basin";
-	// 	return feature.name;
-	// };
+	const regionNameLabel = (object: BasinObject) => {
+		if(object.isSet)return basinFeatureName(object.objectType!, object.id!);
+		return '';
+	};
 
 
 
 	onMount(() => {
-		// mlMap.on("mouseleave", () => {
-		// 	if(hoveredRegion.feature) {
-		// 		// console.log('not yellow!')
-		// 		mlMap.setFeatureState({ source: hoveredRegion?.feature.mlSource, id: hoveredRegion.feature.id }, { willbeselected: false });
-		// 	}
-		// });
 		mlMap.on("mousemove", (e: ml.MapMouseEvent) => {
+			if (regionObject?.isSet || site) {
+				// console.log('show tooltuip', e.originalEvent.x, e.originalEvent.y, site, hoveredRegion.feature, hoveredRiver.feature);
+				tooltip.show(e.originalEvent.x, e.originalEvent.y, true);
+				tooltip.content = tooltipContent;
+				// mapMouseLocation.onHover(site, hoveredRegion.feature);
+				// console.log(hoveredRegion.feature);
+			} else {
+				tooltip.hide();
+			}
 
-		// 	hoveredRiver.feature = queryMouseMoveHover(e, ["riverapp-river"], 10);
-		// 	hoveredRegion.feature = queryMouseMoveHover(
-		// 		e,
-		// 		regionTypes.map((rt) => `riverapp-${rt}`),
-		// 		10
-		// 	);
-
-		// 	if (hoveredRiver.feature || (showRegionTooltip && hoveredRegion.feature) || site) {
-		// 		// console.log('show tooltuip', e.originalEvent.x, e.originalEvent.y, site, hoveredRegion.feature, hoveredRiver.feature);
-		// 		tooltip.show(e.originalEvent.x, e.originalEvent.y, true);
-		// 		tooltip.content = tooltipContent;
-		// 		mapMouseLocation.onHover(site, hoveredRegion.feature);
-		// 		// console.log(hoveredRegion.feature);
-		// 	} else {
-		// 		tooltip.hide();
-		// 	}
-
-		// 	if((hoveredRegion.feature && !selectedRegion?.feature) ||
-		// 	(!site && hoveredRegion.feature && selectedRegion?.feature && !regionEqual(hoveredRegion?.feature, selectedRegion?.feature)))
-		// 	 {
-		// 		// console.log('make hovered region yellow')
-		// 		mlMap.setFeatureState({ source: hoveredRegion?.feature.mlSource, id: hoveredRegion.feature.id }, { willbeselected: true });
-
-		// 		// selectedRegion.feature = hoveredRegion.feature;
-		// 	} else if(hoveredRegion.feature) {
-		// 		// console.log('not yellow!')
-		// 		mlMap.setFeatureState({ source: hoveredRegion?.feature.mlSource, id: hoveredRegion.feature.id }, { willbeselected: false });
-		// 	}
 		});
 	});
 
@@ -126,10 +94,7 @@
 {/snippet}
 
 {#snippet tooltipContent()}
-	<!-- {#if hoveredRiver.feature}
-		<h5 class="river">River: {hoveredRiver.name}</h5>
-	{/if}
-	{#if showRegionTooltip && hoveredRegion.feature}
+	<!-- {#if showRegionTooltip && hoveredRegion.feature}
 		<h5 class="region" class:tooltip-section={!!hoveredRiver.feature}>
 			Region: {regionNameLabel(hoveredRegion.feature)}
 		</h5>
@@ -138,18 +103,30 @@
 		{#if regionStats}
 			<TooltipSiteStats stats={regionStats} />
 		{/if}
-	{/if}
+	{/if} -->
 
-	{#if site}
-		<h5 class="site" class:tooltip-section={!!hoveredRiver.feature || !!(showRegionTooltip && hoveredRegion.feature)}>
-			Site: {site.name || ""}
+	{#if regionObject?.isSet}
+		<h5 class="region">
+			<span class='type-label'>{basinObjectTypeLabel(regionObject.objectType).toLowerCase()}</span>
+			{regionNameLabel(regionObject)}
 		</h5>
-		<i>Site ID: {site.siteId}</i>
+		<!-- <p><i>{regionIdLabel(regionObject)}: {regionObject.id}</i></p> -->
+		<p><b>{regionSites.length}</b> sites</p>
+		{#if regionStats}
+			<TooltipSiteStats stats={regionStats} />
+		{/if}
+	{/if}
+	{#if site}
+		<h5 class="site" class:tooltip-section={regionObject?.isSet}>
+			<span class='type-label'>site</span>
+			 {site.name || ""}
+		</h5>
+		<i>({site.siteId})</i>
 		{@render variableValueBeforeDate(site)}
 		{#if siteStats}
 			<TooltipSiteStats stats={siteStats} />
 		{/if}
-	{/if} -->
+	{/if}
 {/snippet}
 
 <style>
@@ -160,6 +137,25 @@
 	.stdbad  {
 		padding-top: 3px;
 		/* font-size: 0.7rem; */
+	}
+
+	.type-label {
+		display: block;
+		font-weight: 800;
+		color: var(--color-darkGrey);
+		font-variant: small-caps;
+		margin-bottom: 4px;
+		padding-bottom: 0px;
+		font-size: 14px;
+		color: var(--stjoe-blue);
+	}
+
+	h5.tooltip-section {
+
+		border-top: 1px solid var(--color-lightGrey);
+		padding-top: 5px;
+		margin-top: 5px;
+
 	}
 
 </style>

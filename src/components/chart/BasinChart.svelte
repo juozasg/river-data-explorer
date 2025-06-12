@@ -80,11 +80,11 @@
 {#if yzTable && yParams && zParams}
 	<BrushedYzChart {yzTable} {yParams} {zParams} {onDateSelect} {width} {height}/>
 {:else}
-	<h3>
+	<!-- <h3>
 		<InlineBlockIconify icon="lets-icons:expand-up" size="2rem" />
 		Click site markers to select sites
 
-	</h3>
+	</h3> -->
 
 	<h3>
 		Use <span class='graph-buttons'><span class="graph-button y">Y</span></span> and <span class='graph-buttons'><span class="graph-button z">Z</span></span> buttons to graph site variables

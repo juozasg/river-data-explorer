@@ -18,11 +18,6 @@
 		font-size: 0.8rem;
 		display: inline-flex;
 		column-gap: 3px;
-		/* p { */
-			/* } */
 	}
-	/* p {
-		margin: 0 !important;
-		padding: 0 !important;
-	} */
+
 </style>

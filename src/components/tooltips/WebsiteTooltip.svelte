@@ -90,8 +90,7 @@
 		background-color: white;
 		border: 1px solid #222;
 		border-radius: var(--border-radius);
-		padding: 5px;
-		padding-top: 1px;
+		padding: 3px 5px;
 		/* padding-bottom: 1.5rem; */
 		font-size: 80%;
 		min-width: 200px;
@@ -122,13 +121,6 @@
 		padding: 2px 1px !important;
 	}
 
-
-
-	:global(h5.tooltip-section) {
-		border-top: 1px solid #ccc;
-		padding-top: 5px;
-		margin-top: 5px;
-	}
 
 	.hint {
 		display: block;

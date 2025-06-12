@@ -3,29 +3,26 @@ import type { Snippet } from "svelte";
 import { notify } from "./notifications.svelte";
 
 
-let _tooltip: WebsiteTooltip | undefined = $state();
+let _websiteTooltip: WebsiteTooltip | undefined = $state();
 let _toggleHideTooltips = $state(false);
 
 
 export const tooltip = {
 	set component(t: WebsiteTooltip) {
-		_tooltip = t;
+		_websiteTooltip = t;
 	},
 
-	// set(value: WebsiteTooltip | undefined) {
-	// 	_tooltip = value;
-	// },
 
 	show(x: number, y: number, toggleable = false) {
-		_tooltip?.show(x, y, toggleable);
+		_websiteTooltip?.show(x, y, toggleable);
 	},
 
 	hide() {
-		_tooltip?.hide();
+		_websiteTooltip?.hide();
 	},
 
 	set content(c: Snippet) {
-		_tooltip?.setContentSnippet(c);
+		_websiteTooltip?.setContentSnippet(c);
 	},
 
 	get toggledHidden() {
@@ -47,7 +44,7 @@ export function toggleHideTooltipsKeydown(e: KeyboardEvent) {
 
 	// console.log('toggleHideTooltipsKeydown', e.key, _tooltip?.isToggleable());
 
-	if(e.key === 't' && _tooltip?.isToggleable()) {
+	if(e.key === 't' && _websiteTooltip?.isToggleable()) {
 		tooltip.toggledHidden = !tooltip.toggledHidden;
 		if(_toggleHideTooltips == true) {
 			notify('Tooltips hidden. Press "T" to show.');

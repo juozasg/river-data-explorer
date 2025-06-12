@@ -13,10 +13,10 @@
 	import { copyMouseLocationData } from "./lib/copyMouseLocationData";
 	import { toggleHideTooltipsKeydown, tooltip } from "./appstate/ui/tooltips.svelte";
 	import WebsiteTooltip from "./components/tooltips/WebsiteTooltip.svelte";
-	import Basin from "./components/Basin.svelte";
 	import { loadAppManifests } from "./lib/loadAppManifests";
-	import Ui2Test from "./components/test-pages/fixtures/UI2-Test.svelte";
 	import AppLayout from "./components/app/AppLayout.svelte";
+	import { notify } from "./appstate/ui/notifications.svelte";
+	import { defineGlobal } from "./lib/utils";
 
 
 	let websiteTooltip = $state<WebsiteTooltip>();
@@ -37,12 +37,15 @@
 	});
 
 	onMount(() => {
+		defineGlobal("notify", notify);
+
 		document.body.addEventListener("keydown", copyMouseLocationData);
 		document.body.addEventListener("keydown", toggleHideTooltipsKeydown);
 		return () => {
 			document.body.removeEventListener("keydown", copyMouseLocationData);
 			document.body.removeEventListener("keydown", toggleHideTooltipsKeydown);
 		};
+
 	});
 
 	$effect(() => {
@@ -51,8 +54,8 @@
 </script>
 
 {#if loadState === "loaded"}
-	<!-- <SvelteToast /> -->
-	<!-- <WebsiteTooltip bind:this={websiteTooltip} /> -->
+	<SvelteToast />
+	<WebsiteTooltip bind:this={websiteTooltip} />
 	 <AppLayout />
 {:else if loadState === "loading"}
 	<div class="loading">...</div>

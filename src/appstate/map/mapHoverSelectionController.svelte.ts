@@ -7,7 +7,7 @@ import { findBasinFeatureById, basinFeatureCollections } from '../data/basinFeat
 import { basinObject1, basinObject2, mapSelectionMode, mapSelectionTargetObject } from '../selection/basinObjectSelection.svelte';
 import { setSelectedPanel } from '../ui/layout.svelte';
 import { setMapCursor } from './mapMouse.svelte';
-import type { BasinObjectType } from '../data/basinObject.svelte';
+import { BasinObject, type BasinObjectType } from '../data/basinObject.svelte';
 import { sites } from '../data/sites.svelte';
 
 export type HoveredRegionType = 'huc8' | 'huc10' | 'huc12' | 'county';
@@ -20,10 +20,31 @@ export class MapHoverSelectionController {
 	#hoveredSite = $state<Site>();
 	#hoveredRiverId = $state<number>();
 	#hoveredRegionId = $state<number>();
+	#regionType = $state<BasinObjectType>();
 	// #hoveredRegionType = $state<HoveredRegionType>();
 	// #hoveredSite
 
 	dataModelReady = $state(false)
+
+	get hoveredSite() {
+		return this.#hoveredSite;
+	}
+
+	get hoveredRegionType() {
+		return this.#regionType;
+	}
+
+	get hoveredRegionId() {
+		return this.#hoveredRegionId;
+	}
+
+
+	get hoveredRegionBasinObject(): BasinObject | undefined {
+		if (!this.#hoveredRegionId || !this.#regionType) return undefined;
+		const basinObject = new BasinObject();
+		basinObject.set(this.#regionType, this.#hoveredRegionId);
+		return basinObject;
+	}
 
 	// map initial style has been loaded. it is now safe to add layers
 	constructor(map: ml.Map) {
@@ -42,6 +63,10 @@ export class MapHoverSelectionController {
 		});
 
 		$effect.root(() => {
+
+			// $effect(() => {
+			// 	console.log('HOVERED REGION', this.#hoveredRegionId, this.#regionType);
+			// });
 
 			// set mlm rivers data source when ready
 			$effect(() => {
@@ -62,6 +87,7 @@ export class MapHoverSelectionController {
 				if (this.dataModelReady && huc12Features && mapSelectionMode.mode === 'huc12') {
 					const regionsSource = this.#map.getSource("riverapp-regions") as ml.GeoJSONSource;
 					regionsSource.setData(huc12Features);
+					this.#regionType = 'huc12';
 					this.#map.redraw();
 				}
 			});
@@ -71,6 +97,7 @@ export class MapHoverSelectionController {
 				if (this.dataModelReady && huc10Features && mapSelectionMode.mode === 'huc10') {
 					const regionsSource = this.#map.getSource("riverapp-regions") as ml.GeoJSONSource;
 					regionsSource.setData(huc10Features);
+					this.#regionType = 'huc10';
 					this.#map.redraw();
 
 				}
@@ -81,6 +108,7 @@ export class MapHoverSelectionController {
 				if (this.dataModelReady && countiesFeatures && mapSelectionMode.mode === 'county') {
 					const regionsSource = this.#map.getSource("riverapp-regions") as ml.GeoJSONSource;
 					regionsSource.setData(countiesFeatures);
+					this.#regionType = 'county';
 					this.#map.redraw();
 
 				}
@@ -94,6 +122,7 @@ export class MapHoverSelectionController {
 						type: "FeatureCollection",
 						features: []
 					});
+					this.#regionType = undefined;
 					this.#map.redraw();
 
 				}
@@ -109,6 +138,8 @@ export class MapHoverSelectionController {
 			type: "FeatureCollection",
 			features: []
 		});
+
+		this.#hoveredRegionId = undefined;
 	}
 
 
@@ -134,6 +165,9 @@ export class MapHoverSelectionController {
 					type: "FeatureCollection",
 					features: [siteCatchment]
 				});
+
+				this.#hoveredRegionId = site.id;
+				this.#regionType = 'site-catchment';
 			}
 		}
 
@@ -159,6 +193,9 @@ export class MapHoverSelectionController {
 						type: "FeatureCollection",
 						features: [riverCatchment]
 					});
+
+					this.#hoveredRegionId = id;
+					this.#regionType = 'river-catchment';
 				}
 
 			} else {
