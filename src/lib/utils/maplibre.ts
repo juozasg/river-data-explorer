@@ -69,7 +69,6 @@ export function safeQueryRenderedFeatures(map: ml.Map, queryGeom: ml.PointLike |
 	}
 }
 
-// TODO: fix if used
 export function queryMouseMoveHover(e: ml.MapMouseEvent, layers: string[], radius = 0):  undefined {
 	return undefined;
 	// const map = e.target;

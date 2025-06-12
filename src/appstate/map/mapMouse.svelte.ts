@@ -7,7 +7,6 @@ export class MapMouseLocation {
   lngLat? = $state<LngLat>();
   point? = $state<Point>();
   site? = $state<Site>();
-  // TODO: make sure this works
   basinObject? = $state<BasinObject>();
   map: any = $state();
 

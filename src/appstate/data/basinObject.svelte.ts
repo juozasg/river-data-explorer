@@ -82,7 +82,7 @@ export class BasinObject {
 
 
 	get sites(): Site[] {
-		console.log('BasinObject sites', this.objectType, this.id);
+		// console.log('BasinObject sites', this.objectType, this.id);
 
 		if (!this.isSet) return [];
 		if (this.objectType === undefined || this.id === undefined) return [];
@@ -92,10 +92,9 @@ export class BasinObject {
 			return site ? [site] : [];
 		}
 
-		const sz = sitesInRegion(this.objectType, this.id);
-		console.log('BasinObject sites', sz, this.objectType, this.id);
-		return sz;
-
+		return sitesInRegion(this.objectType, this.id);
+		// console.log('BasinObject sites', sz, this.objectType, this.id);
+		// return sz;
 	}
 
 

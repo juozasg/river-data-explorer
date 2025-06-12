@@ -9,7 +9,6 @@
 	import type { Site } from "$src/lib/types/site";
 	import { regionIdLabel } from '$src/lib/utils/regions';
 	import { fmtDateDMonY } from '$src/lib/utils/date';
-	import { queryMouseMoveHover } from "$src/lib/utils/maplibre";
 	import { varlabel, varstdmax, varstdmin, varunits } from "$src/lib/utils/varHelpers";
 	import TooltipSiteStats from "../tooltips/TooltipContentSiteStats.svelte";
 	import { mapMouseLocation } from "$src/appstate/map/mapMouse.svelte";
@@ -57,7 +56,7 @@
 				// console.log('show tooltuip', e.originalEvent.x, e.originalEvent.y, site, hoveredRegion.feature, hoveredRiver.feature);
 				tooltip.show(e.originalEvent.x, e.originalEvent.y, true);
 				tooltip.content = tooltipContent;
-				// mapMouseLocation.onHover(site, hoveredRegion.feature);
+				mapMouseLocation.onHover(site, regionObject);
 				// console.log(hoveredRegion.feature);
 			} else {
 				tooltip.hide();

@@ -76,7 +76,7 @@
 					<InlineBlockIconify icon="uiw:github" size="20px" />
 				</span>
 
-				<span>{mapSelectionMode.mode} {mapSelectionMode.target}</span>
+				<!-- <span>{mapSelectionMode.mode} {mapSelectionMode.target}</span> -->
 			</a>
 		</li>
 	</ul>

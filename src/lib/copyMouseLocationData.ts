@@ -16,20 +16,18 @@ export const copyMouseLocationData = (e: KeyboardEvent) => {
 	}
 
 	if(e.key === 'c') {
-		// TODO: add basinobject
 		if(mapMouseLocation.lngLat || mapMouseLocation.site) {
 			let text = "";
 			if(mapMouseLocation.site) {
-				text += `Site ID: ${mapMouseLocation.site.siteId}\n`;
+				text += `Site ID: ${mapMouseLocation.site.siteId} ${mapMouseLocation.site.id}\n`;
 				text += `Site Name: ${mapMouseLocation.site.name}\n`;
 			}
 
-			// TODO: fix this
-			// if(mapMouseLocation.regionFeature) {
-			// 	text += `Region Name: ${mapMouseLocation.regionFeature.name}\n`;
-			// 	text += `Region Type: ${mapMouseLocation.regionFeature.regionType}\n`;
-			// 	text += `Region ID: ${mapMouseLocation.regionFeature.id}\n`;
-			// }
+			if(mapMouseLocation.basinObject) {
+				text += `Region Name: ${mapMouseLocation.basinObject.objectLabelName}\n`;
+				text += `Region Type: ${mapMouseLocation.basinObject.objectType}\n`;
+				text += `Region ID: ${mapMouseLocation.basinObject.id}\n`;
+			}
 
 			if(mapMouseLocation.lngLat) {
 				text += `Latitude, Longitude: ${formatLngLat(mapMouseLocation.lngLat)}\n`;

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { basinObject1, basinObject2 } from "$src/appstate/selection/basinObjectSelection.svelte";
 	import { mapMaximized, selectedPanel, setMapMaximized, setSelectedPanel } from "$src/appstate/ui/layout.svelte";
 	import AppMenu from "./AppMenu.svelte";
 	import AppPanelTabs from "./AppPanelTabs.svelte";
@@ -15,15 +16,15 @@
 	let mapWidth = $state(0);
 	let mapHeight = $state(0);
 
-	setMapMaximized(false);
+	// setMapMaximized(false);
 
-	// $effect(() => {
-	// 	if(basinObject1.isSelected || basinObject2.isSelected) {
-	// 		setMapMaximized(false);
-	// 	} else {
-	// 		setMapMaximized(true);
-	// 	}
-	// });
+	$effect(() => {
+		if(basinObject1.isSelected || basinObject2.isSelected) {
+			setMapMaximized(false);
+		} else {
+			setMapMaximized(true);
+		}
+	});
 </script>
 
 
