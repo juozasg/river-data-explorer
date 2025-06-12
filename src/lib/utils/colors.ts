@@ -3,9 +3,9 @@ import * as d3sc from 'd3-scale-chromatic';
 import { varmax, varmin } from './varHelpers';
 
 export const ghost = 'rgba(0, 0, 0, 0.2)';
-export const chartYColor = '#ab00d6';
-export const chartZColor = '#00d6ab';
-export const chartZDarker = '#00af8c';
+export const chartYColor = '#A228B1';
+export const chartZColor = '#3d9cbe';
+export const chartZDarker = '#368eae';
 
 export const mapHoverHighlightColor = '#97E817';
 

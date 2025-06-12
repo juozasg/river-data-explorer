@@ -13,8 +13,8 @@
 	export let dataSource = "y";
 	$: dataGet = dataSource === "y" ? $yGet : $zGet;
 
-	/** @type {String} [stroke='#ab00d6'] - The shape's fill color. This is technically optional because it comes with a default value but you'll likely want to replace it with your own color. */
-	export let stroke = "#ab00d6";
+	/** @type {String} [stroke='#A228B1'] - The shape's fill color. This is technically optional because it comes with a default value but you'll likely want to replace it with your own color. */
+	export let stroke = "#A228B1";
 
 	let path;
 	$: {

@@ -70,7 +70,7 @@
 			<line x1={x0} y1={yMax} x2={x1} y2={yMax} stroke={color} stroke-width={1} stroke-dasharray={"5,5"}></line>
 		{/snippet}
 		{#snippet hoveredLine()}
-			<g style="fill:#eee">
+			<g style="fill:#fafafa">
 				<rect x={x0 + 32} y={yMax - 20} width={maxLabelBoxsizeWidth} height="20"></rect>
 				<text x={x0 + 36} y={yMax - 5} fill={color} bind:contentBoxSize={maxLabelBoxsize}>{maxLabel}</text>
 			</g>
@@ -85,7 +85,7 @@
 			<line x1={x0} y1={yMin} x2={x1} y2={yMin} stroke={color} stroke-width={1} stroke-dasharray={"5,5"}></line>
 		{/snippet}
 		{#snippet hoveredLine()}
-			<g style="fill:#eee">
+			<g style="fill:#fafafa">
 				<rect x={x0 + 32} y={yMin - 20} width={minLabelBoxsizeWidth} height="20"></rect>
 
 				<text x={x0 + 36} y={yMin - 5} fill={color} bind:contentBoxSize={minLabelBoxsize}>{minLabel}</text>

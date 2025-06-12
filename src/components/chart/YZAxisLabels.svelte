@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { chartYColor, chartZDarker } from "$src/lib/utils/colors";
+	import { chartYColor, chartZColor, chartZDarker } from "$src/lib/utils/colors";
 
 
 	let { yLabel, zLabel }: { yLabel: string; zLabel: string } = $props();

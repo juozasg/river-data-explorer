@@ -17,7 +17,7 @@
 	import type ColumnTable from "arquero/dist/types/table/column-table";
 
 	import { YZChartParams } from "$src/lib/utils/YZChartParams";
-	import { chartYColor, chartZColor, chartZDarker } from "$src/lib/utils/colors";
+	import { chartYColor, chartZColor } from "$src/lib/utils/colors";
 	import MinMaxLines from "./layercake/MinMaxLines.svelte";
 	import { varcategories, varcatilegend } from "$src/lib/utils/varHelpers";
 
@@ -152,7 +152,7 @@
 							tickMarks={true}
 							ticks={(ts: number[]) => genYTicks(zParams.domain!, ts)}
 							format={(v: number) => formatYTick(v, zParams)}
-							color={chartZDarker} />
+							color={chartZColor} />
 						<Line stroke={chartZColor} dataSource="z" />
 						<Scatter
 							r={zParams.radius}
