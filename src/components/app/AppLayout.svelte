@@ -19,7 +19,7 @@
 	// setMapMaximized(false);
 
 	$effect(() => {
-		if(basinObject1.isSelected || basinObject2.isSelected) {
+		if(basinObject1.isSet || basinObject2.isSet) {
 			setMapMaximized(false);
 		} else {
 			setMapMaximized(true);

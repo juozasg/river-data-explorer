@@ -3,7 +3,7 @@
 	import "maplibre-gl/dist/maplibre-gl.css";
 
 	import { mapCursor, mapMouseLocation } from "$src/appstate/map/mapMouse.svelte";
-	import { basemapStyleId } from "$src/appstate/ui/layers.svelte";
+	import { layerParams } from "$src/appstate/ui/layers.svelte";
 	import { tooltip } from "$src/appstate/ui/tooltips.svelte";
 	import { transformStyle } from "$src/lib/data/map/helpers/transformMapStyle";
 	import { defineGlobal } from "$src/lib/utils";
@@ -13,21 +13,13 @@
 	interface Props {
 		zoom?: number;
 		center?: ml.LngLatLike;
-		// baseStyleId?: keyof typeof basemapStyles;
-
 		mlMap?: ml.Map;
-		// onInitialStyleLoaded?: (map: ml.Map) => void;
-		// addData: (map: ml.Map) => Promise<void>;
 	}
 
 	let {
 		mlMap = $bindable(),
 		zoom = 8,
 		center = [-85.49182, 41.82128]
-		// onInitialStyleLoaded
-		// baseStyleId = "TOPO",
-		// layersParams = defaultLayersParams,
-		// addData
 	}: Props = $props();
 
 	let mapDiv = $state<HTMLDivElement>();
@@ -57,12 +49,12 @@
 	$effect(() => {
 		if (!mlMap) return;
 
-		const style = basemapStyles[basemapStyleId()];
+		const style = basemapStyles[layerParams.basemapStyleId];
 		mlMap.setStyle(style, { transformStyle });
 	});
 
 	onMount(() => {
-		const style = basemapStyles[basemapStyleId()];
+		const style = basemapStyles[layerParams.basemapStyleId];
 		mlMap = new ml.Map({
 			container: mapDiv!, // container's id or the HTML element to render the map
 			style,
@@ -80,7 +72,7 @@
 		// only fires for the initial style, not for map.setStyle
 		mlMap.once("idle", () => {
 			mlMap!.resize();
-			// const style = basemapStyles[basemapStyleId()];
+			// const style = basemapStyles[layerParams.basemapStyleId];
 			mlMap!.setStyle(style, { transformStyle }); // force transformStyle to reorder layers
 
 			mlMap!.once("idle", () => {

@@ -6,26 +6,19 @@
 	import "$src/styles/map-controls.scss";
 
 	// import ArrowDropRight from '$src/components/icons/ArrowDropRight.svelte';
-	import { isDatasetEnabled, setEnabledDatasets, toggleDatasetEnable } from "$src/appstate/ui/layers.svelte";
+	import { layerParams } from "$src/appstate/ui/layers.svelte";
 	import DetailsOpenIcon from "$src/components/icons/DetailsOpenIcon.svelte";
-	import { type MapLayersParams } from "$src/lib/types/mapControls";
-	import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
-	import type { Site } from "$src/lib/types/site";
 	import InlineBlockIconify from "$src/components/icons/InlineBlockIconify.svelte";
 
 	let {
 		maxWidth = 500,
 		small = false,
-		selectedSite,
-		onSearchItemSelect,
-		layersParams = $bindable(defaultLayersParams)
 	}: {
 		small?: boolean;
 		maxWidth?: number;
-		selectedSite?: Site;
-		onSearchItemSelect?: (item: Site) => void;
-		layersParams: MapLayersParams;
 	} = $props();
+
+
 
 	let open = $state(false);
 	let datasetsOpen = $state(false);
@@ -59,13 +52,15 @@
 		</summary>
 		<div class="card">
 			<!-- DATASETS SUBMENU -->
-			<details open={datasetsOpen} class="dropdown submenu"
+
+
+			<!-- <details open={datasetsOpen} class="dropdown submenu"
 			onmouseenter={openDatasets}
 			onmouseleave={() => (datasetsOpen = false)}
 			>
 				<summary class="outline">Datasets<DetailsOpenIcon open={datasetsOpen} /></summary>
 				<div class="card">
-					<!-- {#each _sites.allDatasets as dsname}
+					{#each _sites.allDatasets as dsname}
 						<label for={dsname}>
 							<input
 								type="checkbox"
@@ -74,48 +69,48 @@
 								onclick={() => toggleDatasetEnable(dsname)} />
 							<tt>{dsname}</tt>
 						</label>
-					{/each} -->
+					{/each}
 
 					<hr />
-					<!-- <div class="dataset-buttons">
+					<div class="dataset-buttons">
 						<a class="all-button" onclick={() => setEnabledDatasets(_sites.allDatasets)}>All</a><a
 							class="none-button"
 							onclick={() => setEnabledDatasets([])}>None</a>
-					</div> -->
+					</div>
 				</div>
-			</details>
+			</details> -->
 			<hr />
 			<span class="section-heading">Basemap</span>
-			<label for="topo" onclick={() => (layersParams.baseStyleId = "TOPO")}>
-				<input type="radio" id="topo" name="basemap" value="TOPO" checked={layersParams.baseStyleId == "TOPO"} />
+			<label for="topo" onclick={() => layerParams.basemapStyleId = "TOPO"}>
+				<input type="radio" id="topo" name="basemap" value="TOPO" checked={layerParams.basemapStyleId == 'TOPO'} />
 				Topographic
 			</label>
-			<label for="satellite" onclick={() => (layersParams.baseStyleId = "SATELLITE")}>
+			<label for="satellite" onclick={() => layerParams.basemapStyleId = "SATELLITE"}>
 				<input
 					type="radio"
 					id="satellite"
 					name="basemap"
 					value="SATELLITE"
-					checked={layersParams.baseStyleId == "SATELLITE"} />
+					checked={layerParams.basemapStyleId == "SATELLITE"} />
 				Satellite
 			</label>
-			<label for="hillshade" onclick={() => (layersParams.baseStyleId = "HILLSHADE")} style="display: none;">
+			<!-- <label for="hillshade" onclick={() => setBasemapStyleId("HILLSHADE")} style="display: none;">
 				<input
 					type="radio"
 					id="hillshade"
 					name="basemap"
 					value="HILLSHADE"
-					checked={layersParams.baseStyleId == "HILLSHADE"} />
+					checked={basemapStyleId() == "HILLSHADE"} />
 				Hillshade
-			</label>
+			</label> -->
 			<hr />
 			<label for="river">
-				<input type="checkbox" id="river" bind:checked={layersParams.riverLayerVisible} />
+				<input type="checkbox" id="river" bind:checked={layerParams.riverLayerVisible} />
 				Mainstem and tributaries
 			</label>
 
 			<label for="hide-ghosts">
-				<input type="checkbox" id="hide-ghosts" bind:checked={layersParams.ghostSitesVisible} />
+				<input type="checkbox" id="hide-ghosts" bind:checked={layerParams.ghostSitesVisible} />
 				Show sites without data
 			</label>
 
@@ -127,6 +122,7 @@
 <style>
 	.map-control {
 		z-index: 1002;
+		font-size: 22px;
 
 		:global(.inline-block-iconify) {
 			position: relative;

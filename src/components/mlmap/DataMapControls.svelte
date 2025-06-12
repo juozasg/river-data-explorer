@@ -1,11 +1,8 @@
 <script lang="ts">
 	import MapLatLonDebug from "./MapLatLonDebug.svelte";
 
-	import type { MapLibreMapProps } from "$src/lib/types/components";
 
 	import { sitesValidDates } from "$src/lib/data/dateStats";
-	import { type MapLayersParams } from "$src/lib/types/mapControls";
-	import { defaultLayersParams } from "$src/appstate/ui/layers.svelte";
 	import type { Site } from "$src/lib/types/site";
 	import DataTools from "./controls/DataTools.svelte";
 	import DateMultiInput from "./controls/DateMultiInput.svelte";
@@ -16,20 +13,15 @@
 	type Props = {
 		sites: Site[];
 		selectedSite?: Site;
-		layersParams: MapLayersParams;
 		varname?: string;
 		vardate?: Date;
 		mapWidth?: number;
 
-		onSearchItemSelect?: (item: Site) => void;
-	} & Partial<MapLibreMapProps>;
+	};
 
 	let {
 		sites,
-		selectedSite,
-		onSearchItemSelect,
 		mapWidth = 400,
-		layersParams = $bindable(defaultLayersParams),
 		varname = $bindable("ecoli"),
 		vardate = $bindable(todayDate)
 	}: Props = $props();
@@ -49,7 +41,7 @@
 <div class="controls">
 	<MapLatLonDebug />
 	<div class="top-controls">
-		<DataTools {small} maxWidth={mapWidth} {selectedSite} {onSearchItemSelect} bind:layersParams />
+		<DataTools {small} maxWidth={mapWidth} />
 		<VariableSelector {small} bind:varname />
 		<Legend {varname} />
 	</div>
