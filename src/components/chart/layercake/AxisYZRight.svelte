@@ -78,10 +78,10 @@
 				: tickMarkLength ?? 6
 			: 0;
 
-	$: widestTickLen = Math.max(
+	$: widestTickLen = Math.min(Math.max(
 		10,
 		Math.max(...tickVals.map((d) => format(d).toString().split('').reduce(calcStringLength, 0)))
-	);
+	),20);
 
 	$: x2 = $width + tickGutter + (labelPosition === 'above' ? widestTickLen : tickLen);
 	$: y = isBandwidth ? $zScale.bandwidth() / 2 : 0;

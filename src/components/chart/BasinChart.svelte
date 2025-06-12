@@ -7,9 +7,11 @@
 
 	type Props = {
 		onDateSelect?: (d: Date) => void;
+		width: number;
+		height: number;
 	};
 
-	const { onDateSelect }: Props = $props();
+	const { onDateSelect, width, height }: Props = $props();
 
 	const yTable = $derived(chartYSelection.table());
 	const zTable = $derived(chartZSelection.table());
@@ -76,7 +78,7 @@
 </script>
 
 {#if yzTable && yParams && zParams}
-	<BrushedYzChart {yzTable} {yParams} {zParams} {onDateSelect} />
+	<BrushedYzChart {yzTable} {yParams} {zParams} {onDateSelect} {width} {height}/>
 {:else}
 	<h3>
 		<InlineBlockIconify icon="lets-icons:expand-up" size="2rem" />
