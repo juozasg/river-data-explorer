@@ -6,6 +6,7 @@ import { basinObjectTypeLabel } from "$src/lib/utils/prettyNames";
 import type ColumnTable from "arquero/dist/types/table/column-table";
 import { siteDatasets } from "./datasets.svelte";
 import { sitesInRegion } from "./geoindexes.svelte";
+import { selectTableVar } from "$src/lib/data/siteTableHelpers";
 
 // export type BasinObjectType = 'site' | 'huc8' | 'huc10' | 'huc12' | 'state' | 'county' | 'river-catchment' | 'site-catchment'; // | 'custom';
 export type BasinObjectType = Exclude<BasinFeatureType, 'river'>;
@@ -107,6 +108,31 @@ export class BasinObject {
 			default:
 				return [];
 		}
+	}
+
+	variableTable(varname: string): ColumnTable | undefined {
+		switch (this.objectType) {
+			case 'site':
+				const table = siteDatasets.get(this.id!);
+				return table ? table.select('date', varname) : undefined;
+
+			// return allVariableStats(table!);
+			case 'huc8':
+			case 'huc10':
+			case 'huc12':
+			case 'state':
+			case 'county':
+			case 'river-catchment':
+			case 'site-catchment':
+				return
+				// const tables = siteTablesForRegion(_sites.allEnabled, dataSelection.yRegion);
+				// const dailyMediansTable = varDailyMedian(tables, dataSelection.yVar);
+				// // console.log('dailyMediansTable', dailyMediansTable.objects());
+				// return selectTableVar(dailyMediansTable, dataSelection.yVar, "y");
+
+			default:
+				return;
+		}
 
 	}
 }
@@ -114,6 +140,18 @@ export class BasinObject {
 export class BasinObjectVariable {
 	basinObject: BasinObject = new BasinObject();
 	varname: string | undefined = $state();
+	readonly axis: 'y' | 'z' | undefined = $state(); // x or y axis variable
+
+	constructor(axis?: 'y' | 'z') {
+		this.axis = axis;
+	}
+
+	table(): ColumnTable | undefined {
+		if (!this.isSet()) return;
+		if (!this.varname) return;
+		const table = this.basinObject.variableTable(this.varname);
+		return selectTableVar(table, this.varname, this.axis);
+	}
 
 	clear() {
 		this.basinObject.clear();
@@ -123,6 +161,12 @@ export class BasinObjectVariable {
 	set(basinObject: BasinObject, varname: string) {
 		this.basinObject.set(basinObject.objectType!, basinObject.id!);
 		this.varname = varname;
+	}
+
+	isSet(): boolean {
+		if (!this.basinObject.isSet) return false;
+		if (this.varname === undefined) return false;
+		return true;
 	}
 
 	equals(other: BasinObjectVariable): boolean {

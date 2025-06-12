@@ -5,8 +5,8 @@ export const basinObject1 = new BasinObject('1');
 export const basinObject2 = new BasinObject('2');
 
 
-export const chartYSelection = new BasinObjectVariable();
-export const chartZSelection = new BasinObjectVariable();
+export const chartYSelection = new BasinObjectVariable('y');
+export const chartZSelection = new BasinObjectVariable('z');
 
 
 export type MapSelectionMode = 'auto' | 'site' | 'huc10' | 'huc12' | 'county' | 'river-catchment' | 'site-catchment'; // | 'custom-click' | 'custom-draw';

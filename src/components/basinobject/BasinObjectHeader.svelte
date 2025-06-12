@@ -7,15 +7,15 @@
 </script>
 
 <div class={`header data-${selectionTarget}`}>
-	<div class="selection-hints">
-		{#if basinObject.equals(chartYSelection.basinObject)}
-			<div class="y-selection"></div>
-		{/if}
-		{#if basinObject.equals(chartZSelection.basinObject)}
-			<div class="z-selection"></div>
-		{/if}
-	</div>
 	<div class="label">
+		<div class="selection-hints">
+			{#if basinObject.equals(chartYSelection.basinObject)}
+				<div class="y-selection"></div>
+			{/if}
+			{#if basinObject.equals(chartZSelection.basinObject)}
+				<div class="z-selection"></div>
+			{/if}
+		</div>
 		{basinObject.objectLabelName}
 		{#if basinObject.objectSiteId}
 			<span class="site-id">({basinObject.objectSiteId})</span>
@@ -72,10 +72,11 @@
 		}
 
 		.selection-hints {
-			display: flex;
+			display: inline-flex;
 			height: auto;
-			width: 12px;
-			height: 20px;
+			width: auto;
+			height: 16px;
+			/* align-self: flex-start; */
 
 			.y-selection {
 				background-color: var(--color-chart-y);

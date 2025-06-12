@@ -67,29 +67,31 @@
 <style>
 	.variable-label:hover {
 		cursor: pointer;
-		/* background-color: var(--hover-color, #ccc); */
 		background-color: #ccc;
 	}
 
 	.variable-label {
 		padding-left: 0 !important;
-		/* width: 300px !important; */
 	}
 
 	.flexblock {
-		/* width: 100px !important; */
 		display: flex;
 		flex-wrap: nowrap;
 		flex-direction: row;
-		/* min-width: 100px !important; */
 	}
 
 	.text-block {
-		/* min-width: 100px !important; */
-		/* width: 200px;; */
 		position: relative;
-		/* width: 100%; */
 		display: inline-block;
 		min-width: 120px;
+		width: 100%;
+	}
+
+	.graph-buttons {
+		/* display: inline-block; */
+		position: absolute;
+		right: 0;
+
+		/* margin-left: 5px; */
 	}
 </style>

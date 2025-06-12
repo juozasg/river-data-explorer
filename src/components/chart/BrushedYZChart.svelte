@@ -110,8 +110,8 @@
 </script>
 
 <!-- extra chart container nesting makes LayerCake happy -->
-<div class="yz-chart-container" bind:this={brushedChartContainer as HTMLElement} style={`width: calc(50vw - 4rem); height: calc(50vh - 1rem)`}>
-	<div class="chart-container" style={`width: calc(50vw - 4rem); height: calc(50vh - 5rem)`} onmouseleave={() => dateHovered = undefined}>
+<div class="yz-chart-container" bind:this={brushedChartContainer as HTMLElement}>
+	<div class="chart-container" onmouseleave={() => dateHovered = undefined}>
 		<!-- brushedTable is full table sliced with min,max from the Brush component -->
 		{#if brushedTable && brushedTable.numRows() > 0}
 			<LayerCake
@@ -229,6 +229,9 @@
 
 <style>
 	.yz-chart-container {
+		width: 300px;
+		height: 100%;
+		border: 1px solid green;
 		/* width: fit-content; */
 		/* height: fit-content; */
 		overflow: visible;
@@ -238,6 +241,10 @@
 		.chart-container {
 			position: absolute;
 			top: 24px;
+			background-color: violet;
+
+			width: 400px;
+			height: 100%;
 
 			& :global {
 				.x-axis .tick:nth-child(even) text {

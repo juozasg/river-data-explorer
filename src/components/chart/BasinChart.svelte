@@ -1,66 +1,35 @@
-<!-- <script lang="ts">
-	import type { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
-	import { _sitesTables } from "$src/appstate/data/datasets.svelte";
-
-	import { varDailyMedian } from "$src/lib/data/stats";
-	import { selectTableVar } from "$src/lib/data/siteTableHelpers";
-	import type { Site } from "$src/lib/types/site";
+<script lang="ts">
+	import type { BasinObject } from "$src/appstate/data/basinObject.svelte";
+	import { chartYSelection, chartZSelection } from "$src/appstate/selection/basinObjectSelection.svelte";
 	import { varChartDomain, YZChartParams } from "$src/lib/utils/YZChartParams";
-	import BrushedYzChart from "./BrushedYZChart.svelte";
 	import InlineBlockIconify from "../icons/InlineBlockIconify.svelte";
+	import BrushedYzChart from "./BrushedYZChart.svelte";
 
 	type Props = {
-		dataSelection: ChartDataSelectionState;
-
 		onDateSelect?: (d: Date) => void;
 	};
 
-	const { dataSelection, onDateSelect }: Props = $props();
+	const { onDateSelect }: Props = $props();
 
-	const yTable = $derived.by(() => {
-		if (dataSelection.ySite && dataSelection.yVar) {
-			const table = _sitesTables.get(dataSelection.ySite.siteId);
-			return selectTableVar(table, dataSelection.yVar, "y");
-		}
+	const yTable = $derived(chartYSelection.table());
+	const zTable = $derived(chartZSelection.table());
 
-		if (dataSelection.yRegion && dataSelection.yVar) {
-			const tables = siteTablesForRegion(_sites.allEnabled, dataSelection.yRegion);
-			const dailyMediansTable = varDailyMedian(tables, dataSelection.yVar);
-			// console.log('dailyMediansTable', dailyMediansTable.objects());
-			return selectTableVar(dailyMediansTable, dataSelection.yVar, "y");
-		}
-	});
-
-	const zTable = $derived.by(() => {
-		if (dataSelection.zSite && dataSelection.zVar) {
-			const table = _sitesTables.get(dataSelection.zSite.siteId);
-			return selectTableVar(table, dataSelection.zVar, "z");
-		}
-
-		if (dataSelection.zRegion && dataSelection.zVar) {
-			const tables = siteTablesForRegion(_sites.allEnabled, dataSelection.zRegion);
-			const dailyMediansTable = varDailyMedian(tables, dataSelection.zVar);
-			return selectTableVar(dailyMediansTable, dataSelection.zVar, "z");
-		}
-	});
 
 	const yzTable = $derived.by(() => {
-		// react to changes in yTable or zTable
 		yTable?.objects();
 		zTable?.objects();
 		if (yTable && zTable) {
-			// console.log("joining tables");
 			return yTable.join_full(zTable, "date").orderby("date").reify();
 		}
 
 		return yTable ?? zTable;
 	});
 
-	const yDomain = $derived(varChartDomain("y", dataSelection.yVar, yzTable));
-	const zDomain = $derived(varChartDomain("z", dataSelection.zVar, yzTable));
+	const yDomain = $derived(varChartDomain("y", chartYSelection.varname, yzTable));
+	const zDomain = $derived(varChartDomain("z", chartZSelection.varname, yzTable));
 
 	const forceDomain: [number, number] | undefined = $derived.by(() => {
-		if (dataSelection.yVar == dataSelection.zVar) {
+		if (chartYSelection.varname == chartZSelection.varname) {
 			const minDomain = Math.min(yDomain[0], zDomain[0]);
 			const maxDomain = Math.max(yDomain[1], zDomain[1]);
 
@@ -69,41 +38,41 @@
 		return;
 	});
 
-	function locationName(site?: Site, region?: RegionFeature) {
-		if (site) {
-			return site.name + ` (${site.siteId.replace(/-/, "&#8209;")})`; // non-breaking hyphen
-		}
-		if (region) {
-			return region.name + ` (${region.regionType}&nbsp;${region.id})`;
+	function locationName(basinObject?: BasinObject): string {
+		if(!basinObject) return "";
+		let name = basinObject.objectLabelName;
+
+		if(basinObject.objectSiteId) {
+			name += ` (${basinObject.objectSiteId.replace(/-/, "&#8209;")})`; // non-breaking hyphen
 		}
 
-		return ""
+		return name;
 	}
 
 	let yParams = $derived(
 		new YZChartParams(
 			"y",
-			dataSelection.yVar || "",
+			chartYSelection.varname || "",
 			yzTable,
-			locationName(dataSelection.ySite, dataSelection.yRegion),
+			locationName(chartYSelection.basinObject),
 			forceDomain ?? yDomain
 		)
 	);
 	let zParams = $derived(
 		new YZChartParams(
 			"z",
-			dataSelection.zVar || "",
+			chartZSelection.varname || "",
 			yzTable,
-			locationName(dataSelection.zSite, dataSelection.zRegion),
+			locationName(chartZSelection.basinObject),
 			forceDomain ?? zDomain
 		)
 	);
 
-	// $effect(() => {
-	// 	console.log("yParams", yParams);
-	// 	console.log("zParams", zParams);
-	// 	console.log("yzTable", yzTable?.objects());
-	// });
+	$effect(() => {
+		console.log("yParams", yParams);
+		console.log("zParams", zParams);
+		console.log("yzTable", yzTable?.objects());
+	});
 </script>
 
 {#if yzTable && yParams && zParams}
@@ -145,8 +114,6 @@
 			margin-right: 5px;
 			opacity: 1 !important;
 		}
-
-
 	}
 
-</style> -->
+</style>

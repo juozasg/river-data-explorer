@@ -9,7 +9,7 @@
 	import { todayDate } from "$src/lib/utils/date";
 	import MapLibreMap from "../mlmap/MapLibreMap.svelte";
 	import VarDataMarkers from "../mlmap/VarDataMarkers.svelte";
-	import { basinObject1 } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import { basinObject1, chartYSelection } from "$src/appstate/selection/basinObjectSelection.svelte";
 
 
 
@@ -39,7 +39,8 @@
 	// DEBUG
 	$effect(() => {
 		if(mapController && mapController.dataModelReady) {
-				// basinObject1.set('site', 10002);
+				basinObject1.set('site', 10002);
+				chartYSelection.set(basinObject1, 'ecoli');
 		}
 	});
 

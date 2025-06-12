@@ -6,7 +6,7 @@
 
 	import MapLibreMap from "./MapLibreMap.svelte";
 
-	import type { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
+	// import type { ChartDataSelectionState } from "$src/appstate/selection/chartDataSelection.svelte";
 	import { defaultLayersParams, setEnabledDatasets } from "$src/appstate/ui/layers.svelte";
 	import { type MapLayersParams } from "$src/lib/types/mapControls";
 	import type { Site } from "$src/lib/types/site";
@@ -15,36 +15,36 @@
 	import MapTooltip from "./MapTooltip.svelte";
 	import { aremove } from "$src/lib/utils/arrays";
 
-	type Props = {
-		dataSelection: ChartDataSelectionState;
-		// selectedRegion?: MapFeatureSelectionState;
-		// selectedRiver?: MapFeatureSelectionState;
-		selectedSite?: Site;
-		showRegionTooltip?: boolean;
-		varname?: string;
-		vardate?: Date;
-		layersParams?: MapLayersParams;
+	// type Props = {
+	// 	dataSelection: ChartDataSelectionState;
+	// 	// selectedRegion?: MapFeatureSelectionState;
+	// 	// selectedRiver?: MapFeatureSelectionState;
+	// 	selectedSite?: Site;
+	// 	showRegionTooltip?: boolean;
+	// 	varname?: string;
+	// 	vardate?: Date;
+	// 	layersParams?: MapLayersParams;
 
-	};
+	// };
 
-	let {
-		// selectedRegion,
-		// selectedRiver,
-		selectedSite,
-		// onMapClick,
-		// onSearchItemSelect,
-		showRegionTooltip = true,
-		dataSelection,
-		varname = $bindable("ecoli"),
-		vardate = $bindable(todayDate),
-		layersParams = $bindable(defaultLayersParams),
-		...others
-	}: Props = $props();
+	// let {
+	// 	// selectedRegion,
+	// 	// selectedRiver,
+	// 	selectedSite,
+	// 	// onMapClick,
+	// 	// onSearchItemSelect,
+	// 	showRegionTooltip = true,
+	// 	dataSelection,
+	// 	varname = $bindable("ecoli"),
+	// 	vardate = $bindable(todayDate),
+	// 	layersParams = $bindable(defaultLayersParams),
+	// 	...others
+	// }: Props = $props();
 
-	let _mlmComponent = $state<MapLibreMap>();
-	export const mlmComponent = () => _mlmComponent;
+	// let _mlmComponent = $state<MapLibreMap>();
+	// export const mlmComponent = () => _mlmComponent;
 
-	let clientWidth = $state(0);
+	// let clientWidth = $state(0);
 
 	// const sites = $derived(globalSites.allEnabled);
 	// const emphasizedSites = $derived(Sites.forRegionFeature(sites, selectedRegion?.feature));
@@ -80,7 +80,7 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="map-with-controls" style="position: relative; height:100%" bind:clientWidth>
+<!-- <div class="map-with-controls" style="position: relative; height:100%" bind:clientWidth> -->
 	<!-- <DataMapControls
 		bind:this={dataMapControls}
 		{sites}
@@ -92,7 +92,7 @@
 		mapWidth={clientWidth} />
 
 	<MapLibreMap bind:this={_mlmComponent} bind:mlMap {layersParams} {...others} /> -->
-</div>
+<!-- </div> -->
 
 <!-- {#if mlMap} -->
 	<!-- <MapTooltip

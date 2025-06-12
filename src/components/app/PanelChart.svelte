@@ -1,12 +1,18 @@
-<div>CHART</div>
+<script lang="ts">
+	import BasinChart from "../chart/BasinChart.svelte";
+</script>
+
+<div class="chart-container">
+	<BasinChart/>
+</div>
 
 <style>
-	div {
-		background-color: #fad0d0;
-		font-size: 5rem;
-		padding: 10px;
-		/* border-radius: 5px; */
-		width: 100%;
+	.chart-container {
+		/* padding: 10px; */
+		margin-left: 28px;
+		width: calc(100% - 28px);
+		/* width: 100%; */
+		background-color: rgb(76, 76, 76);
 		height: 100%;
 	}
 </style>
