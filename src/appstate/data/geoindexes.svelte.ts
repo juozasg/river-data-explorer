@@ -1,11 +1,11 @@
 import { startedLoading } from "../ui/loadingItem.svelte";
-import { loadDataCsv } from "$src/lib/data/cachedDataLoad";
-// import { regionTypes, type RegionType } from "./_regionFeatures.svelte";
-import { defineGlobal } from "$src/lib/utils";
-import type { BasinObject, BasinObjectType } from "./basinObject.svelte";
-import { SvelteMap } from "svelte/reactivity";
 import type { Site } from "$src/lib/types/site";
+import { SvelteMap } from "svelte/reactivity";
+import type { BasinObjectType } from "./basinObject.svelte";
 import { sites } from "./sites.svelte";
+import { loadDataJson } from "$src/lib/data/cachedDataLoad";
+import { load } from "js-yaml";
+import { defineGlobal } from "$src/lib/utils";
 
 
 export type BasinRegionType =  Exclude<BasinObjectType, 'site'>;
@@ -17,7 +17,7 @@ export type GeoindexRegion = {
 	id: number;
 }
 
-export const siteRegionsGeoindex = new SvelteMap<SiteIntId, GeoindexRegion[]>();
+// export const siteRegionsGeoindex = new SvelteMap<SiteIntId, GeoindexRegion[]>();
 export const regionsSitesGeoindex: Record<BasinRegionType, SvelteMap<number, SiteIntId[]>> = {
 	huc8: new SvelteMap<number, SiteIntId[]> (),
 	huc10: new SvelteMap<number, SiteIntId[]>(),
@@ -30,33 +30,36 @@ export const regionsSitesGeoindex: Record<BasinRegionType, SvelteMap<number, Sit
 
 
 export function sitesInRegion(regionType: BasinRegionType, regionId: number): Site[] {
-	return [...sites.values()].splice(0, 10);
-
 	const ids = regionsSitesGeoindex[regionType].get(regionId) || [];
 	return ids.map(id => sites.get(id)).filter((site): site is Site => !!site);
 }
 
 
 
-export async function loadGeoindexData() {
-	const finishedLoading = startedLoading("Geodata Indexes");
+export async function loadGeoindexes() {
+	const regionTypes = Object.keys(regionsSitesGeoindex) as BasinRegionType[];
+	const promises = regionTypes.map(loadGeoindexData);
+	await Promise.all(promises);
 
-	// TODO: geoindex
-	console.warn('TODO: geoindex loading');
+	defineGlobal('regionsSitesGeoindex', regionsSitesGeoindex);
+	defineGlobal('sitesInRegion', sitesInRegion);
+}
 
-	const path = 'indexes/sites.csv';
-	// const sitesRows = await loadDataCsv(path);
-	// sitesRows.forEach((row) => {
-	// 	const key = row.siteId as string;
-	// 	const regionsIndex: RegionsIndex = {} as RegionsIndex;
-	// 	regionTypes.forEach((rt) => {
-	// 		regionsIndex[rt] = row[rt] as string;
-	// 	});
 
-	// 	sitesGeoindex[key] = regionsIndex;
-	// });
 
-	// finishedLoading();
-	// defineGlobal('sitesGeoindex', sitesGeoindex);
-	// sites.reindexGeometries();
+async function loadGeoindexData(name: BasinRegionType) {
+	const path = `indexes/${name}.json`;
+	try {
+		const data = await loadDataJson(path);
+		for(let featureId in data) {
+			const siteIds = data[featureId] as SiteIntId[];
+			const id = parseInt(featureId);
+			regionsSitesGeoindex[name].set(id, siteIds);
+		}
+
+
+		console.log('loaded', path);
+	} catch (e) {
+		console.error('Error loading geoindex', path, e);
+	}
 }

@@ -38,10 +38,10 @@
 
 	// DEBUG
 	$effect(() => {
-		if(mapController && mapController.dataModelReady) {
-				basinObject1.set('site', 10002);
-				chartYSelection.set(basinObject1, 'ecoli');
-		}
+		// if(mapController && mapController.dataModelReady) {
+		// 		basinObject1.set('site', 10002);
+		// 		chartYSelection.set(basinObject1, 'ecoli');
+		// }
 	});
 
 

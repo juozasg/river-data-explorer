@@ -1,6 +1,6 @@
 // import { loadBasinFipsData } from "$src/appstate/data/basinFipsAreas.svelte";
 import { loadDatasets } from "$src/appstate/data/datasets.svelte";
-import { loadGeoindexData } from "$src/appstate/data/geoindexes.svelte";
+import { loadGeoindexes } from "$src/appstate/data/geoindexes.svelte";
 import { loadDatasetsUsgsWS } from "./loadDataUsgsWS";
 import { loadMarkdown } from "./loadMarkdown";
 import { loadSitesCsv } from "./loadSitesCsv";
@@ -19,7 +19,7 @@ export async function loadAppData(manifest: DataManifest) {
 	console.log('Loading app data...');
 
 	loadMarkdown();
-	loadGeoindexData();
+	loadGeoindexes();
 
 	await loadDatasetsCsv();
 	console.log('datasetIds', datasetIds);

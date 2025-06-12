@@ -11,9 +11,13 @@ import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import { siteIds, sites } from './sites.svelte';
 import { parseUTC1700Date } from '$src/lib/utils/date';
 import { defineGlobal } from '$src/lib/utils';
-import type { SiteId } from '$src/lib/types/site';
+import type { Site, SiteId } from '$src/lib/types/site';
 
 export const siteDatasets = new SvelteMap<number, ColumnTable>();
+
+export function sitesDatasets(sites: Site[]): ColumnTable[] {
+	return sites.map(site => siteDatasets.get(site.id)).filter(t => t !== undefined) as ColumnTable[];
+}
 
 export const totalRecords = () => [...siteDatasets.values()].reduce((acc, tbl) => acc + tbl.numRows(), 0);
 

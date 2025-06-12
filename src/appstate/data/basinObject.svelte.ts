@@ -1,10 +1,10 @@
 import { basinFeatureName, type BasinFeatureType } from "$src/appstate/data/basinFeatureCollection.svelte";
 import { sites } from "$src/appstate/data/sites.svelte";
-import { allVariableStats, allVarsDailyMedians, sitesDataStats } from "$src/lib/data/stats";
+import { allVariableStats, allVarsDailyMedians, sitesDataStats, varDailyMedian } from "$src/lib/data/stats";
 import type { VariableStats } from "$src/lib/types/analysis";
 import { basinObjectTypeLabel } from "$src/lib/utils/prettyNames";
 import type ColumnTable from "arquero/dist/types/table/column-table";
-import { siteDatasets } from "./datasets.svelte";
+import { siteDatasets, sitesDatasets } from "./datasets.svelte";
 import { sitesInRegion } from "./geoindexes.svelte";
 import { selectTableVar } from "$src/lib/data/siteTableHelpers";
 
@@ -124,11 +124,11 @@ export class BasinObject {
 			case 'county':
 			case 'river-catchment':
 			case 'site-catchment':
-				return
-				// const tables = siteTablesForRegion(_sites.allEnabled, dataSelection.yRegion);
-				// const dailyMediansTable = varDailyMedian(tables, dataSelection.yVar);
+				const sites = sitesInRegion(this.objectType, this.id!);
+				const tables = sitesDatasets(sites);
+				const dailyMediansTable = varDailyMedian(tables, varname);
 				// // console.log('dailyMediansTable', dailyMediansTable.objects());
-				// return selectTableVar(dailyMediansTable, dataSelection.yVar, "y");
+				return dailyMediansTable ? dailyMediansTable.select('date', varname) : undefined;
 
 			default:
 				return;
