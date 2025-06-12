@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { BasinObject } from "$src/appstate/data/basinObject.svelte";
+	import { chartYSelection, chartZSelection } from "$src/appstate/selection/basinObjectSelection.svelte";
 
 	type Props = { selectionTarget: "1" | "2"; basinObject: BasinObject; showModeSelector: boolean };
 	let { selectionTarget, basinObject, showModeSelector = $bindable() }: Props = $props();
@@ -7,10 +8,10 @@
 
 <div class={`header data-${selectionTarget}`}>
 	<div class="selection-hints">
-		{#if true}
+		{#if basinObject.equals(chartYSelection.basinObject)}
 			<div class="y-selection"></div>
 		{/if}
-		{#if true}
+		{#if basinObject.equals(chartZSelection.basinObject)}
 			<div class="z-selection"></div>
 		{/if}
 	</div>

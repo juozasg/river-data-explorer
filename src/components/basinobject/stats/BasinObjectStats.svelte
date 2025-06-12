@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { BasinObject } from "$src/appstate/data/basinObject.svelte";
+	import { chartYSelection, chartZSelection } from "$src/appstate/selection/basinObjectSelection.svelte";
 	import StatsDataTable from "$src/components/StatsDataTable.svelte";
-	import VarValueStandards from "$src/components/tooltips/VarValueStandards.svelte";
 	import type { VariableStats } from "$src/lib/types/analysis";
 	import { varunits } from "$src/lib/utils/varHelpers";
 	import StatsCommonTd from "./StatsCommonTd.svelte";
@@ -21,10 +21,18 @@
 		},
 		varGraphButtonClick = (name: string, axis: "y" | "z", clearGraph: boolean) => {
 			console.log("Variable graph button clicked:", name, axis, clearGraph);
+			const chartSelection = axis === "y" ? chartYSelection : chartZSelection;
+			if (clearGraph) {
+				chartSelection.clear();
+			} else {
+				chartSelection.set(basinObject, name);
+				console.log('set chart selection:', chartSelection, axis);
+
+			}
 		}
 	}: Props = $props();
 
-	const rows: VariableStats[] = $derived(basinObject.allVariableStats.concat(basinObject.allVariableStats));
+	const rows: VariableStats[] = $derived(basinObject.allVariableStats);
 </script>
 
 <div class="stats-table-container">
@@ -38,10 +46,10 @@
 		{#snippet row(r: VariableStats)}
 			<tr>
 				<TdStatsVariableLabel
-					ySelected={false}
-					zSelected={false}
-					yHinted={false}
-					zHinted={false}
+					ySelected={chartYSelection.basinObject.equals(basinObject) && chartYSelection.varname === r.varname}
+					zSelected={chartZSelection.basinObject.equals(basinObject) && chartZSelection.varname === r.varname}
+					yHinted={!chartYSelection.basinObject.equals(basinObject) && chartYSelection.varname === r.varname}
+					zHinted={!chartZSelection.basinObject.equals(basinObject) && chartZSelection.varname === r.varname}
 					varname={r.varname}
 					onclick={() => varLabelClick(r.varname)}
 					canBeGraphed={r.numObservations > 0}

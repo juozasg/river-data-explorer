@@ -119,8 +119,9 @@ export class BasinObjectVariable {
 		this.basinObject.clear();
 		this.varname = undefined;
 	}
+
 	set(basinObject: BasinObject, varname: string) {
-		this.basinObject = basinObject;
+		this.basinObject.set(basinObject.objectType!, basinObject.id!);
 		this.varname = varname;
 	}
 
