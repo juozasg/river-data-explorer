@@ -24,10 +24,6 @@
 
 	let clientWidth = $state(0);
 
-	const onSiteHovered = (site?: Site) => {
-		if (mapController) mapController.siteHovered(site);
-	};
-
 	const tooltipSite = $derived(mapController?.hoveredSite);
 	const tooltipRegionObject = $derived(mapController?.hoveredRegionBasinObject);
 
@@ -42,6 +38,13 @@
 		}
 
 		mlMap = mlMapComponent.mlmMap()!;
+	});
+
+	// site markers
+	$effect(() => {
+		if(mapController && mapController.dataModelReady) {
+			mapController.updateSiteStyles(varname, vardate);
+		}
 	});
 
 	// DEBUG

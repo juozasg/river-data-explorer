@@ -93,34 +93,7 @@ export class MapHoverSelectionController {
 					siteSource.setData(siteFeatures);
 				}
 
-				const varname = 'ecoli';
-				siteFeatures?.features.forEach((siteFeature) => {
-					const id: number = siteFeature.properties?.id;
-					if (id) {
-						const val = siteVarDateValue(id, varname);
-						const color = rgb2hex(interpolateVarColor(varname, val));
-
-						if (color !== undefined) {
-							console.log('setting site color', id, color);
-
-							// set feature state to change the color of the site marker
-							this.#map.setFeatureState(
-								{ source: 'riverapp-sites', id: id },
-								{
-									color: color.hex,
-									opacity: color.alpha
-								}
-							);
-						}
-						// else {
-						// 	this.#map.setFeatureState(
-						// 		{ source: 'riverapp-sites', id: siteFeature.id },
-						// 		{ color: undefined }
-						// 	);
-						// }
-
-					}
-				});
+				this.updateSiteStyles('ecoli');
 			});
 
 
@@ -185,6 +158,38 @@ export class MapHoverSelectionController {
 		});
 
 		this.#hoveredRegionId = undefined;
+	}
+
+	updateSiteStyles(varname: string, vardate?: Date) {
+		const siteFeatures = basinFeatureCollections.get('site');
+
+		siteFeatures?.features.forEach((siteFeature) => {
+			const id: number = siteFeature.properties?.id;
+			if (id) {
+				const val = siteVarDateValue(id, varname, vardate);
+				const color = rgb2hex(interpolateVarColor(varname, val));
+
+				if (color !== undefined) {
+					// console.log('setting site color', id, colors);
+
+					// set feature state to change the color of the site marker
+					this.#map.setFeatureState(
+						{ source: 'riverapp-sites', id: id },
+						{
+							color: color.hex,
+							opacity: color.alpha
+						}
+					);
+				}
+				// else {
+				// 	this.#map.setFeatureState(
+				// 		{ source: 'riverapp-sites', id: siteFeature.id },
+				// 		{ color: undefined }
+				// 	);
+				// }
+
+			}
+		});
 	}
 
 
