@@ -38,6 +38,38 @@ export function interpolateVarColor(varname: string, value?: number | string, va
 	return varInterpolator(varname)(valueFraction);
 }
 
+// export function rgbtohex(rgbexp: string): string {
+// 	console.log('rgbtohex', rgbexp);
+
+// 	const rgb = rgbexp.match(/[\d\.]+/g);
+// 	if (!rgb || rgb.length < 3) {
+// 		console.error('Invalid RGB expression:', rgbexp);
+// 		return '#000000'; // Return black if invalid
+// 	}
+// 	const hex = rgb.map((c) => {
+// 		const hexComponent = parseInt(c).toString(16);
+// 		return hexComponent.length === 1 ? '0' + hexComponent : hexComponent;
+// 	}).join('');
+// 	return `#${hex}`;
+// }
+
+// function rgba2hex(orig: string) {
+//     var a, isPercent,
+//     rgb = orig.replace(/\s/g, '').match(/^rgba?\((\d+),(\d+),(\d+),?([^,\s)]+)?/i),
+//     alpha = (rgb && rgb[4] || "").trim(),
+//     hex = rgb ?
+//     (rgb[1] | 1 << 8).toString(16).slice(1) +
+//     (rgb[2] | 1 << 8).toString(16).slice(1) +
+//     (rgb[3] | 1 << 8).toString(16).slice(1) : orig;
+
+//     if (alpha !== "") { a = alpha; }
+//     else { a = 01; }
+//     hex = hex + a;
+
+//     return hex;
+// }
+
+
 
 export function interpolateCategoricalVarColor(varname: string, value: string): string {
 	const md = variablesMetadata[varname];

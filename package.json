@@ -66,6 +66,7 @@
 		"lunr": "^2.3.9",
 		"maplibre-gl": "^3.6.2",
 		"navigo": "^8.11.1",
+		"rgb2hex": "^0.2.5",
 		"sass": "^1.69.5",
 		"snarkdown": "^2.0.0",
 		"sprintf": "^0.1.5"

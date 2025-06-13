@@ -108,7 +108,7 @@ export function siteGetBeforeDate(site: Site, varname: string, date?: Date): num
 	return tableGetBeforeDate(table, varname, date);
 }
 
-export function siteBeforeVardateValue(id: number, varname: string, beforeDate?: Date): number | string | undefined {
+export function siteVarDateValue(id: number, varname: string, beforeDate?: Date): number | string | undefined {
 	try {
 		const table = siteDatasets.get(id);
 		if (!table) return;

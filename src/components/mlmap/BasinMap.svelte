@@ -31,7 +31,8 @@
 	const tooltipSite = $derived(mapController?.hoveredSite);
 	const tooltipRegionObject = $derived(mapController?.hoveredRegionBasinObject);
 
-	const selectedSites = $derived([...sites.values()].filter((s) => s.dataset !== "invert"));
+	// const selectedSites = $derived([...sites.values()].filter((s) => s.dataset !== "invert"));
+	const selectedSites = $derived([...sites.values()].filter((s) => s));
 
 	$effect(() => {
 		if (!mlMapComponent.styleLoaded()) return;
@@ -67,7 +68,7 @@
 	{#if mlMap}
 		<MapTooltip site={tooltipSite} regionObject={tooltipRegionObject} {mlMap} {varname} vardate={todayDate} />
 
-		<VarDataMarkers
+		<!-- <VarDataMarkers
 			{mlMap}
 			{varname}
 			{vardate}
@@ -75,7 +76,7 @@
 			ghostSitesVisible={layerParams.ghostSitesVisible}
 			yVarSite={undefined}
 			zVarSite={undefined}
-			{onSiteHovered} />
+			{onSiteHovered} /> -->
 	{/if}
 </div>
 

@@ -4,7 +4,7 @@
 	import type { Site } from "$src/lib/types/site";
 	import { makeSiteMarker } from "$src/lib/utils/maplibre";
 	import { ghost, interpolateVarColor } from "$src/lib/utils/colors";
-	import { siteBeforeVardateValue } from "$src/lib/data/siteTableHelpers";
+	import { siteVarDateValue } from "$src/lib/data/siteTableHelpers";
 	import { varoutsidestandard } from "$src/lib/utils/varHelpers";
 
 	type Props = {
@@ -47,7 +47,7 @@
 	export const siteId = site.siteId;
 
 	$effect(() => {
-		const val = siteBeforeVardateValue(site.id, varname, vardate);
+		const val = siteVarDateValue(site.id, varname, vardate);
 
 		if (val === undefined) {
 			isGhost = true;

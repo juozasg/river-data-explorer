@@ -1,4 +1,5 @@
 import * as ml from 'maplibre-gl';
+import rgb2hex from 'rgb2hex';
 
 import { initMapData } from '$src/lib/data/map/layers/initMapData';
 import { autoSelectBasinObjectsOnClick } from '$src/lib/data/selectionHelpers';
@@ -9,6 +10,8 @@ import { setSelectedPanel } from '../ui/layout.svelte';
 import { setMapCursor } from './mapMouse.svelte';
 import { BasinObject, type BasinObjectType } from '../data/basinObject.svelte';
 import { sites } from '../data/sites.svelte';
+import { siteVarDateValue } from '$src/lib/data/siteTableHelpers';
+import { interpolateVarColor } from '$src/lib/utils/colors';
 
 export type HoveredRegionType = 'huc8' | 'huc10' | 'huc12' | 'county';
 
@@ -24,7 +27,7 @@ export class MapHoverSelectionController {
 	// #hoveredRegionType = $state<HoveredRegionType>();
 	// #hoveredSite
 
-	dataModelReady = $state(false)
+	dataModelReady = $state(false);
 
 	get hoveredSite() {
 		return this.#hoveredSite;
@@ -78,6 +81,47 @@ export class MapHoverSelectionController {
 					riversSource.setData(riversFeatures);
 				}
 			});
+
+
+			// set sites source when ready
+			$effect(() => {
+				// this will run when the map data model (sources and layers) is ready and when the feature collections change
+				const siteFeatures = basinFeatureCollections.get('site');
+				const siteSource = this.#map.getSource("riverapp-sites") as ml.GeoJSONSource;
+				if (this.dataModelReady && siteSource && siteFeatures) {
+					// console.log('adding rivers geojson mlmap source data');
+					siteSource.setData(siteFeatures);
+				}
+
+				const varname = 'ecoli';
+				siteFeatures?.features.forEach((siteFeature) => {
+					const id: number = siteFeature.properties?.id;
+					if (id) {
+						const val = siteVarDateValue(id, varname);
+						const color = rgb2hex(interpolateVarColor(varname, val));
+
+						if (color !== undefined) {
+							console.log('setting site color', id, color);
+
+							// set feature state to change the color of the site marker
+							this.#map.setFeatureState(
+								{ source: 'riverapp-sites', id: id },
+								{ color: color.hex,
+									opacity: color.alpha
+								 }
+							);
+						}
+						// else {
+						// 	this.#map.setFeatureState(
+						// 		{ source: 'riverapp-sites', id: siteFeature.id },
+						// 		{ color: undefined }
+						// 	);
+						// }
+
+					}
+				});
+			});
+
 
 
 			// set huc12, huc10 and county regions data source when select mode is set to huc12, huc10 or county

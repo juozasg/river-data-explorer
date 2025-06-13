@@ -51,6 +51,7 @@ export function makeSiteMarker(node: HTMLElement, map: ml.Map, site: Site) {
 	let lat = site.lat;
 
 	const marker = new ml.Marker({ element: node }).setLngLat([lon, lat]).addTo(map);
+	// marker.on(''
 	return {
 		destroy() {
 			marker.remove();

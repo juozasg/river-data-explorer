@@ -182,6 +182,26 @@ export function addOutlineLayers(map: ml.Map) {
 
 
 export function addSiteLayers(map: ml.Map): void {
+	// ALL SITES
+
+	map.addLayer(
+		{
+			id: "riverapp-sites",
+			source: "riverapp-sites",
+			type: "circle",
+			paint: {
+				"circle-stroke-color": '#000000',
+				"circle-stroke-width": 1,
+				"circle-stroke-opacity": ["feature-state", "opacity"],
+				"circle-color": ["feature-state", "color"],
+				"circle-radius": 6,
+				"circle-opacity": ["feature-state", "opacity"]
+			}
+		},
+		mlmInsertBeforeLayer
+	);
+
+
 	// SELECTED SITES
 	map.addLayer(
 		{

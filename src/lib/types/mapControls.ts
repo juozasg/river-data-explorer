@@ -4,5 +4,6 @@ export type MapLayersParams = {
 	riverLayerVisible: boolean;
 	ghostSitesVisible: boolean;
 	basemapStyleId: 'SATELLITE' | 'TOPO' | 'HILLSHADE';
+	normalizeLegendToVisibleData: boolean;
 };
 

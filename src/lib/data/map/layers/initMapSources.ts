@@ -82,4 +82,15 @@ export function initMapSources(map: ml.Map) {
 			features: []
 		}
 	});
+
+
+		map.addSource("riverapp-sites", {
+		// generateId: true,
+		promoteId: 'id',
+		type: "geojson",
+		data: {
+			type: "FeatureCollection",
+			features: []
+		}
+	});
 }

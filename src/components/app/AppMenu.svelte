@@ -115,9 +115,9 @@
 		font-weight: bold;
 
 		a {
-			font-size: 1.1rem;
+			font-size: 20px;
 			line-height: 40px;
-			margin-right: 8px;
+			margin-right: 12px;
 			color: var(--stjoe-blue);
 			white-space: nowrap;
 		}
