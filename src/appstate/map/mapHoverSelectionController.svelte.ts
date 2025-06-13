@@ -106,9 +106,10 @@ export class MapHoverSelectionController {
 							// set feature state to change the color of the site marker
 							this.#map.setFeatureState(
 								{ source: 'riverapp-sites', id: id },
-								{ color: color.hex,
+								{
+									color: color.hex,
 									opacity: color.alpha
-								 }
+								}
 							);
 						}
 						// else {
@@ -366,10 +367,32 @@ export class MapHoverSelectionController {
 					mapSelectionMode.target = '2'; // reset target to 1 after selection
 					break;
 			}
-			// basinObject1.set('site', this.#hoveredSite.id);
+		});
+
+		/// SITES
+		map.on('mousemove', 'riverapp-sites', (e) => {
+			if (e.features && e.features.length > 0) {
+				const feature = e.features[0];
+				// // console.log('hovered region', feature);
+				if (this.#hoveredSite?.id === feature.id) {
+					return;
+				}
 
 
+				// const hoveredSites = map.getSource("riverapp-hovered-sites") as ml.GeoJSONSource;
+				// hoveredSites.setData({
+				// 	type: "FeatureCollection",
+				// 	features: [feature]
+				// });
 
+				const site = sites.get(feature.id as number);
+				this.siteHovered(site);
+			}
+
+		});
+
+		map.on('mouseleave', 'riverapp-sites', (e) => {
+			this.siteHovered(undefined);
 		});
 
 
