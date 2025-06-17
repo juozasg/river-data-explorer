@@ -346,6 +346,16 @@ export class MapHoverSelectionController {
 					return;
 				}
 
+				// copy feature state to hovered site
+				const fstate = this.#map.getFeatureState({
+					source: 'riverapp-sites',
+					id: feature.id
+				});
+
+				if (fstate.opacity === 0) {
+					// if the site is ghosted, ignore this
+					return;
+				}
 
 				const hoveredSites = map.getSource("riverapp-hovered-sites") as ml.GeoJSONSource;
 				hoveredSites.setData({
@@ -353,14 +363,6 @@ export class MapHoverSelectionController {
 					features: [feature]
 				});
 
-
-				// copy feature state to hovered site
-				const fstate = this.#map.getFeatureState({
-					source: 'riverapp-sites',
-					id: feature.id
-				});
-
-				// console.log('hovered site feature state', fstate);
 
 				this.#map.setFeatureState(
 					{ source: 'riverapp-hovered-sites', id: feature.id },
