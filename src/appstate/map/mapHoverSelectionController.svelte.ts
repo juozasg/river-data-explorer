@@ -1,17 +1,15 @@
 import * as ml from 'maplibre-gl';
-import rgb2hex from 'rgb2hex';
 
 import { initMapData } from '$src/lib/data/map/layers/initMapData';
+import { updateSiteStyles } from '$src/lib/data/map/layers/updateMapStyles';
 import { autoSelectBasinObjectsOnClick } from '$src/lib/data/selectionHelpers';
 import type { Site } from '$src/lib/types/site';
-import { findBasinFeatureById, basinFeatureCollections } from '../data/basinFeatureCollection.svelte';
+import { basinFeatureCollections, findBasinFeatureById } from '../data/basinFeatureCollection.svelte';
+import { BasinObject, type BasinObjectType } from '../data/basinObject.svelte';
+import { sites } from '../data/sites.svelte';
 import { basinObject1, basinObject2, mapSelectionMode, mapSelectionTargetObject } from '../selection/basinObjectSelection.svelte';
 import { setSelectedPanel } from '../ui/layout.svelte';
 import { setMapCursor } from './mapMouse.svelte';
-import { BasinObject, type BasinObjectType } from '../data/basinObject.svelte';
-import { sites } from '../data/sites.svelte';
-import { siteVarDateValue } from '$src/lib/data/siteTableHelpers';
-import { interpolateVarColor } from '$src/lib/utils/colors';
 
 export type HoveredRegionType = 'huc8' | 'huc10' | 'huc12' | 'county';
 
@@ -93,7 +91,7 @@ export class MapHoverSelectionController {
 					siteSource.setData(siteFeatures);
 				}
 
-				this.updateSiteStyles('ecoli');
+				updateSiteStyles(this.#map, 'ecoli');
 			});
 
 
@@ -149,7 +147,6 @@ export class MapHoverSelectionController {
 		});
 	}
 
-
 	clearHoveredRegions() {
 		const hoveredRegions = this.#map.getSource("riverapp-hovered-regions") as ml.GeoJSONSource;
 		hoveredRegions.setData({
@@ -159,39 +156,6 @@ export class MapHoverSelectionController {
 
 		this.#hoveredRegionId = undefined;
 	}
-
-	updateSiteStyles(varname: string, vardate?: Date) {
-		const siteFeatures = basinFeatureCollections.get('site');
-
-		siteFeatures?.features.forEach((siteFeature) => {
-			const id: number = siteFeature.properties?.id;
-			if (id) {
-				const val = siteVarDateValue(id, varname, vardate);
-				const color = rgb2hex(interpolateVarColor(varname, val));
-
-				if (color !== undefined) {
-					// console.log('setting site color', id, colors);
-
-					// set feature state to change the color of the site marker
-					this.#map.setFeatureState(
-						{ source: 'riverapp-sites', id: id },
-						{
-							color: color.hex,
-							opacity: color.alpha
-						}
-					);
-				}
-				// else {
-				// 	this.#map.setFeatureState(
-				// 		{ source: 'riverapp-sites', id: siteFeature.id },
-				// 		{ color: undefined }
-				// 	);
-				// }
-
-			}
-		});
-	}
-
 
 	siteHovered(site: Site | undefined) {
 		if (!site?.id) {
@@ -257,7 +221,6 @@ export class MapHoverSelectionController {
 
 	regionHovered(regionId: number | undefined) {
 		this.#hoveredRegionId = regionId;
-
 		this.#hoveredRegionId ? setMapCursor('pointer') : setMapCursor('default');
 	}
 
@@ -397,8 +360,7 @@ export class MapHoverSelectionController {
 					id: feature.id
 				});
 
-				console.log('hovered site feature state', fstate);
-
+				// console.log('hovered site feature state', fstate);
 
 				this.#map.setFeatureState(
 					{ source: 'riverapp-hovered-sites', id: feature.id },

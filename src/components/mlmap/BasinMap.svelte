@@ -3,15 +3,11 @@
 
 	import { sites } from "$src/appstate/data/sites.svelte";
 	import { MapHoverSelectionController } from "$src/appstate/map/mapHoverSelectionController.svelte";
-	import type { Site } from "$src/lib/types/site";
-	import { aremove } from "$src/lib/utils/arrays";
 	import { todayDate } from "$src/lib/utils/date";
-	import MapLibreMap from "./MapLibreMap.svelte";
-	import VarDataMarkers from "./VarDataMarkers.svelte";
-	import { basinObject1, chartYSelection } from "$src/appstate/selection/basinObjectSelection.svelte";
-	import MapTooltip from "./MapTooltip.svelte";
 	import DataMapControls from "./DataMapControls.svelte";
-	import { layerParams } from "$src/appstate/ui/layers.svelte";
+	import MapLibreMap from "./MapLibreMap.svelte";
+	import MapTooltip from "./MapTooltip.svelte";
+	import { updateSiteStyles } from "$src/lib/data/map/layers/updateMapStyles";
 
 	// svelte-ignore non_reactive_update
 	let mlMapComponent: MapLibreMap;
@@ -42,8 +38,8 @@
 
 	// site markers
 	$effect(() => {
-		if(mapController && mapController.dataModelReady) {
-			mapController.updateSiteStyles(varname, vardate);
+		if(mapController && mapController.dataModelReady && mlMap) {
+			updateSiteStyles(mlMap, varname, vardate);
 		}
 	});
 
@@ -54,6 +50,8 @@
 		// 		chartYSelection.set(basinObject1, 'ecoli');
 		// }
 	});
+
+
 </script>
 
 

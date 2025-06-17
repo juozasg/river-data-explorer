@@ -89,7 +89,8 @@ export function catvarOutsideStandards(varname: string, value: string | number):
 	return frac < 0.3;
 }
 
-export function varoutsidestandard(varname: string, value: number | string) {
+export function varoutsidestandard(varname: string, value?: number | string) {
+	if (value === undefined || value === null) return false;
 	if(typeof value === 'string') return catvarOutsideStandards(varname, value);
 
 	const min = varstdmin(varname);
