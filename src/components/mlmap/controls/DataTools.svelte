@@ -111,7 +111,7 @@
 
 			<label for="hide-ghosts">
 				<input type="checkbox" id="hide-ghosts" bind:checked={layerParams.ghostSitesVisible} />
-				Show sites without data
+				Show sites with no data records
 			</label>
 
 			<hr />

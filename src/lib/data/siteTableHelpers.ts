@@ -122,7 +122,12 @@ export function siteVarDateValue(id: number, varname: string, beforeDate?: Date)
 }
 
 export function siteHasData(site: Site, varname: string): boolean {
-	const table = siteDatasets.get(site.id);
+	if (!site || !site.id) return false;
+	return siteIdHasData(site.id, varname);
+}
+
+export function siteIdHasData(id: number, varname: string): boolean {
+	const table = siteDatasets.get(id);
 	if (!table) return false;
 	if (!table.columnNames().includes(varname)) return false;
 	const renamedTable = table.select(['date', varname]).rename({ [varname]: 'var' })

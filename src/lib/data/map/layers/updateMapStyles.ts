@@ -4,8 +4,9 @@ import rgb2hex from "rgb2hex";
 import { basinFeatureCollections } from "$src/appstate/data/basinFeatureCollection.svelte";
 import { interpolateVarColor } from "$src/lib/utils/colors";
 import { varoutsidestandard } from "$src/lib/utils/varHelpers";
-import { siteVarDateValue } from "../../siteTableHelpers";
+import { siteHasData, siteIdHasData, siteVarDateValue } from "../../siteTableHelpers";
 import { layerParams } from "$src/appstate/ui/layers.svelte";
+import { sites } from "$src/appstate/data/sites.svelte";
 
 export function updateSiteStyles(map: ml.Map, varname: string, vardate?: Date) {
 	const siteFeatures = basinFeatureCollections.get('site');
@@ -13,9 +14,7 @@ export function updateSiteStyles(map: ml.Map, varname: string, vardate?: Date) {
 	siteFeatures?.features.forEach((siteFeature) => {
 		const id: number = siteFeature.properties?.id;
 		if (id) {
-			const val = siteVarDateValue(id, varname, vardate);
-
-			if (val === undefined && !layerParams.ghostSitesVisible) {
+			if (!siteIdHasData(id, varname) && !layerParams.ghostSitesVisible) {
 				// if the value is undefined, we want to set the site to ghost
 				// this is used for sites that are not in the current basin
 				map.setFeatureState(
@@ -28,6 +27,7 @@ export function updateSiteStyles(map: ml.Map, varname: string, vardate?: Date) {
 				return;
 			}
 
+			const val = siteVarDateValue(id, varname, vardate);
 			const color = rgb2hex(interpolateVarColor(varname, val));
 			const stdbad = varoutsidestandard(varname, val);
 
