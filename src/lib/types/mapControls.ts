@@ -5,5 +5,8 @@ export type MapLayersParams = {
 	ghostSitesVisible: boolean;
 	basemapStyleId: 'SATELLITE' | 'TOPO' | 'HILLSHADE';
 	normalizeLegendToVisibleData: boolean;
+	rasterLayer: undefined | 'lclu' | 'elevation';
+	waterFlowLayer: undefined | 'flow' | 'height' | 'exceedance';
+	// rasterOverlay: undefined | 'lclu' | 'impervious';
 };
 

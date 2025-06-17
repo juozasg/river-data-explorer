@@ -13,6 +13,8 @@ export const layerParams = $state<MapLayersParams>({
 	basemapStyleId: 'TOPO',
 	ghostSitesVisible: false,
 	normalizeLegendToVisibleData: false,
+	rasterLayer: undefined,
+	waterFlowLayer: undefined
 });
 
 

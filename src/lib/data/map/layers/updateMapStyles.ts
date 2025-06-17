@@ -2,11 +2,10 @@ import * as ml from "maplibre-gl";
 import rgb2hex from "rgb2hex";
 
 import { basinFeatureCollections } from "$src/appstate/data/basinFeatureCollection.svelte";
+import { layerParams } from "$src/appstate/ui/layers.svelte";
 import { interpolateVarColor } from "$src/lib/utils/colors";
 import { varoutsidestandard } from "$src/lib/utils/varHelpers";
-import { siteHasData, siteIdHasData, siteVarDateValue } from "../../siteTableHelpers";
-import { layerParams } from "$src/appstate/ui/layers.svelte";
-import { sites } from "$src/appstate/data/sites.svelte";
+import { siteIdHasData, siteVarDateValue } from "../../siteTableHelpers";
 
 export function updateSiteStyles(map: ml.Map, varname: string, vardate?: Date) {
 	const siteFeatures = basinFeatureCollections.get('site');

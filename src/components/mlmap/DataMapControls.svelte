@@ -4,7 +4,7 @@
 
 	import { sitesValidDates } from "$src/lib/data/dateStats";
 	import type { Site } from "$src/lib/types/site";
-	import DataTools from "./controls/DataTools.svelte";
+	import DataTools from "./controls/MapDataOptions.svelte";
 	import DateMultiInput from "./controls/DateMultiInput.svelte";
 	import Legend from "./controls/Legend.svelte";
 	import VariableSelector from "./controls/VariableSelector.svelte";

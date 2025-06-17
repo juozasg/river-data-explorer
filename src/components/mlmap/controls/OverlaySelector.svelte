@@ -12,13 +12,11 @@
 
 	let {
 		maxWidth = 500,
-		small = false,
+		small = false
 	}: {
 		small?: boolean;
 		maxWidth?: number;
 	} = $props();
-
-
 
 	let open = $state(false);
 	let datasetsOpen = $state(false);
@@ -51,49 +49,14 @@
 			</div>
 		</summary>
 		<div class="card">
-			<!-- DATASETS SUBMENU -->
 
-
-			<!-- <details open={datasetsOpen} class="dropdown submenu"
-			onmouseenter={openDatasets}
-			onmouseleave={() => (datasetsOpen = false)}
-			>
-				<summary class="outline">Datasets<DetailsOpenIcon open={datasetsOpen} /></summary>
-				<div class="card">
-					{#each _sites.allDatasets as dsname}
-						<label for={dsname}>
-							<input
-								type="checkbox"
-								id={dsname}
-								checked={isDatasetEnabled(dsname)}
-								onclick={() => toggleDatasetEnable(dsname)} />
-							<tt>{dsname}</tt>
-						</label>
-					{/each}
-
-					<hr />
-					<div class="dataset-buttons">
-						<a class="all-button" onclick={() => setEnabledDatasets(_sites.allDatasets)}>All</a><a
-							class="none-button"
-							onclick={() => setEnabledDatasets([])}>None</a>
-					</div>
-				</div>
-			</details> -->
 			<hr />
-			<span class="section-heading">Basemap</span>
-			<label for="topo" onclick={() => layerParams.basemapStyleId = "TOPO"}>
-				<input type="radio" id="topo" name="basemap" value="TOPO" checked={layerParams.basemapStyleId == 'TOPO'} />
-				Topographic
+			<span class="section-heading">Overlays</span>
+			<label for="raster-none" onclick={() => (layerParams.rasterLayer = undefined)}>
+				<input type="radio" id="raster-none" name="raster" value="none" checked={layerParams.basemapStyleId == undefined} />
+				No overlay
 			</label>
-			<label for="satellite" onclick={() => layerParams.basemapStyleId = "SATELLITE"}>
-				<input
-					type="radio"
-					id="satellite"
-					name="basemap"
-					value="SATELLITE"
-					checked={layerParams.basemapStyleId == "SATELLITE"} />
-				Satellite
-			</label>
+
 			<!-- <label for="hillshade" onclick={() => setBasemapStyleId("HILLSHADE")} style="display: none;">
 				<input
 					type="radio"
@@ -104,17 +67,14 @@
 				Hillshade
 			</label> -->
 			<hr />
-			<label for="river">
-				<input type="checkbox" id="river" bind:checked={layerParams.riverLayerVisible} />
-				Mainstem and tributaries
+
+
+			<label for="normalize-scale">
+				<input type="checkbox" id="normalize-scale" bind:checked={layerParams.normalizeLegendToVisibleData} />
+				Fit overlay scale (legend) to visible data
 			</label>
 
-			<label for="hide-ghosts">
-				<input type="checkbox" id="hide-ghosts" bind:checked={layerParams.ghostSitesVisible} />
-				Show sites with no data records
-			</label>
-
-			<hr />
+			<!-- <hr /> -->
 		</div>
 	</details>
 </div>
@@ -131,18 +91,15 @@
 			margin-right: 2px;
 		}
 
-		tt {
-			font-size: 0.85em;
-		}
-
-		.submenu :global(.details-icon) {
-			position: relative;
-			top: 3px;
-			left: 3px;
-		}
-
 		label {
 			cursor: pointer;
+			white-space: wrap;
 		}
+	}
+
+	.card {
+		width: calc(var(--map-width) - 30px);
+		max-width: 500px;
+		padding-bottom: 6px !important;
 	}
 </style>

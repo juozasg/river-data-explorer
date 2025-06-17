@@ -10,6 +10,7 @@ import { sites } from '../data/sites.svelte';
 import { basinObject1, basinObject2, mapSelectionMode, mapSelectionTargetObject } from '../selection/basinObjectSelection.svelte';
 import { setSelectedPanel } from '../ui/layout.svelte';
 import { setMapCursor } from './mapMouse.svelte';
+import { layerParams } from '../ui/layers.svelte';
 
 export type HoveredRegionType = 'huc8' | 'huc10' | 'huc12' | 'county';
 
@@ -76,7 +77,15 @@ export class MapHoverSelectionController {
 				const riversSource = this.#map.getSource("riverapp-rivers") as ml.GeoJSONSource;
 				if (this.dataModelReady && riversSource && riversFeatures) {
 					// console.log('adding rivers geojson mlmap source data');
-					riversSource.setData(riversFeatures);
+					if(layerParams.riverLayerVisible) {
+						riversSource.setData(riversFeatures);
+					} else {
+						// if the layer is not visible, set an empty feature collection
+						riversSource.setData({
+							type: "FeatureCollection",
+							features: []
+						});
+					}
 				}
 			});
 
