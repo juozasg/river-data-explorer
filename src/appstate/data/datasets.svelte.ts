@@ -72,7 +72,7 @@ export async function loadDatasets() {
 	}
 
 	sitesRecords.forEach((records, siteId) => {
-		const tbl = aq.from(records).orderby('date').reify();
+		const tbl = aq.from(records).orderby('date').dedupe('date').reify();
 		const id = siteIds.get(siteId);
 		if (id === undefined) {
 			console.error(`Site integer ID not found for siteId: ${siteId}`);

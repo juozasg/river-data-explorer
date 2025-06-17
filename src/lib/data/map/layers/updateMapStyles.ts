@@ -39,7 +39,9 @@ export function updateSiteStyles(map: ml.Map, varname: string, vardate?: Date) {
 					{ source: 'riverapp-sites', id: id },
 					{
 						color: color.hex,
-						opacity: color.alpha
+						opacity: color.alpha,
+						'stroke-color': stdbad ? '#ff0000' : '#000000',
+						'stroke-width': stdbad ? 2 : 1,
 					}
 				);
 			}

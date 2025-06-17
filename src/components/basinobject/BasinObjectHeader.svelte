@@ -4,6 +4,13 @@
 
 	type Props = { selectionTarget: "1" | "2"; basinObject: BasinObject; showModeSelector: boolean };
 	let { selectionTarget, basinObject, showModeSelector = $bindable() }: Props = $props();
+
+
+	$effect(() => {
+		console.log('BasinObjectHeader basinObject:', basinObject);
+		console.log('BasinObjectHeader chartZSelection:', chartZSelection.basinObject);
+
+	});
 </script>
 
 <div class={`header data-${selectionTarget}`}>

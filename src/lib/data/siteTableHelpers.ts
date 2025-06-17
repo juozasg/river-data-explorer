@@ -121,6 +121,20 @@ export function siteVarDateValue(id: number, varname: string, beforeDate?: Date)
 	}
 }
 
+export function siteHasData(site: Site, varname: string): boolean {
+	const table = siteDatasets.get(site.id);
+	if (!table) return false;
+	if (!table.columnNames().includes(varname)) return false;
+	const renamedTable = table.select(['date', varname]).rename({ [varname]: 'var' })
+	let filteredTable = renamedTable
+	.filter(d => aq.op.is_nan(d!.var) == false)
+	.filter(aq.escape((d: any) => d!.var !== undefined && d!.var !== null && d!.var !== ''))
+	.reify();
+	if (filteredTable.numRows() === 0) return false;
+
+	return true;
+}
+
 
 /* returns table with date and varname columns. varname column can be renamed  */
 export function selectTableVar(table: ColumnTable | undefined, varname: string | undefined, renameVar: string | undefined) {

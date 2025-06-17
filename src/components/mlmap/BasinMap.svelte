@@ -8,6 +8,7 @@
 	import MapLibreMap from "./MapLibreMap.svelte";
 	import MapTooltip from "./MapTooltip.svelte";
 	import { updateSiteStyles } from "$src/lib/data/map/layers/updateMapStyles";
+	import MapGraphVarHints from "./MapGraphVarHints.svelte";
 
 	// svelte-ignore non_reactive_update
 	let mlMapComponent: MapLibreMap;
@@ -66,18 +67,13 @@
 
 	<MapLibreMap bind:this={mlMapComponent} />
 
+	{#if mlMap}}
+		 <MapGraphVarHints map={mlMap} {varname} />
+	{/if}
+
+
 	{#if mlMap}
 		<MapTooltip site={tooltipSite} regionObject={tooltipRegionObject} {mlMap} {varname} vardate={todayDate} />
-
-		<!-- <VarDataMarkers
-			{mlMap}
-			{varname}
-			{vardate}
-			sites={selectedSites}
-			ghostSitesVisible={layerParams.ghostSitesVisible}
-			yVarSite={undefined}
-			zVarSite={undefined}
-			{onSiteHovered} /> -->
 	{/if}
 </div>
 

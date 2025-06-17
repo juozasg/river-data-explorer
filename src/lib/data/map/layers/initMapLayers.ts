@@ -189,8 +189,8 @@ export function addSiteLayers(map: ml.Map): void {
 			source: "riverapp-sites",
 			type: "circle",
 			paint: {
-				"circle-stroke-color": '#000000',
-				"circle-stroke-width": 1,
+				"circle-stroke-color": ["coalesce", ["feature-state", "stroke-color"], "#000000"],
+				"circle-stroke-width": ["coalesce", ["feature-state", "stroke-width"], 1],
 				"circle-stroke-opacity": ["coalesce", ["feature-state", "opacity"], 0],
 				"circle-color": ["coalesce", ["feature-state", "color"], "#FF0000"],
 				"circle-radius": 7,
@@ -206,8 +206,8 @@ export function addSiteLayers(map: ml.Map): void {
 			source: "riverapp-hovered-sites",
 			type: "circle",
 			paint: {
-				"circle-stroke-color": '#000000',
-				"circle-stroke-width": 1,
+				"circle-stroke-color": ["coalesce", ["feature-state", "stroke-color"], "#000000"],
+				"circle-stroke-width": ["coalesce", ["feature-state", "stroke-width"], 1],
 				"circle-stroke-opacity": ["coalesce", ["feature-state", "opacity"], 0],
 				"circle-color": ["coalesce", ["feature-state", "color"], "#FF0000"],
 				"circle-radius": 12,

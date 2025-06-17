@@ -71,9 +71,12 @@
 	);
 
 	$effect(() => {
-		console.log("yParams", yParams);
-		console.log("zParams", zParams);
-		console.log("yzTable", yzTable?.objects());
+		// console.log("yParams", yParams);
+		// console.log("zParams", zParams);
+		// console.log('yTable', yTable?.objects());
+		// console.log('zTable', zTable?.objects());
+
+		// console.log("yzTable", yzTable?.objects());
 	});
 </script>
 
