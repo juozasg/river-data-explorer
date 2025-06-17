@@ -43,7 +43,7 @@ export function initMapSources(map: ml.Map) {
 	});
 
 
-		map.addSource("riverapp-selected-site-1", {
+	map.addSource("riverapp-selected-site-1", {
 		// generateId: true,
 		promoteId: 'id',
 		type: "geojson",
@@ -84,7 +84,17 @@ export function initMapSources(map: ml.Map) {
 	});
 
 
-		map.addSource("riverapp-sites", {
+	map.addSource("riverapp-sites", {
+		// generateId: true,
+		promoteId: 'id',
+		type: "geojson",
+		data: {
+			type: "FeatureCollection",
+			features: []
+		}
+	});
+
+	map.addSource("riverapp-hovered-sites", {
 		// generateId: true,
 		promoteId: 'id',
 		type: "geojson",

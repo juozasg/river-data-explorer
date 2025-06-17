@@ -384,11 +384,26 @@ export class MapHoverSelectionController {
 				}
 
 
-				// const hoveredSites = map.getSource("riverapp-hovered-sites") as ml.GeoJSONSource;
-				// hoveredSites.setData({
-				// 	type: "FeatureCollection",
-				// 	features: [feature]
-				// });
+				const hoveredSites = map.getSource("riverapp-hovered-sites") as ml.GeoJSONSource;
+				hoveredSites.setData({
+					type: "FeatureCollection",
+					features: [feature]
+				});
+
+
+				// copy feature state to hovered site
+				const fstate = this.#map.getFeatureState({
+					source: 'riverapp-sites',
+					id: feature.id
+				});
+
+				console.log('hovered site feature state', fstate);
+
+
+				this.#map.setFeatureState(
+					{ source: 'riverapp-hovered-sites', id: feature.id },
+					fstate
+				);
 
 				const site = sites.get(feature.id as number);
 				this.siteHovered(site);
@@ -398,11 +413,15 @@ export class MapHoverSelectionController {
 
 		map.on('mouseleave', 'riverapp-sites', (e) => {
 			this.siteHovered(undefined);
+			const hoveredSites = map.getSource("riverapp-hovered-sites") as ml.GeoJSONSource;
+			hoveredSites.setData({
+				type: "FeatureCollection",
+				features: []
+			});
 		});
 
 
 		/// HOVERED REGIONS
-
 		map.on('mousemove', 'riverapp-regions-fill', (e) => {
 			if (e.features && e.features.length > 0) {
 				const feature = e.features[0];

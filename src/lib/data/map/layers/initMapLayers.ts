@@ -183,7 +183,6 @@ export function addOutlineLayers(map: ml.Map) {
 
 export function addSiteLayers(map: ml.Map): void {
 	// ALL SITES
-
 	map.addLayer(
 		{
 			id: "riverapp-sites",
@@ -192,14 +191,32 @@ export function addSiteLayers(map: ml.Map): void {
 			paint: {
 				"circle-stroke-color": '#000000',
 				"circle-stroke-width": 1,
-				"circle-stroke-opacity": ["feature-state", "opacity"],
-				"circle-color": ["feature-state", "color"],
-				"circle-radius": 6,
-				"circle-opacity": ["feature-state", "opacity"]
+				"circle-stroke-opacity": ["coalesce", ["feature-state", "opacity"], 0],
+				"circle-color": ["coalesce", ["feature-state", "color"], "#FF0000"],
+				"circle-radius": 7,
+				"circle-opacity": ["coalesce", ["feature-state", "opacity"], 0]
 			}
 		},
 		mlmInsertBeforeLayer
 	);
+
+	map.addLayer(
+		{
+			id: "riverapp-hovered-sites",
+			source: "riverapp-hovered-sites",
+			type: "circle",
+			paint: {
+				"circle-stroke-color": '#000000',
+				"circle-stroke-width": 1,
+				"circle-stroke-opacity": ["coalesce", ["feature-state", "opacity"], 0],
+				"circle-color": ["coalesce", ["feature-state", "color"], "#FF0000"],
+				"circle-radius": 12,
+				"circle-opacity": ["coalesce", ["feature-state", "opacity"], 0]
+			}
+		},
+		mlmInsertBeforeLayer
+	);
+
 
 
 	// SELECTED SITES
