@@ -11,32 +11,37 @@
 	import InlineBlockIconify from "$src/components/icons/InlineBlockIconify.svelte";
 
 	let {
-		maxWidth = 500,
 		small = false
 	}: {
 		small?: boolean;
-		maxWidth?: number;
 	} = $props();
 
 	let open = $state(false);
-	let datasetsOpen = $state(false);
+	let label = $derived.by(() => {
+		switch (layerParams.waterflowLayer) {
+			case undefined:
+				return "No Water Flow";
+			case "flow":
+				return "Water Flow";
+			case "height":
+				return "Gauge Height";
+			case "exceedance":
+				return "% Exceedance";
+			default:
+				return "Unknown";
+		}
+	});
+
+	$effect(() => console.log("OverlayOptions label", label));
 
 	const onmouseleave = () => (open = false);
 	const openDetails = (e: MouseEvent | any) => {
 		if (e.sourceCapabilities?.firesTouchEvents) return;
 		open = true;
 	};
-
-	const openDatasets = (e: MouseEvent | any) => {
-		if (e.sourceCapabilities?.firesTouchEvents) {
-			// console.log('ignore touch')
-			return;
-		}
-		datasetsOpen = true;
-	};
 </script>
 
-<div class="map-control" {onmouseleave} aria-label="Data Controls">
+<div class="map-control" {onmouseleave} aria-label="Overlay Controls">
 	<div class="invisible-hover-target"></div>
 
 	<details {open} class="dropdown mainmenu">
@@ -44,35 +49,56 @@
 			<div class="summary-flex">
 				<InlineBlockIconify icon="solar:layers-outline" size="1.2rem" />
 
-				{small ? "" : "Data"}
+				{small ? "" : label}
 				<DetailsOpenIcon {open} />
 			</div>
 		</summary>
 		<div class="card">
-
 			<hr />
-			<span class="section-heading">Overlays</span>
-			<label for="raster-none" onclick={() => (layerParams.rasterLayer = undefined)}>
-				<input type="radio" id="raster-none" name="raster" value="none" checked={layerParams.basemapStyleId == undefined} />
-				No overlay
-			</label>
-
-			<!-- <label for="hillshade" onclick={() => setBasemapStyleId("HILLSHADE")} style="display: none;">
+			<span class="section-heading">No Overlay</span>
+			<label for="waterflow-none" onclick={() => (layerParams.waterflowLayer = undefined)}>
 				<input
 					type="radio"
-					id="hillshade"
-					name="basemap"
-					value="HILLSHADE"
-					checked={basemapStyleId() == "HILLSHADE"} />
-				Hillshade
-			</label> -->
-			<hr />
+					id="waterflow-none"
+					name="waterflow"
+					value="none"
+					checked={layerParams.waterflowLayer == undefined} />
+				No water flow
+			</label>
+			<label for="waterflow-flow" onclick={() => (layerParams.waterflowLayer = "flow")}>
+				<input
+					type="radio"
+					id="waterflow-flow"
+					name="waterflow"
+					value="flow"
+					checked={layerParams.waterflowLayer == "flow"} />
+				Water flow (cfs)
+			</label>
+			<label for="waterflow-height" onclick={() => (layerParams.waterflowLayer = "height")}>
+				<input
+					type="radio"
+					id="waterflow-height"
+					name="waterflow"
+					value="height"
+					checked={layerParams.waterflowLayer == "height"} />
+				Gauge height (ft)
+			</label>
+			<label for="waterflow-exceedance" onclick={() => (layerParams.waterflowLayer = "exceedance")}>
+				<input
+					type="radio"
+					id="waterflow-exceedance"
+					name="waterflow"
+					value="exceedance"
+					checked={layerParams.waterflowLayer == "exceedance"} />
+				Exceedance (%)
+			</label>
 
+			<!-- <hr /> -->
 
-			<label for="normalize-scale">
+			<!-- <label for="normalize-scale">
 				<input type="checkbox" id="normalize-scale" bind:checked={layerParams.normalizeLegendToVisibleData} />
 				Fit overlay scale (legend) to visible data
-			</label>
+			</label> -->
 
 			<!-- <hr /> -->
 		</div>

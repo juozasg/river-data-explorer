@@ -4,11 +4,13 @@
 
 	import { sitesValidDates } from "$src/lib/data/dateStats";
 	import type { Site } from "$src/lib/types/site";
-	import DataTools from "./controls/MapDataOptions.svelte";
+	import MapDataOptions from "./controls/MapDataOptions.svelte";
 	import DateMultiInput from "./controls/DateMultiInput.svelte";
 	import Legend from "./controls/Legend.svelte";
 	import VariableSelector from "./controls/VariableSelector.svelte";
 	import { todayDate } from "$src/lib/utils/date";
+	import OverlayOptions from "./controls/OverlayOptions.svelte";
+	import WaterflowOptions from "./controls/WaterflowOptions.svelte";
 
 	type Props = {
 		sites: Site[];
@@ -16,7 +18,6 @@
 		varname?: string;
 		vardate?: Date;
 		mapWidth?: number;
-
 	};
 
 	let {
@@ -41,10 +42,17 @@
 <div class="controls">
 	<MapLatLonDebug />
 	<div class="top-controls">
-		<DataTools {small} maxWidth={mapWidth} />
+		<MapDataOptions {small} />
 		<VariableSelector {small} bind:varname />
 		<Legend {varname} />
 	</div>
+
+	<!-- <div class="top-controls overlay-controls">
+		<OverlayOptions {small} />
+		<Legend varname='ph' />
+		<WaterflowOptions {small} />
+		<Legend varname='do' />
+	</div> -->
 	<DateMultiInput {validDates} bind:vardate bind:this={dateMultiInput} />
 </div>
 
@@ -57,5 +65,9 @@
 		display: flex;
 		gap: 10px;
 		width: 100%;
+	}
+
+	.overlay-controls {
+		top: 36px;
 	}
 </style>

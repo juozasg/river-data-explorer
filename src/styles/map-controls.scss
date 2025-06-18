@@ -145,11 +145,12 @@
 	}
 
 	.invisible-hover-target {
-		height: 60px;
+		height: 36px;
 		width: 100%;
 		top: 0;
 		right: 0;
 		position: absolute;
 		opacity: 0;
+		border: 1px solid green;
 	}
 }

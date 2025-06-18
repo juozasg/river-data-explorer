@@ -9,17 +9,15 @@
 	import { layerParams } from "$src/appstate/ui/layers.svelte";
 	import DetailsOpenIcon from "$src/components/icons/DetailsOpenIcon.svelte";
 	import InlineBlockIconify from "$src/components/icons/InlineBlockIconify.svelte";
+	import { clickOutside } from "$src/lib/svelte/clickOutside";
 
 	let {
-		maxWidth = 500,
 		small = false
 	}: {
 		small?: boolean;
-		maxWidth?: number;
 	} = $props();
 
 	let open = $state(false);
-	let datasetsOpen = $state(false);
 
 	const onmouseleave = () => (open = false);
 	const openDetails = (e: MouseEvent | any) => {
@@ -27,20 +25,26 @@
 		open = true;
 	};
 
-	const openDatasets = (e: MouseEvent | any) => {
-		if (e.sourceCapabilities?.firesTouchEvents) {
-			// console.log('ignore touch')
-			return;
-		}
-		datasetsOpen = true;
-	};
+	$effect(() => {
+		console.log('open changed', open);
+
+	});
 </script>
 
-<div class="map-control" {onmouseleave} aria-label="Data Controls">
+
+<div
+	class="map-control"
+	{onmouseleave}
+	aria-label="Data Controls"
+	use:clickOutside={() => {
+		open = false;
+		console.log('clickOutside');
+
+	}}>
 	<div class="invisible-hover-target"></div>
 
 	<details {open} class="dropdown mainmenu">
-		<summary class:small class="button outline" onmouseenter={openDetails}>
+		<summary class:small class="button outline" onmouseenter={openDetails} onclick={() => (open = !open)}>
 			<div class="summary-flex">
 				<InlineBlockIconify icon="solar:layers-outline" size="1.2rem" />
 
@@ -49,7 +53,6 @@
 			</div>
 		</summary>
 		<div class="card">
-
 			<hr />
 			<span class="section-heading">Basemap</span>
 			<label for="topo" onclick={() => (layerParams.basemapStyleId = "TOPO")}>
@@ -97,7 +100,7 @@
 
 <style>
 	.map-control {
-		z-index: 1002;
+		z-index: 1003;
 		font-size: 22px;
 
 		:global(.inline-block-iconify) {

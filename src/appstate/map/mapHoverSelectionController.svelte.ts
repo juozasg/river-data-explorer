@@ -300,6 +300,10 @@ export class MapHoverSelectionController {
 			const selectionPanel = `data${mapSelectionMode.target}` as 'data1' | 'data2';
 			switch (mapSelectionMode.mode) {
 				case 'auto':
+					if(!this.#hoveredSite && !this.#hoveredRiverId && !this.#hoveredRegionId) {
+						// if nothing is hovered, do nothing
+						return;
+					}
 					autoSelectBasinObjectsOnClick(this.#hoveredSite, this.#hoveredRiverId);
 					setSelectedPanel(selectionPanel);
 					break;

@@ -52,7 +52,7 @@
 
 <style>
 	.map-control {
-		z-index: 1001;
+		z-index: 2002;
 		.card {
 			max-height: 500px;
 			overflow: auto;
