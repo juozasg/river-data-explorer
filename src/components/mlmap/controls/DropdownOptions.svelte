@@ -11,11 +11,13 @@
 	import InlineBlockIconify from "$src/components/icons/InlineBlockIconify.svelte";
 	import { clickOutside } from "$src/lib/svelte/clickOutside";
 
+	type Props = {
+		small?: boolean;
+	};
+
 	let {
 		small = false
-	}: {
-		small?: boolean;
-	} = $props();
+	}: Props = $props();
 
 	let open = $state(false);
 
