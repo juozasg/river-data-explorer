@@ -4,6 +4,7 @@
 	import DetailsOpenIcon from "$src/components/icons/DetailsOpenIcon.svelte";
 	import { aremove } from "$src/lib/utils/arrays";
 	import { varlabel, varlabelabbrev } from "$src/lib/utils/varHelpers";
+	import { clickOutside } from "$src/lib/svelte/clickOutside";
 
 	const varnames = aremove(Object.keys(variablesMetadata), "default");
 	let { varname = $bindable("ecoli"), small = false }: { varname: string; small?: boolean } = $props();
@@ -23,11 +24,18 @@
 	// });
 </script>
 
-<div class="map-control" {onmouseleave} aria-label="Variable Selector">
+<div
+	class="map-control"
+	{onmouseleave}
+	aria-label="Variable Selector"
+	use:clickOutside={() => {
+		console.log("click outside");
+		open = false;
+	}}>
 	<div class="invisible-hover-target"></div>
 
 	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-	<details {open} class="dropdown mainmenu">
+	<details bind:open={open} class="dropdown mainmenu">
 		<summary class:small class="button outline" onmouseenter={openDetails}>
 			<div class="summary-flex">
 				<InlineBlockIconify icon="gridicons:line-graph" size="1.2rem" />

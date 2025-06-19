@@ -47,12 +47,12 @@
 		<Legend {varname} />
 	</div>
 
-	<!-- <div class="top-controls overlay-controls">
+	<div class="top-controls overlay-controls">
 		<OverlayOptions {small} />
 		<Legend varname='ph' />
 		<WaterflowOptions {small} />
 		<Legend varname='do' />
-	</div> -->
+	</div>
 	<DateMultiInput {validDates} bind:vardate bind:this={dateMultiInput} />
 </div>
 
@@ -69,5 +69,6 @@
 
 	.overlay-controls {
 		top: 36px;
+		z-index: 1002;
 	}
 </style>
