@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { roundTickValue } from '$src/lib/utils/chart';
 	import { interpolateVarDataURL } from '$src/lib/utils/colors';
+	import { legendFmtVarname, maxLegendTextWidth } from '$src/lib/utils/legend';
 	import {
 		varcategories,
 		varcatilegend,
@@ -19,34 +19,21 @@
 	});
 
 	const dataUrl = $derived(doc && interpolateVarDataURL(doc, varname));
-	const maxLegendTextWidth = $derived.by(() => {
-		if (varcategories(varname)) {
-			const labels = varcategories(varname)?.map((v, i) => varcatilegend(varname, i));
-			if (!labels || labels.length === 0) return 30;
-			const longestLabel = labels.reduce((a, b) => (a.length > b.length ? a : b));
-			// console.log('longestLabel', longestLabel, longestLabel.length);
-			return (longestLabel.length + 3) * 12;
-		}
-		const maxValueNumChars = varmax(varname).toString().length;
-		const unitNumChars = varunits(varname).length;
-		return (maxValueNumChars + unitNumChars + 3) * 8;
-	});
 
 	let legendWidth = $state(0);
 
 	const numTicks = $derived.by(() => {
-		const calculatedTicks = Math.max(Math.floor(legendWidth / maxLegendTextWidth), 2);
+		const textWidth = maxLegendTextWidth(varname);
+		const calculatedTicks = Math.max(Math.floor(legendWidth / textWidth), 2);
 		return varcategories(varname)
 			? Math.min(varcategories(varname)!.length, calculatedTicks)
 			: calculatedTicks;
 	});
 
-	const tickFractions = $derived([...Array(numTicks)].map((e, i) => i / (numTicks - 1)));
 
-	const fmtVarname = (v: number) =>
-		varcategories(varname)
-			? varcatilegend(varname, Math.round(v))
-			: roundTickValue(v, varrange(varname), false);
+	const fmtVarname = (val: number) => legendFmtVarname(varname, val);
+
+	const tickFractions = $derived([...Array(numTicks)].map((e, i) => i / (numTicks - 1)));
 	const tickValues = $derived(
 		tickFractions
 			.map((f) => varmin(varname) + f * (varmax(varname) - varmin(varname)))

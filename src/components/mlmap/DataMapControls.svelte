@@ -1,7 +1,6 @@
 <script lang="ts">
 	import MapLatLonDebug from "./MapLatLonDebug.svelte";
 
-
 	import { sitesValidDates } from "$src/lib/data/dateStats";
 	import type { Site } from "$src/lib/types/site";
 	import MapDataOptions from "./controls/MapDataOptions.svelte";
@@ -11,6 +10,7 @@
 	import { todayDate } from "$src/lib/utils/date";
 	import OverlayOptions from "./controls/OverlayOptions.svelte";
 	import WaterflowOptions from "./controls/WaterflowOptions.svelte";
+	import { layerParams } from "$src/appstate/ui/layers.svelte";
 
 	type Props = {
 		sites: Site[];
@@ -20,12 +20,7 @@
 		mapWidth?: number;
 	};
 
-	let {
-		sites,
-		mapWidth = 400,
-		varname = $bindable("ecoli"),
-		vardate = $bindable(todayDate)
-	}: Props = $props();
+	let { sites, mapWidth = 400, varname = $bindable("ecoli"), vardate = $bindable(todayDate) }: Props = $props();
 
 	const small = $derived(mapWidth <= 550);
 
@@ -49,9 +44,14 @@
 
 	<div class="top-controls overlay-controls">
 		<OverlayOptions {small} />
-		<Legend varname='ph' />
+		{#if layerParams.rasterLayer}
+			<Legend varname="ph" />
+		{/if}
+
 		<WaterflowOptions {small} />
-		<Legend varname='do' />
+		{#if layerParams.waterflowLayer}
+			<Legend varname="do" />
+		{/if}
 	</div>
 	<DateMultiInput {validDates} bind:vardate bind:this={dateMultiInput} />
 </div>

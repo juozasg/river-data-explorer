@@ -51,7 +51,7 @@ export function varrange(varname: string) {
 	return varmax(varname) - varmin(varname);
 }
 
-// returns
+/* return sorted list of category keys, ex: ['Poor', 'Low_Fair',..,'Exceptional']  */
 export function varcategories(varname: string) {
 	return !!variablesMetadata[varname]?.categories && Object.keys(variablesMetadata[varname]?.categories).length > 0 ? Object.keys(variablesMetadata[varname]?.categories) : undefined;
 }
