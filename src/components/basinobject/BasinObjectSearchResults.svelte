@@ -8,6 +8,7 @@
 	const { query, selectObject }: Props = $props();
 
 	let results: BasinSearchResult[] = $derived(searchBasinFeatures(query));
+	let resultsDiv: HTMLDivElement;
 
 	let kbfocusIndex = $state<number>();
 
@@ -20,6 +21,7 @@
 				kbfocusIndex = 0;
 			} else {
 				kbfocusIndex = (kbfocusIndex < results.length - 1) ? kbfocusIndex + 1 : 0;
+
 			}
 		} else if(key === 'enter' && kbfocusIndex !== undefined) {
 			if(kbfocusIndex !== undefined && kbfocusIndex >= 0 && kbfocusIndex < results.length) {
@@ -29,19 +31,27 @@
 			}
 			return;
 		}
-		console.log(key);
+
+		if((key === 'up' || key === 'down') && kbfocusIndex !== undefined && kbfocusIndex >= 0 && kbfocusIndex < results.length) {
+			// Scroll the resultsDiv to bring the focused item into view
+			const focusedItem = resultsDiv.querySelector(`#item-${results[kbfocusIndex][1]}`);
+			if (focusedItem) {
+				focusedItem.scrollIntoView({ block: 'center' });
+			}
+		}
+
 	};
 
 </script>
 
 {#snippet resultItem(objectType: BasinObjectType, id: number, focus = false)}
-	<div class={["result-item", {kbfocus: focus}]} onclick={() => selectObject(objectType, id)}>
+	<div class={["result-item", {kbfocus: focus}]} id="item-{id}" onclick={() => selectObject(objectType, id)}>
 		<span class="result-label">{basinFeatureName(objectType, id, true)}</span>
 		<span class="result-type object-type-pill">{basinObjectTypeLabel(objectType)}</span>
 	</div>
 {/snippet}
 
-<div class="basin-object-search-results">
+<div class="basin-object-search-results" bind:this={resultsDiv}>
 	{#if results.length === 0}
 		<h4 class="no-results">No results for '{query}'</h4>
 	{:else}
