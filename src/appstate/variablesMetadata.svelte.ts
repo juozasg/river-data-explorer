@@ -8,6 +8,9 @@ export type VariablesMetadata = Record<VariableName, {[key: string]: any}>;
 // not reactive - instead set by initial load of variables.yaml
 export const variablesMetadata: VariablesMetadata = {};
 
+// real time variables metadata for water overlays
+export const rtvariablesMetadata: VariablesMetadata = {};
+
 export const variablesBriefMarkdown = new SvelteMap<string, string>();
 
 export function isCategoricalVar(varname: VariableName): boolean {

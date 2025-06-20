@@ -31,6 +31,8 @@
 		console.log("selectObject", objectType, id);
 		basinObject1.set(objectType, id);
 		value = "";
+		if(mapSelectionMode.mode == 'auto' && mapSelectionMode.target == "1") mapSelectionMode.target = "2"; // Switch to target 2 if in auto mode
+
 	};
 </script>
 
@@ -76,7 +78,7 @@
 					<InlineBlockIconify icon="uiw:github" size="20px" />
 				</span>
 
-				<!-- <span>{mapSelectionMode.mode} {mapSelectionMode.target}</span> -->
+				<span>{mapSelectionMode.mode} {mapSelectionMode.target}</span>
 			</a>
 		</li>
 	</ul>

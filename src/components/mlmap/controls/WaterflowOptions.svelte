@@ -53,7 +53,7 @@
 			checked={layerParams.waterflowLayer == "flow"} />
 		Water flow (cfs)
 	</label>
-	<label for="waterflow-height" onclick={() => (layerParams.waterflowLayer = "height")}>
+	<!-- <label for="waterflow-height" onclick={() => (layerParams.waterflowLayer = "height")}>
 		<input
 			type="radio"
 			id="waterflow-height"
@@ -61,7 +61,7 @@
 			value="height"
 			checked={layerParams.waterflowLayer == "height"} />
 		Gauge height (ft)
-	</label>
+	</label> -->
 	<label for="waterflow-exceedance" onclick={() => (layerParams.waterflowLayer = "exceedance")}>
 		<input
 			type="radio"

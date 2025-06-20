@@ -29,13 +29,13 @@
 	});
 
 
-	const fmtVarname = (val: number) => legendFmtVarnameVal(varname, val);
+	const fmtVarVal = (val: number) => legendFmtVarnameVal(varname, val);
 
 	const tickFractions = $derived([...Array(numTicks)].map((e, i) => i / (numTicks - 1)));
 	const tickValues = $derived(
 		tickFractions
 			.map((f) => varMin(varname) + f * (varMax(varname) - varMin(varname)))
-			.map(fmtVarname)
+			.map(fmtVarVal)
 	);
 </script>
 

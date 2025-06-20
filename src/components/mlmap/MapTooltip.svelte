@@ -7,8 +7,8 @@
 	import { sitesDataStats } from "$src/lib/data/stats";
 	import { siteGetBeforeDate } from "$src/lib/data/siteTableHelpers";
 	import type { Site } from "$src/lib/types/site";
-	import { regionIdLabel } from '$src/lib/utils/regions';
-	import { fmtDateDMonY } from '$src/lib/utils/date';
+	import { regionIdLabel } from "$src/lib/utils/regions";
+	import { fmtDateDMonY } from "$src/lib/utils/date";
 	import { varLabel, varStdMax, varStdMin, varunits } from "$src/lib/utils/varHelpers";
 	import TooltipSiteStats from "../tooltips/TooltipContentSiteStats.svelte";
 	import { mapMouseLocation } from "$src/appstate/map/mapMouse.svelte";
@@ -33,7 +33,7 @@
 		mlMap,
 		varname,
 		vardate,
-		showRegionTooltip = false,
+		showRegionTooltip = false
 		// hoveredRegion,
 		// selectedRegion
 	}: Props = $props();
@@ -44,11 +44,9 @@
 	const regionStats = $derived(regionSites.length > 0 ? sitesDataStats(regionSites) : undefined);
 
 	const regionNameLabel = (object: BasinObject) => {
-		if(object.isSet)return basinFeatureName(object.objectType!, object.id!);
-		return '';
+		if (object.isSet) return basinFeatureName(object.objectType!, object.id!);
+		return "";
 	};
-
-
 
 	onMount(() => {
 		mlMap.on("mousemove", (e: ml.MapMouseEvent) => {
@@ -61,7 +59,6 @@
 			} else {
 				tooltip.hide();
 			}
-
 		});
 	});
 
@@ -80,11 +77,13 @@
 		{#if val}
 			{varLabel(varname)}: <u><b>{val}</b></u>
 			{varunits(varname)} ({selectedDateClosestBeforeDate(site)})
-			{#if typeof val == 'number' && varStdMin(varname) !== undefined && varStdMin(varname)! > val}
-				<span class="stdbad" style="display: block; color: red">&lt; safe minimum {varStdMin(varname)} {varunits(varname)}</span>
+			{#if typeof val == "number" && varStdMin(varname) !== undefined && varStdMin(varname)! > val}
+				<span class="stdbad" style="display: block; color: red"
+					>&lt; safe minimum {varStdMin(varname)} {varunits(varname)}</span>
 			{/if}
-			{#if typeof val == 'number' && varStdMax(varname) !== undefined && varStdMax(varname)! < val}
-				<span class="stdbad" style="display: block; color: red"> &gt; safe maximum {varStdMax(varname)} {varunits(varname)}</span>
+			{#if typeof val == "number" && varStdMax(varname) !== undefined && varStdMax(varname)! < val}
+				<span class="stdbad" style="display: block; color: red">
+					&gt; safe maximum {varStdMax(varname)} {varunits(varname)}</span>
 			{/if}
 		{:else}
 			{varLabel(varname)}: <span style="color: #777">N/A</span>
@@ -104,26 +103,26 @@
 		{/if}
 	{/if} -->
 
+	{#if site}
+		<h5 class="site">
+			<span class="type-label">site</span>
+			{site.name || ""}
+		</h5>
+		<i>({site.siteId})</i>
+		{@render variableValueBeforeDate(site)}
+		{#if siteStats}
+			<TooltipSiteStats stats={siteStats} />
+		{/if}
+	{/if}
 	{#if regionObject?.isSet}
-		<h5 class="region">
-			<span class='type-label'>{basinObjectTypeLabel(regionObject.objectType).toLowerCase()}</span>
+		<h5 class="region" class:tooltip-section={!!site}>
+			<span class="type-label">{basinObjectTypeLabel(regionObject.objectType).toLowerCase()}</span>
 			{regionNameLabel(regionObject)}
 		</h5>
 		<!-- <p><i>{regionIdLabel(regionObject)}: {regionObject.id}</i></p> -->
 		<p><b>{regionSites.length}</b> sites</p>
 		{#if regionStats}
 			<TooltipSiteStats stats={regionStats} />
-		{/if}
-	{/if}
-	{#if site}
-		<h5 class="site" class:tooltip-section={regionObject?.isSet}>
-			<span class='type-label'>site</span>
-			 {site.name || ""}
-		</h5>
-		<i>({site.siteId})</i>
-		{@render variableValueBeforeDate(site)}
-		{#if siteStats}
-			<TooltipSiteStats stats={siteStats} />
 		{/if}
 	{/if}
 {/snippet}
@@ -133,7 +132,7 @@
 		font-weight: 500;
 	}
 
-	.stdbad  {
+	.stdbad {
 		padding-top: 3px;
 		/* font-size: 0.7rem; */
 	}
@@ -150,11 +149,8 @@
 	}
 
 	h5.tooltip-section {
-
 		border-top: 1px solid var(--color-lightGrey);
 		padding-top: 5px;
 		margin-top: 5px;
-
 	}
-
 </style>

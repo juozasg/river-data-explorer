@@ -1,4 +1,4 @@
-import { variablesMetadata } from "$src/appstate/variablesMetadata.svelte";
+import { variablesMetadata, type VariablesMetadata } from "$src/appstate/variablesMetadata.svelte";
 import sprintfpkg from 'sprintf';
 const { sprintf } = sprintfpkg;
 
@@ -102,4 +102,22 @@ export function varoutsidestandard(varname: string, value?: number | string) {
 	if(max !== undefined && value > max) return true;
 
 	return false;
+}
+
+
+export function splitRealtimeVariablesMetadata(md: VariablesMetadata): { rt: VariablesMetadata, nonrt: VariablesMetadata } {
+	const rt: VariablesMetadata = {};
+	const nonrt: VariablesMetadata = {};
+
+	for (const [varname, metadata] of Object.entries(md)) {
+		console.log('splitRealtimeVariablesMetadata', varname, metadata);
+
+		if (metadata.realtime) {
+			rt[varname] = metadata;
+		} else {
+			nonrt[varname] = metadata;
+		}
+	}
+
+	return { rt, nonrt };
 }

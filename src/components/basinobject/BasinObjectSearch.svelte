@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { BasinObjectType } from "$src/appstate/data/basinObject.svelte";
-	import { basinObject1, basinObject2 } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import { basinObject1, basinObject2, mapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
 	import { clickOutside } from "$src/lib/svelte/clickOutside";
 	import InlineBlockIconify from "../icons/InlineBlockIconify.svelte";
 	import BasinObjectSearchResults from "./BasinObjectSearchResults.svelte";
@@ -30,8 +30,10 @@
 		console.log("selectObject", objectType, id);
 		if (target === "1") {
 			basinObject1.set(objectType, id);
+			if(mapSelectionMode.mode == 'auto') mapSelectionMode.target = "2"; // Switch to target 2 if in auto mode
 		} else {
 			basinObject2.set(objectType, id);
+			if(mapSelectionMode.mode == 'auto') mapSelectionMode.target = "1";
 		}
 		value = "";
 	};

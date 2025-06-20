@@ -155,7 +155,7 @@ export function addRiverLayers(map: ml.Map): void {
 				mainstemColor,
 				tributariesColor
 			],
-			'line-width': 20,
+			'line-width': 16,
 			'line-opacity': 0,
 		}
 	},
