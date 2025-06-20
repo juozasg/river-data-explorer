@@ -4,13 +4,13 @@ import { varMax, varMin } from './varHelpers';
 
 export const ghost = 'rgba(0, 0, 0, 0.2)';
 export const chartYColor = '#A228B1';
-export const chartZColor = '#3d9cbe';
-export const chartZDarker = '#368eae';
+export const chartZColor = '#3d9c77';
+export const chartZDarker = '#3d9c77';
 
 export const mapHoverHighlightColor = '#97E817';
 
 export const data1Color = '#CC79A7';
-export const data2Color = '#E69F00';
+export const data2Color = '#297055';
 
 
 

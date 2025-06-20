@@ -104,7 +104,7 @@
 		top: 0px;
 		left: 400px;
 		display: none;
-		z-index: 1005;
+		z-index: 12005;
 		background: rgba(255, 255, 255, 0.85);
 
 		filter: drop-shadow(3px 3px 4px #00000046);
