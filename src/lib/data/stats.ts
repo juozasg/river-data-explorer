@@ -6,7 +6,7 @@ import type { Site } from "$lib/types/site";
 import { fmtDateDMonY } from '../utils/date';
 import { concatTablesAllColumns } from './siteTableHelpers';
 import { isCategoricalVar, variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
-import { varcategories, varlabel } from '../utils/varHelpers';
+import { varCategoryKeys, varLabel } from '../utils/varHelpers';
 import { siteDatasets } from '$src/appstate/data/datasets.svelte';
 
 
@@ -82,7 +82,7 @@ export function allVarsDailyMedians(tables: ColumnTable[]): ColumnTable {
 
 	const rollup: any = {};
 	combinedTable.columnNames().forEach(c => {
-		if (varcategories(c)) {
+		if (varCategoryKeys(c)) {
 			rollup[c] = aq.op.array_agg(c);
 		}
 		else {
@@ -101,7 +101,7 @@ export function varDailyMedian(tables: ColumnTable[], varname: string): ColumnTa
 	const groupedTable = combinedTable.orderby('date').groupby('date');
 
 	const rollup: any = {};
-	rollup[varname] = varcategories(varname) ?  aq.op.array_agg(varname) : aq.op.median(varname);
+	rollup[varname] = varCategoryKeys(varname) ?  aq.op.array_agg(varname) : aq.op.median(varname);
 	return rollupDailies(groupedTable, rollup);
 
 }
@@ -157,7 +157,7 @@ export function variableStats(variable: string, table: ColumnTable, { errorLabel
 function emptyVariableStats(varname: string): VariableStats {
 	return {
 		variable: varname,
-		label: varlabel(varname),
+		label: varLabel(varname),
 		lastObservation: '',
 		numObservations: 0,
 		dateFromLabel: 'N/A',
@@ -192,9 +192,9 @@ export function simpleStats(colname: string, table?: ColumnTable, varname?: stri
 		return { count: 0 };
 	}
 
-	if (varname && varcategories(varname)) {
+	if (varname && varCategoryKeys(varname)) {
 		// console.log('vcats', varname, varcategories(varname))
-		const max = varcategories(varname)!.length - 1;
+		const max = varCategoryKeys(varname)!.length - 1;
 		return { count: tsTable.numRows(), min: 0, max: max, range: max };
 	}
 

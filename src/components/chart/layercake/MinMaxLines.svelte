@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { varcategories, varlabel, varunits } from "$src/lib/utils/varHelpers";
+	import { varCategoryKeys, varLabel, varunits } from "$src/lib/utils/varHelpers";
 	import type { YZChartParams } from "$src/lib/utils/YZChartParams";
 	import { getContext } from "svelte";
 	import HorizontalHoverLine from "./HorizontalHoverLine.svelte";
@@ -18,18 +18,18 @@
 
 	const maxLabel = $derived.by(() => {
 		if (max) {
-			return `${varlabel(varParams.varname)} safe maximum = ${max} ${varunits(varParams.varname)}`;
+			return `${varLabel(varParams.varname)} safe maximum = ${max} ${varunits(varParams.varname)}`;
 		}
 		return "";
 	});
 
 	const minLabel = $derived.by(() => {
 		if (min) {
-			if(varcategories(varParams.varname)) {
-				const minlabel = varcategories(varParams.varname)![min];
-				return `${varlabel(varParams.varname)} safe minimum is '${minlabel}'`;
+			if(varCategoryKeys(varParams.varname)) {
+				const minlabel = varCategoryKeys(varParams.varname)![min];
+				return `${varLabel(varParams.varname)} safe minimum is '${minlabel}'`;
 			}
-			return `${varlabel(varParams.varname)} safe minimum = ${min} ${varunits(varParams.varname)}`;
+			return `${varLabel(varParams.varname)} safe minimum = ${min} ${varunits(varParams.varname)}`;
 		}
 		return "";
 	});

@@ -1,6 +1,6 @@
 import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
 import * as d3sc from 'd3-scale-chromatic';
-import { varmax, varmin } from './varHelpers';
+import { varMax, varMin } from './varHelpers';
 import { layerParams } from '$src/appstate/ui/layers.svelte';
 
 export const ghost = 'rgba(0, 0, 0, 0.2)';
@@ -24,8 +24,8 @@ export function interpolateVarColor(varname: string, value?: number | string, va
 	const md = variablesMetadata[varname];
 	const reverse = !!md?.scale?.d3?.reverse;
 
-	const min = varmin(varname);
-	const max = varmax(varname);
+	const min = varMin(varname);
+	const max = varMax(varname);
 
 	if(value == undefined && valueFraction == undefined) {
 		return ghost;

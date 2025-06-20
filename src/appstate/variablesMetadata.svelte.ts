@@ -1,4 +1,4 @@
-import { varcategories } from '$src/lib/utils/varHelpers';
+import { varCategoryKeys } from '$src/lib/utils/varHelpers';
 import { SvelteMap } from 'svelte/reactivity';
 
 
@@ -11,7 +11,7 @@ export const variablesMetadata: VariablesMetadata = {};
 export const variablesBriefMarkdown = new SvelteMap<string, string>();
 
 export function isCategoricalVar(varname: VariableName): boolean {
-  return !!varcategories(varname)
+  return !!varCategoryKeys(varname)
 }
 
 

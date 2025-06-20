@@ -9,7 +9,7 @@
 	import type { Site } from "$src/lib/types/site";
 	import { regionIdLabel } from '$src/lib/utils/regions';
 	import { fmtDateDMonY } from '$src/lib/utils/date';
-	import { varlabel, varstdmax, varstdmin, varunits } from "$src/lib/utils/varHelpers";
+	import { varLabel, varStdMax, varStdMin, varunits } from "$src/lib/utils/varHelpers";
 	import TooltipSiteStats from "../tooltips/TooltipContentSiteStats.svelte";
 	import { mapMouseLocation } from "$src/appstate/map/mapMouse.svelte";
 	import type { BasinObject } from "$src/appstate/data/basinObject.svelte";
@@ -78,16 +78,16 @@
 	{@const val = siteGetBeforeDate(site, varname, vardate)}
 	<p>
 		{#if val}
-			{varlabel(varname)}: <u><b>{val}</b></u>
+			{varLabel(varname)}: <u><b>{val}</b></u>
 			{varunits(varname)} ({selectedDateClosestBeforeDate(site)})
-			{#if typeof val == 'number' && varstdmin(varname) !== undefined && varstdmin(varname)! > val}
-				<span class="stdbad" style="display: block; color: red">&lt; safe minimum {varstdmin(varname)} {varunits(varname)}</span>
+			{#if typeof val == 'number' && varStdMin(varname) !== undefined && varStdMin(varname)! > val}
+				<span class="stdbad" style="display: block; color: red">&lt; safe minimum {varStdMin(varname)} {varunits(varname)}</span>
 			{/if}
-			{#if typeof val == 'number' && varstdmax(varname) !== undefined && varstdmax(varname)! < val}
-				<span class="stdbad" style="display: block; color: red"> &gt; safe maximum {varstdmax(varname)} {varunits(varname)}</span>
+			{#if typeof val == 'number' && varStdMax(varname) !== undefined && varStdMax(varname)! < val}
+				<span class="stdbad" style="display: block; color: red"> &gt; safe maximum {varStdMax(varname)} {varunits(varname)}</span>
 			{/if}
 		{:else}
-			{varlabel(varname)}: <span style="color: #777">N/A</span>
+			{varLabel(varname)}: <span style="color: #777">N/A</span>
 		{/if}
 	</p>
 {/snippet}

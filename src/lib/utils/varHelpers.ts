@@ -18,7 +18,7 @@ export function varunits(varname: string, parens = false) {
 	return parens ? `(${unit})` : unit;
 }
 
-export function varlabel(varname: string, units = false) {
+export function varLabel(varname: string, units = false) {
 	const unit = varunits(varname);
 	const label = variablesMetadata[varname]?.label || varname;
 	if (!units) return label;
@@ -26,8 +26,8 @@ export function varlabel(varname: string, units = false) {
 	return unit ? `${label} (${unit})` : label;
 }
 
-export function varlabelabbrev(varname: string) {
-	const label = varlabel(varname).replace(/-/g, '');
+export function varLabelAbbrev(varname: string) {
+	const label = varLabel(varname).replace(/-/g, '');
 	const words = label.split(/\s+/)
 	const wordLetters = Math.max(2, 6 - words.length);
 	const result = words.map((w: string) => w.slice(0, wordLetters)).join('');
@@ -36,51 +36,51 @@ export function varlabelabbrev(varname: string) {
 	return result;
 }
 
-export function varmin(varname: string) {
+export function varMin(varname: string) {
 	return variablesMetadata[varname]?.scale?.min ?? variablesMetadata['default']?.scale?.min ?? 0;
 }
 
-export function varmax(varname: string) {
-	if (varcategories(varname)) {
-		return varcategories(varname)!.length - 1;
+export function varMax(varname: string) {
+	if (varCategoryKeys(varname)) {
+		return varCategoryKeys(varname)!.length - 1;
 	}
 	return variablesMetadata[varname]?.scale?.max ?? variablesMetadata['default']?.scale?.max ?? 10;
 }
 
-export function varrange(varname: string) {
-	return varmax(varname) - varmin(varname);
+export function varRange(varname: string) {
+	return varMax(varname) - varMin(varname);
 }
 
 /* return sorted list of category keys, ex: ['Poor', 'Low_Fair',..,'Exceptional']  */
-export function varcategories(varname: string) {
+export function varCategoryKeys(varname: string) {
 	return !!variablesMetadata[varname]?.categories && Object.keys(variablesMetadata[varname]?.categories).length > 0 ? Object.keys(variablesMetadata[varname]?.categories) : undefined;
 }
 
-export function varcatilabel(varname: string, catIndex: number) {
-	const catkey = varcategories(varname)?.[catIndex];
+export function varCatIndexLabel(varname: string, catIndex: number) {
+	const catkey = varCategoryKeys(varname)?.[catIndex];
 	if (!catkey) return '';
 	return variablesMetadata[varname]?.categories?.[catkey]?.label || catkey
 }
 
-export function varcatilegend(varname: string, catIndex: number) {
-	const catkey = varcategories(varname)?.[catIndex];
+export function varCatIndexLegend(varname: string, catIndex: number) {
+	const catkey = varCategoryKeys(varname)?.[catIndex];
 	if (!catkey) return '';
 	// console.log('catkey', catkey, variablesMetadata[varname]?.categories?.[catkey], variablesMetadata[varname]?.categories?.[catkey]?.legend)
 	return variablesMetadata[varname]?.categories?.[catkey]?.legend || catkey
 }
 
 
-export function varstdmin(varname: string): number | undefined {
+export function varStdMin(varname: string): number | undefined {
 	if(varname == 'invertNarrative') return 3;
 	return variablesMetadata[varname]?.standards?.min;
 }
 
-export function varstdmax(varname: string): number | undefined {
+export function varStdMax(varname: string): number | undefined {
 	return variablesMetadata[varname]?.standards?.max;
 }
 
 export function catvarOutsideStandards(varname: string, value: string | number): boolean {
-	const cats = varcategories(varname);
+	const cats = varCategoryKeys(varname);
 	if (!cats) return false;
 	const catIndex = typeof value == 'number' ? value : cats.indexOf(value);
 	if(catIndex  == -1) return false;
@@ -93,8 +93,8 @@ export function varoutsidestandard(varname: string, value?: number | string) {
 	if (value === undefined || value === null) return false;
 	if(typeof value === 'string') return catvarOutsideStandards(varname, value);
 
-	const min = varstdmin(varname);
-	const max = varstdmax(varname);
+	const min = varStdMin(varname);
+	const max = varStdMax(varname);
 
 	// console.log('varoutsidestandard', varname, value, min, max);
 

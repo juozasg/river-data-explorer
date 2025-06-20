@@ -19,7 +19,7 @@
 	import { YZChartParams } from "$src/lib/utils/YZChartParams";
 	import { chartYColor, chartZColor } from "$src/lib/utils/colors";
 	import MinMaxLines from "./layercake/MinMaxLines.svelte";
-	import { varcategories, varcatilegend } from "$src/lib/utils/varHelpers";
+	import { varCategoryKeys, varCatIndexLegend } from "$src/lib/utils/varHelpers";
 
 	type Props = {
 		yzTable: ColumnTable;
@@ -53,8 +53,8 @@
 	});
 
 	function formatYTick(v: number, varParams: YZChartParams) {
-		if (varcategories(varParams.varname)) {
-			return varcatilegend(varParams.varname, v) || v.toString();
+		if (varCategoryKeys(varParams.varname)) {
+			return varCatIndexLegend(varParams.varname, v) || v.toString();
 		}
 
 		if(v > 10000) {

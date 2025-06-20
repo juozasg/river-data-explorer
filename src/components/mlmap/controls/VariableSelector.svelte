@@ -3,7 +3,7 @@
 	import InlineBlockIconify from "$src/components/icons/InlineBlockIconify.svelte";
 	import DetailsOpenIcon from "$src/components/icons/DetailsOpenIcon.svelte";
 	import { aremove } from "$src/lib/utils/arrays";
-	import { varlabel, varlabelabbrev } from "$src/lib/utils/varHelpers";
+	import { varLabel, varLabelAbbrev } from "$src/lib/utils/varHelpers";
 	import { clickOutside } from "$src/lib/svelte/clickOutside";
 
 	const varnames = aremove(Object.keys(variablesMetadata), "default");
@@ -11,7 +11,7 @@
 
 	let open = $state(false);
 
-	const label = $derived(small ? varlabelabbrev(varname) : varlabel(varname));
+	const label = $derived(small ? varLabelAbbrev(varname) : varLabel(varname));
 
 	const onmouseleave = () => (open = false);
 	const openDetails = (e: MouseEvent | any) => {
@@ -52,7 +52,7 @@
 						varname = vn;
 						open = false;
 					}}>
-					{varlabel(vn, true)}</a>
+					{varLabel(vn, true)}</a>
 			{/each}
 		</div>
 	</details>

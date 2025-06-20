@@ -5,7 +5,7 @@ import * as aq from 'arquero';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
 import { siteDatasets } from '$src/appstate/data/datasets.svelte';
 import type { Site } from '../types/site';
-import { varcategories } from '../utils/varHelpers';
+import { varCategoryKeys } from '../utils/varHelpers';
 import { dateEqualYMD } from '../utils/date';
 import { mean, median } from '../utils';
 
@@ -163,7 +163,7 @@ export function selectTableVar(table: ColumnTable | undefined, varname: string |
 	}
 
 	// const renamedTable = siteTable.select(['date', varname]).rename({ [varname]: renameVar ?? varname })
-	if(varcategories(varname)) {
+	if(varCategoryKeys(varname)) {
 		filteredTable = filteredTable.derive({ 'var': aq.escape((d: any) => catsToNumber(varname, d.var)) })
 		.filter(d => aq.op.is_nan(d!.var) == false)
 		.filter(aq.escape((d: any) => d!.var !== undefined && d!.var !== null && d!.var !== ''))
@@ -175,9 +175,9 @@ export function selectTableVar(table: ColumnTable | undefined, varname: string |
 
 function catsToNumber(varname: string, value: string| string[]) {
 	// console.log('cats to number', varname, value)
-	if (varcategories(varname)) {
-		if(typeof value === 'string') return varcategories(varname)!.indexOf(value as string);
-		const vals = (value as string[]).map(v => varcategories(varname)!.indexOf(v)).filter(v => v !== -1);
+	if (varCategoryKeys(varname)) {
+		if(typeof value === 'string') return varCategoryKeys(varname)!.indexOf(value as string);
+		const vals = (value as string[]).map(v => varCategoryKeys(varname)!.indexOf(v)).filter(v => v !== -1);
 		const md = Math.round(mean(vals));
 		// console.log('VALS', vals, md)
 		return md;

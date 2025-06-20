@@ -1,13 +1,13 @@
 import type ColumnTable from "arquero/dist/types/table/column-table";
 import { isNumber } from ".";
-import { varcategories, varstdmax, varstdmin, varunits } from './varHelpers';
+import { varCategoryKeys, varStdMax, varStdMin, varunits } from './varHelpers';
 import { variablesMetadata } from "$src/appstate/variablesMetadata.svelte";
 import { simpleStats, type SimpleStats } from "../data/stats";
 import { roundTickValue } from "./chart";
 
 export function varChartDomain(axis: "y" | "z", varname?: string, yzTable?: ColumnTable): [number, number] {
 	if (!varname || !yzTable) return [0, 100];
-	if(varcategories(varname)) return [0, varcategories(varname)!.length - 1];
+	if(varCategoryKeys(varname)) return [0, varCategoryKeys(varname)!.length - 1];
 
 	const stats = simpleStats(axis, yzTable);
 
@@ -60,8 +60,8 @@ export class YZChartParams {
 			this.stats = simpleStats(axis, yzTable, varname);
 			this.radius = this.stats.count > 2 ? 4 : 7;
 
-			this.stdmin = varstdmin(varname);
-			this.stdmax = varstdmax(varname);
+			this.stdmin = varStdMin(varname);
+			this.stdmax = varStdMax(varname);
 		} else {
 			this.stats = { count: 0 }
 			this.varLabel = '';

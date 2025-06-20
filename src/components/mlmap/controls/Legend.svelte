@@ -1,12 +1,10 @@
 <script lang="ts">
 	import { interpolateVarDataURL } from '$src/lib/utils/colors';
-	import { legendFmtVarname, maxLegendTextWidth } from '$src/lib/utils/legend';
+	import { legendFmtVarnameVal, maxLegendTextWidth } from '$src/lib/utils/legend';
 	import {
-		varcategories,
-		varcatilegend,
-		varmax,
-		varmin,
-		varrange,
+		varCategoryKeys,
+		varMax,
+		varMin,
 		varunits
 	} from '$src/lib/utils/varHelpers';
 	import { onMount } from 'svelte';
@@ -25,18 +23,18 @@
 	const numTicks = $derived.by(() => {
 		const textWidth = maxLegendTextWidth(varname);
 		const calculatedTicks = Math.max(Math.floor(legendWidth / textWidth), 2);
-		return varcategories(varname)
-			? Math.min(varcategories(varname)!.length, calculatedTicks)
+		return varCategoryKeys(varname)
+			? Math.min(varCategoryKeys(varname)!.length, calculatedTicks)
 			: calculatedTicks;
 	});
 
 
-	const fmtVarname = (val: number) => legendFmtVarname(varname, val);
+	const fmtVarname = (val: number) => legendFmtVarnameVal(varname, val);
 
 	const tickFractions = $derived([...Array(numTicks)].map((e, i) => i / (numTicks - 1)));
 	const tickValues = $derived(
 		tickFractions
-			.map((f) => varmin(varname) + f * (varmax(varname) - varmin(varname)))
+			.map((f) => varMin(varname) + f * (varMax(varname) - varMin(varname)))
 			.map(fmtVarname)
 	);
 </script>
