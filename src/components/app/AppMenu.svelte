@@ -5,10 +5,13 @@
 	import { basinObject1, mapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
 	import type { BasinObjectType } from "$src/appstate/data/basinObject.svelte";
 	import BasinObjectSearchResults from "../basinobject/BasinObjectSearchResults.svelte";
+	import Basin from "../Basin.svelte";
 
 	const { mobile }: { mobile: boolean } = $props();
 
 	let inputElement: HTMLInputElement;
+	let searchResults = $state<BasinObjectSearchResults>();
+
 	const onfocus = () => {
 		searchFocused = true;
 		inputElement.setSelectionRange(0, inputElement.value.length);
@@ -31,8 +34,27 @@
 		console.log("selectObject", objectType, id);
 		basinObject1.set(objectType, id);
 		value = "";
-		if(mapSelectionMode.mode == 'auto' && mapSelectionMode.target == "1") mapSelectionMode.target = "2"; // Switch to target 2 if in auto mode
+		if (mapSelectionMode.mode == "auto" && mapSelectionMode.target == "1") mapSelectionMode.target = "2"; // Switch to target 2 if in auto mode
+	};
 
+	const inputKeydown = (e: KeyboardEvent) => {
+		if (e.key === "Escape") {
+			inputElement?.blur();
+			showResults = false;
+		}
+
+		if(searchResults) {
+			if (e.key === "ArrowDown") {
+				searchResults.keydown("down");
+				e.preventDefault();
+			} else if (e.key === "ArrowUp") {
+				searchResults.keydown("up");
+				e.preventDefault();
+			} else if (e.key === "Enter") {
+				searchResults.keydown("enter");
+				e.preventDefault();
+			}
+		}
 	};
 </script>
 
@@ -55,18 +77,13 @@
 				type="text"
 				bind:value
 				bind:this={inputElement}
-				onkeydown={(e) => {
-					if (e.key === "Escape") {
-						e.currentTarget?.blur();
-						showResults = false;
-					}
-				}}
+				onkeydown={inputKeydown}
 				placeholder={searchPlaceholder}
 				{onblur}
 				{onfocus} />
 			{#if showResults && value.length > 1}
 				<div class="global-search-results">
-					<BasinObjectSearchResults {selectObject} query={value} />
+					<BasinObjectSearchResults bind:this={searchResults} {selectObject} query={value} />
 				</div>
 			{/if}
 		</li>
@@ -155,7 +172,7 @@
 		}
 	}
 
-	:global(.global-search-results .basin-object-search-results ) {
+	:global(.global-search-results .basin-object-search-results) {
 		/* position: relative; */
 		/* padding-top: 8px; */
 		top: 40px;

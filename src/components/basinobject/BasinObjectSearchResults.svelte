@@ -9,18 +9,33 @@
 
 	let results: BasinSearchResult[] = $derived(searchBasinFeatures(query));
 
-	// const resultLabel = (objectType: BasinObjectType, id: number) => {
-	// 	const name = basinFeatureName(objectType, id);
-	// 	const siteId = basinFeatureSiteId(objectType, id);
+	let kbfocusIndex = $state<number>();
 
-	// 	const siteIdLabel = siteId ? ` (${siteId})` : "";
-	// 	return `${name}${siteIdLabel}`;
-	// };
+	export const keydown = (key: 'up' | 'down' | 'enter') => {
+		if(results.length === 0) return;
+		if(key === 'up' && kbfocusIndex !== undefined) {
+			kbfocusIndex = (kbfocusIndex > 0) ? kbfocusIndex - 1 : results.length - 1;
+		} else if(key === 'down') {
+			if(kbfocusIndex === undefined || kbfocusIndex < 0) {
+				kbfocusIndex = 0;
+			} else {
+				kbfocusIndex = (kbfocusIndex < results.length - 1) ? kbfocusIndex + 1 : 0;
+			}
+		} else if(key === 'enter' && kbfocusIndex !== undefined) {
+			if(kbfocusIndex !== undefined && kbfocusIndex >= 0 && kbfocusIndex < results.length) {
+				// console.log('Selected result:', results[kbfocusIndex]);
+				const [objectType, id] = results[kbfocusIndex];
+				selectObject(objectType, id);
+			}
+			return;
+		}
+		console.log(key);
+	};
 
 </script>
 
-{#snippet resultItem(objectType: BasinObjectType, id: number)}
-	<div class="result-item" onclick={() => selectObject(objectType, id)}>
+{#snippet resultItem(objectType: BasinObjectType, id: number, focus = false)}
+	<div class={["result-item", {kbfocus: focus}]} onclick={() => selectObject(objectType, id)}>
 		<span class="result-label">{basinFeatureName(objectType, id, true)}</span>
 		<span class="result-type object-type-pill">{basinObjectTypeLabel(objectType)}</span>
 	</div>
@@ -32,8 +47,8 @@
 	{:else}
 		<div class="results-list">
 			<!-- Placeholder for search results -->
-			{#each results as result}
-				{@render resultItem(result[0], result[1])}
+			{#each results as result, i}
+				{@render resultItem(result[0], result[1], kbfocusIndex === i)}
 			{/each}
 		</div>
 	{/if}
@@ -79,7 +94,7 @@
 		cursor: pointer;
 	}
 
-	.result-item:hover {
+	.result-item:hover, .result-item.kbfocus {
 		background-color: #f0f0f0;
 	}
 

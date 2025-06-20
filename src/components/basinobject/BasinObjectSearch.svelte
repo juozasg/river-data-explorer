@@ -18,6 +18,7 @@
 	let showResults = $state(false);
 
 	let inputElement = $state<HTMLInputElement>();
+	let searchResults = $state<BasinObjectSearchResults>();
 
 	$effect(() => {
 		if (searchFocused && value.length > 1) showResults = true;
@@ -30,23 +31,40 @@
 		console.log("selectObject", objectType, id);
 		if (target === "1") {
 			basinObject1.set(objectType, id);
-			if(mapSelectionMode.mode == 'auto') mapSelectionMode.target = "2"; // Switch to target 2 if in auto mode
+			if (mapSelectionMode.mode == "auto") mapSelectionMode.target = "2"; // Switch to target 2 if in auto mode
 		} else {
 			basinObject2.set(objectType, id);
-			if(mapSelectionMode.mode == 'auto') mapSelectionMode.target = "1";
+			if (mapSelectionMode.mode == "auto") mapSelectionMode.target = "1";
 		}
 		value = "";
 	};
+
+	const inputKeydown = (e: KeyboardEvent) => {
+		if (e.key === "Escape") {
+			inputElement?.blur();
+			showResults = false;
+		}
+
+		if (searchResults) {
+			if (e.key === "ArrowDown") {
+				searchResults.keydown("down");
+				e.preventDefault();
+			} else if (e.key === "ArrowUp") {
+				searchResults.keydown("up");
+				e.preventDefault();
+			} else if (e.key === "Enter") {
+				searchResults.keydown("enter");
+				e.preventDefault();
+			}
+		}
+	};
 </script>
-
-
 
 <div
 	use:clickOutside={() => {
 		showResults = false;
 		inputElement?.blur();
 	}}>
-
 	<div class="basin-object-search-input">
 		<div class="search-icon"><InlineBlockIconify icon="fluent:search-12-filled" size="28px" /></div>
 		<input
@@ -55,17 +73,12 @@
 			{onfocus}
 			bind:value
 			bind:this={inputElement}
-			onkeydown={(e) => {
-				if (e.key === "Escape") {
-					e.currentTarget?.blur();
-					showResults = false;
-				}
-			}}
+			onkeydown={inputKeydown}
 			placeholder={searchPlaceholder} />
 	</div>
 
 	{#if showResults}
-		<BasinObjectSearchResults {selectObject} query={value} />
+		<BasinObjectSearchResults bind:this={searchResults} {selectObject} query={value} />
 	{/if}
 </div>
 
