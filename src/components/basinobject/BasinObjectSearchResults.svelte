@@ -2,6 +2,7 @@
 	import { basinFeatureName, basinFeatureSiteId } from "$src/appstate/data/basinFeatureCollection.svelte";
 	import { searchBasinFeatures, type BasinSearchResult } from "$src/appstate/data/basinFeatureSearchIndex.svelte";
 	import type { BasinObjectType } from "$src/appstate/data/basinObject.svelte";
+	import { elementInView, isElementInScrollView } from "$src/lib/utils/dom";
 	import { basinObjectTypeLabel } from "$src/lib/utils/prettyNames";
 
 	type Props = { query: string, selectObject: (objectType: BasinObjectType, id: number) => void };
@@ -12,7 +13,7 @@
 
 	let kbfocusIndex = $state<number>();
 
-	export const keydown = (key: 'up' | 'down' | 'enter') => {
+	export const keydown = async (key: 'up' | 'down' | 'enter') => {
 		if(results.length === 0) return;
 		if(key === 'up' && kbfocusIndex !== undefined) {
 			kbfocusIndex = (kbfocusIndex > 0) ? kbfocusIndex - 1 : results.length - 1;
@@ -32,13 +33,19 @@
 			return;
 		}
 
-		if((key === 'up' || key === 'down') && kbfocusIndex !== undefined && kbfocusIndex >= 0 && kbfocusIndex < results.length) {
+		if(( key === 'down') && kbfocusIndex !== undefined && kbfocusIndex >= 0 && kbfocusIndex < results.length) {
 			// Scroll the resultsDiv to bring the focused item into view
-			const focusedItem = resultsDiv.querySelector(`#item-${results[kbfocusIndex][1]}`);
-			if (focusedItem) {
-				focusedItem.scrollIntoView({ block: 'center' });
-			}
+			const focusedItem = resultsDiv.querySelector(`#item-${results[kbfocusIndex][1]}`) as HTMLElement | undefined;
+			if(!focusedItem) return;
+			if(kbfocusIndex > 6) focusedItem.scrollIntoView();
 		}
+		if(( key === 'up') && kbfocusIndex !== undefined && kbfocusIndex >= 0 && kbfocusIndex < results.length) {
+			// Scroll the resultsDiv to bring the focused item into view
+			const focusedItem = resultsDiv.querySelector(`#item-${results[kbfocusIndex][1]}`) as HTMLElement | undefined;
+			if(!focusedItem) return;
+			focusedItem.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+		}
+
 
 	};
 
