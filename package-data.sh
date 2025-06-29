@@ -32,6 +32,9 @@ echo "Packaged: $date" >> data/versions.txt
 
 cd data
 
+rm -rf .git*
+rm -f *.py
+
 # Create manifest
 find * -type f -exec sha1sum {} \; > sha1.txt
 
