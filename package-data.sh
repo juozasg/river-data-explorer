@@ -34,6 +34,7 @@ cd data
 
 rm -rf .git*
 rm -f *.py
+rm -rf scripts
 
 # Create manifest
 find * -type f -exec sha1sum {} \; > sha1.txt

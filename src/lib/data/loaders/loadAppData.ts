@@ -5,6 +5,7 @@ import { loadMarkdown } from "./loadMarkdown";
 import { loadSitesCsv } from "./loadSitesCsv";
 import { loadDataCsv } from "../cachedDataLoad";
 import { loadFeatureCollections } from "$src/appstate/data/basinFeatureCollection.svelte";
+import { loadRealtimeData } from "./loadRealtimeData";
 
 export type SHA1Digest = string;
 export type DataManifest = { [key: string]: SHA1Digest };
@@ -27,8 +28,13 @@ export async function loadAppData(manifest: DataManifest) {
 
 	loadFeatureCollections();
 	loadDatasets();
+
+	loadRealtimeData();
 	// loadDatasetsUsgsWS();
 	// loadBasinFipsData();
+
+	// test arquero for large tables
+
 
 }
 
