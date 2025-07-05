@@ -110,7 +110,7 @@ export function splitRealtimeVariablesMetadata(md: VariablesMetadata): { rt: Var
 	const nonrt: VariablesMetadata = {};
 
 	for (const [varname, metadata] of Object.entries(md)) {
-		console.log('splitRealtimeVariablesMetadata', varname, metadata);
+		// console.log('splitRealtimeVariablesMetadata', varname, metadata);
 
 		if (metadata.realtime) {
 			rt[varname] = metadata;

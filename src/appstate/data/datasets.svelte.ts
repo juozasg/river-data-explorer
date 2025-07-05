@@ -14,6 +14,7 @@ import { defineGlobal } from '$src/lib/utils';
 import type { Site, SiteId } from '$src/lib/types/site';
 
 export const siteDatasets = new SvelteMap<number, ColumnTable>();
+export const siteRealtimeDatasets = new SvelteMap<number, ColumnTable>();
 
 export function sitesDatasets(sites: Site[]): ColumnTable[] {
 	return sites.map(site => siteDatasets.get(site.id)).filter(t => t !== undefined) as ColumnTable[];
