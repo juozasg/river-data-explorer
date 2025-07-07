@@ -6,7 +6,7 @@
 	import "$src/styles/app.scss";
 	import { SvelteToast } from "@zerodevx/svelte-toast";
 
-	import { rtvariablesMetadata, variablesMetadata, type VariablesMetadata } from "$src/appstate/variablesMetadata.svelte";
+	import { variablesMetadata, type VariablesMetadata } from "$src/appstate/variablesMetadata.svelte";
 
 	import { onMount } from "svelte";
 	import { loadAppData, type DataManifest } from "./lib/data/loaders/loadAppData";
@@ -17,7 +17,7 @@
 	import AppLayout from "./components/app/AppLayout.svelte";
 	import { notify } from "./appstate/ui/notifications.svelte";
 	import { defineGlobal } from "./lib/utils";
-	import { splitRealtimeVariablesMetadata } from "./lib/utils/varHelpers";
+	// import { splitRealtimeVariablesMetadata } from "./lib/utils/varHelpers";
 
 
 	let websiteTooltip = $state<WebsiteTooltip>();
@@ -28,10 +28,8 @@
 		console.log("App mounted! Loading manifests and data...");
 		try {
 			const { dataManifest: manifest, variablesMetadata: metadata } = await loadAppManifests();
-			const { rt, nonrt } = splitRealtimeVariablesMetadata(metadata);
 
-			Object.assign(rtvariablesMetadata, rt);
-			Object.assign(variablesMetadata, nonrt);
+			Object.assign(variablesMetadata, metadata);
 			loadAppData(manifest);
 			loadState = "loaded";
 		} catch (e) {

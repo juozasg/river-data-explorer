@@ -7,3 +7,6 @@ export const siteIds = new SvelteMap<string, number>();
 export const sites = new SvelteMap<number, Site>();
 
 export const rtSiteIds = new SvelteSet<string>();
+export const rtSites = (): Site[] => {
+	return [...rtSiteIds].map(id => sites.get(siteIds.get(id)!)).filter(s => s !== undefined) as Site[];
+}

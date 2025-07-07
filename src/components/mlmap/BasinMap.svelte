@@ -9,6 +9,8 @@
 	import MapTooltip from "./MapTooltip.svelte";
 	import { updateSiteStyles } from "$src/lib/data/map/layers/updateMapStyles";
 	import MapGraphVarHints from "./MapGraphVarHints.svelte";
+	import WaterFlowMarkers from "./WaterFlowMarkers.svelte";
+	import { layerParams } from "$src/appstate/ui/layers.svelte";
 
 	// svelte-ignore non_reactive_update
 	let mlMapComponent: MapLibreMap;
@@ -52,7 +54,6 @@
 		// }
 	});
 
-
 </script>
 
 
@@ -67,8 +68,8 @@
 
 	<MapLibreMap bind:this={mlMapComponent} />
 
-	{#if mlMap}}
-		 <MapGraphVarHints map={mlMap} {varname} />
+	{#if mlMap && layerParams.waterflowLayer === "rtflow"}
+		 <WaterFlowMarkers map={mlMap} varname={layerParams.waterflowLayer} {vardate} />
 	{/if}
 
 

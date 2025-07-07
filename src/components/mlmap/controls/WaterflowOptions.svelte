@@ -19,11 +19,11 @@
 		switch (layerParams.waterflowLayer) {
 			case undefined:
 				return "No Water Flow";
-			case "flow":
+			case "rtflow":
 				return "Water Flow";
-			case "height":
+			case "rtheight":
 				return "Gauge Height";
-			case "exceedance":
+			case "rtexceedance":
 				return "% Exceedance";
 			default:
 				return "Unknown";
@@ -44,13 +44,13 @@
 			checked={layerParams.waterflowLayer == undefined} />
 		No water flow
 	</label>
-	<label for="waterflow-flow" onclick={() => (layerParams.waterflowLayer = "flow")}>
+	<label for="waterflow-flow" onclick={() => (layerParams.waterflowLayer = "rtflow")}>
 		<input
 			type="radio"
 			id="waterflow-flow"
 			name="waterflow"
 			value="flow"
-			checked={layerParams.waterflowLayer == "flow"} />
+			checked={layerParams.waterflowLayer == "rtflow"} />
 		Water flow (cfs)
 	</label>
 	<!-- <label for="waterflow-height" onclick={() => (layerParams.waterflowLayer = "height")}>
@@ -62,13 +62,13 @@
 			checked={layerParams.waterflowLayer == "height"} />
 		Gauge height (ft)
 	</label> -->
-	<label for="waterflow-exceedance" onclick={() => (layerParams.waterflowLayer = "exceedance")}>
+	<label for="waterflow-exceedance" onclick={() => (layerParams.waterflowLayer = "rtexceedance")}>
 		<input
 			type="radio"
 			id="waterflow-exceedance"
 			name="waterflow"
 			value="exceedance"
-			checked={layerParams.waterflowLayer == "exceedance"} />
+			checked={layerParams.waterflowLayer == "rtexceedance"} />
 		Exceedance (%)
 	</label>
 	<!-- </div> -->

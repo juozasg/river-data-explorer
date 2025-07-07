@@ -1,3 +1,4 @@
+import { aremove } from '$src/lib/utils/arrays';
 import { varCategoryKeys } from '$src/lib/utils/varHelpers';
 import { SvelteMap } from 'svelte/reactivity';
 
@@ -8,8 +9,18 @@ export type VariablesMetadata = Record<VariableName, {[key: string]: any}>;
 // not reactive - instead set by initial load of variables.yaml
 export const variablesMetadata: VariablesMetadata = {};
 
+export const varnames = (excludeRt = true): VariableName[] => {
+  let names = Object.keys(variablesMetadata);
+  if (excludeRt) {
+    names = names.filter(name => !variablesMetadata[name].realtime);
+  }
+
+  aremove(names, 'default');
+  return names;
+}
+
 // real time variables metadata for water overlays
-export const rtvariablesMetadata: VariablesMetadata = {};
+// export const rtvariablesMetadata: VariablesMetadata = {};
 
 export const variablesBriefMarkdown = new SvelteMap<string, string>();
 

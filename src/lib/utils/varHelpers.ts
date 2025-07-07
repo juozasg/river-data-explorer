@@ -105,19 +105,19 @@ export function varoutsidestandard(varname: string, value?: number | string) {
 }
 
 
-export function splitRealtimeVariablesMetadata(md: VariablesMetadata): { rt: VariablesMetadata, nonrt: VariablesMetadata } {
-	const rt: VariablesMetadata = {};
-	const nonrt: VariablesMetadata = {};
+// export function splitRealtimeVariablesMetadata(md: VariablesMetadata): { rt: VariablesMetadata, nonrt: VariablesMetadata } {
+// 	const rt: VariablesMetadata = {};
+// 	const nonrt: VariablesMetadata = {};
 
-	for (const [varname, metadata] of Object.entries(md)) {
-		// console.log('splitRealtimeVariablesMetadata', varname, metadata);
+// 	for (const [varname, metadata] of Object.entries(md)) {
+// 		// console.log('splitRealtimeVariablesMetadata', varname, metadata);
 
-		if (metadata.realtime) {
-			rt[varname] = metadata;
-		} else {
-			nonrt[varname] = metadata;
-		}
-	}
+// 		if (metadata.realtime) {
+// 			rt[varname] = metadata;
+// 		} else {
+// 			nonrt[varname] = metadata;
+// 		}
+// 	}
 
-	return { rt, nonrt };
-}
+// 	return { rt, nonrt };
+// }

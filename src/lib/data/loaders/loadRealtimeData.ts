@@ -5,17 +5,18 @@ import { defineGlobal } from '$src/lib/utils';
 import { loadDataText } from '../cachedDataLoad';
 import { rtSiteIds, siteIds } from '$src/appstate/data/sites.svelte';
 
-type RTRecord = { timestamp: number, flow: number }
+type RTRecord = { date: Date, rtflow: number }
 
 function parseLine(line: string): RTRecord | null {
 	const values = line.split(',');
 	if (values.length < 2) return null; // Skip empty lines
 
 	const timestamp = parseInt(values[0]);
-	const flow = parseFloat(values[1]);
-	if (isNaN(timestamp) || isNaN(flow)) return null; // Skip invalid lines
+	const rtflow = parseFloat(values[1]);
+	if (isNaN(timestamp) || isNaN(rtflow)) return null; // Skip invalid lines
+	const date = new Date(timestamp * 1000); // Convert seconds to milliseconds
 
-	return { timestamp, flow };
+	return { date, rtflow };
 }
 
 
@@ -65,7 +66,7 @@ export async function loadRealtimeData() {
 		}
 
 		// Create a ColumnTable for the site
-		const table = aq.from(records).orderby('timestamp').reify();
+		const table = aq.from(records).orderby('date').reify();
 		const id = siteIds.get(siteId);
 		if (!id) {
 			console.error(`Site integer ID not found for siteId: ${siteId}`);
@@ -77,6 +78,7 @@ export async function loadRealtimeData() {
 
 	defineGlobal('siteRealtimeDatasets', siteRealtimeDatasets);
 	setInterval(updateRealtimeData, 15 * 60 * 1000); // Update every 15 minutes
+	updateRealtimeData(); // Initial update
 }
 
 export async function updateRealtimeData() {
@@ -84,7 +86,10 @@ export async function updateRealtimeData() {
 		const t = siteRealtimeDatasets.get(siteIds.get(siteId)!)!;
 		const lastRow: RTRecord = t.object(t.numRows() - 1) as RTRecord;
 
-		const url = `http://159.89.48.126:5003/timeseries-since/${siteId}/${lastRow.timestamp}`;
+		const timestamp = Math.floor(lastRow.date.getTime() / 1000); // Convert to seconds
+		const url = `http://159.89.48.126:5003/timeseries-since/${siteId}/${timestamp}`;
+
+		// console.log('Fetching realtime data for site:', siteId, 'from', url);
 		const response = await fetch(url);
 		if (!response.ok) {
 			console.error(`Failed to fetch realtime data for site ${siteId}:`, response.statusText);
@@ -99,14 +104,14 @@ export async function updateRealtimeData() {
 			newRecords.push(record);
 		});
 
-		console.log('updateRealtimeData', siteId, 'newRecords.length = ', newRecords.length, 'lastRow = ', lastRow);
+		// console.log('updateRealtimeData', siteId, 'newRecords.length = ', newRecords.length, 'from lastRow = ', lastRow);
 
 
 		if (newRecords.length > 0) {
 			const existingTable = siteRealtimeDatasets.get(siteIds.get(siteId)!);
-			const newTable = aq.from(newRecords).orderby('timestamp').reify();
+			const newTable = aq.from(newRecords).orderby('date').reify();
 			if (existingTable) {
-				const updatedTable = existingTable.concat(newTable).orderby('timestamp').reify();
+				const updatedTable = existingTable.concat(newTable).orderby('date').reify();
 				siteRealtimeDatasets.set(siteIds.get(siteId)!, updatedTable);
 			}
 		}

@@ -72,35 +72,30 @@ export function tableGetBeforeDate(table: ColumnTable, varname: string, date?: D
 
 // tested and works, could be written better tho
 // TODO: rewrite using binarySearch function
-export function tableIndexBeforeDate(table: ColumnTable, date: Date, fromIndex = 0, toIndex?: number): number {
+export function tableIndexBeforeDate(table?: ColumnTable, target?: Date, fromIndex = 0, toIndex?: number): number {
+	if (!table || !target) return -1;
 	if (table.numRows() === 0) return -1;
 	if (toIndex === -1) return -1;
 	if (fromIndex < 0 || fromIndex >= table.numRows()) return -1;
 	if (toIndex === undefined) toIndex = table.numRows() - 1;
-	if (fromIndex === toIndex) return table.get('date', fromIndex) <= date ? fromIndex : -1;
+	if (fromIndex === toIndex) return table.get('date', fromIndex) <= target ? fromIndex : -1;
 
 	const midIndex = Math.floor((fromIndex + toIndex) / 2);
-	// if (midIndex === toIndex) {
-	// 	console.log('midIndex === toIndex', date, midIndex, toIndex, table.objects());
-	// 	return midIndex;
-	// }
 
 	const midDate = table.get('date', midIndex);
 	// console.log('mid', midIndex, fmtDate(midDate))
-	if (dateEqualYMD(midDate, date)) return midIndex;
+	if (midDate.valueOf() === target.valueOf()) return midIndex;
 
-	if (midDate < date) {
+	if (midDate < target) {
 		const nextDate = table.get('date', midIndex + 1);
-		if (nextDate > date) return midIndex;
-		if (dateEqualYMD(nextDate, date)) return midIndex + 1;
-		return tableIndexBeforeDate(table, date, midIndex + 1, toIndex);
+		if (nextDate > target) return midIndex;
+		if (nextDate.valueOf() === target.valueOf()) return midIndex + 1;
+		return tableIndexBeforeDate(table, target, midIndex + 1, toIndex);
 	} else { // midDate > date
-		if (table.get('date', midIndex - 1) <= date) return midIndex - 1;
-		return tableIndexBeforeDate(table, date, fromIndex, midIndex - 1);
+		if (table.get('date', midIndex - 1) <= target) return midIndex - 1;
+		return tableIndexBeforeDate(table, target, fromIndex, midIndex - 1);
 	}
 }
-
-
 
 export function siteGetBeforeDate(site: Site, varname: string, date?: Date): number | Date | undefined {
 	const table = siteDatasets.get(site.id);

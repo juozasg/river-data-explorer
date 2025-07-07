@@ -7,8 +7,18 @@ export function partition(array: any[], filter: (e: any, i: number, arr: any[]) 
 }
 // returns array with elements removed
 
+/* * Removes elements from an array.
+ * @param arr - The array to remove elements from.
+ * @param element(s) - The elements to remove from the array.
+ * @returns A new array with the specified elements removed.
+ *
+ * Modifies the original array in place.
+ */
+export function aremove(arr: any[] | undefined, ...elements: any[] | any): any[] {
+	if(!Array.isArray(elements)) {
+		elements = [elements];
+	}
 
-export function aremove(arr: any[] | undefined, ...elements: any[]): any[] {
 	if (!arr || arr.length == 0) return [];
 
 	for (const e of elements) {

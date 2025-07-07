@@ -45,7 +45,7 @@
 
 <div class="map-control" bind:clientWidth={legendWidth}>
 	<div class="legend" aria-label="Legend">
-		<img class="legend-bar" src={dataUrl} alt="legend color bar"/>
+		<img class="legend-bar" src={dataUrl} alt="legend color bar {varname}"/>
 
 		<div class="legend-labels">
 			{#each tickValues as label, i}

@@ -7,7 +7,7 @@ import { loadDataCsv } from "$lib/data/cachedDataLoad";
 import { startedLoading } from '../ui/loadingItem.svelte';
 import { dataPathsStartingWith } from '$src/lib/data/loaders/loadAppData';
 import type ColumnTable from 'arquero/dist/types/table/column-table';
-import { variablesMetadata } from '$src/appstate/variablesMetadata.svelte';
+import { variablesMetadata, varnames } from '$src/appstate/variablesMetadata.svelte';
 import { siteIds, sites } from './sites.svelte';
 import { parseUTC1700Date } from '$src/lib/utils/date';
 import { defineGlobal } from '$src/lib/utils';
@@ -36,7 +36,7 @@ export async function loadDatasets() {
 	const records = filesRecords.flat();
 	// console.log('sitesRecords loaded. records.length = ', records.length, 'record[0] = ', records[0])
 
-	const validKeys = Object.keys(variablesMetadata);
+	const validKeys = varnames();
 	// console.log('known variables', validKeys);
 	const futureDateMs = (new Date()).valueOf() + (1000 * 60 * 60 * 24 * 3); // 3 days from now
 	for (const r of records) {

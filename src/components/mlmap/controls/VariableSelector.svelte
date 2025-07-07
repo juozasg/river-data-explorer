@@ -1,12 +1,11 @@
 <script lang="ts">
-	import { variablesMetadata } from "$src/appstate/variablesMetadata.svelte";
+	import { variablesMetadata, varnames } from "$src/appstate/variablesMetadata.svelte";
 	import InlineBlockIconify from "$src/components/icons/InlineBlockIconify.svelte";
 	import DetailsOpenIcon from "$src/components/icons/DetailsOpenIcon.svelte";
 	import { aremove } from "$src/lib/utils/arrays";
 	import { varLabel, varLabelAbbrev } from "$src/lib/utils/varHelpers";
 	import { clickOutside } from "$src/lib/svelte/clickOutside";
 
-	const varnames = aremove(Object.keys(variablesMetadata), "default");
 	let { varname = $bindable("ecoli"), small = false }: { varname: string; small?: boolean } = $props();
 
 	let open = $state(false);
@@ -19,9 +18,9 @@
 		open = true;
 	};
 
-	// $effect(() => {
-	// 	console.log("open", open);
-	// });
+	$effect(() => {
+		console.log("varselector", varnames());
+	});
 </script>
 
 <div
@@ -29,7 +28,7 @@
 	{onmouseleave}
 	aria-label="Variable Selector"
 	use:clickOutside={() => {
-		console.log("click outside");
+		// console.log("click outside");
 		open = false;
 	}}>
 	<div class="invisible-hover-target"></div>
@@ -45,7 +44,7 @@
 			</div>
 		</summary>
 		<div class="card">
-			{#each varnames as vn}
+			{#each varnames() as vn}
 				<a
 					class:bg-primary={varname === vn}
 					onclick={() => {

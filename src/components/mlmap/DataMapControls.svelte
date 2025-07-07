@@ -50,7 +50,7 @@
 
 		<WaterflowOptions {small} />
 		{#if layerParams.waterflowLayer}
-			<Legend varname="do" />
+			<Legend varname={layerParams.waterflowLayer} />
 		{/if}
 	</div>
 	<DateMultiInput {validDates} bind:vardate bind:this={dateMultiInput} />

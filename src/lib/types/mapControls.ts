@@ -7,7 +7,7 @@ export type MapLayersParams = {
 	normalizeLegendToVisibleData: boolean;
 	normalizeRasterLegendToVisibleData: boolean;
 	rasterLayer: undefined | 'lulc' | 'elevation';
-	waterflowLayer: undefined | 'flow' | 'height' | 'exceedance';
+	waterflowLayer: undefined | 'rtflow' | 'rtheight' | 'rtexceedance';
 	// rasterOverlay: undefined | 'lclu' | 'impervious';
 };
 

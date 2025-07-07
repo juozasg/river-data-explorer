@@ -59,7 +59,7 @@ export class MapHoverSelectionController {
 		map.once("idle", () => {
 			// console.log("mlmap data model is ready");
 			this.dataModelReady = true;
-			this.addHoverListeners(map);
+			this.addMouseListeners(map);
 			this.addBasinObjectSelectionListeners();
 			// now safe to modify map sources and layers
 		});
@@ -295,7 +295,7 @@ export class MapHoverSelectionController {
 	}
 
 
-	addHoverListeners(map: ml.Map) {
+	addMouseListeners(map: ml.Map) {
 		map.on('click', (e) => {
 			const selectionPanel = `data${mapSelectionMode.target}` as 'data1' | 'data2';
 			switch (mapSelectionMode.mode) {

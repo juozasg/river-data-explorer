@@ -9,6 +9,10 @@ import { siteIdHasData, siteVarDateValue } from "../../siteTableHelpers";
 
 export function updateSiteStyles(map: ml.Map, varname: string, vardate?: Date) {
 	const siteFeatures = basinFeatureCollections.get('site');
+	if(vardate) {
+		// set vardate to end of day in utc
+		vardate.setUTCHours(23, 59);
+	}
 
 	siteFeatures?.features.forEach((siteFeature) => {
 		const id: number = siteFeature.properties?.id;
