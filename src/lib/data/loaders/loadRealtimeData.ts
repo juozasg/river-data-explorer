@@ -3,7 +3,7 @@ import { dataPathsStartingWith } from "./loadAppData";
 import { siteRealtimeDatasets } from '$src/appstate/data/datasets.svelte';
 import { defineGlobal } from '$src/lib/utils';
 import { loadDataText } from '../cachedDataLoad';
-import { siteIds } from '$src/appstate/data/sites.svelte';
+import { rtSiteIds, siteIds } from '$src/appstate/data/sites.svelte';
 
 type RTRecord = { timestamp: number, flow: number }
 
@@ -18,11 +18,10 @@ function parseLine(line: string): RTRecord | null {
 	return { timestamp, flow };
 }
 
-let rtSiteIds: string[] = [];
 
 export async function loadRealtimeData() {
 	const rtFiles = dataPathsStartingWith('realtime/')
-	rtSiteIds = [...new Set(rtFiles.map(f => f.split('/').at(-1)?.replace('.csv', '')!))];
+	rtFiles.forEach(f => rtSiteIds.add(f.split('/').at(-1)?.replace('.csv', '')!));
 
 	const promises = rtFiles.map(async (path) => {
 		const siteId = path.split('/').at(-1)?.replace('.csv', '');
@@ -103,9 +102,9 @@ export async function updateRealtimeData() {
 		console.log('updateRealtimeData', siteId, 'newRecords.length = ', newRecords.length, 'lastRow = ', lastRow);
 
 
-		const newTable = aq.from(newRecords).orderby('timestamp').reify();
-		if (newTable.numRows() > 0) {
+		if (newRecords.length > 0) {
 			const existingTable = siteRealtimeDatasets.get(siteIds.get(siteId)!);
+			const newTable = aq.from(newRecords).orderby('timestamp').reify();
 			if (existingTable) {
 				const updatedTable = existingTable.concat(newTable).orderby('timestamp').reify();
 				siteRealtimeDatasets.set(siteIds.get(siteId)!, updatedTable);
