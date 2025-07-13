@@ -7,6 +7,7 @@
 	import { tableIndexBeforeDate } from "$src/lib/data/siteTableHelpers";
 	import rgb2hex from "rgb2hex";
 	import { interpolateVarColor } from "$src/lib/utils/colors";
+	import { findBasinFeatureById } from "$src/appstate/data/basinFeatureCollection.svelte";
 
 	type Props = {
 		map: ml.Map;
@@ -53,44 +54,55 @@
 		}
 	});
 
+	function mouseEnter() {
+		const siteCatchment = findBasinFeatureById("site-catchment", site.id);
+		// console.log('siteCatchment', siteCatchment);
 
+		if (siteCatchment) {
+			const hoveredRegions = map.getSource("riverapp-hovered-flow-regions") as ml.GeoJSONSource;
+			hoveredRegions.setData({
+				type: "FeatureCollection",
+				features: [siteCatchment]
+			});
+		}
+	}
+
+	function mouseLeave() {
+		const hoveredRegions = map.getSource("riverapp-hovered-flow-regions") as ml.GeoJSONSource;
+		hoveredRegions.setData({
+			type: "FeatureCollection",
+			features: []
+		});
+	}
 </script>
 
 <!-- <div bind:this={node} class="map-graph-var-hint" style="background-color: white"></div> -->
-<div bind:this={node} class="map-graph-var-hint">
-	 <svg
-      width="50"
-      height="100"
-      viewBox="0 0 50 100"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-	<!-- svg triangle pointing to the center from the top -->
+<div bind:this={node} class="map-graph-var-hint" onmouseenter={mouseEnter} onmouseleave={mouseLeave}>
+	<svg width="50" height="100" viewBox="0 0 50 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<!-- svg triangle pointing to the center from the top -->
 
-      <path
-        d="
+		<path
+			d="
 				M 0,0
 				L 25,50
 				L 50,0
 				Z
 				"
-        fill="var(--marker-color)"
-      />
-      <path
-        d="
+			fill="var(--marker-color)" />
+		<path
+			d="
 				M 0,0
 				L 25,50
 				L 50,0
 				Z
 				"
-        stroke="#000000"
-				stroke-width="1"
-				stroke-linejoin="round"
-				fill="none"
-      />
-    </svg>
+			stroke="#000000"
+			stroke-width="1"
+			stroke-linejoin="round"
+			fill="none" />
+	</svg>
 
-		<div class="label">{formatValue(value)}</div>
+	<div class="label">{formatValue(value)}</div>
 </div>
 
 <style>
@@ -111,6 +123,5 @@
 			color: white;
 			max-height: 14px;
 		}
-
 	}
 </style>

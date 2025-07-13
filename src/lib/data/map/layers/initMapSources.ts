@@ -22,6 +22,17 @@ export function initMapSources(map: ml.Map) {
 		}
 	});
 
+		map.addSource("riverapp-hovered-flow-regions", {
+		// generateId: true,
+		promoteId: 'id',
+		type: "geojson",
+		data: {
+			type: "FeatureCollection",
+			features: []
+		}
+	});
+
+
 	map.addSource("riverapp-selected-region-1", {
 		// generateId: true,
 		promoteId: 'id',

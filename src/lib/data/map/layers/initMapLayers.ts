@@ -18,6 +18,7 @@ export function addRegionLayers(map: ml.Map): void {
 		mlmInsertBeforeLayer
 	);
 
+	//
 	map.addLayer(
 		{
 			id: "riverapp-regions-fill",
@@ -42,6 +43,21 @@ export function addRegionLayers(map: ml.Map): void {
 				"fill-opacity": 0.2,
 				// "fill-opacity": 0,
 				"fill-color": "#088"
+			}
+		},
+		mlmInsertBeforeLayer
+	);
+
+	// HOVERED FLOW REGIONS
+	map.addLayer(
+		{
+			id: "riverapp-hovered-flow-regions-fill",
+			source: "riverapp-hovered-flow-regions",
+			type: "fill",
+			paint: {
+				"fill-opacity": 0.6,
+				// "fill-opacity": 0,
+				"fill-color": "#00F"
 			}
 		},
 		mlmInsertBeforeLayer
