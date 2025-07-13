@@ -12,7 +12,7 @@
 		map: ml.Map;
 		site: Site;
 		vardate: Date;
-		varname: 'rtflow' | 'rtexceedance'
+		varname: "rtflow" | "rtexceedance";
 	};
 
 	let { map, site, vardate, varname }: Props = $props();
@@ -27,12 +27,20 @@
 	// const color = rgb2hex(interpolateVarColor(varname, value));
 	const color = $derived(interpolateVarColor(varname, value));
 
+	const formatValue = (val: number | undefined) => {
+		if (val === undefined) return "";
+		if (varname === "rtflow") return `${val.toFixed(1)}`;
+		if (varname === "rtexceedance") return `${val.toFixed(2)} %`;
+		return val.toString();
+	};
+
 	$effect(() => {
 		if (node && color) {
-			node.style.backgroundColor = color;
+			// node.style.backgroundColor = color;
+			node.style.borderTopColor = color;
+			node.style.setProperty("--marker-color", color);
 		}
 	});
-
 
 	onMount(() => {
 		marker = new ml.Marker({ element: node }).setLngLat([site.lon, site.lat]).addTo(map);
@@ -44,16 +52,65 @@
 			marker = undefined;
 		}
 	});
+
+
 </script>
 
-<div bind:this={node} class="map-graph-var-hint" style="background-color: white"></div>
+<!-- <div bind:this={node} class="map-graph-var-hint" style="background-color: white"></div> -->
+<div bind:this={node} class="map-graph-var-hint">
+	 <svg
+      width="50"
+      height="100"
+      viewBox="0 0 50 100"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+	<!-- svg triangle pointing to the center from the top -->
+
+      <path
+        d="
+				M 0,0
+				L 25,50
+				L 50,0
+				Z
+				"
+        fill="var(--marker-color)"
+      />
+      <path
+        d="
+				M 0,0
+				L 25,50
+				L 50,0
+				Z
+				"
+        stroke="#000000"
+				stroke-width="1"
+				stroke-linejoin="round"
+				fill="none"
+      />
+    </svg>
+
+		<div class="label">{formatValue(value)}</div>
+</div>
 
 <style>
 	.map-graph-var-hint {
 		position: absolute;
-		width: 30px;
-		height: 30px;
-		/* border-radius: 50%; */
-		border: 1px solid black;
+
+		width: 50px;
+		height: 100px;
+
+		.label {
+			position: absolute;
+			top: 0px;
+			left: 0;
+			width: 100%;
+			text-align: center;
+			font-size: 14px;
+			background-color: #000;
+			color: white;
+			max-height: 14px;
+		}
+
 	}
 </style>
