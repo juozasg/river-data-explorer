@@ -123,7 +123,13 @@ export async function appendSiteDatasetsToRealtimeDatasets() {
 			return;
 		}
 
-		const siteTable = siteDatasets.get(siteId)?.select({ date: 'date', flow: 'rtflow' }).orderby('date').reify();
+		const colRenames: any = { date: 'date'}
+		const colNames = siteDatasets.get(siteId)?.columnNames() || [];
+		if (colNames.includes('flow')) colRenames['flow'] = 'rtflow';
+		if (colNames.includes('exceedance')) colRenames['exceedance'] = 'rtexceedance';
+
+
+		const siteTable = siteDatasets.get(siteId)?.select(colRenames).orderby('date').reify();
 		if (!siteTable) {
 			console.warn(`No site dataset found for siteId: ${siteId}, skipping append`);
 			return;
