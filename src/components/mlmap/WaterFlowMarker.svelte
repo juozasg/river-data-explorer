@@ -79,7 +79,6 @@
 <!-- <div bind:this={node} class="map-graph-var-hint" style="background-color: white"></div> -->
 <div bind:this={node} class="map-graph-var-hint" onmouseenter={mouseEnter} onmouseleave={mouseLeave}>
 	<svg width="50" height="100" viewBox="0 0 50 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-		<!-- svg triangle pointing to the center from the top -->
 
 		<path
 			d="
@@ -114,9 +113,16 @@
 
 		.label {
 			position: absolute;
-			top: 0px;
-			left: 0;
-			width: 100%;
+			/* border: 1px solid yellow; */
+			top: 1px;
+			left: 0px;
+			min-width: 100%;
+			max-width: 200px;
+			line-height: 14px;
+
+			padding: 0;
+			margin: 0;
+
 			text-align: center;
 			font-size: 14px;
 			background-color: #000;

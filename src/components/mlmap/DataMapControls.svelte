@@ -53,7 +53,9 @@
 			<Legend varname={layerParams.waterflowLayer} />
 		{/if}
 	</div>
-	<DateMultiInput {validDates} bind:vardate bind:this={dateMultiInput} />
+	<div class="bottom-controls">
+		<DateMultiInput {validDates} bind:vardate bind:this={dateMultiInput} />
+	</div>
 </div>
 
 <style>
@@ -66,6 +68,18 @@
 		gap: 10px;
 		width: 100%;
 	}
+
+	.bottom-controls {
+		position: absolute;
+		padding: 10px;
+		bottom: 0;
+		left: 0;
+		display: flex;
+		gap: 10px;
+		width: 100%;
+	}
+
+
 
 	.overlay-controls {
 		top: 36px;

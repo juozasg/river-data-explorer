@@ -59,14 +59,11 @@
 <style>
 	.map-control {
 		z-index: 1000;
-		position: absolute;
-		bottom: 0px;
-		left: 0px;
-		width: calc(100% - 20px);
+		width: 100%;
 		height: 29px;
 
 		padding: 0;
-		margin: 10px;
+		margin: 0;
 
 		border-radius: var(--border-radius);
 		background-color: hsl(0, 0%, 100%);
