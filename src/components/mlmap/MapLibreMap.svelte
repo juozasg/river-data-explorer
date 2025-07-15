@@ -65,7 +65,7 @@
 		});
 
 		// mlMap.addControl(new ml.AttributionControl(), 'bottom-right');
-		mlMap.addControl(new ml.ScaleControl({ maxWidth: 160, unit: "imperial" }), "bottom-left");
+		mlMap.addControl(new ml.ScaleControl({ maxWidth: 160, unit: "imperial" }), "top-right");
 		mlMap.addControl(new ml.NavigationControl(), "bottom-right");
 		defineGlobal("mlMap", mlMap);
 
@@ -95,9 +95,12 @@
 		mapMouseLocation.onMouseOut();
 		tooltip.hide();
 	}
+
+	const moveScaleDown = $derived(layerParams.rasterLayer || layerParams.waterflowLayer);
+
 </script>
 
-<div class={["map", mapCursor() + "-cursor"]} bind:this={mapDiv} {onmouseleave} role="figure"></div>
+<div class={["map", mapCursor() + "-cursor", {"move-scale-down":moveScaleDown}]} bind:this={mapDiv} {onmouseleave} role="figure"></div>
 
 <style>
 	.map {
@@ -119,9 +122,16 @@
 		}
 
 		:global(.maplibregl-ctrl-scale) {
-			margin-bottom: 44px;
+			margin-top: 47px;
 		}
 	}
+
+	.map.move-scale-down {
+		:global(.maplibregl-ctrl-scale) {
+			margin-top: 82px;
+		}
+	}
+
 
 	:global(
 			.map.default-cursor .maplibregl-canvas-container.maplibregl-interactive,

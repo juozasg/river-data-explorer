@@ -137,13 +137,9 @@ export async function appendSiteDatasetsToRealtimeDatasets() {
 
 		// console.log('prepared realtime siteDataset for site', siteId, 'with rows', siteTable.numRows());
 
-		// const concatTable =
 		const updatedTable = siteTable.concat(rtTable).orderby('date').reify();
 
 		siteRealtimeDatasets.set(siteId, updatedTable);
-
-		// const rtTbl = aq.from(rtTable).select('date', ...varnames()).reify();
-		// siteRealtimeDatasets.set(siteId, rtTbl);
 	});
 
 
