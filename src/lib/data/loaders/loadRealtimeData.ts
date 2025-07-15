@@ -78,11 +78,11 @@ export async function loadRealtimeData() {
 
 	defineGlobal('siteRealtimeDatasets', siteRealtimeDatasets);
 	setInterval(updateRealtimeData, 15 * 60 * 1000); // Update every 15 minutes
-	updateRealtimeData(); // Initial update
+	await updateRealtimeData(); // Initial update
 }
 
 export async function updateRealtimeData() {
-	rtSiteIds.forEach(async (siteId) => {
+	const promises = Array.from(rtSiteIds).map(async (siteId) => {
 		const t = siteRealtimeDatasets.get(siteIds.get(siteId)!)!;
 		const lastRow: RTRecord = t.object(t.numRows() - 1) as RTRecord;
 
@@ -106,7 +106,6 @@ export async function updateRealtimeData() {
 
 		// console.log('updateRealtimeData', siteId, 'newRecords.length = ', newRecords.length, 'from lastRow = ', lastRow);
 
-
 		if (newRecords.length > 0) {
 			const existingTable = siteRealtimeDatasets.get(siteIds.get(siteId)!);
 			const newTable = aq.from(newRecords).orderby('date').reify();
@@ -115,8 +114,7 @@ export async function updateRealtimeData() {
 				siteRealtimeDatasets.set(siteIds.get(siteId)!, updatedTable);
 			}
 		}
-
-
 	});
 
+	await Promise.all(promises);
 }

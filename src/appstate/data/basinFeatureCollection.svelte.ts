@@ -33,7 +33,7 @@ export async function loadGeojsonData(name: BasinFeatureType) {
 		if(name === 'site') {
 			remapSitesLonLat();
 		}
-		console.log('loaded', name);
+		// console.log('loaded', name);
 	} catch (e) {
 		console.error('Error loading geometry', path, e);
 	}

@@ -1,11 +1,11 @@
 // import { loadBasinFipsData } from "$src/appstate/data/basinFipsAreas.svelte";
-import { loadDatasets } from "$src/appstate/data/datasets.svelte";
-import { loadGeoindexes } from "$src/appstate/data/geoindexes.svelte";
-import { loadMarkdown } from "./loadMarkdown";
-import { loadSitesCsv } from "./loadSitesCsv";
-import { loadDataCsv } from "../cachedDataLoad";
 import { loadFeatureCollections } from "$src/appstate/data/basinFeatureCollection.svelte";
+import { appendSiteDatasetsToRealtimeDatasets, loadDatasets } from "$src/appstate/data/datasets.svelte";
+import { loadGeoindexes } from "$src/appstate/data/geoindexes.svelte";
+import { loadDataCsv } from "../cachedDataLoad";
+import { loadMarkdown } from "./loadMarkdown";
 import { loadRealtimeData } from "./loadRealtimeData";
+import { loadSitesCsv } from "./loadSitesCsv";
 
 export type SHA1Digest = string;
 export type DataManifest = { [key: string]: SHA1Digest };
@@ -27,14 +27,11 @@ export async function loadAppData(manifest: DataManifest) {
 	console.log('sites.csv loaded');
 
 	loadFeatureCollections();
-	loadDatasets();
+	await Promise.all([loadDatasets(),loadRealtimeData()])
 
-	loadRealtimeData();
+	appendSiteDatasetsToRealtimeDatasets();
 	// loadDatasetsUsgsWS();
-	// loadBasinFipsData();
-
-	// test arquero for large tables
-
+	// loadBasinFipsData()
 
 }
 

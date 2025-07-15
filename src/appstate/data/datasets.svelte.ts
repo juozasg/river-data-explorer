@@ -12,6 +12,7 @@ import { siteIds, sites } from './sites.svelte';
 import { parseUTC1700Date } from '$src/lib/utils/date';
 import { defineGlobal } from '$src/lib/utils';
 import type { Site, SiteId } from '$src/lib/types/site';
+import { untrack } from 'svelte';
 
 export const siteDatasets = new SvelteMap<number, ColumnTable>();
 export const siteRealtimeDatasets = new SvelteMap<number, ColumnTable>();
@@ -62,7 +63,7 @@ export async function loadDatasets() {
 			}
 		}
 
-		if(!record.date && isNaN(record.date.valueOf()) || record.date.valueOf() > futureDateMs) {
+		if (!record.date && isNaN(record.date.valueOf()) || record.date.valueOf() > futureDateMs) {
 			// console.warn('Invalid date in csv files', r.date, r, record.date);
 			continue
 		}
@@ -106,6 +107,40 @@ function parseValue(key: string, value: string): number | Date | string | undefi
 	} else {
 		return num;
 	}
+}
+
+
+export async function appendSiteDatasetsToRealtimeDatasets() {
+	console.log('Appending to realtime datasets: ', siteRealtimeDatasets.size, 'sites');
+	if (siteRealtimeDatasets.size < 1) {
+		console.log('No realtime datasets to append');
+		return;
+	}
+
+	siteRealtimeDatasets.forEach((rtTable, siteId) => {
+		if (rtTable.numRows() < 1) {
+			console.log('No realtime dataset for site', siteId, 'skipping append');
+			return;
+		}
+
+		const siteTable = siteDatasets.get(siteId)?.select({ date: 'date', flow: 'rtflow' }).orderby('date').reify();
+		if (!siteTable) {
+			console.warn(`No site dataset found for siteId: ${siteId}, skipping append`);
+			return;
+		}
+
+		// console.log('prepared realtime siteDataset for site', siteId, 'with rows', siteTable.numRows());
+
+		// const concatTable =
+		const updatedTable = siteTable.concat(rtTable).orderby('date').reify();
+
+		siteRealtimeDatasets.set(siteId, updatedTable);
+
+		// const rtTbl = aq.from(rtTable).select('date', ...varnames()).reify();
+		// siteRealtimeDatasets.set(siteId, rtTbl);
+	});
+
+
 }
 
 

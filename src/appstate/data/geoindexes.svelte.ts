@@ -58,7 +58,7 @@ async function loadGeoindexData(name: BasinRegionType) {
 		}
 
 
-		console.log('loaded', path);
+		// console.log('loaded', path);
 	} catch (e) {
 		console.error('Error loading geoindex', path, e);
 	}
