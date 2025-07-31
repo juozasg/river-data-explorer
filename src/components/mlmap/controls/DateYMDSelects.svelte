@@ -31,6 +31,8 @@
 	let selectedYear: number = $state(todayDate.getUTCFullYear());
 	let selectedMon: number = $state(todayDate.getUTCMonth());
 	let selectedDay: number = $state(todayDate.getUTCDate());
+	let selectedHour: number = $state(15); // Placeholder for time, if needed
+	let selectedMinute: number = $state(20); // Placeholder for time, if needed
 	let daysInSelectedMonth = $derived(daysInMonth(selectedYear, selectedMon));
 
 	$effect(() => {
@@ -42,50 +44,72 @@
 		onDateSelect?.(selectedDate());
 	});
 
-	export const selectedDate = () =>  parseUTC1700Date(`${selectedYear}-${selectedMon+1}-${selectedDay}`);// new Date(Date.UTC(selectedYear, selectedMon, selectedDay));
+	export const selectedDate = () => parseUTC1700Date(`${selectedYear}-${selectedMon + 1}-${selectedDay}`); // new Date(Date.UTC(selectedYear, selectedMon, selectedDay));
 
 	const monthThreeLetterNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 </script>
 
 <div class="date-ymd-selects">
-	<select style="width: 4rem;" bind:value={selectedYear}>
-		{#each yearsArray as year}
-			<option disabled={!isValidYear(year)} value={year}>{year}</option>
-		{/each}
-	</select>
-	<select style="width: 3.25rem;" bind:value={selectedMon}>
-		{#each monthThreeLetterNames as name, i}
-			<option disabled={!isValidMonth(i)} value={i}>{name}</option>
-		{/each}
-	</select>
-	<select style="width: 2.8rem;" bind:value={selectedDay}>
-		{#each Array.from({ length: daysInSelectedMonth }, (_, i) => i + 1) as day}
-			<option disabled={!isValidDay(day)} value={day}>{day}</option>
-		{/each}
-	</select>
+	<div class="container">
+		<select class="year" style="width: 4rem;" bind:value={selectedYear}>
+			{#each yearsArray as year}
+				<option disabled={!isValidYear(year)} value={year}>{year}</option>
+			{/each}
+		</select>
+		<select class="month" style="width: 3.25rem;" bind:value={selectedMon}>
+			{#each monthThreeLetterNames as name, i}
+				<option disabled={!isValidMonth(i)} value={i}>{name}</option>
+			{/each}
+		</select>
+		<select class="day" style="width: 2.8rem;" bind:value={selectedDay}>
+			{#each Array.from({ length: daysInSelectedMonth }, (_, i) => i + 1) as day}
+				<option class="has-data" disabled={!isValidDay(day)} value={day}>{day}</option>
+			{/each}
+		</select>
+
+		<input class="time" type="text" style="width: 1.4rem;" bind:value={selectedHour} />
+		<input class="time" type="text" style="width: 1.4rem;" bind:value={selectedMinute} />
+	</div>
 </div>
 
 <style>
 	.date-ymd-selects {
 		position: absolute;
-		display: inline-block;
-		width: auto;
-		top: 0px;
-		right: 0px;
+		display: flex;
+		width: 100%;
+		bottom: 40px;
+		left: 0px;
 		padding: 2px;
 		padding-right: 3px;
 		overflow: visible;
+		justify-content: center;
 
-		select {
-			display: inline-block;
-			height: 24px;
-			font-size: 1rem;
-			border-radius: 0px;
-			padding: 0px;
-			margin: 0px;
+		.container {
+			display: flex;
+			justify-content: center;
+			width: auto;
+			gap: 2px;
+			background-color: white;
+			border-radius: var(--border-radius);
+			box-shadow: var(--box-shadow);
+			padding: 2px;
 
-			option:disabled {
-				display: none;
+			select {
+				display: inline-block;
+				height: 24px;
+				font-size: 1rem;
+				border-radius: 0px;
+				padding: 0px;
+				margin: 0px;
+
+				option.has-data {
+					font-weight: 700;
+					color: var(--stjoe-blue);
+				}
+
+				option:disabled {
+					display: none;
+				}
 			}
 		}
 	}
