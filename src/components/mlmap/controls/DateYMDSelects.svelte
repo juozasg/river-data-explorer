@@ -13,13 +13,13 @@
 
 	onMount(() => {
 		selectedDate = nowRoundedToNearest15Minutes();
-		console.log('onMount selectedDate', selectedDate.toISOString());
+		// console.log('onMount selectedDate', selectedDate.toISOString());
 
 		updateDateEntry();
 
-		defineGlobal('fromZonedTime', fromZonedTime);
-		defineGlobal('toZonedTime', toZonedTime);
-		defineGlobal('getTimezoneOffset', getTimezoneOffset);
+		// defineGlobal('fromZonedTime', fromZonedTime);
+		// defineGlobal('toZonedTime', toZonedTime);
+		// defineGlobal('getTimezoneOffset', getTimezoneOffset);
 	});
 
 	let selectedYear: number = $state(todayDate.getUTCFullYear());
@@ -32,9 +32,9 @@
 	let scrubAmount = $state<DateStep>("1y");
 
 	export function setDate(date: Date) {
-		selectedYear = date.getFullYear();
-		selectedMon = date.getMonth();
-		selectedDay = date.getDate();
+		// selectedYear = date.getFullYear();
+		// selectedMon = date.getMonth();
+		// selectedDay = date.getDate();
 	}
 
 	const validYears = $derived(Array.from(new Set(validDates.map((d) => d.getUTCFullYear()))));
@@ -50,20 +50,15 @@
 		);
 	};
 
-	$effect(() => {
-		// const closestValid = binaryClosestTo(selectedDate(), validDates);
-		// if (closestValid) setDate(closestValid);
-	});
 
 	$effect(() => {
-		// onDateSelect?.(selectedDate());
+		// console.log('FX selectedDate', selectedDate.toISOString());
+
+		onDateSelect?.(new Date(selectedDate));
 	});
 
-	// export const selectedDate = () => parseUTC1700Date(`${selectedYear}-${selectedMon + 1}-${selectedDay}`); // new Date(Date.UTC(selectedYear, selectedMon, selectedDay));
 
 	const monthThreeLetterNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-
 
 	const dateEntryChanged = () => {
 		const datetime = new Date(Date.UTC(selectedYear, selectedMon, selectedDay, selectedHour, selectedMinute, 0, 0));
@@ -95,23 +90,39 @@
 		dateEntryChanged();
 	};
 
-	const scrub = (left: boolean) => {
+	const scrubOutOfRange = (left: boolean) => {
 		const step = dateSteps[scrubAmount] * (left ? -1 : 1);
 		const newDate = new Date(selectedDate.getTime() + step);
+		// console.log('scrubOutOfRange', left, newDate.toISOString(), oldestDate.toISOString(), 'NOW: ', new Date().toISOString());
+
 		if (newDate < oldestDate) {
-			return;
+			return true;
 		} else if (newDate > new Date()) {
+			return true;
+		}
+
+		return false;
+	};
+
+	let leftScrubDisabled = $derived(scrubOutOfRange(true));
+	let rightScrubDisabled = $derived(scrubOutOfRange(false));
+
+	const scrub = (left: boolean) => {
+		if (scrubOutOfRange(left)) {
+			console.warn("Scrub out of range, ignoring");
 			return;
 		}
 
-		selectedDate = newDate;
+		const step = dateSteps[scrubAmount] * (left ? -1 : 1);
+		selectedDate = new Date(selectedDate.getTime() + step);
+
 		// console.log("scrub", selectedDate.toISOString());
 		updateDateEntry();
 	};
 
 	const updateDateEntry = () => {
 		const zonedDatetime = toZonedTime(selectedDate, "US/Eastern");
-		// console.log("updateDateEntry", selectedDate.toISOString(),zonedDatetime.toISOString().replace("Z", ""));
+		// console.log("updateDateEntry", selectedDate.toISOString(), zonedDatetime.toISOString().replace("Z", ""));
 
 		selectedYear = zonedDatetime.getFullYear();
 		selectedMon = zonedDatetime.getMonth();
@@ -153,7 +164,7 @@
 			onchange={timeEntryChanged}
 			oninput={timeEntryChanged}
 			bind:value={selectedMinute} />
-		<button class="scrub" id="scrub-left" style="width: 1.4rem;" onclick={() => scrub(true)}> &lt; </button>
+		<button class="scrub" id="scrub-left" disabled={leftScrubDisabled} style="width: 1.4rem;" onclick={() => scrub(true)}> &lt; </button>
 		<select class="scrub" style="width: 2.8rem;" bind:value={scrubAmount}>
 			<option value="15m">15m</option>
 			<option value="1h">1h</option>
@@ -169,7 +180,7 @@
 			<option value="5y">5y</option>
 		</select>
 
-		<button class="scrub" style="width: 1.4rem;" onclick={() => scrub(false)}> &gt; </button>
+		<button class="scrub" style="width: 1.4rem;" disabled={rightScrubDisabled} onclick={() => scrub(false)}> &gt; </button>
 
 		<div>{selectedDate.toISOString()}</div>
 	</div>
@@ -232,6 +243,12 @@
 				padding: 2px;
 				font-weight: 700;
 				border-color: grey;
+			}
+
+			button[disabled] {
+				opacity: 0.5;
+				color: grey;
+				cursor: default;
 			}
 
 			button#scrub-left {

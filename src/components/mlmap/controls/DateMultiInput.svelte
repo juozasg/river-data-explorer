@@ -9,7 +9,6 @@
 
 	// console.log('+++ validDates', validDates.map((d) => d.toISOString()));
 
-
 	const isValidDate = (date: Date) =>
 		validValues.length > 0 && binaryClosestSearch(validValues, date.valueOf()).valueOf() === date.valueOf();
 
@@ -26,12 +25,11 @@
 		// // console.log('validDates', validDates.map((d) => d.toISOString()));
 
 		// if (isValidDate(date)) {
-		// 	untrack(() => {
-		// 		// console.log('set data slider input date', date.toISOString());
-		// 		dateSliderInput?.setDate(date);
-		// 	});
-		// 	vardate = date;
-		// }
+		untrack(() => {
+			// console.log('set data slider input date', date.toISOString());
+			dateSliderInput?.setDate(date);
+		});
+		vardate = date;
 	};
 
 	const onRangeDateSelect = (date: Date) => {

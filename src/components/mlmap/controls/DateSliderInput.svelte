@@ -37,10 +37,10 @@
 	});
 
 	const snapToValidDate = () => {
-		if (validValues.length === 0) return;
-		const closestValue = binaryClosestSearch(validValues, value);
+		// if (validValues.length === 0) return;
+		// const closestValue = binaryClosestSearch(validValues, value);
 
-		value = closestValue;
+		// value = closestValue;
 	};
 
 	$effect(() => {
@@ -57,10 +57,10 @@
 </script>
 
 <div class="date-slider-input">
-	<div class="slider-labels">
+	<!-- <div class="slider-labels">
 		<span class="first-label" bind:this={firstLabelE}>{firstLabel}</span>
 		<span class="last-label" bind:this={lastLabelE}>{lastLabel}</span>
-	</div>
+	</div> -->
 	<div class="slider-ticks">
 		{#each validDates || [] as date}
 			<div class="tick" style="left: {dateToFraction(date) * 100}%"></div>
@@ -80,12 +80,13 @@
 	.date-slider-input {
 		width: calc(100% - 185px);
 		height: 29px;
-		/* border: 1px solid plum; */
+		/* border: 3px solid plum; */
 		position: relative;
 		left: 5px;
 
 		input.range {
-			width: 100%;
+			width: 100% !important;
+			border: 4px solid greenyellow;
 			padding: 0 !important;
 			margin: 0 !important;
 			-webkit-box-shadow: none !important;
@@ -94,7 +95,7 @@
 			position: relative;
 			/* bottom: 9px; */
 			cursor: col-resize !important;
-			border: none !important;
+			/* border: none !important; */
 			/* font-size: 1.2rem; */
 		}
 

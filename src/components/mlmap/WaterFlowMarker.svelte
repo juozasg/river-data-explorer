@@ -45,11 +45,9 @@
 		}
 	});
 
-	$effect(() => {
-		console.log('WaterFlowMarker', site.siteId, vardate.toISOString(), varname, value, valueIndex, table);
-
-
-	});
+	// $effect(() => {
+	// 	console.log('WaterFlowMarker', site.siteId, vardate.toISOString(), varname, value, valueIndex, table);
+	// });
 
 	onMount(() => {
 		marker = new ml.Marker({ element: node }).setLngLat([site.lon, site.lat]).addTo(map);
