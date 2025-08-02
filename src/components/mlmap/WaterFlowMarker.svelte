@@ -77,10 +77,10 @@
 </script>
 
 <!-- <div bind:this={node} class="map-graph-var-hint" style="background-color: white"></div> -->
-<div bind:this={node} class="map-graph-var-hint" onmouseenter={mouseEnter} onmouseleave={mouseLeave}>
+<div bind:this={node} class="map-graph-var-hint" >
 	<svg width="50" height="100" viewBox="0 0 50 100" fill="none" xmlns="http://www.w3.org/2000/svg">
 
-		<path
+		<path onmouseenter={mouseEnter} onmouseleave={mouseLeave}
 			d="
 				M 0,0
 				L 25,50
@@ -114,7 +114,7 @@
 		.label {
 			position: absolute;
 			/* border: 1px solid yellow; */
-			top: 1px;
+			top: 0px;
 			left: 0px;
 			min-width: 100%;
 			max-width: 200px;

@@ -22,16 +22,16 @@
 
 	// works great - do not touch!
 	const onYmdDateSelect = (date: Date) => {
-		// console.log('onYmdDateSelect', date.toISOString());
-		// console.log('validDates', validDates.map((d) => d.toISOString()));
+		// // console.log('onYmdDateSelect', date.toISOString());
+		// // console.log('validDates', validDates.map((d) => d.toISOString()));
 
-		if (isValidDate(date)) {
-			untrack(() => {
-				// console.log('set data slider input date', date.toISOString());
-				dateSliderInput?.setDate(date);
-			});
-			vardate = date;
-		}
+		// if (isValidDate(date)) {
+		// 	untrack(() => {
+		// 		// console.log('set data slider input date', date.toISOString());
+		// 		dateSliderInput?.setDate(date);
+		// 	});
+		// 	vardate = date;
+		// }
 	};
 
 	const onRangeDateSelect = (date: Date) => {

@@ -18,7 +18,7 @@ export function parseUTC1700Date(str: string): Date {
 	let year = 2000;
 	let month = 1;
 	let day = 1;
-	if(str.match(mmddyyyyRe)) {
+	if (str.match(mmddyyyyRe)) {
 		const parts = str.split('/');
 		month = parseInt(parts[0]);
 		day = parseInt(parts[1]);
@@ -87,3 +87,46 @@ export function dateEqualYMD(date1: Date, date2: Date): boolean {
 		date1.getUTCMonth() === date2.getUTCMonth() &&
 		date1.getUTCDate() === date2.getUTCDate();
 }
+
+export const second = 1000;
+export const minute = second * 60;
+export const hour = minute * 60;
+export const day = hour * 24;
+
+export const dateSteps = {
+	'15m': 15 * minute,
+	'1h': hour,
+	'3h': 3 * hour,
+	'6h': 6 * hour,
+	'12h': 12 * hour,
+	'1d': day,
+	'7d': 7 * day,
+	'14d': 14 * day,
+	'30d': 30 * day,
+	'90d': 90 * day,
+	'180d': 180 * day,
+	'1y': 365 * day,
+	'5y': 365 * day * 5,
+}
+
+export type DateStep = keyof typeof dateSteps;
+
+export const roundToNearest15Minutes = (date: Date) => {
+	const minutes = date.getMinutes();
+	const roundedMinutes = Math.floor(minutes / 15) * 15;
+	date.setMinutes(roundedMinutes);
+	date.setSeconds(0);
+	date.setMilliseconds(0);
+	return date;
+};
+
+export const nowRoundedToNearest15Minutes = () => {
+	const now = new Date();
+	return roundToNearest15Minutes(now);
+}
+
+export const oldestDate = new Date(Date.UTC(1989, 3, 1, 0, 0, 0)); // 1989-04-01T00:00:00Z
+export const oldestYear = oldestDate.getUTCFullYear();
+
+// from 1989 to this year
+export const availableYears = Array.from({ length: todayDate.getUTCFullYear() - oldestYear + 1 }, (_, i) => oldestYear + i);
