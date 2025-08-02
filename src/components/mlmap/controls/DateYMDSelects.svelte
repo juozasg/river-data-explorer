@@ -83,7 +83,7 @@
 			selectedDate = newDate;
 		}
 
-		console.log("dateEntryChanged", selectedDate.toISOString());
+		// console.log("dateEntryChanged", selectedDate.toISOString());
 	};
 
 	const timeEntryChanged = () => {
@@ -105,13 +105,13 @@
 		}
 
 		selectedDate = newDate;
-		console.log("scrub", selectedDate.toISOString());
+		// console.log("scrub", selectedDate.toISOString());
 		updateDateEntry();
 	};
 
 	const updateDateEntry = () => {
 		const zonedDatetime = toZonedTime(selectedDate, "US/Eastern");
-		console.log("updateDateEntry", selectedDate.toISOString(),zonedDatetime.toISOString().replace("Z", ""));
+		// console.log("updateDateEntry", selectedDate.toISOString(),zonedDatetime.toISOString().replace("Z", ""));
 
 		selectedYear = zonedDatetime.getFullYear();
 		selectedMon = zonedDatetime.getMonth();

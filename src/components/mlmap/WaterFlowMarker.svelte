@@ -30,8 +30,10 @@
 
 	const formatValue = (val: number | undefined) => {
 		if (val === undefined) return "";
+		if (val < 0) return "N/A";
 		if (varname === "rtflow") return `${val.toFixed(1)}`;
 		if (varname === "rtexceedance") return `${val.toFixed(2)} %`;
+
 		return val.toString();
 	};
 
@@ -41,6 +43,12 @@
 			node.style.borderTopColor = color;
 			node.style.setProperty("--marker-color", color);
 		}
+	});
+
+	$effect(() => {
+		console.log('WaterFlowMarker', site.siteId, vardate.toISOString(), varname, value, valueIndex, table);
+
+
 	});
 
 	onMount(() => {

@@ -7,7 +7,7 @@
 	type Props = {
 		map: ml.Map;
 		varname: "rtflow" | "rtexceedance";
-		vardate: Date; // epoch seconds
+		vardate: Date;
 	};
 
 	let { map, vardate, varname }: Props = $props();
@@ -22,6 +22,9 @@
 
 <div class="markers">
 	{#each rtSites() as site}
+		<!-- {#if site.siteId == 'usgs-04100500'}
+			<WaterFlowMarker {map} {site} {vardate} {varname} />
+		{/if} -->
 		<WaterFlowMarker {map} {site} {vardate} {varname}  />
 	{/each}
 </div>
