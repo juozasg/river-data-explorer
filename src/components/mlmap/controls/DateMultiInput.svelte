@@ -35,15 +35,15 @@
 	const onRangeDateSelect = (date: Date) => {
 		// console.log('onRangeDateSelect', date.toISOString());
 
-		const closestValid = binaryClosestSearch(validValues, date.valueOf());
+		// const closestValid = binaryClosestSearch(validValues, date.valueOf());
 		// console.log('closestValid', closestValid, new Date(closestValid).toISOString());
 
-		if (closestValid) {
-			untrack(() => {
-				// console.log('set YMD date', new Date(closestValid).toISOString());
-				ymdSelects?.setDate(new Date(closestValid));
-			});
-		}
+		// // if (closestValid) {
+		// 	untrack(() => {
+		// 		// console.log('set YMD date', new Date(closestValid).toISOString());
+		// 		ymdSelects?.setDate(date);
+		// 	});
+		// }
 	};
 </script>
 

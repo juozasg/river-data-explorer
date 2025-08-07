@@ -2,7 +2,7 @@
 	import { fromZonedTime, getTimezoneOffset, toZonedTime } from "date-fns-tz";
 
 	// import { binaryClosestTo } from "$src/lib/utils/arrays";
-	import { daysInMonth, todayDate, parseUTC1700Date, dateSteps, type DateStep, nowRoundedToNearest15Minutes, availableYears, oldestDate } from "$src/lib/utils/date";
+	import { daysInMonth, todayDate, parseUTC1700Date, dateSteps, type DateStep, nowRoundedToNearest15Minutes, availableYears, oldestDate, roundToNearest15Minutes, minute } from "$src/lib/utils/date";
 
 	import { onMount } from "svelte";
 	import { defineGlobal } from "$src/lib/utils";
@@ -32,9 +32,9 @@
 	let scrubAmount = $state<DateStep>("1y");
 
 	export function setDate(date: Date) {
-		// selectedYear = date.getFullYear();
-		// selectedMon = date.getMonth();
-		// selectedDay = date.getDate();
+		selectedDate = roundToNearest15Minutes(date);
+		updateDateEntry();
+
 	}
 
 	const validYears = $derived(Array.from(new Set(validDates.map((d) => d.getUTCFullYear()))));
@@ -53,9 +53,29 @@
 
 	$effect(() => {
 		// console.log('FX selectedDate', selectedDate.toISOString());
-
 		onDateSelect?.(new Date(selectedDate));
 	});
+
+	setInterval(() => {
+		// if we are close to current time (within 15 minutes), update the date to current time
+		console.log('setInterval selectedDate', selectedDate.toISOString());
+
+		if ((selectedDate.getTime() + (16 * minute)) > (new Date()).getTime()) {
+			// selectedDate = nowRoundedToNearest15Minutes();
+
+			if(selectedDate < nowRoundedToNearest15Minutes()) {
+				selectedDate = nowRoundedToNearest15Minutes();
+				updateDateEntry();
+				console.log('recent time TICK forwards', selectedDate.toISOString());
+			}
+
+		} else {
+			console.log('old time time DO NOT TICK ', selectedDate.toISOString());
+		}
+
+		// make the scrub icon status update too
+		rightScrubDisabled = scrubOutOfRange(false);
+	}, 60000 * 1);
 
 
 	const monthThreeLetterNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -182,7 +202,7 @@
 
 		<button class="scrub" style="width: 1.4rem;" disabled={rightScrubDisabled} onclick={() => scrub(false)}> &gt; </button>
 
-		<!-- <div>{selectedDate.toISOString()}</div> -->
+		<div>{selectedDate.toISOString()}</div>
 	</div>
 </div>
 

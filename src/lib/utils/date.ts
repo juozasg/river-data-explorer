@@ -112,6 +112,7 @@ export const dateSteps = {
 export type DateStep = keyof typeof dateSteps;
 
 export const roundToNearest15Minutes = (date: Date) => {
+	date = new Date(date.getTime()); // create a copy to avoid mutating the original date
 	const minutes = date.getMinutes();
 	const roundedMinutes = Math.floor(minutes / 15) * 15;
 	date.setMinutes(roundedMinutes);

@@ -2,7 +2,7 @@
 	import "$src/styles/time-slider.scss";
 
 	import { binaryClosestSearch } from "$src/lib/utils/arrays";
-	import { fmtDateDMonY, parseUTC1700Date, todayDate } from "$src/lib/utils/date";
+	import { fmtDateDMonY, nowRoundedToNearest15Minutes, oldestDate, parseUTC1700Date, todayDate } from "$src/lib/utils/date";
 
 	let { validDates, onDateSelect }: { validDates: Date[]; onDateSelect: (d: Date) => void } = $props();
 
@@ -14,8 +14,8 @@
 
 	const validValues = $derived((validDates || []).map((d) => d.valueOf()));
 
-	const startDate = $derived(validDates[0] || parseUTC1700Date("1990-01-01"));
-	const endDate = $derived(validDates[validDates.length - 1] || todayDate);
+	const startDate = oldestDate;
+	const endDate = nowRoundedToNearest15Minutes();
 
 	let value: number = $state(todayDate.valueOf());
 
