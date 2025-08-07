@@ -8,6 +8,7 @@
 	import rgb2hex from "rgb2hex";
 	import { interpolateVarColor } from "$src/lib/utils/colors";
 	import { findBasinFeatureById } from "$src/appstate/data/basinFeatureCollection.svelte";
+	import { basinObject1, basinObject2 } from "$src/appstate/selection/objectDataSelections.svelte";
 
 	type Props = {
 		map: ml.Map;
@@ -80,13 +81,33 @@
 			features: []
 		});
 	}
+
+	function onclick() {
+		basinObject1.set("site", site.id);
+		basinObject2.set("site-catchment", site.id);
+		// if (map.getLayer("riverapp-hovered-flow-regions")) {
+		// 	const hoveredRegions = map.getSource("riverapp-hovered-flow-regions") as ml.GeoJSONSource;
+		// 	hoveredRegions.setData({
+		// 		type: "FeatureCollection",
+		// 		features: []
+		// 	});
+		// }
+
+		// if (layerParams.selectedPanel !== "basinObjectData") {
+		// 	layerParams.selectedPanel = "basinObjectData";
+		// }
+
+		// if (layerParams.selectedBasinObjectTarget !== "1") {
+		// 	layerParams.selectedBasinObjectTarget = "1";
+		// }
+	}
 </script>
 
 <!-- <div bind:this={node} class="map-graph-var-hint" style="background-color: white"></div> -->
 <div bind:this={node} class="map-graph-var-hint" >
 	<svg width="50" height="100" viewBox="0 0 50 100" fill="none" xmlns="http://www.w3.org/2000/svg">
 
-		<path onmouseenter={mouseEnter} onmouseleave={mouseLeave}
+		<path onmouseenter={mouseEnter} onmouseleave={mouseLeave} onclick={onclick}
 			d="
 				M 0,0
 				L 25,50

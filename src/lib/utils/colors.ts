@@ -10,7 +10,7 @@ export const chartZDarker = '#3d9c77';
 export const mapHoverHighlightColor = '#97E817';
 
 export const data1Color = '#CC79A7';
-export const data2Color = '#297055';
+export const data2Color = '#e69f00';
 
 
 
