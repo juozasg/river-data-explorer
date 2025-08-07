@@ -27,12 +27,12 @@
 			} else {
 				chartSelection.set(basinObject, name);
 				console.log('set chart selection:', chartSelection, axis);
-
 			}
 		}
 	}: Props = $props();
 
 	const rows: VariableStats[] = $derived(basinObject.allVariableStats);
+
 </script>
 
 <div class="stats-table-container">

@@ -7,6 +7,9 @@
 		row: Snippet<[T]>;
 	};
 	let { data, thead, row }: Props = $props();
+
+	console.log('StatsDataTable', data);
+
 </script>
 
 

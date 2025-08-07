@@ -30,6 +30,7 @@
 		...attribs
 	}: Props = $props();
 
+
 	let variableTooltip: TooltipVariableBrief | undefined = $state();
 </script>
 

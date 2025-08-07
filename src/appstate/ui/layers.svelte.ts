@@ -11,7 +11,7 @@ import type { MapLayersParams } from '$src/lib/types/mapControls';
 export const layerParams = $state<MapLayersParams>({
 	riverLayerVisible: true,
 	basemapStyleId: 'TOPO',
-	ghostSitesVisible: false,
+	ghostSitesVisible: true,
 	normalizeLegendToVisibleData: false,
 	normalizeRasterLegendToVisibleData: false,
 	rasterLayer: undefined,

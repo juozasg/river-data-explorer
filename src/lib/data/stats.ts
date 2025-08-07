@@ -156,7 +156,7 @@ export function variableStats(variable: string, table: ColumnTable, { errorLabel
 
 function emptyVariableStats(varname: string): VariableStats {
 	return {
-		variable: varname,
+		varname,
 		label: varLabel(varname),
 		lastObservation: '',
 		numObservations: 0,

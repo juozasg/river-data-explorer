@@ -4,7 +4,7 @@ import { allVariableStats, allVarsDailyMedians, sitesDataStats, varDailyMedian }
 import type { VariableStats } from "$src/lib/types/analysis";
 import { basinObjectTypeLabel } from "$src/lib/utils/prettyNames";
 import type ColumnTable from "arquero/dist/types/table/column-table";
-import { siteDatasets, sitesDatasets } from "./datasets.svelte";
+import { siteDatasets, siteRealtimeDatasets, sitesDatasets } from "./datasets.svelte";
 import { sitesInRegion } from "./geoindexes.svelte";
 import { selectTableVar } from "$src/lib/data/siteTableHelpers";
 import type { Site } from "$src/lib/types/site";
@@ -105,7 +105,15 @@ export class BasinObject {
 				const table = siteDatasets.get(this.id!);
 				if (!table) return [];
 
-				return allVariableStats(table!);
+				const rtTable = siteRealtimeDatasets.get(this.id!);
+
+				const stats = allVariableStats(table!);
+				if (rtTable) {
+					const rtStats = allVariableStats(rtTable);
+					return [...stats, ...rtStats];
+				} else {
+					return stats;
+				}
 			case 'huc8':
 			case 'huc10':
 			case 'huc12':
@@ -132,7 +140,15 @@ export class BasinObject {
 		switch (this.objectType) {
 			case 'site':
 				const table = siteDatasets.get(this.id!);
-				return table ? table.select('date', varname) : undefined;
+				let result = (table && table.columnNames().indexOf(varname) !== -1) ? table.select('date', varname) : undefined;
+				if(!result) {
+					const rtTable = siteRealtimeDatasets.get(this.id!);
+					if (rtTable&& rtTable.columnNames().indexOf(varname) !== -1) {
+						result = rtTable.select('date', varname);
+					}
+				}
+
+				return result;
 
 			// return allVariableStats(table!);
 			case 'huc8':

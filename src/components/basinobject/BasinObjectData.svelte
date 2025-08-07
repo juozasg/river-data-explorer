@@ -1,9 +1,9 @@
 <script lang="ts">
 	import BasinObjectHeader from "./BasinObjectHeader.svelte";
 
+	import { mapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
 	import type { BasinObject } from "$src/appstate/data/basinObject.svelte";
 	import { sitesInRegion } from "$src/appstate/data/geoindexes.svelte";
-	import { mapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
 	import SelectModeHint from "./SelectModeHint.svelte";
 	import SelectModeSelector from "./SelectModeSelector.svelte";
 	import BasinObjectStats from "./stats/BasinObjectStats.svelte";
