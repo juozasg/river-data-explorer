@@ -182,7 +182,7 @@
 
 		<button class="scrub" style="width: 1.4rem;" disabled={rightScrubDisabled} onclick={() => scrub(false)}> &gt; </button>
 
-		<div>{selectedDate.toISOString()}</div>
+		<!-- <div>{selectedDate.toISOString()}</div> -->
 	</div>
 </div>
 
