@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { BasinObjectType } from "$src/appstate/data/basinObject.svelte";
-	import { basinObject1, basinObject2, mapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import { basinObject1, basinObject2, mapSelectionMode } from "$src/appstate/selection/objectDataSelections.svelte";
 	import { clickOutside } from "$src/lib/svelte/clickOutside";
 	import InlineBlockIconify from "../icons/InlineBlockIconify.svelte";
 	import BasinObjectSearchResults from "./BasinObjectSearchResults.svelte";

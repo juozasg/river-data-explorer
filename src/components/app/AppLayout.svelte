@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { basinObject1, basinObject2 } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import { basinObject1, basinObject2 } from "$src/appstate/selection/objectDataSelections.svelte";
 	import { mapMaximized, selectedPanel, setMapMaximized, setSelectedPanel } from "$src/appstate/ui/layout.svelte";
 	import AppMenu from "./AppMenu.svelte";
 	import AppPanelTabs from "./AppPanelTabs.svelte";

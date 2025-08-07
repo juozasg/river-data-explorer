@@ -1,13 +1,13 @@
 <script lang="ts">
 	import BasinObjectHeader from "./BasinObjectHeader.svelte";
 
-	import { mapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
 	import type { BasinObject } from "$src/appstate/data/basinObject.svelte";
 	import { sitesInRegion } from "$src/appstate/data/geoindexes.svelte";
 	import SelectModeHint from "./SelectModeHint.svelte";
 	import SelectModeSelector from "./SelectModeSelector.svelte";
 	import BasinObjectStats from "./stats/BasinObjectStats.svelte";
 	import BasinRegionSitesStats from "./stats/BasinRegionSitesStats.svelte";
+	import { mapSelectionMode } from "$src/appstate/selection/objectDataSelections.svelte";
 
 	type Props = { selectionTarget: "1" | "2"; basinObject: BasinObject };
 	const { selectionTarget, basinObject }: Props = $props();

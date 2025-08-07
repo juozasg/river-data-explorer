@@ -2,7 +2,7 @@
 	import HamburgerButton from "./HamburgerButton.svelte";
 	import { clickOutside } from "$src/lib/svelte/clickOutside";
 	import InlineBlockIconify from "../icons/InlineBlockIconify.svelte";
-	import { basinObject1, mapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import { basinObject1, mapSelectionMode } from "$src/appstate/selection/objectDataSelections.svelte";
 	import type { BasinObjectType } from "$src/appstate/data/basinObject.svelte";
 	import BasinObjectSearchResults from "../basinobject/BasinObjectSearchResults.svelte";
 	import Basin from "../Basin.svelte";

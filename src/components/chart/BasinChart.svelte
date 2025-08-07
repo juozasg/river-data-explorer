@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { BasinObject } from "$src/appstate/data/basinObject.svelte";
-	import { chartYSelection, chartZSelection } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import { chartYSelection, chartZSelection } from "$src/appstate/selection/objectDataSelections.svelte";
 	import { varChartDomain, YZChartParams } from "$src/lib/utils/YZChartParams";
 	import InlineBlockIconify from "../icons/InlineBlockIconify.svelte";
 	import BrushedYzChart from "./BrushedYZChart.svelte";

@@ -7,7 +7,7 @@ import type { Site } from '$src/lib/types/site';
 import { basinFeatureCollections, findBasinFeatureById } from '../data/basinFeatureCollection.svelte';
 import { BasinObject, type BasinObjectType } from '../data/basinObject.svelte';
 import { sites } from '../data/sites.svelte';
-import { basinObject1, basinObject2, mapSelectionMode, mapSelectionTargetObject } from '../selection/basinObjectSelection.svelte';
+import { basinObject1, basinObject2, mapSelectionMode, mapSelectionTargetObject } from '../selection/objectDataSelections.svelte';
 import { setSelectedPanel } from '../ui/layout.svelte';
 import { setMapCursor } from './mapMouse.svelte';
 import { layerParams } from '../ui/layers.svelte';

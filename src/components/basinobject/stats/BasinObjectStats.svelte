@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { BasinObject } from "$src/appstate/data/basinObject.svelte";
-	import { chartYSelection, chartZSelection } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import { chartYSelection, chartZSelection } from "$src/appstate/selection/objectDataSelections.svelte";
 	import StatsDataTable from "$src/components/StatsDataTable.svelte";
 	import type { VariableStats } from "$src/lib/types/analysis";
 	import { varunits } from "$src/lib/utils/varHelpers";

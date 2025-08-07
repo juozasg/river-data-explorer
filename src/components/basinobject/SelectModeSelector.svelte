@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { basinObject1, basinObject2, mapSelectionMode, type MapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import { basinObject1, basinObject2, mapSelectionMode, type MapSelectionMode } from "$src/appstate/selection/objectDataSelections.svelte";
 	import BasinObjectSearch from "./BasinObjectSearch.svelte";
 
 	type Props = { target: "1" | "2"; show: boolean };

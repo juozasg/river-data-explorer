@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { mapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import { mapSelectionMode } from "$src/appstate/selection/objectDataSelections.svelte";
 	import { selectModeTypePluralLabel } from "$src/lib/utils/prettyNames";
 </script>
 

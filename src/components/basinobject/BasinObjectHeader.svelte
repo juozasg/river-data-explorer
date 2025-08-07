@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { BasinObject } from "$src/appstate/data/basinObject.svelte";
-	import { chartYSelection, chartZSelection } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import { chartYSelection, chartZSelection } from "$src/appstate/selection/objectDataSelections.svelte";
 
 	type Props = { selectionTarget: "1" | "2"; basinObject: BasinObject; showModeSelector: boolean };
 	let { selectionTarget, basinObject, showModeSelector = $bindable() }: Props = $props();

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as ml from "maplibre-gl";
 
+
 	import { sites } from "$src/appstate/data/sites.svelte";
 	import { MapHoverSelectionController } from "$src/appstate/map/mapHoverSelectionController.svelte";
 	import { todayDate } from "$src/lib/utils/date";
@@ -11,6 +12,7 @@
 	import MapGraphVarHints from "./MapGraphVarHints.svelte";
 	import WaterFlowMarkers from "./WaterFlowMarkers.svelte";
 	import { layerParams } from "$src/appstate/ui/layers.svelte";
+
 
 	// svelte-ignore non_reactive_update
 	let mlMapComponent: MapLibreMap;

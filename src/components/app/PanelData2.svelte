@@ -1,5 +1,5 @@
 <script>
-	import { basinObject2 } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import { basinObject2 } from "$src/appstate/selection/objectDataSelections.svelte";
 	import BasinObjectData from "../basinobject/BasinObjectData.svelte";
 </script>
 

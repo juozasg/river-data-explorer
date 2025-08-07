@@ -1,5 +1,5 @@
 import { basinFeatureCollections } from "$src/appstate/data/basinFeatureCollection.svelte";
-import { basinObject1, basinObject2, mapSelectionMode } from "$src/appstate/selection/basinObjectSelection.svelte";
+import { basinObject1, basinObject2, mapSelectionMode } from "$src/appstate/selection/objectDataSelections.svelte";
 import type { BasinObject } from "../../appstate/data/basinObject.svelte";
 import type { Site } from "../types/site";
 

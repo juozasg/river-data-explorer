@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as ml from "maplibre-gl";
-	import { chartYSelection, chartZSelection } from "$src/appstate/selection/basinObjectSelection.svelte";
+	import { chartYSelection, chartZSelection } from "$src/appstate/selection/objectDataSelections.svelte";
 	import { chartYColor, chartZColor } from "$src/lib/utils/colors";
 	import GraphVarHint from "./GraphVarHint.svelte";
 
