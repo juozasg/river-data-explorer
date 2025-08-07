@@ -2,54 +2,43 @@
 	import "$src/styles/time-slider.scss";
 
 	import { binaryClosestSearch } from "$src/lib/utils/arrays";
-	import { fmtDateDMonY, nowRoundedToNearest15Minutes, oldestDate, parseUTC1700Date, todayDate } from "$src/lib/utils/date";
+	import { fmtDateDMonY, nowRoundedToNearest15Minutes, oldestDate, todayDate } from "$src/lib/utils/date";
 
 	let { validDates, onDateSelect }: { validDates: Date[]; onDateSelect: (d: Date) => void } = $props();
 
 	export function setDate(date: Date) {
-		// vardate = closestTo(date, validDates) || UTCDayDate();
 		value = date.valueOf();
-		snapToValidDate();
 	}
 
-	const validValues = $derived((validDates || []).map((d) => d.valueOf()));
+	// const validValues = $derived((validDates || []).map((d) => d.valueOf()));
 
 	const startDate = oldestDate;
 	const endDate = nowRoundedToNearest15Minutes();
 
-	let value: number = $state(todayDate.valueOf());
+	let value: number = $state(endDate.valueOf());
 
-	const firstLabel = $derived(fmtDateDMonY(startDate));
-	const lastLabel = $derived(fmtDateDMonY(endDate));
+	// const firstLabel = $derived(fmtDateDMonY(startDate));
+	// const lastLabel = $derived(fmtDateDMonY(endDate));
 
 	let firstLabelE = $state<HTMLElement>();
 	let lastLabelE = $state<HTMLElement>();
 
-	$effect(() => {
-		const rangeFraction = (parseInt(value as any) - startDate.valueOf()) / (endDate.valueOf() - startDate.valueOf());
+	// $effect(() => {
+	// 	const rangeFraction = (parseInt(value as any) - startDate.valueOf()) / (endDate.valueOf() - startDate.valueOf());
 
-		if (firstLabelE) {
-			firstLabelE.style.opacity = `${rangeFraction ** 0.7 * 1}`;
-		}
-		if (lastLabelE) {
-			lastLabelE.style.opacity = `${(1 - rangeFraction) ** 0.7 * 1}`;
-		}
-	});
+	// 	if (firstLabelE) {
+	// 		firstLabelE.style.opacity = `${rangeFraction ** 0.7 * 1}`;
+	// 	}
+	// 	if (lastLabelE) {
+	// 		lastLabelE.style.opacity = `${(1 - rangeFraction) ** 0.7 * 1}`;
+	// 	}
+	// });
 
-	const snapToValidDate = () => {
-		// if (validValues.length === 0) return;
-		// const closestValue = binaryClosestSearch(validValues, value);
-
-		// value = closestValue;
+	const onchange = (e: Event) => {
+		// console.log('slider onchange', value);
+		onDateSelect(new Date(value));
 	};
 
-	$effect(() => {
-		onDateSelect(new Date(value));
-	});
-
-	$effect(() => {
-		// console.log('SLIDER startDate', startDate.toISOString(), 'endDate', endDate.toISOString(), '. SLIDER value', value, 'value Date = ', new Date(value).toISOString());
-	});
 
 	const dateToFraction = (date: Date) => {
 		return (date.valueOf() - startDate.valueOf()) / (endDate.valueOf() - startDate.valueOf());
@@ -73,16 +62,17 @@
 		min={startDate.valueOf()}
 		max={endDate.valueOf()}
 		step={86400000}
-		onchange={snapToValidDate} />
+		{onchange}
+		onmousemove={onchange}
+	/>
 </div>
 
 <style>
 	.date-slider-input {
-		width: calc(100% - 185px);
-		height: 29px;
-		/* border: 3px solid plum; */
+		width: 100%;
+		height: 20px;
 		position: relative;
-		left: 5px;
+		left: 0px;
 
 		input.range {
 			width: 100% !important;
@@ -93,15 +83,16 @@
 			box-shadow: none !important;
 
 			position: relative;
-			/* bottom: 9px; */
 			cursor: col-resize !important;
-			/* border: none !important; */
-			/* font-size: 1.2rem; */
+			outline: none !important;
+
+			&:focus {
+				outline: none !important;
+			}
 		}
 
 		.slider-ticks {
 			position: absolute;
-			/* border: 1px dotted darkolivegreen; */
 			top: 0;
 			left: 0px;
 			width: calc(100% - 2px);
@@ -109,14 +100,13 @@
 
 			.tick {
 				position: absolute;
-				bottom: 1px;
+				bottom: -7px;
 				width: 0.5px;
-				height: 27px;
-				background-color: #008381;
+				height: 25px;
+				background-color: #063b3a;
 			}
 		}
-		.slider-labels {
-			/* display: none; */
+		/* .slider-labels {
 			position: absolute;
 			top: 2px;
 			left: 0px;
@@ -131,7 +121,6 @@
 				font-size: 0.7rem;
 				padding-bottom: 1px;
 				top: -1px;
-				/* padding: 0.25rem; */
 				opacity: 1;
 				z-index: 1000;
 				pointer-events: none;
@@ -146,7 +135,7 @@
 				padding-left: 3px;
 				right: 0px;
 			}
-		}
+		} */
 
 		&:hover {
 			opacity: 1;

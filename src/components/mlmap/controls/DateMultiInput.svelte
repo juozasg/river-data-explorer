@@ -39,10 +39,10 @@
 		// console.log('closestValid', closestValid, new Date(closestValid).toISOString());
 
 		// // if (closestValid) {
-		// 	untrack(() => {
-		// 		// console.log('set YMD date', new Date(closestValid).toISOString());
-		// 		ymdSelects?.setDate(date);
-		// 	});
+			untrack(() => {
+				// console.log('set YMD date', new Date(closestValid).toISOString());
+				ymdSelects?.setDate(date);
+			});
 		// }
 	};
 </script>

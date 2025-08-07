@@ -58,7 +58,7 @@
 
 	setInterval(() => {
 		// if we are close to current time (within 15 minutes), update the date to current time
-		console.log('setInterval selectedDate', selectedDate.toISOString());
+		// console.log('setInterval selectedDate', selectedDate.toISOString());
 
 		if ((selectedDate.getTime() + (16 * minute)) > (new Date()).getTime()) {
 			// selectedDate = nowRoundedToNearest15Minutes();
@@ -66,11 +66,11 @@
 			if(selectedDate < nowRoundedToNearest15Minutes()) {
 				selectedDate = nowRoundedToNearest15Minutes();
 				updateDateEntry();
-				console.log('recent time TICK forwards', selectedDate.toISOString());
+				// console.log('recent time TICK forwards', selectedDate.toISOString());
 			}
 
 		} else {
-			console.log('old time time DO NOT TICK ', selectedDate.toISOString());
+			// console.log('old time time DO NOT TICK ', selectedDate.toISOString());
 		}
 
 		// make the scrub icon status update too
@@ -202,7 +202,7 @@
 
 		<button class="scrub" style="width: 1.4rem;" disabled={rightScrubDisabled} onclick={() => scrub(false)}> &gt; </button>
 
-		<div>{selectedDate.toISOString()}</div>
+		<!-- <div>{selectedDate.toISOString()}</div> -->
 	</div>
 </div>
 
@@ -223,10 +223,13 @@
 			justify-content: center;
 			width: auto;
 			gap: 2px;
-			background-color: white;
+			/* background-color: white; */
 			border-radius: var(--border-radius);
 			box-shadow: var(--box-shadow);
-			padding: 2px;
+			padding: 4px;
+			background-color: #ffffff99;
+			/* padding-top: 2px; */
+			/* padding-bottom: 2px; */
 
 			select {
 				display: inline-block;
@@ -234,6 +237,7 @@
 				font-size: 1rem;
 				border-radius: 0px;
 				padding: 0px;
+				padding-right: 6px;
 				margin: 0px;
 				/* font-weight: 700; */
 				/* color: var(--stjoe-blue); */
@@ -252,10 +256,14 @@
 			input {
 				height: 24px;
 				text-align: center;
+				border-radius: 0 !important;
+				/* border-top: none !important; */
+				/* border-bottom: none !important; */
 			}
 
 			input.hour {
-				margin-left: 6px;
+				margin-left: 10px;
+				border-right: none !important;
 			}
 
 			button {
@@ -263,6 +271,7 @@
 				padding: 2px;
 				font-weight: 700;
 				border-color: grey;
+				background-color: white;
 			}
 
 			button[disabled] {
@@ -272,7 +281,7 @@
 			}
 
 			button#scrub-left {
-				margin-left: 16px;
+				margin-left: 10px;
 			}
 		}
 	}
