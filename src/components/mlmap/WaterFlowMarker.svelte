@@ -85,21 +85,6 @@
 	function onclick() {
 		basinObject1.set("site", site.id);
 		basinObject2.set("site-catchment", site.id);
-		// if (map.getLayer("riverapp-hovered-flow-regions")) {
-		// 	const hoveredRegions = map.getSource("riverapp-hovered-flow-regions") as ml.GeoJSONSource;
-		// 	hoveredRegions.setData({
-		// 		type: "FeatureCollection",
-		// 		features: []
-		// 	});
-		// }
-
-		// if (layerParams.selectedPanel !== "basinObjectData") {
-		// 	layerParams.selectedPanel = "basinObjectData";
-		// }
-
-		// if (layerParams.selectedBasinObjectTarget !== "1") {
-		// 	layerParams.selectedBasinObjectTarget = "1";
-		// }
 	}
 </script>
 
