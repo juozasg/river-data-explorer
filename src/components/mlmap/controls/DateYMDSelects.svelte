@@ -211,7 +211,7 @@
 		position: absolute;
 		display: flex;
 		width: 100%;
-		bottom: 40px;
+		bottom: 36px;
 		left: 0px;
 		padding: 2px;
 		padding-right: 3px;
@@ -227,7 +227,7 @@
 			border-radius: var(--border-radius);
 			box-shadow: var(--box-shadow);
 			padding: 4px;
-			background-color: #ffffff99;
+			background-color: #ffffffbb;
 			/* padding-top: 2px; */
 			/* padding-bottom: 2px; */
 
