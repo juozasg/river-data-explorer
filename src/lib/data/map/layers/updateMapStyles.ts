@@ -32,11 +32,10 @@ export function updateSiteStyles(map: ml.Map, varname: string, vardate: Date) {
 			const color = rgb2hex(interpolateVarColor(varname, val));
 			const stdbad = varoutsidestandard(varname, val);
 
-			const site = sites.get(id);
-			if(site?.siteId == 'sjrbc-2') {
-				console.log('updateSiteStyles sjrbc-2', site, vardate, val);
-
-			}
+			// const site = sites.get(id);
+			// if(site?.siteId == 'sjrbc-2') {
+			// 	console.log('updateSiteStyles sjrbc-2', site, vardate, val);
+			// }
 
 			if (color !== undefined) {
 				// console.log('setting site color', id, colors);

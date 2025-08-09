@@ -27,7 +27,7 @@
 		// if (isValidDate(date)) {
 		untrack(() => {
 			// console.log('set data slider input date', date.toISOString());
-			// dateSliderInput?.setDate(date);
+			dateSliderInput?.setDate(date);
 		});
 		// console.log("set vardate", vardate, " TO", date);
 
@@ -44,7 +44,7 @@
 		// // if (closestValid) {
 		untrack(() => {
 			// console.log('set YMD date', new Date(closestValid).toISOString());
-			// ymdSelects?.setDate(date);
+			ymdSelects?.setDate(date);
 		});
 		// }
 	};
