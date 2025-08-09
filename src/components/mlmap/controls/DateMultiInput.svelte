@@ -3,6 +3,7 @@
 	import DateYMDSelects from "./DateYMDSelects.svelte";
 	import { binaryClosestSearch } from "$src/lib/utils/arrays";
 	import { untrack } from "svelte";
+	import { setHackyGlobalVardateSyncFunc } from "$src/appstate/map/mapvarstate.svelte";
 
 	let { validDates, vardate = $bindable() }: { validDates: Date[]; vardate: Date } = $props();
 	const validValues = $derived((validDates || []).map((d) => d.valueOf()));
@@ -15,16 +16,18 @@
 	let dateSliderInput = $state<DateSliderInput>();
 	let ymdSelects = $state<DateYMDSelects>();
 
-	export function setDate(d: Date) {
-		if (isValidDate(d)) dateSliderInput?.setDate(d);
-	}
+	setHackyGlobalVardateSyncFunc((d: Date) => {
+		untrack(() => {
+			ymdSelects?.setDate(d);
+		});
+	});
+
+	$effect(() => {
+		// console.log('Date multiinput FX vardate', vardate);
+	});
 
 	// works great - do not touch!
 	const onYmdDateSelect = (date: Date) => {
-		// // console.log('onYmdDateSelect', date.toISOString());
-		// // console.log('validDates', validDates.map((d) => d.toISOString()));
-
-		// if (isValidDate(date)) {
 		untrack(() => {
 			// console.log('set data slider input date', date.toISOString());
 			dateSliderInput?.setDate(date);
@@ -34,19 +37,11 @@
 		vardate = date;
 	};
 
-
 	const onRangeDateSelect = (date: Date) => {
-		// console.log('onRangeDateSelect', date.toISOString());
-
-		// const closestValid = binaryClosestSearch(validValues, date.valueOf());
-		// console.log('closestValid', closestValid, new Date(closestValid).toISOString());
-
-		// // if (closestValid) {
 		untrack(() => {
 			// console.log('set YMD date', new Date(closestValid).toISOString());
 			ymdSelects?.setDate(date);
 		});
-		// }
 	};
 </script>
 

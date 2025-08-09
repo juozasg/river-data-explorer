@@ -5,7 +5,6 @@
 	import { basinObject1, mapSelectionMode } from "$src/appstate/selection/objectDataSelections.svelte";
 	import type { BasinObjectType } from "$src/appstate/data/basinObject.svelte";
 	import BasinObjectSearchResults from "../basinobject/BasinObjectSearchResults.svelte";
-	import Basin from "../Basin.svelte";
 
 	const { mobile }: { mobile: boolean } = $props();
 

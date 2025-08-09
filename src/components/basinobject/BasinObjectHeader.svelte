@@ -7,9 +7,8 @@
 
 
 	$effect(() => {
-		console.log('BasinObjectHeader basinObject:', basinObject);
-		console.log('BasinObjectHeader chartZSelection:', chartZSelection.basinObject);
-
+		// console.log('BasinObjectHeader basinObject:', basinObject);
+		// console.log('BasinObjectHeader chartZSelection:', chartZSelection.basinObject);
 	});
 </script>
 

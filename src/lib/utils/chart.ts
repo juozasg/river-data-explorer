@@ -149,7 +149,7 @@ export function joinYZTable(yTable?: ColumnTable, zTable?: ColumnTable): ColumnT
 	return yTable ?? zTable;
 }
 
-export function resampleLargeTable(table: ColumnTable, targetRows: number = 1000): ColumnTable {
+export function resampleLargeTable(table: ColumnTable, targetRows: number = 3000): ColumnTable {
 	const numRows = table.numRows();
 	if (numRows <= targetRows) return table;
 
@@ -158,7 +158,7 @@ export function resampleLargeTable(table: ColumnTable, targetRows: number = 1000
 	return aq.from(newData);
 }
 
-export function resampleLargeYZTable(yzTable?: ColumnTable, targetRows: number = 1000): ColumnTable | undefined {
+export function resampleLargeYZTable(yzTable?: ColumnTable, targetRows: number = 3000): ColumnTable | undefined {
 	if(!yzTable) return;
 
 	let yTable, zTable;
@@ -172,4 +172,25 @@ export function resampleLargeYZTable(yzTable?: ColumnTable, targetRows: number =
 	}
 
 	return joinYZTable(yTable, zTable);
+}
+
+
+export function resampleLayercakeData(data: any[], yz: 'y' | 'z') {
+	const targetRows = 3000;
+	data = data.filter(d => d[yz] !== undefined);
+
+	// let count = 0;
+	// data.forEach(d => {
+	// 	if (d[yz] !== undefined) count++;
+	// });
+
+	if(data.length > targetRows) {
+		const step = Math.ceil(data.length / targetRows);
+		// console.log('resample step is', step);
+		data = data.filter((_, i) => i % step === 0);
+	}
+
+	// console.log('FILTERED LAYERCAKE data is', data);
+
+	return data;
 }

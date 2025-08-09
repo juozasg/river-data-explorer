@@ -50,11 +50,14 @@
 	const brushedTable = $derived.by(() => {
 		const sliceIndex = isNumber(brushMaxIndex) ? brushMaxIndex! + 1 : undefined;
 
+		// console.log('slicing yzTable', yzTable, brushMinIndex, sliceIndex);
+
 		return yzTable.slice(brushMinIndex || 0, sliceIndex);
 	});
 
-	const dataObjects = $derived(resampleLargeYZTable(yzTable)?.objects() || []);
-	const brushedDataObjects = $derived(resampleLargeYZTable(brushedTable)?.objects() || []);
+
+	const dataObjects = $derived(yzTable?.objects() || []);
+	const brushedDataObjects = $derived(brushedTable?.objects() || []);
 
 	function formatYTick(v: number, varParams: YZChartParams) {
 		if (varCategoryKeys(varParams.varname)) {
@@ -238,6 +241,7 @@
 	.yz-chart-container {
 		overflow: visible;
 		position: relative;
+		left: 3px;
 
 		.chart-container {
 			position: absolute;

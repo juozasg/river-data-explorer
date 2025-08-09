@@ -28,9 +28,9 @@
 	});
 
 	let dateMultiInput = $state<DateMultiInput>();
-	export function setDate(d: Date) {
-		if (dateMultiInput) dateMultiInput.setDate(d);
-	}
+	// export function setDate(d: Date) {
+	// 	// if (dateMultiInput) dateMultiInput.setDate(d);
+	// }
 </script>
 
 <div class="controls">

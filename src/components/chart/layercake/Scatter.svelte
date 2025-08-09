@@ -4,6 +4,7 @@
  -->
 <script>
 	import { isNumber } from "$src/lib/utils";
+	import { resampleLayercakeData } from "$src/lib/utils/chart";
 	import { getContext } from "svelte";
 
 	const { data, xGet, yGet, zGet, x, y, z, xScale, yScale, zScale } = getContext("LayerCake");
@@ -60,7 +61,7 @@
 </script>
 
 <g class="scatter-group">
-	{#each $data as d, i}
+	{#each resampleLayercakeData($data, dataSource) as d, i}
 		{#if (filterMinIndex == null || i >= filterMinIndex) && (filterMaxIndex == null || i <= filterMaxIndex)}
 			{#if typeof dataGet(d) == "number" && typeof $xGet(d) == "number"}
 				{@const cx = $xGet(d) + ($xScale.bandwidth ? $xScale.bandwidth() / 2 : 0)}

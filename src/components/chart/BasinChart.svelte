@@ -1,18 +1,25 @@
 <script lang="ts">
 	import type { BasinObject } from "$src/appstate/data/basinObject.svelte";
+	import { triggerHackyGlobalVardateSync, varstate } from "$src/appstate/map/mapvarstate.svelte";
 	import { chartYSelection, chartZSelection } from "$src/appstate/selection/objectDataSelections.svelte";
 	import { joinYZTable } from "$src/lib/utils/chart";
 	import { varChartDomain, YZChartParams } from "$src/lib/utils/YZChartParams";
 	import InlineBlockIconify from "../icons/InlineBlockIconify.svelte";
+	import { vars } from "../test-pages/fixtures";
 	import BrushedYzChart from "./BrushedYZChart.svelte";
 
 	type Props = {
-		onDateSelect?: (d: Date) => void;
 		width: number;
 		height: number;
 	};
 
-	const { onDateSelect, width, height }: Props = $props();
+	const { width, height }: Props = $props();
+
+	const onDateSelect = (date: Date) => {
+		// varstate.vardate = new Date(date);
+		triggerHackyGlobalVardateSync(date);
+	};
+
 
 	const yTable = $derived(chartYSelection.table());
 	const zTable = $derived(chartZSelection.table());
@@ -22,11 +29,6 @@
 		yTable?.objects();
 		zTable?.objects();
 		return joinYZTable(yTable, zTable);
-		// if (yTable && zTable) {
-		// 	return yTable.join_full(zTable, "date").orderby("date").reify();
-		// }
-
-		// return yTable ?? zTable;
 	});
 
 	const yDomain = $derived(varChartDomain("y", chartYSelection.varname, yzTable));

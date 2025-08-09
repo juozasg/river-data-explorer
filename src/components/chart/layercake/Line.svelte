@@ -7,6 +7,8 @@
 
 	import { getContext } from "svelte";
 
+	import { resampleLayercakeData } from "$src/lib/utils/chart";
+
 	const { data, xGet, yGet, zGet } = getContext("LayerCake");
 
 	/** @type {String} [ySource="y"] - "y" or "z" for data values */
@@ -18,7 +20,7 @@
 
 	let path;
 	$: {
-		const pathpoints = $data
+		const pathpoints = resampleLayercakeData($data, dataSource)
 			.map((d) => {
 				const val = dataGet(d);
 				const x = $xGet(d);
