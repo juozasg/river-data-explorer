@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { BasinObject } from "$src/appstate/data/basinObject.svelte";
 	import { chartYSelection, chartZSelection } from "$src/appstate/selection/objectDataSelections.svelte";
+	import { joinYZTable } from "$src/lib/utils/chart";
 	import { varChartDomain, YZChartParams } from "$src/lib/utils/YZChartParams";
 	import InlineBlockIconify from "../icons/InlineBlockIconify.svelte";
 	import BrushedYzChart from "./BrushedYZChart.svelte";
@@ -20,11 +21,12 @@
 	const yzTable = $derived.by(() => {
 		yTable?.objects();
 		zTable?.objects();
-		if (yTable && zTable) {
-			return yTable.join_full(zTable, "date").orderby("date").reify();
-		}
+		return joinYZTable(yTable, zTable);
+		// if (yTable && zTable) {
+		// 	return yTable.join_full(zTable, "date").orderby("date").reify();
+		// }
 
-		return yTable ?? zTable;
+		// return yTable ?? zTable;
 	});
 
 	const yDomain = $derived(varChartDomain("y", chartYSelection.varname, yzTable));

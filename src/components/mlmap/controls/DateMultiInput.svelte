@@ -27,10 +27,13 @@
 		// if (isValidDate(date)) {
 		untrack(() => {
 			// console.log('set data slider input date', date.toISOString());
-			dateSliderInput?.setDate(date);
+			// dateSliderInput?.setDate(date);
 		});
+		// console.log("set vardate", vardate, " TO", date);
+
 		vardate = date;
 	};
+
 
 	const onRangeDateSelect = (date: Date) => {
 		// console.log('onRangeDateSelect', date.toISOString());
@@ -39,10 +42,10 @@
 		// console.log('closestValid', closestValid, new Date(closestValid).toISOString());
 
 		// // if (closestValid) {
-			untrack(() => {
-				// console.log('set YMD date', new Date(closestValid).toISOString());
-				ymdSelects?.setDate(date);
-			});
+		untrack(() => {
+			// console.log('set YMD date', new Date(closestValid).toISOString());
+			// ymdSelects?.setDate(date);
+		});
 		// }
 	};
 </script>

@@ -13,7 +13,7 @@
 	import Scatter from "$src/components/chart/layercake/Scatter.svelte";
 	import { isNumber } from "$src/lib/utils";
 	import { fmtDateDMonY } from '$src/lib/utils/date';
-	import { formatChartDate, formatChartTTKey, formatChatTTValue, genXDateTicks, genYTicks } from "$src/lib/utils/chart";
+	import { formatChartDate, formatChartTTKey, formatChatTTValue, genXDateTicks, genYTicks, resampleLargeYZTable } from "$src/lib/utils/chart";
 	import type ColumnTable from "arquero/dist/types/table/column-table";
 
 	import { YZChartParams } from "$src/lib/utils/YZChartParams";
@@ -32,6 +32,7 @@
 	};
 
 	const { yzTable, yParams, zParams, onDateSelect, width, height }: Props = $props();
+
 
 	const yAxisLabel = $derived(
 		yParams.stats.count > 0 ? `${yParams.varLabel} <span class="location-label">${yParams.locationName}<span>` : ""
@@ -52,6 +53,9 @@
 		return yzTable.slice(brushMinIndex || 0, sliceIndex);
 	});
 
+	const dataObjects = $derived(resampleLargeYZTable(yzTable)?.objects() || []);
+	const brushedDataObjects = $derived(resampleLargeYZTable(brushedTable)?.objects() || []);
+
 	function formatYTick(v: number, varParams: YZChartParams) {
 		if (varCategoryKeys(varParams.varname)) {
 			return varCatIndexLegend(varParams.varname, v) || v.toString();
@@ -67,10 +71,13 @@
 		return v.toString();
 	}
 
-	// $effect(() => {
-	// 	console.log('table', table.objects());
-	// 	console.log('brushedTable', brushedTable?.objects());
-	// });
+	$effect(() => {
+		// console.log('table', yzTable.objects());
+		// console.log('brushedTable', brushedTable?.objects());
+
+		// console.log('dataObjects', dataObjects);
+		// console.log('brushedDataObjects', brushedDataObjects);
+	});
 
 	let brushedChartContainer = $state<HTMLElement>();
 	let brushContainer: HTMLElement | null = $state(null);
@@ -115,7 +122,7 @@
 		<!-- brushedTable is full table sliced with min,max from the Brush component -->
 		{#if brushedTable && brushedTable.numRows() > 0}
 			<LayerCake
-				data={brushedTable.objects()}
+				data={brushedDataObjects}
 				x="date"
 				y="y"
 				yDomain={yParams.domain}
@@ -198,7 +205,7 @@
 		ontouchmovecapture={brushHoverOn}
 		bind:this={brushContainer}>
 		<LayerCake
-			data={yzTable.objects()}
+			data={dataObjects}
 			x="date"
 			y="y"
 			yDomain={yParams.domain}

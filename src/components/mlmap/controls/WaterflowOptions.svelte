@@ -62,7 +62,7 @@
 			checked={layerParams.waterflowLayer == "height"} />
 		Gauge height (ft)
 	</label> -->
-	<label for="waterflow-exceedance" onclick={() => (layerParams.waterflowLayer = "rtexceedance")}>
+	<!-- <label for="waterflow-exceedance" onclick={() => (layerParams.waterflowLayer = "rtexceedance")}>
 		<input
 			type="radio"
 			id="waterflow-exceedance"
@@ -70,7 +70,7 @@
 			value="exceedance"
 			checked={layerParams.waterflowLayer == "rtexceedance"} />
 		Exceedance (%)
-	</label>
+	</label> -->
 	<!-- </div> -->
 </DropdownOptions>
 

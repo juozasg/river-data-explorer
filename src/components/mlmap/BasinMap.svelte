@@ -1,15 +1,13 @@
 <script lang="ts">
 	import * as ml from "maplibre-gl";
 
-
 	import { sites } from "$src/appstate/data/sites.svelte";
 	import { MapHoverSelectionController } from "$src/appstate/map/mapHoverSelectionController.svelte";
-	import { todayDate } from "$src/lib/utils/date";
+	import { nowRoundedToNearest15Minutes } from "$src/lib/utils/date";
 	import DataMapControls from "./DataMapControls.svelte";
 	import MapLibreMap from "./MapLibreMap.svelte";
 	import MapTooltip from "./MapTooltip.svelte";
 	import { updateSiteStyles } from "$src/lib/data/map/layers/updateMapStyles";
-	import MapGraphVarHints from "./MapGraphVarHints.svelte";
 	import WaterFlowMarkers from "./WaterFlowMarkers.svelte";
 	import { layerParams } from "$src/appstate/ui/layers.svelte";
 
@@ -21,7 +19,7 @@
 	let mlMap = $state<ml.Map>();
 
 	let varname = $state<string>("ecoli");
-	let vardate = $state<Date>(todayDate);
+	let vardate = $state<Date>(nowRoundedToNearest15Minutes());
 
 	let clientWidth = $state(0);
 
@@ -35,7 +33,9 @@
 		if (!mlMapComponent.styleLoaded()) return;
 
 		if (!mapController) {
-			mapController = new MapHoverSelectionController(mlMapComponent.mlmMap()!);
+			mapController = new MapHoverSelectionController(mlMapComponent.mlmMap()!, () => {
+				updateSiteStyles(mlMap!, varname, vardate);
+			});
 		}
 
 		mlMap = mlMapComponent.mlmMap()!;
@@ -44,12 +44,15 @@
 	// site markers
 	$effect(() => {
 		if(mapController && mapController.dataModelReady && mlMap) {
+			// console.log("FX BasinMap updateStyles vardate", vardate);
+
 			updateSiteStyles(mlMap, varname, vardate);
 		}
 	});
 
 	// DEBUG
 	$effect(() => {
+		// console.log("FX BasinMap vardate", vardate);
 		// if(mapController && mapController.dataModelReady) {
 		// 		basinObject1.set('site', 10002);
 		// 		chartYSelection.set(basinObject1, 'ecoli');
@@ -76,7 +79,7 @@
 
 
 	{#if mlMap}
-		<MapTooltip site={tooltipSite} regionObject={tooltipRegionObject} {mlMap} {varname} vardate={todayDate} />
+		<MapTooltip site={tooltipSite} regionObject={tooltipRegionObject} {mlMap} {varname} {vardate} />
 	{/if}
 </div>
 

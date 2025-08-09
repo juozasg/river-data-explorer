@@ -1,9 +1,11 @@
-import type ColumnTable from "arquero/dist/types/table/column-table";
+import * as aq from 'arquero';
+
 import { fmtDateDMonY } from './date';
 import { chartYColor, chartZDarker } from "./colors";
 import { catvarOutsideStandards, varCategoryKeys, varLabel, varStdMax, varStdMin, varunits } from './varHelpers';
 import type { YZChartParams } from "./YZChartParams";
 import { variablesMetadata } from "$src/appstate/variablesMetadata.svelte";
+import type ColumnTable from 'arquero/dist/types/table/column-table';
 
 
 // based on how big the range is, round the tick value to a reasonable number
@@ -139,4 +141,35 @@ function formatStandards(varname: string, value: number): string {
 	return '';
 }
 
+export function joinYZTable(yTable?: ColumnTable, zTable?: ColumnTable): ColumnTable | undefined {
+	if (yTable && zTable) {
+		return yTable.join_full(zTable, "date").orderby("date").reify();
+	}
 
+	return yTable ?? zTable;
+}
+
+export function resampleLargeTable(table: ColumnTable, targetRows: number = 1000): ColumnTable {
+	const numRows = table.numRows();
+	if (numRows <= targetRows) return table;
+
+	const step = Math.ceil(numRows / targetRows);
+	const newData = table.objects().filter((_, i) => i % step === 0);
+	return aq.from(newData);
+}
+
+export function resampleLargeYZTable(yzTable?: ColumnTable, targetRows: number = 1000): ColumnTable | undefined {
+	if(!yzTable) return;
+
+	let yTable, zTable;
+
+	if(yzTable.columnIndex('y') != -1) {
+		yTable = resampleLargeTable(yzTable.select('date', 'y'), targetRows);
+	}
+
+	if(yzTable.columnIndex('z') != -1) {
+		zTable = resampleLargeTable(yzTable.select('date', 'z'), targetRows);
+	}
+
+	return joinYZTable(yTable, zTable);
+}

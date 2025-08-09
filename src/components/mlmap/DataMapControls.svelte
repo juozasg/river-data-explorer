@@ -7,7 +7,6 @@
 	import DateMultiInput from "./controls/DateMultiInput.svelte";
 	import Legend from "./controls/Legend.svelte";
 	import VariableSelector from "./controls/VariableSelector.svelte";
-	import { todayDate } from "$src/lib/utils/date";
 	import OverlayOptions from "./controls/OverlayOptions.svelte";
 	import WaterflowOptions from "./controls/WaterflowOptions.svelte";
 	import { layerParams } from "$src/appstate/ui/layers.svelte";
@@ -16,11 +15,11 @@
 		sites: Site[];
 		selectedSite?: Site;
 		varname?: string;
-		vardate?: Date;
+		vardate: Date;
 		mapWidth?: number;
 	};
 
-	let { sites, mapWidth = 400, varname = $bindable("ecoli"), vardate = $bindable(todayDate) }: Props = $props();
+	let { sites, mapWidth = 400, varname = $bindable("ecoli"), vardate = $bindable() }: Props = $props();
 
 	const small = $derived(mapWidth <= 550);
 

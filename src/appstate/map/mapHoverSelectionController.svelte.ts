@@ -16,6 +16,7 @@ export type HoveredRegionType = 'huc8' | 'huc10' | 'huc12' | 'county';
 
 export class MapHoverSelectionController {
 	#map: ml.Map;
+	#updateSiteStyles: (() => void) | undefined;
 	// #hoveredRegionFeature = $state<ml.MapGeoJSONFeature>();
 
 	// #hoveredRiverFeature = $state<GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties>>();
@@ -49,8 +50,9 @@ export class MapHoverSelectionController {
 	}
 
 	// map initial style has been loaded. it is now safe to add layers
-	constructor(map: ml.Map) {
+	constructor(map: ml.Map, updateSiteStyles: () => void) {
 		this.#map = map;
+		this.#updateSiteStyles = updateSiteStyles;
 
 		console.log('init mlmapController', map);
 
@@ -100,7 +102,9 @@ export class MapHoverSelectionController {
 					siteSource.setData(siteFeatures);
 				}
 
-				updateSiteStyles(this.#map, 'ecoli');
+				if(this.#updateSiteStyles) {
+					this.#updateSiteStyles();
+				}
 			});
 
 

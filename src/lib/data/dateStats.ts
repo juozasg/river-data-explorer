@@ -1,7 +1,7 @@
 
 import type ColumnTable from "arquero/dist/types/table/column-table";
 import type { Site } from "../types/site";
-import { todayDate } from "$src/lib/utils/date";
+import { nowRoundedToNearest15Minutes, todayDate } from "$src/lib/utils/date";
 import { siteDatasets } from "$src/appstate/data/datasets.svelte";
 
 // export function sitesEarliestDate(sites: Site[]): Date {
@@ -15,7 +15,7 @@ import { siteDatasets } from "$src/appstate/data/datasets.svelte";
 export function sitesLatestDate(sites: Site[]): Date {
 	// if usgs assume realtime latest date, this prevents needless reactions to latestDate
 	// after slow loading USGS datasets become available
-	if (sites.find(s => s.dataset == 'usgs')) return todayDate;
+	if (sites.find(s => s.dataset == 'usgs' || s.dataset == 'tolthawk')) return nowRoundedToNearest15Minutes();
 
 	const tables = sites.map((s) => siteDatasets.get(s.id)).filter((t) => t);
 	const lastDates = tables.map((t) => t?.get('date', t.numRows() - 1)).filter((d) => d) as Date[];

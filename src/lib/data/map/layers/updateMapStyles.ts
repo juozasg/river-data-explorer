@@ -6,13 +6,10 @@ import { layerParams } from "$src/appstate/ui/layers.svelte";
 import { interpolateVarColor } from "$src/lib/utils/colors";
 import { varoutsidestandard } from "$src/lib/utils/varHelpers";
 import { siteIdHasData, siteVarDateValue } from "../../siteTableHelpers";
+import { sites } from "$src/appstate/data/sites.svelte";
 
-export function updateSiteStyles(map: ml.Map, varname: string, vardate?: Date) {
+export function updateSiteStyles(map: ml.Map, varname: string, vardate: Date) {
 	const siteFeatures = basinFeatureCollections.get('site');
-	if(vardate) {
-		// set vardate to end of day in utc
-		vardate.setUTCHours(23, 59);
-	}
 
 	siteFeatures?.features.forEach((siteFeature) => {
 		const id: number = siteFeature.properties?.id;
@@ -30,9 +27,16 @@ export function updateSiteStyles(map: ml.Map, varname: string, vardate?: Date) {
 				return;
 			}
 
+
 			const val = siteVarDateValue(id, varname, vardate);
 			const color = rgb2hex(interpolateVarColor(varname, val));
 			const stdbad = varoutsidestandard(varname, val);
+
+			const site = sites.get(id);
+			if(site?.siteId == 'sjrbc-2') {
+				console.log('updateSiteStyles sjrbc-2', site, vardate, val);
+
+			}
 
 			if (color !== undefined) {
 				// console.log('setting site color', id, colors);

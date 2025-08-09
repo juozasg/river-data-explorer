@@ -2,7 +2,7 @@
 	import "$src/styles/time-slider.scss";
 
 	import { binaryClosestSearch } from "$src/lib/utils/arrays";
-	import { fmtDateDMonY, nowRoundedToNearest15Minutes, oldestDate, todayDate } from "$src/lib/utils/date";
+	import { fmtDateDMonY, nowRoundedToNearest15Minutes, oldestDate } from "$src/lib/utils/date";
 
 	let { validDates, onDateSelect }: { validDates: Date[]; onDateSelect: (d: Date) => void } = $props();
 

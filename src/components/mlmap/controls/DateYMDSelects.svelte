@@ -16,15 +16,16 @@
 		// console.log('onMount selectedDate', selectedDate.toISOString());
 
 		updateDateEntry();
+		onDateSelect?.(new Date(selectedDate));
 
 		// defineGlobal('fromZonedTime', fromZonedTime);
 		// defineGlobal('toZonedTime', toZonedTime);
 		// defineGlobal('getTimezoneOffset', getTimezoneOffset);
 	});
 
-	let selectedYear: number = $state(todayDate.getUTCFullYear());
-	let selectedMon: number = $state(todayDate.getUTCMonth());
-	let selectedDay: number = $state(todayDate.getUTCDate());
+	let selectedYear: number = $state(1999);
+	let selectedMon: number = $state(1);
+	let selectedDay: number = $state(1);
 	let selectedHour: number = $state(7); // Placeholder for time, if needed
 	let selectedMinute: number = $state(45); // Placeholder for time, if needed
 	let daysInSelectedMonth = $derived(daysInMonth(selectedYear, selectedMon));
@@ -87,8 +88,8 @@
 		const datetimeString = datetime.toISOString().replace("Z", "");
 		const newDate = fromZonedTime(datetimeString, "US/Eastern"); // Convert to UTC date
 		if (newDate > new Date()) {
-			console.warn("Selected date is in the future, resetting to today");
 			selectedDate = nowRoundedToNearest15Minutes();
+			console.warn("Selected date is in the future, resetting to today", selectedDate);
 			updateDateEntry();
 		} else if (newDate < oldestDate) {
 			console.warn("Selected date is too old, resetting to oldest date");
