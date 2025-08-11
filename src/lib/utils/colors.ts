@@ -58,16 +58,20 @@ export function interpolateCategoricalVarColor(varname: string, value: string): 
 export function interpolateVarDataURL(document: Document, varname: string): string {
 	const md = variablesMetadata[varname];
 	const reverse = !!md?.scale?.d3?.reverse;
-	const interpolator = varInterpolator(varname);
-	const n = 256;
+	let interpolator = varInterpolator(varname);
 
+	return interpolateDataURL(document, interpolator, reverse);
+}
+
+export function interpolateDataURL(document: Document, interpolator: (t: number) => string, reverse = false): string {
+	const n = 256;
 
 	const canvas = document.createElement("canvas");
   canvas.width = n;
   canvas.height = 1;
   const context = canvas.getContext("2d");
 	if (!context) {
-		console.error('Could not get canvas context', document, varname);
+		console.error('Could not get canvas context', document);
 		return '';
 	}
   for (let i = 0; i < n; ++i) {
@@ -79,6 +83,11 @@ export function interpolateVarDataURL(document: Document, varname: string): stri
   return canvas.toDataURL();
 }
 
+export function d3Interpolator(interpolatorId: string): (t: number) => string  {
+	const d = d3sc as any;
+	return d[interpolatorId] || d.interpolatePlasma;
+}
+
 
 export function varInterpolator(varname: string): (t: number) => string {
 	const md = variablesMetadata[varname];
@@ -87,11 +96,10 @@ export function varInterpolator(varname: string): (t: number) => string {
 
 	const metadataInterpolatorId = reverse ? md?.scale?.d3?.reverse : md?.scale?.d3;
 	const interpolatorId = metadataInterpolatorId || variablesMetadata['default']?.scale?.d3 || 'interpolatePlasma';
-	const d = d3sc as any;
-	const interpolator = d[interpolatorId] || d.interpolatePlasma;
-
-	return interpolator;
+	return d3Interpolator(interpolatorId);
 }
+
+
 
 
 export function gradientColor(varname: string, value: number | string): string {

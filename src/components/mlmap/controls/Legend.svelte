@@ -1,42 +1,14 @@
 <script lang="ts">
-	import { interpolateVarDataURL } from '$src/lib/utils/colors';
-	import { legendFmtVarnameVal, maxLegendTextWidth } from '$src/lib/utils/legend';
-	import {
-		varCategoryKeys,
-		varMax,
-		varMin,
-		varunits
-	} from '$src/lib/utils/varHelpers';
-	import { onMount } from 'svelte';
 
-	const { varname }: { varname: string } = $props();
+	type Props = {
+		legendWidth: number;
+		dataUrl: string;
+		tickValues: string[];
+		tickFractions: number[];
+		unitsLabel: string;
+	};
 
-	let doc: Document | undefined = $state();
-	onMount(() => {
-		doc = document;
-	});
-
-	const dataUrl = $derived(doc && interpolateVarDataURL(doc, varname));
-
-	let legendWidth = $state(0);
-
-	const numTicks = $derived.by(() => {
-		const textWidth = maxLegendTextWidth(varname);
-		const calculatedTicks = Math.max(Math.floor(legendWidth / textWidth), 2);
-		return varCategoryKeys(varname)
-			? Math.min(varCategoryKeys(varname)!.length, calculatedTicks)
-			: calculatedTicks;
-	});
-
-
-	const fmtVarVal = (val: number) => legendFmtVarnameVal(varname, val);
-
-	const tickFractions = $derived([...Array(numTicks)].map((e, i) => i / (numTicks - 1)));
-	const tickValues = $derived(
-		tickFractions
-			.map((f) => varMin(varname) + f * (varMax(varname) - varMin(varname)))
-			.map(fmtVarVal)
-	);
+	let { legendWidth = $bindable(), dataUrl, tickValues, tickFractions, unitsLabel }: Props = $props();
 </script>
 
 <!-- <pre style="position: fixed; top: 0; left:0; z-index: 100001">
@@ -45,18 +17,18 @@
 
 <div class="map-control" bind:clientWidth={legendWidth}>
 	<div class="legend" aria-label="Legend">
-		<img class="legend-bar" src={dataUrl} alt="legend color bar {varname}"/>
+		<img class="legend-bar" src={dataUrl} alt="legend color bar"/>
 
 		<div class="legend-labels">
 			{#each tickValues as label, i}
 				{@const fraction = tickFractions[i]}
 				{#if i < tickValues.length - 1}
 					<div class="tick-label" style="left: calc({fraction * 100}% - {i}px)">
-						<span class="text">{label}{varunits(varname)}</span>
+						<span class="text">{label}<span class="units">{unitsLabel}</span></span>
 					</div>
 				{:else}
 					<div class="tick-label" style="right: 2px">
-						<span class="text">{label}{varunits(varname)}</span>
+						<span class="text">{label}<span class="units">{unitsLabel}</span></span>
 					</div>
 				{/if}
 			{/each}
@@ -96,7 +68,6 @@
 				bottom: -12px;
 				width: 1px;
 				height: 12px;
-				/* background-color: #62B3C6; */
 				background-color: #232323;
 			}
 		}
@@ -109,7 +80,13 @@
 			font-size: 0.7rem;
 
 			.tick-label {
+				font-weight: 400;
 				position: absolute;
+				.units {
+					color: #999;
+					font-weight: 300;
+					/* font-style: italic; */
+				}
 			}
 		}
 

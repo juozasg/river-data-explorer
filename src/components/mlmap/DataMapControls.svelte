@@ -10,6 +10,8 @@
 	import OverlayOptions from "./controls/OverlayOptions.svelte";
 	import WaterflowOptions from "./controls/WaterflowOptions.svelte";
 	import { layerParams } from "$src/appstate/ui/layers.svelte";
+	import VarLegend from "./controls/VarLegend.svelte";
+	import OverlayLegend from "./controls/OverlayLegend.svelte";
 
 	type Props = {
 		sites: Site[];
@@ -38,18 +40,18 @@
 	<div class="top-controls">
 		<MapDataOptions {small} />
 		<VariableSelector {small} bind:varname />
-		<Legend {varname} />
+		<VarLegend {varname} />
 	</div>
 
 	<div class="top-controls overlay-controls">
 		<OverlayOptions {small} />
 		{#if layerParams.rasterLayer}
-			<Legend varname="ph" />
+			<OverlayLegend layer={layerParams.rasterLayer} />
 		{/if}
 
 		<WaterflowOptions {small} />
 		{#if layerParams.waterflowLayer}
-			<Legend varname={layerParams.waterflowLayer} />
+			<VarLegend varname={layerParams.waterflowLayer} />
 		{/if}
 	</div>
 	<div class="bottom-controls">
