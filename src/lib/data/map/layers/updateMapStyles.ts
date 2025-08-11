@@ -54,3 +54,22 @@ export function updateSiteStyles(map: ml.Map, varname: string, vardate: Date) {
 		}
 	});
 }
+
+
+export function setOverlayerLayer(map: ml.Map, selectedRaster: undefined | 'lulc' | 'elevation') {
+	const elevationLayer = map.getLayer('riverapp-elevation-raster');
+	const lulcLayer = map.getLayer('riverapp-lulc-raster');
+
+	// console.log('setOverlayerLayer', selectedRaster, elevationLayer, lulcLayer);
+
+	if(elevationLayer) map.setLayoutProperty(elevationLayer.id, "visibility", "none");
+	if(lulcLayer) map.setLayoutProperty(lulcLayer.id, "visibility", "none");
+
+	if(selectedRaster == 'elevation' ) {
+			if(elevationLayer) map.setLayoutProperty(elevationLayer.id, "visibility", "visible");
+	} else if (selectedRaster == 'lulc') {
+		if(lulcLayer) map.setLayoutProperty(lulcLayer.id, "visibility", "visible");
+	}
+
+	// }
+}

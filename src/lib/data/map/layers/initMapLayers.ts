@@ -14,7 +14,20 @@ export function addRasterLayers(map: ml.Map): void {
 		},
 		mlmInsertBeforeLayer
 	);
+
+	map.addLayer(
+		{
+			id: "riverapp-lulc-raster",
+			source: "riverapp-lulc-raster",
+			type: "raster",
+			minzoom: 0,
+			maxzoom: 20
+		},
+		mlmInsertBeforeLayer
+	);
 }
+
+
 
 export function addRegionLayers(map: ml.Map): void {
 	// REGIONS FOR HOVER

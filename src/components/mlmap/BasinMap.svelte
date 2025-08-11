@@ -7,11 +7,10 @@
 	import DataMapControls from "./DataMapControls.svelte";
 	import MapLibreMap from "./MapLibreMap.svelte";
 	import MapTooltip from "./MapTooltip.svelte";
-	import { updateSiteStyles } from "$src/lib/data/map/layers/updateMapStyles";
+	import { setOverlayerLayer, updateSiteStyles } from "$src/lib/data/map/layers/updateMapStyles";
 	import WaterFlowMarkers from "./WaterFlowMarkers.svelte";
 	import { layerParams } from "$src/appstate/ui/layers.svelte";
 	import { varstate } from "$src/appstate/map/mapvarstate.svelte";
-
 
 	// svelte-ignore non_reactive_update
 	let mlMapComponent: MapLibreMap;
@@ -45,7 +44,7 @@
 
 	// site markers
 	$effect(() => {
-		if(mapController && mapController.dataModelReady && mlMap) {
+		if (mapController && mapController.dataModelReady && mlMap) {
 			// console.log("FX BasinMap updateStyles vardate", vardate);
 
 			updateSiteStyles(mlMap, varstate.varname, varstate.vardate);
@@ -62,28 +61,33 @@
 		// }
 	});
 
+	$effect(() => {
+		if(mlMap) setOverlayerLayer(mlMap, layerParams.rasterLayer);
+	});
 </script>
 
-
-<div class='basin-map' bind:clientWidth>
+<div class="basin-map" bind:clientWidth>
 	<!-- bind:this={dataMapControls}  -->
 	<DataMapControls
-			sites={[...sites.values()]}
-			bind:varname={varstate.varname}
-			bind:vardate={varstate.vardate}
-			mapWidth={clientWidth}
-			bind:this={dataMapControls} />
-
+		sites={[...sites.values()]}
+		bind:varname={varstate.varname}
+		bind:vardate={varstate.vardate}
+		mapWidth={clientWidth}
+		bind:this={dataMapControls} />
 
 	<MapLibreMap bind:this={mlMapComponent} />
 
 	{#if mlMap && layerParams.waterflowLayer === "rtflow"}
-		 <WaterFlowMarkers map={mlMap} varname={layerParams.waterflowLayer} vardate={varstate.vardate} />
+		<WaterFlowMarkers map={mlMap} varname={layerParams.waterflowLayer} vardate={varstate.vardate} />
 	{/if}
 
-
 	{#if mlMap}
-		<MapTooltip site={tooltipSite} regionObject={tooltipRegionObject} {mlMap} varname={varstate.varname} vardate={varstate.vardate} />
+		<MapTooltip
+			site={tooltipSite}
+			regionObject={tooltipRegionObject}
+			{mlMap}
+			varname={varstate.varname}
+			vardate={varstate.vardate} />
 	{/if}
 </div>
 
