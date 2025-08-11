@@ -50,6 +50,8 @@
 				<OverlayLegend layer={layerParams.rasterLayer} />
 			{:else if layerParams.rasterLayer == "lulc"}
 				<OverlayLulcLegend />
+								<!-- <OverlayLegend layer={layerParams.rasterLayer} /> -->
+
 			{/if}
 		{/if}
 

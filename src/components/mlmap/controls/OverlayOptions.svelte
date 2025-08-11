@@ -55,10 +55,10 @@
 
 	<hr />
 
-	<label for="normalize-scale">
+	<!-- <label for="normalize-scale">
 		<input type="checkbox" id="normalize-scale" bind:checked={layerParams.normalizeRasterLegendToVisibleData} />
 		Fit elevation overlay scale (legend) to visible data
-	</label>
+	</label> -->
 </DropdownOptions>
 
 <style>
