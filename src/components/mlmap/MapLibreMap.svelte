@@ -1,6 +1,9 @@
 <script lang="ts">
 	import * as ml from "maplibre-gl";
+	import MapLibreGL from "maplibre-gl";
 	import "maplibre-gl/dist/maplibre-gl.css";
+
+	import { Protocol as PMTilesProtocol } from "pmtiles";
 
 	import { mapCursor, mapMouseLocation } from "$src/appstate/map/mapMouse.svelte";
 	import { layerParams } from "$src/appstate/ui/layers.svelte";
@@ -16,11 +19,7 @@
 		mlMap?: ml.Map;
 	}
 
-	let {
-		mlMap = $bindable(),
-		zoom = 8,
-		center = [-85.49182, 41.82128]
-	}: Props = $props();
+	let { mlMap = $bindable(), zoom = 8, center = [-85.49182, 41.82128] }: Props = $props();
 
 	let mapDiv = $state<HTMLDivElement>();
 	export const mapDivElement = () => mapDiv;
@@ -67,6 +66,11 @@
 		// mlMap.addControl(new ml.AttributionControl(), 'bottom-right');
 		mlMap.addControl(new ml.ScaleControl({ maxWidth: 160, unit: "imperial" }), "top-right");
 		mlMap.addControl(new ml.NavigationControl(), "bottom-right");
+
+		let pmtilesProtocol = new PMTilesProtocol();
+		MapLibreGL.addProtocol("pmtiles", pmtilesProtocol.tile);
+
+
 		defineGlobal("mlMap", mlMap);
 
 		// only fires for the initial style, not for map.setStyle
@@ -97,10 +101,14 @@
 	}
 
 	const moveScaleDown = $derived(layerParams.rasterLayer || layerParams.waterflowLayer);
-
 </script>
 
-<div class={["map", mapCursor() + "-cursor", {"move-scale-down":moveScaleDown}]} bind:this={mapDiv} {onmouseleave} role="figure"></div>
+<div
+	class={["map", mapCursor() + "-cursor", { "move-scale-down": moveScaleDown }]}
+	bind:this={mapDiv}
+	{onmouseleave}
+	role="figure">
+</div>
 
 <style>
 	.map {
@@ -131,7 +139,6 @@
 			margin-top: 82px;
 		}
 	}
-
 
 	:global(
 			.map.default-cursor .maplibregl-canvas-container.maplibregl-interactive,

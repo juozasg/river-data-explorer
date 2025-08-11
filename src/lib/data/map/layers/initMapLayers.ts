@@ -2,6 +2,20 @@ import * as ml from 'maplibre-gl';
 import { mlmInsertBeforeLayer } from './initMapData';
 import { data1Color, data2Color, mapHoverHighlightColor } from '$src/lib/utils/colors';
 
+export function addRasterLayers(map: ml.Map): void {
+	// raster
+	map.addLayer(
+		{
+			id: "riverapp-elevation-raster",
+			source: "riverapp-elevation-raster",
+			type: "raster",
+			minzoom: 0,
+			maxzoom: 20
+		},
+		mlmInsertBeforeLayer
+	);
+}
+
 export function addRegionLayers(map: ml.Map): void {
 	// REGIONS FOR HOVER
 	map.addLayer(

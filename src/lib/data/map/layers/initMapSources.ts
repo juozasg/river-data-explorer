@@ -2,6 +2,11 @@ import * as ml from 'maplibre-gl';
 
 export function initMapSources(map: ml.Map) {
 
+	map.addSource("riverapp-elevation-raster", {
+		"type": "raster",
+		"url":  "pmtiles://https://sjrbc-map-layers.nyc3.cdn.digitaloceanspaces.com/elevation-turbo-50-110.pmtiles"
+	})
+
 	map.addSource("riverapp-regions", {
 		// generateId: true,
 		promoteId: 'id',
