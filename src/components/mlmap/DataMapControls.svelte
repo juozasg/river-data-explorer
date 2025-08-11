@@ -5,13 +5,13 @@
 	import type { Site } from "$src/lib/types/site";
 	import MapDataOptions from "./controls/MapDataOptions.svelte";
 	import DateMultiInput from "./controls/DateMultiInput.svelte";
-	import Legend from "./controls/Legend.svelte";
 	import VariableSelector from "./controls/VariableSelector.svelte";
 	import OverlayOptions from "./controls/OverlayOptions.svelte";
 	import WaterflowOptions from "./controls/WaterflowOptions.svelte";
 	import { layerParams } from "$src/appstate/ui/layers.svelte";
 	import VarLegend from "./controls/VarLegend.svelte";
 	import OverlayLegend from "./controls/OverlayLegend.svelte";
+	import OverlayLulcLegend from "./controls/OverlayLulcLegend.svelte";
 
 	type Props = {
 		sites: Site[];
@@ -46,7 +46,11 @@
 	<div class="top-controls overlay-controls">
 		<OverlayOptions {small} />
 		{#if layerParams.rasterLayer}
-			<OverlayLegend layer={layerParams.rasterLayer} />
+			{#if layerParams.rasterLayer == "elevation"}
+				<OverlayLegend layer={layerParams.rasterLayer} />
+			{:else if layerParams.rasterLayer == "lulc"}
+				<OverlayLulcLegend />
+			{/if}
 		{/if}
 
 		<WaterflowOptions {small} />
@@ -79,8 +83,6 @@
 		gap: 10px;
 		width: 100%;
 	}
-
-
 
 	.overlay-controls {
 		top: 36px;
