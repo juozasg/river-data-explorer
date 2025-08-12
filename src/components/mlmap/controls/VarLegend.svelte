@@ -39,7 +39,7 @@
 			.map(fmtVarVal)
 	);
 
-	const unitsLabel = $derived(varunits(varname));
+	const unitsLabel = $derived(legendWidth > 200 ? varunits(varname) : '');
 </script>
 
 <Legend

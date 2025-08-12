@@ -1,14 +1,15 @@
 <script lang="ts">
 
+	const { mapWidth } = $props();
 	let legendWidth = $state(0);
 	const longLabels = [
 		'Water',
 		'Trees',
 		'Crops',
 		'Built Area',
-		'Flooded vegetation',
-		'Bare Ground',
 		'Rangeland',
+		'Flooded vegtn',
+		'Bare Ground',
 	]
 
 	const shorterLabels = [
@@ -16,9 +17,9 @@
 		'Trees',
 		'Crops',
 		'Built',
-		'Flooded veg.',
-		'Ground',
 		'Range',
+		'Flood veg.',
+		'Ground',
 	]
 
 	const shortestLabels = [
@@ -26,9 +27,18 @@
 		'Tr',
 		'Cr',
 		'Blt',
+		'Rng',
 		'FV',
 		'Gr',
-		'Rng',
+	]
+	const tinyLabels = [
+		'W',
+		'T',
+		'C',
+		'B',
+		'R',
+		'F',
+		'G',
 	]
 
 	const colors = [
@@ -36,25 +46,26 @@
 		'#397d49',
 		'#f5ee3a',
 		'#e31b1b',
+		'#ffae87',
 		'#7a87c6',
 		'#a59b8f',
-		'#ffae87',
 	]
 
 	const labels = $derived.by(() => {
-		if (legendWidth < 200) return shortestLabels;
+		if (mapWidth < 400) return tinyLabels;
+		if (mapWidth < 600) return shortestLabels;
 		if (legendWidth < 400) return shorterLabels;
 		return longLabels;
 	});
 
 	$effect(() => {
-		console.log('Legend width changed:', legendWidth);
+		console.log('Legend width changed:', legendWidth, mapWidth);
 	});
 
 </script>
 
 
-<div class="map-control" bind:clientWidth={legendWidth}>
+<div class="map-control" bind:clientWidth={legendWidth} class:small={mapWidth < 600} class:tiny={mapWidth < 400}>
 	<div class="legend" aria-label="Legend">
 		<div class="legend-items">
 			{#each labels as label, i}
@@ -72,27 +83,56 @@
 
 
 		z-index: 1000;
-		padding-left: 0.5rem;
-		padding-right: 0.5rem;
+		padding-left: 5px;
+		padding-right: 5px;
 
 		box-shadow: var(--box-shadow);
 
+		max-width: 620px;
 		.legend {
 			box-sizing: border-box;
 			position: relative;
 			height: 100%;
 			width: 100%;
+			overflow: hidden;
 		}
 
 		.legend-items {
 			/* display: inline-block; */
 			width: 100%;
 			max-width: 300px;
-			display: flex;
+			/* display: inline-flex; */
+			white-space: nowrap;
+			/* align-items: center; */
+			/* overflow: hidden; */
 
 			.legend-item {
 				white-space: nowrap;
+				width: fit-content;
+				display: inline-block;
+				padding: 3px;
+				margin-top: 3px;
+				margin-right: 6px;
+				font-weight: 600;
+				border-radius: 3px;
 			}
+		}
+	}
+
+	.map-control.small {
+		.legend-items {
+			max-width: 154px;
+		}
+	}
+	.map-control.tiny {
+		.legend-items {
+			max-width: 50px;
+			/* font-size: 10px;
+			.legend-item {
+				padding: 2px;
+				margin-right: 1px;
+				margin-top: 6px;
+			} */
 		}
 	}
 </style>

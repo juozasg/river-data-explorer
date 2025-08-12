@@ -80,6 +80,9 @@
 		width: calc(var(--map-width) - 30px);
 		max-width: 500px;
 		padding-bottom: 6px !important;
+	}
 
+	.summary-flex {
+		white-space: nowrap;
 	}
 </style>

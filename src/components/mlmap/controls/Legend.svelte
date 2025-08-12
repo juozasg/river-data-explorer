@@ -44,7 +44,7 @@
 
 <style>
 	.map-control {
-		flex-grow: 1;
+		flex-grow: 2;
 
 
 		z-index: 1000;

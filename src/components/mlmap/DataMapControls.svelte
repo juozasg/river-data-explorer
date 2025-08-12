@@ -23,7 +23,11 @@
 
 	let { sites, mapWidth = 400, varname = $bindable("ecoli"), vardate = $bindable() }: Props = $props();
 
-	const small = $derived(mapWidth <= 550);
+	const small = $derived(mapWidth <= 550
+	|| (layerParams.rasterLayer != undefined && mapWidth < 700)
+	|| (layerParams.waterflowLayer != undefined && mapWidth < 700)
+	|| (layerParams.rasterLayer != undefined &&  layerParams.waterflowLayer != undefined && mapWidth < 900)
+);
 
 	let validDates: Date[] = $derived.by(() => {
 		return sitesValidDates(sites, varname);
@@ -49,7 +53,7 @@
 			{#if layerParams.rasterLayer == "elevation"}
 				<OverlayLegend layer={layerParams.rasterLayer} />
 			{:else if layerParams.rasterLayer == "lulc"}
-				<OverlayLulcLegend />
+				<OverlayLulcLegend {mapWidth} />
 								<!-- <OverlayLegend layer={layerParams.rasterLayer} /> -->
 
 			{/if}
