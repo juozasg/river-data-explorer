@@ -6,9 +6,9 @@ export const layerParams = $state<MapLayersParams>({
 	ghostSitesVisible: false,
 	normalizeLegendToVisibleData: false,
 	normalizeRasterLegendToVisibleData: false,
-	// rasterLayer: undefined,
-	rasterLayer: 'lulc',
-	// waterflowLayer: undefined
-	waterflowLayer: 'rtflow'
+	rasterLayer: undefined,
+	waterflowLayer: undefined
+	// rasterLayer: 'lulc',
+	// waterflowLayer: 'rtflow'
 });
 

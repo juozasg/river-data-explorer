@@ -9,7 +9,7 @@ export function initMapSources(map: ml.Map) {
 
 	map.addSource("riverapp-lulc-raster", {
 		"type": "raster",
-		"url":  "pmtiles://https://sjrbc-map-layers.nyc3.cdn.digitaloceanspaces.com/lulc.pmtiles"
+		"url":  "pmtiles://https://sjrbc-map-layers.nyc3.cdn.digitaloceanspaces.com/lulc2024-01.pmtiles"
 	})
 
 	map.addSource("riverapp-regions", {

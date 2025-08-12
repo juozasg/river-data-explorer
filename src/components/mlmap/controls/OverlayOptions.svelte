@@ -53,7 +53,7 @@
 		Land Use/Land Cover
 	</label>
 
-	<hr />
+	<!-- <hr /> -->
 
 	<!-- <label for="normalize-scale">
 		<input type="checkbox" id="normalize-scale" bind:checked={layerParams.normalizeRasterLegendToVisibleData} />

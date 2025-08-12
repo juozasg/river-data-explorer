@@ -44,7 +44,7 @@
 	const colors = [
 		'#419bdf',
 		'#397d49',
-		'#f5ee3a',
+		'#fffee9',
 		'#e31b1b',
 		'#ffae87',
 		'#7a87c6',
@@ -88,7 +88,7 @@
 
 		box-shadow: var(--box-shadow);
 
-		max-width: 620px;
+		max-width: 576px;
 		.legend {
 			box-sizing: border-box;
 			position: relative;
