@@ -13,7 +13,7 @@ const emptyStats = {
 	min: "",
 	numObservations: 0,
 	stdDev: "",
-	variable: "ph"
+	varname: "ph"
 };
 
 describe("variable stats", () => {
