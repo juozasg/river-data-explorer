@@ -42,7 +42,7 @@
 			showResults = false;
 		}
 
-		if(searchResults) {
+		if (searchResults) {
 			if (e.key === "ArrowDown") {
 				searchResults.keydown("down");
 				e.preventDefault();
@@ -96,6 +96,11 @@
 
 				<!-- <span>{mapSelectionMode.mode} {mapSelectionMode.target}</span> -->
 			</a>
+		</li>
+		<li>
+			<span class="help-icon">
+				<InlineBlockIconify icon="uiw:question-circle-o" size="20px" />
+			</span>
 		</li>
 	</ul>
 </div>

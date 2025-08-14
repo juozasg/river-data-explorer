@@ -1,6 +1,11 @@
 <script lang="ts">
 	import { basinObject1, basinObject2 } from "$src/appstate/selection/objectDataSelections.svelte";
 	import { mapMaximized, selectedPanel, setMapMaximized, setSelectedPanel } from "$src/appstate/ui/layout.svelte";
+	import { onMount } from "svelte";
+
+	import introJs from "intro.js";
+	import "intro.js/introjs.css";
+
 	import AppMenu from "./AppMenu.svelte";
 	import AppPanelTabs from "./AppPanelTabs.svelte";
 	import PanelChart from "./PanelChart.svelte";
@@ -16,7 +21,10 @@
 	let mapWidth = $state(0);
 	let mapHeight = $state(0);
 
-	// setMapMaximized(false);
+	onMount(() => {
+		introJs.tour().start();
+
+	});
 
 	$effect(() => {
 		if(basinObject1.isSet || basinObject2.isSet) {
@@ -30,7 +38,7 @@
 
 
 <main bind:clientWidth bind:clientHeight class:mobile class:map-maximized={mapMaximized()}>
-	<div class="app-header">
+	<div class="app-header" data-intro='Welcome to the River Data Explorer'>
 		<AppMenu {mobile}/>
 		{#if mobile}
 			<AppPanelTabs bind:selectedPanel={selectedPanel, setSelectedPanel} />
