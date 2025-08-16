@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Cookies from "js-cookie";
 	import { basinObject1, basinObject2 } from "$src/appstate/selection/objectDataSelections.svelte";
 	import { mapMaximized, selectedPanel, setMapMaximized, setSelectedPanel } from "$src/appstate/ui/layout.svelte";
 	import { onMount } from "svelte";
@@ -10,18 +11,23 @@
 	import PanelData2 from "./PanelData2.svelte";
 	import PanelMap from "./PanelMap.svelte";
 	import { defineGlobal } from "$src/lib/utils";
-	import OnboardingTour from "./OnboardingTour.svelte";
+	import { startTour } from "$src/lib/app/onboardingTour";
 
 	let clientWidth = $state(0);
 	let clientHeight = $state(0);
 	const mobile = $derived(clientWidth <= 720 || clientHeight < 720);
 
-
 	let mapWidth = $state(0);
 	let mapHeight = $state(0);
 
-	onMount(() => {
+	// introjs-dontShowAgain
 
+	onMount(() => {
+		const hideIntroCookie = Cookies.get("introjs-dontShowAgain") === "true";
+		const showIntro = !hideIntroCookie && !mobile && mapWidth > 430;
+		console.log(' --- showIntro:', showIntro, hideIntroCookie, mobile, mapWidth);
+
+		if(showIntro) startTour();
 	});
 
 	$effect(() => {
@@ -61,13 +67,6 @@
 	<div class="panel panel-chart" class:selected={selectedPanel() === 'chart'}>
 		<PanelChart />
 	</div>
-
-	{#if !mobile}
-		<!-- <div class="shepherd-tour"> -->
-			<OnboardingTour />
-		<!-- </div> -->
-	{/if}
-
 </main>
 
 <style>
