@@ -3,15 +3,14 @@
 	import { mapMaximized, selectedPanel, setMapMaximized, setSelectedPanel } from "$src/appstate/ui/layout.svelte";
 	import { onMount } from "svelte";
 
-	import introJs from "intro.js";
-	import "intro.js/introjs.css";
-
 	import AppMenu from "./AppMenu.svelte";
 	import AppPanelTabs from "./AppPanelTabs.svelte";
 	import PanelChart from "./PanelChart.svelte";
 	import PanelData1 from "./PanelData1.svelte";
 	import PanelData2 from "./PanelData2.svelte";
 	import PanelMap from "./PanelMap.svelte";
+	import { defineGlobal } from "$src/lib/utils";
+	import OnboardingTour from "./OnboardingTour.svelte";
 
 	let clientWidth = $state(0);
 	let clientHeight = $state(0);
@@ -22,7 +21,6 @@
 	let mapHeight = $state(0);
 
 	onMount(() => {
-		introJs.tour().start();
 
 	});
 
@@ -63,6 +61,13 @@
 	<div class="panel panel-chart" class:selected={selectedPanel() === 'chart'}>
 		<PanelChart />
 	</div>
+
+	{#if !mobile}
+		<!-- <div class="shepherd-tour"> -->
+			<OnboardingTour />
+		<!-- </div> -->
+	{/if}
+
 </main>
 
 <style>

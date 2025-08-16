@@ -7,9 +7,13 @@
 	import BasinObjectSearchResults from "../basinobject/BasinObjectSearchResults.svelte";
 
 	const { mobile }: { mobile: boolean } = $props();
+	// $inspect(mobile, "AppMenu.mobile");
 
 	let inputElement: HTMLInputElement;
 	let searchResults = $state<BasinObjectSearchResults>();
+	let menuWidth = $state(0);
+
+	const showHelpIcon = $derived(!mobile && menuWidth > 430);
 
 	const onfocus = () => {
 		searchFocused = true;
@@ -55,10 +59,12 @@
 			}
 		}
 	};
+
 </script>
 
 <div
 	class="app-menu"
+	bind:clientWidth={menuWidth}
 	class:mobile
 	use:clickOutside={() => {
 		open = false;
@@ -86,7 +92,7 @@
 				</div>
 			{/if}
 		</li>
-		<li><a target="_blank" href="help.html">User Guide</a></li>
+		<li><a class="user-guide" target="_blank" href="help.html">User Guide</a></li>
 		<li>
 			<a target="_blank" href="https://github.com/Limnogirl90/SJRBC-web-map-data/tree/webapp/datasets">
 				Download Datasets
@@ -97,12 +103,12 @@
 				<!-- <span>{mapSelectionMode.mode} {mapSelectionMode.target}</span> -->
 			</a>
 		</li>
-		<li>
-			<span class="help-icon">
-				<InlineBlockIconify icon="uiw:question-circle-o" size="20px" />
-			</span>
-		</li>
 	</ul>
+	{#if showHelpIcon}
+		<div class="help-icon">
+			<InlineBlockIconify icon="uiw:question-circle-o" size="20px" />
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -275,5 +281,13 @@
 				/* pointer-events: none; */
 			}
 		}
+	}
+
+	.help-icon {
+		position: absolute;
+		top: 11px;
+		right: 8px;
+		color: var(--stjoe-blue);
+		pointer-events: none;
 	}
 </style>
