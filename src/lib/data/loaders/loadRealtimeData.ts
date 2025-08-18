@@ -87,7 +87,7 @@ export async function updateRealtimeData() {
 		const lastRow: RTRecord = t.object(t.numRows() - 1) as RTRecord;
 
 		const timestamp = Math.floor(lastRow.date.getTime() / 1000); // Convert to seconds
-		const url = `http://159.89.48.126:5003/timeseries-since/${siteId}/${timestamp}`;
+		const url = `https://timeseries.riverdata.app:5003/timeseries-since/${siteId}/${timestamp}`;
 
 		// console.log('Fetching realtime data for site:', siteId, 'from', url);
 		const response = await fetch(url);
