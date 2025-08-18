@@ -20,6 +20,8 @@
 	let mapWidth = $state(0);
 	let mapHeight = $state(0);
 
+	let tourMapMaximized = $state(false);
+
 	// introjs-dontShowAgain
 
 	onMount(() => {
@@ -27,11 +29,20 @@
 		const showIntro = !hideIntroCookie && !mobile && mapWidth > 430;
 		console.log(' --- showIntro:', showIntro, hideIntroCookie, mobile, mapWidth);
 
-		if(showIntro) startTour();
+		if(showIntro) startTour((maximized: boolean) => {
+			tourMapMaximized = maximized;
+		});
 	});
 
+	function tourButtonClicked() {
+		Cookies.set("introjs-dontShowAgain", "false")
+		startTour((maximized: boolean) => {
+			tourMapMaximized = maximized;
+		});
+	}
+
 	$effect(() => {
-		if(basinObject1.isSet || basinObject2.isSet) {
+		if((basinObject1.isSet || basinObject2.isSet) && !tourMapMaximized ) {
 			setMapMaximized(false);
 		} else {
 			setMapMaximized(true);
@@ -43,7 +54,7 @@
 
 <main bind:clientWidth bind:clientHeight class:mobile class:map-maximized={mapMaximized()}>
 	<div class="app-header" data-intro='Welcome to the River Data Explorer'>
-		<AppMenu {mobile}/>
+		<AppMenu {mobile} {tourButtonClicked}/>
 		{#if mobile}
 			<AppPanelTabs bind:selectedPanel={selectedPanel, setSelectedPanel} />
 		{/if}

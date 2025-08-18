@@ -24,7 +24,7 @@
 </script>
 
 <div
-	class="map-control"
+	class="map-control variable-selector"
 	{onmouseleave}
 	aria-label="Variable Selector"
 	use:clickOutside={() => {

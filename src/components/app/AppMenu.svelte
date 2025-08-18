@@ -6,7 +6,7 @@
 	import type { BasinObjectType } from "$src/appstate/data/basinObject.svelte";
 	import BasinObjectSearchResults from "../basinobject/BasinObjectSearchResults.svelte";
 
-	const { mobile }: { mobile: boolean } = $props();
+	const { mobile, tourButtonClicked }: { mobile: boolean, tourButtonClicked: () => void } = $props();
 	// $inspect(mobile, "AppMenu.mobile");
 
 	let inputElement: HTMLInputElement;
@@ -105,7 +105,7 @@
 		</li>
 	</ul>
 	{#if showHelpIcon}
-		<div class="help-icon">
+		<div class="help-icon" onclick={tourButtonClicked}>
 			<InlineBlockIconify icon="uiw:question-circle-o" size="20px" />
 		</div>
 	{/if}
@@ -288,6 +288,11 @@
 		top: 11px;
 		right: 8px;
 		color: var(--stjoe-blue);
-		pointer-events: none;
+		/* pointer-events: none; */
+
+		&:hover {
+			cursor: pointer;
+			color: var(--color-darkGrey);
+		}
 	}
 </style>

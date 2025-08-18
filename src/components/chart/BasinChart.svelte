@@ -48,9 +48,13 @@
 		if(!basinObject) return "";
 		let name = basinObject.objectLabelName;
 
+		name = name + ' ' + basinObject.objectTypeLabel;
+
 		if(basinObject.objectSiteId) {
 			name += ` (${basinObject.objectSiteId.replace(/-/, "&#8209;")})`; // non-breaking hyphen
 		}
+
+
 
 		return name;
 	}
