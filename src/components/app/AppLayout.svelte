@@ -34,6 +34,12 @@
 		});
 	});
 
+	onMount(() => {
+		if(mobile) {
+			window.scrollTo(0, 1);
+		}
+	});
+
 	function tourButtonClicked() {
 		Cookies.set("introjs-dontShowAgain", "false")
 		startTour((maximized: boolean) => {
