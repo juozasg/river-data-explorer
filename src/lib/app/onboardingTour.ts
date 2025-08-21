@@ -25,7 +25,7 @@ export async function startTour(setMapMaximized: (maximized: boolean) => void) {
 
 function startTourWhenReady(setMapMaximized: (maximized: boolean) => void) {
 
-	const tour = introJs.tour().setOptions({
+	const tour: introJs.Tour = introJs.tour().setOptions({
 		steps: [
 			{
 				title: "Welcome!",
@@ -112,6 +112,13 @@ function startTourWhenReady(setMapMaximized: (maximized: boolean) => void) {
 	// console.log('Tour started', '.help-icon', document.querySelector(".help-icon"), 'ph line', document.querySelector(".basin-object-stats table tbody tr:nth-child(1)"));
 	tour.start();
 
+	tour.onExit(function () {
+		setMapMaximized(false);
+		basinObject1.clear();
+		basinObject2.clear();
+		chartYSelection.clear();
+		chartZSelection.clear();
+	});
 
 	// tour.onBeforeChange(function () {
 	tour.onBeforeChange(function () {
