@@ -25,7 +25,7 @@ export async function startTour(setMapMaximized: (maximized: boolean) => void) {
 
 function startTourWhenReady(setMapMaximized: (maximized: boolean) => void) {
 
-	const tour: introJs.Tour = introJs.tour().setOptions({
+	const tour: any = introJs.tour().setOptions({
 		steps: [
 			{
 				title: "Welcome!",
@@ -122,7 +122,7 @@ function startTourWhenReady(setMapMaximized: (maximized: boolean) => void) {
 
 	// tour.onBeforeChange(function () {
 	tour.onBeforeChange(function () {
-		const step = this.getCurrentStep();
+		const step = tour.getCurrentStep();
 
 		if (Cookies.get("introjs-dontShowAgain") === "true") {
 			setMapMaximized(false);
