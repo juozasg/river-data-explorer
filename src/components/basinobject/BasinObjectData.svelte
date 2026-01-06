@@ -22,7 +22,7 @@
 
 <div class={`data-panel data-${selectionTarget}`}>
 	{#if basinObject.isSet}
-		<BasinObjectHeader {selectionTarget} {basinObject} bind:showModeSelector={showModeSelector} />
+		<BasinObjectHeader {selectionTarget} {basinObject} bind:showModeSelector />
 	{:else}
 		<div>
 			<h4>Data {selectionTarget}: Nothing selected</h4>
@@ -56,7 +56,6 @@
 		display: flex;
 		flex-direction: column;
 	}
-
 
 	.basin-object-stats {
 		height: calc(100% - 20px);

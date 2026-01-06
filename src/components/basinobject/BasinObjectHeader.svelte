@@ -1,15 +1,24 @@
 <script lang="ts">
 	import type { BasinObject } from "$src/appstate/data/basinObject.svelte";
-	import { chartYSelection, chartZSelection } from "$src/appstate/selection/objectDataSelections.svelte";
+	import {
+		chartYSelection,
+		chartZSelection,
+		mapSelectionMode
+	} from "$src/appstate/selection/objectDataSelections.svelte";
 
 	type Props = { selectionTarget: "1" | "2"; basinObject: BasinObject; showModeSelector: boolean };
 	let { selectionTarget, basinObject, showModeSelector = $bindable() }: Props = $props();
 
+	// $effect(() => {
+	// console.log('BasinObjectHeader basinObject:', basinObject);
+	// console.log('BasinObjectHeader chartZSelection:', chartZSelection.basinObject);
+	// });
 
-	$effect(() => {
-		// console.log('BasinObjectHeader basinObject:', basinObject);
-		// console.log('BasinObjectHeader chartZSelection:', chartZSelection.basinObject);
-	});
+	const clearSelection = () => {
+		basinObject.clear();
+		mapSelectionMode.mode = "auto";
+		mapSelectionMode.target = selectionTarget;
+	};
 </script>
 
 <div class={`header data-${selectionTarget}`}>
@@ -32,6 +41,13 @@
 		<div class="controls">
 			<div class="vbar"></div>
 			<button onclick={() => (showModeSelector = true)}>Change</button>
+			<!-- <div class="button-group"> -->
+			<!-- {#if basinObject.isSet} -->
+			{#if !showModeSelector}
+				<button class="clear" onclick={clearSelection}>X&nbsp;Clear</button>
+			{/if}
+			<!-- {/if} -->
+			<!-- </div> -->
 		</div>
 	{/if}
 </div>
@@ -75,6 +91,12 @@
 				background-color: var(--color-lightGrey);
 				margin: 2px 8px 0 4px;
 			}
+
+			button.clear {
+				color: var(--color-darkGrey);
+				font-weight: 700;
+				margin-left: 12px;
+			}
 		}
 
 		.selection-hints {
@@ -92,7 +114,7 @@
 			}
 
 			.z-selection {
-				background-color:var(--color-chart-z);
+				background-color: var(--color-chart-z);
 				width: 6px;
 				height: 100%;
 			}

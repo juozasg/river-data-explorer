@@ -6,7 +6,6 @@ import { layerParams } from "$src/appstate/ui/layers.svelte";
 import { interpolateVarColor } from "$src/lib/utils/colors";
 import { varoutsidestandard } from "$src/lib/utils/varHelpers";
 import { siteIdHasData, siteVarDateValue } from "../../siteTableHelpers";
-import { sites } from "$src/appstate/data/sites.svelte";
 
 export function updateSiteStyles(map: ml.Map, varname: string, vardate: Date) {
 	const siteFeatures = basinFeatureCollections.get('site');
