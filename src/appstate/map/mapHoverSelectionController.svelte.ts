@@ -17,15 +17,12 @@ export type HoveredRegionType = 'huc8' | 'huc10' | 'huc12' | 'county';
 export class MapHoverSelectionController {
 	#map: ml.Map;
 	#updateSiteStyles: (() => void) | undefined;
-	// #hoveredRegionFeature = $state<ml.MapGeoJSONFeature>();
 
-	// #hoveredRiverFeature = $state<GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties>>();
 	#hoveredSite = $state<Site>();
 	#hoveredRiverId = $state<number>();
 	#hoveredRegionId = $state<number>();
 	#regionType = $state<BasinObjectType>();
-	// #hoveredRegionType = $state<HoveredRegionType>();
-	// #hoveredSite
+
 
 	dataModelReady = $state(false);
 

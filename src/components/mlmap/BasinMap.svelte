@@ -27,12 +27,11 @@
 	const tooltipSite = $derived(mapController?.hoveredSite);
 	const tooltipRegionObject = $derived(mapController?.hoveredRegionBasinObject);
 
-	// const selectedSites = $derived([...sites.values()].filter((s) => s.dataset !== "invert"));
-	const selectedSites = $derived([...sites.values()].filter((s) => s));
 
 	$effect(() => {
 		if (!mlMapComponent.styleLoaded()) return;
 
+		// selection and hover controller
 		if (!mapController) {
 			mapController = new MapHoverSelectionController(mlMapComponent.mlmMap()!, () => {
 				updateSiteStyles(mlMap!, varstate.varname, varstate.vardate);
@@ -42,11 +41,9 @@
 		mlMap = mlMapComponent.mlmMap()!;
 	});
 
-	// site markers
+	// update site markers when varstate changes
 	$effect(() => {
 		if (mapController && mapController.dataModelReady && mlMap) {
-			// console.log("FX BasinMap updateStyles vardate", vardate);
-
 			updateSiteStyles(mlMap, varstate.varname, varstate.vardate);
 		}
 	});
@@ -67,7 +64,6 @@
 </script>
 
 <div class="basin-map" bind:clientWidth>
-	<!-- bind:this={dataMapControls}  -->
 	<DataMapControls
 		sites={[...sites.values()]}
 		bind:varname={varstate.varname}
