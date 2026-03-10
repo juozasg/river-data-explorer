@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
-REPO="juozasg/SJRBC-web-map-data"
-# BRANCH="main"
-BRANCH="ui2"
+REPO="Limnogirl90/SJRBC-web-map-data"
+BRANCH="main"
+# BRANCH="ui2"
 rm -rf tmp
 mkdir -p tmp
 cd tmp
