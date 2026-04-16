@@ -19,8 +19,6 @@
 	let mapController: MapHoverSelectionController | undefined = $state();
 	let mlMap = $state<ml.Map>();
 
-	// let varname = $state<string>("ecoli");
-	// let vardate = $state<Date>();
 
 	let clientWidth = $state(0);
 
