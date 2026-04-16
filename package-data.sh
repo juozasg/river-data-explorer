@@ -11,6 +11,7 @@ if [[ $1 = "--local" ]]; then
 	rm -rf data/.git
 	echo "Data: local" > data/versions.txt
 else
+	echo Downloading "https://github.com/$REPO/archive/refs/heads/$BRANCH.zip"
 	curl -L "https://github.com/$REPO/archive/refs/heads/$BRANCH.zip" -o data.zip
 	unzip data.zip
 	mv "SJRBC-web-map-data-$BRANCH" data
