@@ -6,7 +6,7 @@
 	import type { BasinObjectType } from "$src/appstate/data/basinObject.svelte";
 	import BasinObjectSearchResults from "../basinobject/BasinObjectSearchResults.svelte";
 
-	const { mobile, tourButtonClicked }: { mobile: boolean, tourButtonClicked: () => void } = $props();
+	const { mobile, tourButtonClicked }: { mobile: boolean; tourButtonClicked: () => void } = $props();
 	// $inspect(mobile, "AppMenu.mobile");
 
 	let inputElement: HTMLInputElement;
@@ -59,7 +59,6 @@
 			}
 		}
 	};
-
 </script>
 
 <div
@@ -93,7 +92,7 @@
 			{/if}
 		</li>
 		<!-- <li><a class="user-guide" target="_blank" href="help.html">User Guide</a></li> -->
-		<li><a class="sjrbc-home" target="_blank" href="http://sjrbc.com">SJRBC</a></li>
+		<li><a class="sjrbc-home" target="_blank" href="http://sjrbc.com">St. Joseph River Basin Commission</a></li>
 		<li>
 			<a target="_blank" href="https://github.com/Limnogirl90/SJRBC-web-map-data/tree/webapp/datasets">
 				Download Datasets
@@ -224,6 +223,13 @@
 
 		li:not(.search) {
 			display: none;
+		}
+	}
+
+	.app-menu:not(.mobile) {
+		li .sjrbc-home {
+			margin-left: 10px;
+			margin-right: 20px;
 		}
 	}
 
