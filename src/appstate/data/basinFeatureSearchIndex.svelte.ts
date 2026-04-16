@@ -129,20 +129,20 @@ export function searchBasinFeatures(query: string): BasinSearchResult[] {
 
 
 		query = makeQueryAnd(query);
-		console.log('Searching for:', query);
+		// console.log('Searching for:', query);
 
 		let results = _lunrFeatureSearchIndex.search(query)
 
 		if (results.length === 0) {
 			// If no results, try adding wildcard to the end of each word
 			query = addWildcard(query);
-			console.log('No results found, trying with wildcard:', query);
+			// console.log('No results found, trying with wildcard:', query);
 			results = _lunrFeatureSearchIndex.search(query);
 		}
 
 
 		results = results.splice(0, 100); // Limit to 100 results
-		console.log('Search results:', results);
+		// console.log('Search results:', results);
 
 		// return _riverappFeatureSearchIndex.search(query).map(result => result.item);
 		return results.map(result => refToFeature(result.ref));

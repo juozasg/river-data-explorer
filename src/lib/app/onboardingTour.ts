@@ -36,12 +36,12 @@ function startTourWhenReady(setMapMaximized: (maximized: boolean) => void) {
 				title: "Introduction Tour",
 				intro: "You can always re-open this tour by clicking the help icon."
 			},
-			{
-				element: document.querySelector(".user-guide"),
-				title: "User Guide",
-				intro: "The complete User Guide has detailed information about the application and the water data."
-				// intro: '<img src="https://images.unsplash.com/photo-1608096299210-db7e38487075?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" />'
-			},
+			// {
+			// 	element: document.querySelector(".user-guide"),
+			// 	title: "User Guide",
+			// 	intro: "The complete User Guide has detailed information about the application and the water data."
+			// 	// intro: '<img src="https://images.unsplash.com/photo-1608096299210-db7e38487075?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" />'
+			// },
 			{
 				element: document.querySelector(".map-container"),
 				title: "The Map",
@@ -145,11 +145,11 @@ function startTourWhenReady(setMapMaximized: (maximized: boolean) => void) {
 
 		}
 
-		if (step === 10) {
+		if (step === 9) {
 			setMapMaximized(false);
 		}
 
-		if (step === 14) {
+		if (step === 13) {
 			setMapMaximized(false);
 			basinObject1.clear();
 			basinObject2.clear();

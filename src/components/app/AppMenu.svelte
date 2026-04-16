@@ -92,7 +92,8 @@
 				</div>
 			{/if}
 		</li>
-		<li><a class="user-guide" target="_blank" href="help.html">User Guide</a></li>
+		<!-- <li><a class="user-guide" target="_blank" href="help.html">User Guide</a></li> -->
+		<li><a class="sjrbc-home" target="_blank" href="http://sjrbc.com">SJRBC</a></li>
 		<li>
 			<a target="_blank" href="https://github.com/Limnogirl90/SJRBC-web-map-data/tree/webapp/datasets">
 				Download Datasets
