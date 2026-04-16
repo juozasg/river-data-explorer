@@ -48,8 +48,8 @@ export async function loadDatasets() {
 			continue;
 		}
 
-		// if(r.siteId !== 'steuben-1') {
-		// 	continue;
+		// if(r.siteId == 'elkhart-68') {
+		// 	console.log('ELKHART68', r);
 		// }
 
 		const record: Record<string, any> = {};
@@ -75,6 +75,10 @@ export async function loadDatasets() {
 
 	sitesRecords.forEach((records, siteId) => {
 		const tbl = aq.from(records).orderby('date').dedupe('date').reify();
+		// 	if(siteId == 'elkhart-68') {
+		// 	console.log('ELKHART68 RECORDS', records);
+		// }
+
 		const id = siteIds.get(siteId);
 		if (id === undefined) {
 			console.error(`Site integer ID not found for siteId: ${siteId}`);
