@@ -7,7 +7,7 @@ export type MapVarState = {
 };
 
 export const varstate = $state<MapVarState>({
-	varname: 'ecoli',
+	varname: 'invertNarrative',
 	vardate: nowRoundedToNearest15Minutes()
 })
 
